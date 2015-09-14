@@ -1,0 +1,55 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: nmenkovic
+ * Date: 9/10/15
+ * Time: 4:44 PM
+ */
+
+use infobip\api\model\sms\mt\reports\SMSReportResponse;
+
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+$responseBody = '{
+  "results": [
+    {
+      "bulkId": "BULK-ID-123-xyz",
+      "messageId": "c9823180-94d4-4ea0-9bf3-ec907e7534a6",
+      "to": "41793026731",
+      "sentAt": "2015-06-04T13:01:52.933+0000",
+      "doneAt": "2015-06-04T13:02:00.134+0000",
+      "smsCount": 1,
+      "price": {
+        "pricePerMessage": 0.0001000000,
+        "currency": "EUR"
+      },
+      "status": {
+        "groupId": 3,
+        "groupName": "DELIVERED",
+        "id": 5,
+        "name": "DELIVERED_TO_HANDSET",
+        "description": "Message delivered to handset"
+      },
+      "error": {
+        "groupId": 0,
+        "groupName": "OK",
+        "id": 0,
+        "name": "NO_ERROR",
+        "description": "No Error",
+        "permanent": false
+      }
+    }
+  ]
+}';
+
+$mapper = new JsonMapper();
+$responseObject = $mapper->map(json_decode($responseBody), new SMSReportResponse());
+
+for ($i = 0; $i < count($responseObject->getResults()); ++$i) {
+    $result = $responseObject->getResults()[$i];
+    echo "Message ID: " . $result->getMessageId() . "\n";
+    echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
+    echo "Receiver: " . $result->getTo() . "\n";
+    echo "Status: " . $result->getStatus()->getName() . "\n";
+    echo "Price: " . $result->getPrice()->getPricePerMessage() . " " . $result->getPrice()->getCurrency() . "\n\n";
+}
