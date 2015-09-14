@@ -92,7 +92,7 @@ class AbstractApiClient
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => 3,
-            CURLOPT_USERAGENT => 'OneApi-php-' . self::VERSION,
+            CURLOPT_USERAGENT => 'infobip-api-php-' . self::VERSION,
             CURLOPT_CUSTOMREQUEST => $httpMethod,
             CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => $sendHeaders
