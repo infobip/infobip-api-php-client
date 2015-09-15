@@ -16,7 +16,7 @@ $responseBody = '{
       "bulkId": "BULK-ID-123-xyz",
       "messageId": "c9823180-94d4-4ea0-9bf3-ec907e7534a6",
       "to": "41793026731",
-      "sentAt": "2015-06-04T13:01:52.933+0000",
+      "sentAt": "2015-06-04T13:01:52.933",
       "doneAt": "2015-06-04T13:02:00.134+0000",
       "smsCount": 1,
       "price": {
@@ -42,13 +42,17 @@ $responseBody = '{
   ]
 }';
 
+// Using system's timezone when not specified
+date_default_timezone_set('Europe/London');
+
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new SMSReportResponse());
 
 for ($i = 0; $i < count($responseObject->getResults()); ++$i) {
     $result = $responseObject->getResults()[$i];
     echo "Message ID: " . $result->getMessageId() . "\n";
-    echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
+    echo "Sent at: " . $result->getSentAt()->format('Y-m-d H:i:s P') . "\n";
+    echo "Done at: " . $result->getDoneAt()->format('Y-m-d H:i:s P') . "\n";
     echo "Receiver: " . $result->getTo() . "\n";
     echo "Status: " . $result->getStatus()->getName() . "\n";
     echo "Price: " . $result->getPrice()->getPricePerMessage() . " " . $result->getPrice()->getCurrency() . "\n\n";

@@ -17,7 +17,7 @@ $client = new SendSingleTextualSms(new BasicAuthConfiguration(USERNAME, PASSWORD
 // Creating request body
 $requestBody = new SMSTextualRequest();
 $requestBody->setFrom(FROM);
-$requestBody->setTo(TO);
+$requestBody->setTo([TO]);
 $requestBody->setText("This is an example message.");
 
 // Executing request

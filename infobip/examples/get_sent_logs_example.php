@@ -21,7 +21,7 @@ $response = $client->execute($context);
 for ($i = 0; $i < count($response->getResults()); ++$i) {
     $result = $response->getResults()[$i];
     echo "Message ID: " . $result->getMessageId() . "\n";
-    echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
+    echo "Sent at: " . $result->getSentAt()->format('Y-m-d H:i:s P') . "\n";
     echo "Sender: " . $result->getFrom() . "\n";
     echo "Receiver: " . $result->getTo() . "\n";
     echo "Message text: " . $result->getText() . "\n";

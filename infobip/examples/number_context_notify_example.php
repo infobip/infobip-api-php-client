@@ -16,7 +16,7 @@ $client = new NumberContextNotify(new BasicAuthConfiguration(USERNAME, PASSWORD)
 
 // Creating request body
 $requestBody = new NumberContextRequest();
-$requestBody->setTo(TO);
+$requestBody->setTo([TO]);
 $requestBody->setNotifyUrl(NOTIFY_URL);
 
 // Executing request

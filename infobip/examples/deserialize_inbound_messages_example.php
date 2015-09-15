@@ -25,12 +25,15 @@ $responseBody = '{
    ]
 }';
 
+// Using system's timezone when not specified
+date_default_timezone_set('Europe/London');
+
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new MOReportResponse());
 
 $result = $responseObject->getResults()[0];
 echo "Message ID: " . $result->getMessageId() . "\n";
-echo "Received at: " . $result->getReceivedAt()->format('y-M-d H:m:s T') . "\n";
+echo "Received at: " . $result->getReceivedAt()->format('Y-m-d H:i:s P') . "\n";
 echo "Sender: " . $result->getFrom() . "\n";
 echo "Receiver: " . $result->getTo() . "\n";
 echo "Message text: " . $result->getText() . "\n";
