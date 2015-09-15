@@ -8,7 +8,7 @@ class ApiKeyAuthConfiguration extends Configuration
 
     private $apiKey;
 
-    public function __construct($apiKey, $baseUrl)
+    public function __construct($apiKey, $baseUrl = null)
     {
         parent::__construct($baseUrl);
         $this->apiKey = $apiKey;
@@ -16,6 +16,6 @@ class ApiKeyAuthConfiguration extends Configuration
 
     public function getAuthenticationHeader()
     {
-        return "Api " . $this->apiKey;
+        return "App " . $this->apiKey;
     }
 }
