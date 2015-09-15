@@ -5,21 +5,21 @@
 - You have installed a [PHP interpreter](http://php.net/manual/en/install.php).
 - You have installed a [composer](https://getcomposer.org/download).
 
-## Instalation
+## Installation
 
-For using Infobip API PHP client, you have to add this to your `composer.json` file:
+For using Infobip API PHP client, you have to add the following to your `composer.json` file:
 
 	"require": {
 		"infobip/infobip-api-php-client": "dev-master"
 	}
 
-and run `composer install` command inside the root folder.
+and run `composer install` command inside the project's root folder.
 
 ## Running examples
 
-Before you start any of the examples, you have to insert specific data (sender address, receiver address, etc.) to `infobip/examples/examples.php` file.
+Before you start any of the examples, you have to populate specific data (sender address, receiver address, etc.) to `infobip/examples/examples.php` file.
 
-Then, you should uncomment the example you want to test and run the PHP script with your **username** and **password** (in plain text) as arguments:
+Then, you should uncomment the example you want to test and run the PHP script with your **username** and **password** (in plain text) as arguments like the following:
 
 	php infobip/examples/examples.php YOUR_USERNAME YOUR_PASSWORD
 
@@ -64,7 +64,7 @@ And prepare the advanced message:
 	$requestBody = new infobip\api\model\sms\mt\send\textual\SMSAdvancedTextualRequest();
 	$requestBody->setMessages([$message]);
 
-When the delivery notification is pushed to your server as a HTTP POST request, you have to process the body of the message with the following code:
+When the delivery notification is pushed to your server as a HTTP POST request, you could process body of the message with the following code:
 
 	$mapper = new JsonMapper();
 	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\sms\mt\reports\SMSReportResponse());
@@ -88,7 +88,7 @@ If you want to send message with special characters, this is how you initialize 
 	$destination->setTo(TO);
 
 	$language = new infobip\api\model\sms\mt\send\Language();
-	//specific language code
+	//specific language code (TR stands for Turkish)
 	$language->setLanguageCode("TR");
 	//use single shift table for specific language ('false' or 'true')
 	$language->setSingleShift(true);
@@ -140,7 +140,7 @@ Similar to the previous example, but this time you must set the notification URL
 
 	$response = $client->execute($requestBody);
 
-When the number context notification is pushed to your server as a HTTP POST request, you should process the body of the message with the following code: 
+When the number context notification is pushed to your server as a HTTP POST request, you could process the body of the message with the following code: 
 
 	$mapper = new JsonMapper();
 	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\nc\query\NumberContextResponse());
@@ -158,7 +158,7 @@ The client that has to be initialized is:
 
 	$client = new infobip\api\client\GetReceivedMessages(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
 
-Then, you have to create execution context:
+Then you have to create execution context:
 
 	$context = new infobip\api\model\sms\mo\reports\GetReceivedMessagesExecuteContext;
 
@@ -179,8 +179,8 @@ The response type will be `\infobip\api\model\sms\mo\reports\MOReportResponse`:
 
 ### Inbound message push example
 
-The subscription to receive inbound messages can be set up on our site.
-When the inbound message notification is pushed to your server as a HTTP POST request, you have to process the body of the message with the following code:
+The subscription to receive inbound messages can be set up on [Infobip](https://www.infobip.com) platform.
+When the inbound message notification is pushed to your server as a HTTP POST request, you could process body of the message with the following code:
 
 	$mapper = new JsonMapper();
 	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\sms\mo\reports\MOReportResponse());
