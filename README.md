@@ -1,10 +1,9 @@
 # Infobip API PHP client
 
 ## Prerequisites
- 
+
 - You have installed a [PHP interpreter](http://php.net/manual/en/install.php).
 - You have installed a [composer](https://getcomposer.org/download).
-- You have downloaded the [Infobip API PHP library](https://github.com/infobip/infobip-api-php-client).
 
 ## Instalation
 
@@ -13,7 +12,7 @@ For using Infobip API PHP client, you have to add this to your `composer.json` f
 	"require": {
 		"infobip/infobip-api-php-client": "dev-master"
 	}
-	
+
 and run `composer install` command inside the root folder.
 
 ## Running examples
@@ -29,13 +28,13 @@ Then, you should uncomment the example you want to test and run the PHP script w
 The first thing that needs to be done is to include `autoload.php` and to initialize the messaging client:
 
 	require_once '<PATH-TO-VENDOR-FOLDER>/autoload.php';
-    
+
     $client = new infobip\api\client\SendSingleTextualSms(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
 
 You are basically logging in to Infobip, so an exception will be thrown if the username and/or password are incorrect. 
 
 The next step is to prepare the message:
-  
+
 	$requestBody = new infobip\api\model\sms\mt\send\textual\SMSTextualRequest();
 	$requestBody->setFrom(FROM);
 	$requestBody->setTo(TO);
@@ -71,20 +70,20 @@ When the delivery notification is pushed to your server as a HTTP POST request, 
 	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\sms\mt\reports\SMSReportResponse());
 
 	for ($i = 0; $i < count($responseObject->getResults()); ++$i) {
-    	$result = $responseObject->getResults()[$i];
-    	echo "Message ID: " . $result->getMessageId() . "\n";
-    	echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
-    	echo "Receiver: " . $result->getTo() . "\n";
-    	echo "Status: " . $result->getStatus()->getName() . "\n";
-    	echo "Price: " . $result->getPrice()->getPricePerMessage() . " " . $result->getPrice()->getCurrency() . "\n\n";
+		$result = $responseObject->getResults()[$i];
+		echo "Message ID: " . $result->getMessageId() . "\n";
+		echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
+		echo "Receiver: " . $result->getTo() . "\n";
+		echo "Status: " . $result->getStatus()->getName() . "\n";
+		echo "Price: " . $result->getPrice()->getPricePerMessage() . " " . $result->getPrice()->getCurrency() . "\n\n";
 	}
 
 ### Sending message with special characters example
 
-If you want to send message with special characters, this is how you initialize the client and prepare your message: 
+If you want to send message with special characters, this is how you initialize the client and prepare your message:
 
 	$client = new infobip\api\client\SendMultipleTextualSmsAdvanced(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-	
+
 	$destination = new infobip\api\model\Destination();
 	$destination->setTo(TO);
 
@@ -93,7 +92,7 @@ If you want to send message with special characters, this is how you initialize 
 	$language->setLanguageCode("TR");
 	//use single shift table for specific language ('false' or 'true')
 	$language->setSingleShift(true);
-	//use locking shift table for specific language ('false' or 'true') 
+	//use locking shift table for specific language ('false' or 'true')
 	$language->setLockingShift(false);
 
 	$message = new infobip\api\model\sms\mt\send\Message();
@@ -116,7 +115,7 @@ Initialize the number context query client:
 Create request body:
 
 	$requestBody = new infobip\api\model\nc\query\NumberContextRequest();
-	$requestBody->setTo(TO); 
+	$requestBody->setTo(TO);
 
 Retrieve the number context:
 
@@ -138,7 +137,7 @@ Similar to the previous example, but this time you must set the notification URL
 	$requestBody = new infobip\api\model\nc\notify\NumberContextRequest();
 	$requestBody->setTo(TO);
 	$requestBody->setNotifyUrl(NOTIFY_URL);
-	
+
 	$response = $client->execute($requestBody);
 
 When the number context notification is pushed to your server as a HTTP POST request, you should process the body of the message with the following code: 
@@ -159,23 +158,23 @@ The client that has to be initialized is:
 
 	$client = new infobip\api\client\GetReceivedMessages(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
 
-Then, you have to create execution context: 
+Then, you have to create execution context:
 
 	$context = new infobip\api\model\sms\mo\reports\GetReceivedMessagesExecuteContext;
-	
-If you want to filter inbound messages, you can do it by setting the value to any of execute context class fields. 
-	
+
+If you want to filter inbound messages, you can do it by setting the value to any of execute context class fields.
+
 The response type will be `\infobip\api\model\sms\mo\reports\MOReportResponse`:
 
     $response = $client->execute($context);
 
 	for ($i = 0; $i < count($response->getResults()); ++$i) {
-    	$result = $response->getResults()[$i];
-    	echo "Message ID: " . $result->getMessageId() . "\n";
-    	echo "Received at: " . $result->getReceivedAt()->format('y-M-d H:m:s T') . "\n";
-    	echo "Sender: " . $result->getFrom() . "\n";
-    	echo "Receiver: " . $result->getTo() . "\n";
-    	echo "Message text: " . $result->getText() . "\n\n";
+		$result = $response->getResults()[$i];
+		echo "Message ID: " . $result->getMessageId() . "\n";
+		echo "Received at: " . $result->getReceivedAt()->format('y-M-d H:m:s T') . "\n";
+		echo "Sender: " . $result->getFrom() . "\n";
+		echo "Receiver: " . $result->getTo() . "\n";
+		echo "Message text: " . $result->getText() . "\n\n";
 	}
 
 ### Inbound message push example
