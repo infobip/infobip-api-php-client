@@ -27,7 +27,7 @@ class GetNumberContextLogs extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/number/1/logs");
         $content = $this->executeGET($restPath, $params);
-        return $this->map(json_decode($content), NumberContextLogsResponse::class);
+        return $this->map(json_decode($content), get_class(new NumberContextLogsResponse));
     }
 
 }

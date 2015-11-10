@@ -26,7 +26,7 @@ class GetReceivedMessages extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/sms/1/inbox/reports");
         $content = $this->executeGET($restPath, $params);
-        return $this->map(json_decode($content), MOReportResponse::class);
+        return $this->map(json_decode($content), get_class(new MOReportResponse));
     }
 
 }

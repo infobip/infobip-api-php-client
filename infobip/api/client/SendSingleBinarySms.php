@@ -26,7 +26,7 @@ class SendSingleBinarySms extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/sms/1/binary/single");
         $content = $this->executePOST($restPath, null, $body);
-        return $this->map(json_decode($content), SMSResponse::class);
+        return $this->map(json_decode($content), get_class(new SMSResponse));
     }
 
 }

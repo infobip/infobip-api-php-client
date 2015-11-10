@@ -26,7 +26,7 @@ class GetSentSmsLogs extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/sms/1/logs");
         $content = $this->executeGET($restPath, $params);
-        return $this->map(json_decode($content), SMSLogsResponse::class);
+        return $this->map(json_decode($content), get_class(new SMSLogsResponse));
     }
 
 }

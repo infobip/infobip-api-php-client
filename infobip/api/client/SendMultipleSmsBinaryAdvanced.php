@@ -26,7 +26,7 @@ class SendMultipleSmsBinaryAdvanced extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/sms/1/binary/advanced");
         $content = $this->executePOST($restPath, null, $body);
-        return $this->map(json_decode($content), SMSResponse::class);
+        return $this->map(json_decode($content), get_class(new SMSResponse));
     }
 
 }

@@ -26,6 +26,6 @@ class GetAccountBalance extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/account/1/balance");
         $content = $this->executeGET($restPath, null);
-        return $this->map(json_decode($content), AccountBalance::class);
+        return $this->map(json_decode($content), get_class(new AccountBalance));
     }
 }

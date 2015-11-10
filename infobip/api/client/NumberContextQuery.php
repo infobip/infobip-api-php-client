@@ -26,7 +26,7 @@ class NumberContextQuery extends AbstractApiClient
     {
         $restPath = $this->getRestUrl("/number/1/query");
         $content = $this->executePOST($restPath, null, $body);
-        return $this->map(json_decode($content), NumberContextResponse::class);
+        return $this->map(json_decode($content), get_class(new NumberContextResponse));
     }
 
 }
