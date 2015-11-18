@@ -1,12 +1,11 @@
 <?php
 namespace infobip\api\model\sms\mt\send;
-use JsonSerializable;
 
 /**
  * This is a generated class and is not intended for modification!
  * TODO: Point to Github contribution instructions
  */
-class Language implements JsonSerializable
+class Language implements \JsonSerializable
 {
     private $lockingShift;
     private $singleShift;
@@ -17,7 +16,6 @@ class Language implements JsonSerializable
     {
         $this->lockingShift = $lockingShift;
     }
-
     public function isLockingShift()
     {
         return $this->lockingShift;
@@ -27,7 +25,6 @@ class Language implements JsonSerializable
     {
         $this->singleShift = $singleShift;
     }
-
     public function isSingleShift()
     {
         return $this->singleShift;
@@ -37,23 +34,23 @@ class Language implements JsonSerializable
     {
         $this->languageCode = $languageCode;
     }
-
     public function getLanguageCode()
     {
         return $this->languageCode;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
+
+  /**
+   * (PHP 5 &gt;= 5.4.0)
+   * Specify data which should be serialized to JSON
+   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+   * @return mixed data which can be serialized by json_encode,
+   * which is a value of any type other than a resource.
+   */
+  function jsonSerialize()
+  {
+      return get_object_vars($this);
+  }
 }
 
 ?>

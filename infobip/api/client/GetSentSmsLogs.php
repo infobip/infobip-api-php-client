@@ -13,8 +13,7 @@ use infobip\api\model\sms\mt\logs\SMSLogsResponse;
 class GetSentSmsLogs extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -22,8 +21,7 @@ class GetSentSmsLogs extends AbstractApiClient
      * @param GetSentSmsLogsExecuteContext $params
      * @return SMSLogsResponse
      */
-    public function execute(GetSentSmsLogsExecuteContext $params)
-    {
+    public function execute(GetSentSmsLogsExecuteContext $params) {
         $restPath = $this->getRestUrl("/sms/1/logs");
         $content = $this->executeGET($restPath, $params);
         return $this->map(json_decode($content), get_class(new SMSLogsResponse));

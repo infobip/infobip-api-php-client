@@ -13,8 +13,7 @@ use infobip\api\model\sms\mt\send\SMSResponse;
 class SendSingleBinarySms extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -22,8 +21,7 @@ class SendSingleBinarySms extends AbstractApiClient
      * @param SMSBinaryRequest $body
      * @return SMSResponse
      */
-    public function execute(SMSBinaryRequest $body)
-    {
+    public function execute(SMSBinaryRequest $body) {
         $restPath = $this->getRestUrl("/sms/1/binary/single");
         $content = $this->executePOST($restPath, null, $body);
         return $this->map(json_decode($content), get_class(new SMSResponse));

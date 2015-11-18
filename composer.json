@@ -1,7 +1,7 @@
 {
   "name": "infobip/infobip-api-php-client",
   "description": "Infobip SMS library for PHP",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "keywords": [
     "infobip",
     "sms",

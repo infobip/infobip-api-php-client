@@ -15,7 +15,7 @@ use infobip\api\model\sms\mt\logs\GetSentSmsLogsExecuteContext;
 $client = new GetSentSmsLogs(new BasicAuthConfiguration(USERNAME, PASSWORD));
 // Creating execution context
 $context = new GetSentSmsLogsExecuteContext();
-$context->generalStatus = "DELIVERED";
+$context->setGeneralStatus("DELIVERED");
 // Executing request
 $response = $client->execute($context);
 

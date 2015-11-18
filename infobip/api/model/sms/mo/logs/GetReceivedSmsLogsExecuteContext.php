@@ -5,7 +5,7 @@ namespace infobip\api\model\sms\mo\logs;
  * This is a generated class and is not intended for modification!
  * TODO: Point to Github contribution instructions
  */
-class GetReceivedSmsLogsExecuteContext
+class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
 {
     private $to;
     /**
@@ -24,7 +24,6 @@ class GetReceivedSmsLogsExecuteContext
     {
         $this->to = $to;
     }
-
     public function getTo()
     {
         return $this->to;
@@ -66,7 +65,6 @@ class GetReceivedSmsLogsExecuteContext
     {
         $this->limit = $limit;
     }
-
     public function getLimit()
     {
         return $this->limit;
@@ -76,12 +74,23 @@ class GetReceivedSmsLogsExecuteContext
     {
         $this->keyword = $keyword;
     }
-
     public function getKeyword()
     {
         return $this->keyword;
     }
 
+
+  /**
+   * (PHP 5 &gt;= 5.4.0)
+   * Specify data which should be serialized to JSON
+   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+   * @return mixed data which can be serialized by json_encode,
+   * which is a value of any type other than a resource.
+   */
+  function jsonSerialize()
+  {
+      return get_object_vars($this);
+  }
 }
 
 ?>

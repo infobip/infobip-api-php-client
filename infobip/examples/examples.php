@@ -23,6 +23,7 @@ define('NOTIFY_URL', '');
 //require_once 'send_sms_flash_example.php';
 //require_once 'send_sms_advanced_notify_example.php';
 //require_once 'send_sms_advanced_turkish_example.php';
+//require_once 'send_sms_advanced_tracking_example.php';
 //
 //require_once 'pull_sent_delivery_reports_example.php';
 //require_once 'deserialize_delivery_report_example.php';

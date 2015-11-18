@@ -13,8 +13,7 @@ use infobip\api\model\nc\notify\NumberContextResponse;
 class NumberContextNotify extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -22,8 +21,7 @@ class NumberContextNotify extends AbstractApiClient
      * @param NumberContextRequest $body
      * @return NumberContextResponse
      */
-    public function execute(NumberContextRequest $body)
-    {
+    public function execute(NumberContextRequest $body) {
         $restPath = $this->getRestUrl("/number/1/notify");
         $content = $this->executePOST($restPath, null, $body);
         return $this->map(json_decode($content), get_class(new NumberContextResponse));

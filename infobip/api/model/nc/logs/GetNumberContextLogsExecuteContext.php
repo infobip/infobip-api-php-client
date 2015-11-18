@@ -5,7 +5,7 @@ namespace infobip\api\model\nc\logs;
  * This is a generated class and is not intended for modification!
  * TODO: Point to Github contribution instructions
  */
-class GetNumberContextLogsExecuteContext
+class GetNumberContextLogsExecuteContext implements \JsonSerializable
 {
     private $to;
     /**
@@ -34,7 +34,6 @@ class GetNumberContextLogsExecuteContext
     {
         $this->to = $to;
     }
-
     public function getTo()
     {
         return $this->to;
@@ -76,7 +75,6 @@ class GetNumberContextLogsExecuteContext
     {
         $this->generalStatus = $generalStatus;
     }
-
     public function getGeneralStatus()
     {
         return $this->generalStatus;
@@ -118,7 +116,6 @@ class GetNumberContextLogsExecuteContext
     {
         $this->limit = $limit;
     }
-
     public function getLimit()
     {
         return $this->limit;
@@ -128,7 +125,6 @@ class GetNumberContextLogsExecuteContext
     {
         $this->mcc = $mcc;
     }
-
     public function getMcc()
     {
         return $this->mcc;
@@ -138,12 +134,23 @@ class GetNumberContextLogsExecuteContext
     {
         $this->mnc = $mnc;
     }
-
     public function getMnc()
     {
         return $this->mnc;
     }
 
+
+  /**
+   * (PHP 5 &gt;= 5.4.0)
+   * Specify data which should be serialized to JSON
+   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+   * @return mixed data which can be serialized by json_encode,
+   * which is a value of any type other than a resource.
+   */
+  function jsonSerialize()
+  {
+      return get_object_vars($this);
+  }
 }
 
 ?>

@@ -14,8 +14,7 @@ use infobip\api\model\nc\logs\NumberContextLogsResponse;
 class GetNumberContextLogs extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -23,8 +22,7 @@ class GetNumberContextLogs extends AbstractApiClient
      * @param GetNumberContextLogsExecuteContext $params
      * @return NumberContextLogsResponse
      */
-    public function execute(GetNumberContextLogsExecuteContext $params)
-    {
+    public function execute(GetNumberContextLogsExecuteContext $params) {
         $restPath = $this->getRestUrl("/number/1/logs");
         $content = $this->executeGET($restPath, $params);
         return $this->map(json_decode($content), get_class(new NumberContextLogsResponse));

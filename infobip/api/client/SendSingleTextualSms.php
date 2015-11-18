@@ -13,8 +13,7 @@ use infobip\api\model\sms\mt\send\SMSResponse;
 class SendSingleTextualSms extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -22,8 +21,7 @@ class SendSingleTextualSms extends AbstractApiClient
      * @param SMSTextualRequest $body
      * @return SMSResponse
      */
-    public function execute(SMSTextualRequest $body)
-    {
+    public function execute(SMSTextualRequest $body) {
         $restPath = $this->getRestUrl("/sms/1/text/single");
         $content = $this->executePOST($restPath, null, $body);
         return $this->map(json_decode($content), get_class(new SMSResponse));

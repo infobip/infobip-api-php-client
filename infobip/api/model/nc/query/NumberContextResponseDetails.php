@@ -1,13 +1,11 @@
 <?php
 namespace infobip\api\model\nc\query;
 
-use JsonSerializable;
-
 /**
  * This is a generated class and is not intended for modification!
  * TODO: Point to Github contribution instructions
  */
-class NumberContextResponseDetails implements JsonSerializable
+class NumberContextResponseDetails implements \JsonSerializable
 {
     private $ported;
     private $roaming;
@@ -41,7 +39,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->ported = $ported;
     }
-
     public function isPorted()
     {
         return $this->ported;
@@ -51,7 +48,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->roaming = $roaming;
     }
-
     public function isRoaming()
     {
         return $this->roaming;
@@ -61,7 +57,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->mccMnc = $mccMnc;
     }
-
     public function getMccMnc()
     {
         return $this->mccMnc;
@@ -103,7 +98,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->to = $to;
     }
-
     public function getTo()
     {
         return $this->to;
@@ -113,7 +107,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->imsi = $imsi;
     }
-
     public function getImsi()
     {
         return $this->imsi;
@@ -123,7 +116,6 @@ class NumberContextResponseDetails implements JsonSerializable
     {
         $this->servingMSC = $servingMSC;
     }
-
     public function getServingMSC()
     {
         return $this->servingMSC;
@@ -177,17 +169,18 @@ class NumberContextResponseDetails implements JsonSerializable
         return $this->status;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
+
+  /**
+   * (PHP 5 &gt;= 5.4.0)
+   * Specify data which should be serialized to JSON
+   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+   * @return mixed data which can be serialized by json_encode,
+   * which is a value of any type other than a resource.
+   */
+  function jsonSerialize()
+  {
+      return get_object_vars($this);
+  }
 }
 
 ?>

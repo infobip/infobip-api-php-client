@@ -13,8 +13,7 @@ use infobip\api\model\sms\mt\send\textual\SMSMultiTextualRequest;
 class SendMultipleSmsTextual extends AbstractApiClient
 {
 
-    public function __construct($configuration)
-    {
+    public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
@@ -22,8 +21,7 @@ class SendMultipleSmsTextual extends AbstractApiClient
      * @param SMSMultiTextualRequest $body
      * @return SMSResponse
      */
-    public function execute(SMSMultiTextualRequest $body)
-    {
+    public function execute(SMSMultiTextualRequest $body) {
         $restPath = $this->getRestUrl("/sms/1/text/multi");
         $content = $this->executePOST($restPath, null, $body);
         return $this->map(json_decode($content), get_class(new SMSResponse));

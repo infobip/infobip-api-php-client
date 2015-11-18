@@ -68,7 +68,7 @@ class AbstractApiClient
     {
         if ($queryParams == null)
             $queryParams = Array();
-        if (!is_array($queryParams)) {
+        if (!is_array($queryParams)){
             $queryParams = $this->createFieldArray($queryParams);
         }
         if ($requestHeaders == null)
@@ -167,8 +167,7 @@ class AbstractApiClient
         return ($rez);
     }
 
-    public function map($content, $className)
-    {
+    public function map($content, $className){
         return $this->mapper->map($content, new $className());
     }
 

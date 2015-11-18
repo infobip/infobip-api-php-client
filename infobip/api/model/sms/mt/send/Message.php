@@ -1,14 +1,13 @@
 <?php
 namespace infobip\api\model\sms\mt\send;
 
-use JsonSerializable;
-
 /**
  * This is a generated class and is not intended for modification!
  * TODO: Point to Github contribution instructions
  */
-class Message implements JsonSerializable
+class Message implements \JsonSerializable
 {
+    private $campaignId;
     /**
      * @var \infobip\api\model\Destination[]
      */
@@ -17,6 +16,7 @@ class Message implements JsonSerializable
      * @var \infobip\api\model\sms\mt\send\Language
      */
     private $language;
+    private $notify;
     private $notifyContentType;
     /**
      * @var \Long
@@ -39,6 +39,17 @@ class Message implements JsonSerializable
      * @var \Boolean
      */
     private $flash = false;
+    private $intermediateReport;
+
+
+    public function setCampaignId($campaignId)
+    {
+        $this->campaignId = $campaignId;
+    }
+    public function getCampaignId()
+    {
+        return $this->campaignId;
+    }
 
     /**
      * @param \infobip\api\model\Destination[] $destinations
@@ -72,11 +83,19 @@ class Message implements JsonSerializable
         return $this->language;
     }
 
+    public function setNotify($notify)
+    {
+        $this->notify = $notify;
+    }
+    public function isNotify()
+    {
+        return $this->notify;
+    }
+
     public function setNotifyContentType($notifyContentType)
     {
         $this->notifyContentType = $notifyContentType;
     }
-
     public function getNotifyContentType()
     {
         return $this->notifyContentType;
@@ -118,7 +137,6 @@ class Message implements JsonSerializable
     {
         $this->callbackData = $callbackData;
     }
-
     public function getCallbackData()
     {
         return $this->callbackData;
@@ -128,7 +146,6 @@ class Message implements JsonSerializable
     {
         $this->notifyUrl = $notifyUrl;
     }
-
     public function getNotifyUrl()
     {
         return $this->notifyUrl;
@@ -138,7 +155,6 @@ class Message implements JsonSerializable
     {
         $this->from = $from;
     }
-
     public function getFrom()
     {
         return $this->from;
@@ -148,7 +164,6 @@ class Message implements JsonSerializable
     {
         $this->text = $text;
     }
-
     public function getText()
     {
         return $this->text;
@@ -174,7 +189,6 @@ class Message implements JsonSerializable
     {
         $this->transliteration = $transliteration;
     }
-
     public function getTransliteration()
     {
         return $this->transliteration;
@@ -196,17 +210,27 @@ class Message implements JsonSerializable
         return $this->flash;
     }
 
-    /**
-     * Specify data which should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
-     */
-    function jsonSerialize()
+    public function setIntermediateReport($intermediateReport)
     {
-        return get_object_vars($this);
+        $this->intermediateReport = $intermediateReport;
     }
+    public function isIntermediateReport()
+    {
+        return $this->intermediateReport;
+    }
+
+
+  /**
+   * (PHP 5 &gt;= 5.4.0)
+   * Specify data which should be serialized to JSON
+   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+   * @return mixed data which can be serialized by json_encode,
+   * which is a value of any type other than a resource.
+   */
+  function jsonSerialize()
+  {
+      return get_object_vars($this);
+  }
 }
 
 ?>
