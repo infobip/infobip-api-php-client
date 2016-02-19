@@ -8,7 +8,7 @@ use JsonMapper;
 class AbstractApiClient
 {
 
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.1';
     private $configuration;
     private $mapper;
 
@@ -92,7 +92,7 @@ class AbstractApiClient
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_MAXREDIRS => 3,
-            CURLOPT_USERAGENT => 'infobip-api-php-' . self::VERSION,
+            CURLOPT_USERAGENT => 'Php-Client-Library-' . self::VERSION,
             CURLOPT_CUSTOMREQUEST => $httpMethod,
             CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => $sendHeaders
