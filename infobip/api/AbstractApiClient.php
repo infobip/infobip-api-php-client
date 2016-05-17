@@ -8,7 +8,7 @@ use JsonMapper;
 class AbstractApiClient
 {
 
-    const VERSION = '1.1.1';
+    const VERSION = '1.1.2';
     private $configuration;
     private $mapper;
 
@@ -121,7 +121,7 @@ class AbstractApiClient
         curl_close($curlSession);
 
         if (!$isSuccess) {
-            throw new Exception($result);
+            throw new Exception($result, $code);
         }
         return $result;
     }
