@@ -8,7 +8,7 @@ use JsonMapper;
 class AbstractApiClient
 {
 
-    const VERSION = '1.1.2';
+    const VERSION = '1.1.3';
     private $configuration;
     private $mapper;
 
@@ -67,14 +67,14 @@ class AbstractApiClient
         $httpMethod, $url, $queryParams = null, $requestHeaders = null, $body = null)
     {
         if ($queryParams == null)
-            $queryParams = Array();
+            $queryParams = array();
         if (!is_array($queryParams)){
             $queryParams = $this->createFieldArray($queryParams);
         }
         if ($requestHeaders == null)
-            $requestHeaders = Array();
+            $requestHeaders = array();
 
-        $sendHeaders = Array(
+        $sendHeaders = array(
             'Content-Type: ' . "application/json"
         );
         foreach ($requestHeaders as $key => $value) {
@@ -113,8 +113,11 @@ class AbstractApiClient
 
         $code = curl_getinfo($curlSession, CURLINFO_HTTP_CODE);
 
-        if (curl_errno($curlSession) != 0)
-            throw new Exception(curl_error($curlSession));
+        $curlError = curl_errno($curlSession);
+
+        if ($curlError !== 0) {
+            throw new \RuntimeException(curl_error($curlSession), $curlError);
+        }
 
         $isSuccess = 200 <= $code && $code < 300;
 
