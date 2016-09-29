@@ -25,9 +25,6 @@ $responseBody = '{
    ]
 }';
 
-// Using system's timezone when not specified
-date_default_timezone_set('Europe/London');
-
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new MOReportResponse());
 

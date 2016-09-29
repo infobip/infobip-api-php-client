@@ -3,15 +3,13 @@
 namespace infobip\api\client;
 
 use infobip\api\model\sms\mt\reports\GetSentSmsDeliveryReportsExecuteContext;
-use infobip\api\model\sms\mt\reports\SMSReportResponse;
 use infobip\api\AbstractApiClient;
+use infobip\api\model\sms\mt\reports\SMSReportResponse;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
-class GetSentSmsDeliveryReports extends AbstractApiClient
-{
+class GetSentSmsDeliveryReports extends AbstractApiClient {
 
     public function __construct($configuration) {
         parent::__construct($configuration);

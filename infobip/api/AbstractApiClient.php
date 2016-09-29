@@ -114,7 +114,6 @@ class AbstractApiClient
         $code = curl_getinfo($curlSession, CURLINFO_HTTP_CODE);
 
         $curlError = curl_errno($curlSession);
-
         if ($curlError !== 0) {
             throw new \RuntimeException(curl_error($curlSession), $curlError);
         }

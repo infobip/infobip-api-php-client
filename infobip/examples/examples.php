@@ -15,6 +15,8 @@ define('FROM', ''); // Sender name/address
 define('TO', ''); // Receiver address
 define('NOTIFY_URL', '');
 
+// Using system's timezone when not specified
+date_default_timezone_set('Europe/London');
 
 // Uncomment the example you want to test:
 //require_once 'get_account_balance_example.php';
@@ -32,6 +34,7 @@ define('NOTIFY_URL', '');
 //
 //require_once 'number_context_query_example.php';
 //require_once 'number_context_notify_example.php';
+//require_once 'get_number_context_logs_example.php';
 //
 //require_once 'pull_inbox_delivery_reports_example.php';
 //require_once 'deserialize_inbound_messages_example.php';

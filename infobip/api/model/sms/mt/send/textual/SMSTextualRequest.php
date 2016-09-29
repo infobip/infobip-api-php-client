@@ -3,10 +3,10 @@ namespace infobip\api\model\sms\mt\send\textual;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
 class SMSTextualRequest implements \JsonSerializable
 {
+    private $operatorClientId;
     private $campaignId;
     private $from;
     /**
@@ -16,6 +16,15 @@ class SMSTextualRequest implements \JsonSerializable
     private $text;
     private $transliteration;
 
+
+    public function setOperatorClientId($operatorClientId)
+    {
+        $this->operatorClientId = $operatorClientId;
+    }
+    public function getOperatorClientId()
+    {
+        return $this->operatorClientId;
+    }
 
     public function setCampaignId($campaignId)
     {
@@ -71,10 +80,10 @@ class SMSTextualRequest implements \JsonSerializable
 
 
   /**
-   * (PHP 5 &gt;= 5.4.0)
+   * (PHP 5 &gt;= 5.4.0)<br/>
    * Specify data which should be serialized to JSON
    * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-   * @return mixed data which can be serialized by json_encode,
+   * @return mixed data which can be serialized by <b>json_encode</b>,
    * which is a value of any type other than a resource.
    */
   function jsonSerialize()
@@ -82,5 +91,3 @@ class SMSTextualRequest implements \JsonSerializable
       return get_object_vars($this);
   }
 }
-
-?>

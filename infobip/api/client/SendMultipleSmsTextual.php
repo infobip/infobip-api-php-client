@@ -2,16 +2,14 @@
 
 namespace infobip\api\client;
 
-use infobip\api\AbstractApiClient;
 use infobip\api\model\sms\mt\send\SMSResponse;
+use infobip\api\AbstractApiClient;
 use infobip\api\model\sms\mt\send\textual\SMSMultiTextualRequest;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
-class SendMultipleSmsTextual extends AbstractApiClient
-{
+class SendMultipleSmsTextual extends AbstractApiClient {
 
     public function __construct($configuration) {
         parent::__construct($configuration);
