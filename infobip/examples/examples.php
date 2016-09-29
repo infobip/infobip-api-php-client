@@ -39,3 +39,4 @@ date_default_timezone_set('Europe/London');
 //require_once 'pull_inbox_delivery_reports_example.php';
 //require_once 'deserialize_inbound_messages_example.php';
 //require_once 'get_inbox_logs_example.php';
+//require_once 'send_sms_conversion_rate_example.php';

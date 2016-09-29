@@ -32,6 +32,7 @@
       "infobip\\api\\configuration\\": "infobip/api/configuration/",
       "infobip\\api\\model\\": "infobip/api/model/",
       "infobip\\api\\model\\account\\": "infobip/api/model/account/",
+      "infobip\\api\\model\\conversion\\": "infobip/api/model/conversion/",
       "infobip\\api\\model\\nc\\": "infobip/api/model/nc/",
       "infobip\\api\\model\\nc\\logs\\": "infobip/api/model/nc/logs/",
       "infobip\\api\\model\\nc\\notify\\": "infobip/api/model/nc/notify/",
