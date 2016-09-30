@@ -1,31 +1,21 @@
 <?php
-namespace infobip\api\model\account;
+namespace infobip\api\model\conversion;
 
 /**
  * This is a generated class and is not intended for modification!
  */
-class AccountBalance implements \JsonSerializable
+class EndTagResponse implements \JsonSerializable
 {
-    private $balance;
-    private $currency;
+    private $processKey;
 
 
-    public function setBalance($balance)
+    public function setProcessKey($processKey)
     {
-        $this->balance = $balance;
+        $this->processKey = $processKey;
     }
-    public function getBalance()
+    public function getProcessKey()
     {
-        return $this->balance;
-    }
-
-    public function setCurrency($currency)
-    {
-        $this->currency = $currency;
-    }
-    public function getCurrency()
-    {
-        return $this->currency;
+        return $this->processKey;
     }
 
 

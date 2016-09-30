@@ -2,16 +2,14 @@
 
 namespace infobip\api\client;
 
+use infobip\api\model\nc\notify\NumberContextResponse;
 use infobip\api\AbstractApiClient;
 use infobip\api\model\nc\notify\NumberContextRequest;
-use infobip\api\model\nc\notify\NumberContextResponse;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
-class NumberContextNotify extends AbstractApiClient
-{
+class NumberContextNotify extends AbstractApiClient {
 
     public function __construct($configuration) {
         parent::__construct($configuration);

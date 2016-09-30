@@ -2,16 +2,14 @@
 
 namespace infobip\api\client;
 
-use infobip\api\model\sms\mt\send\binary\SMSBinaryRequest;
-use infobip\api\AbstractApiClient;
 use infobip\api\model\sms\mt\send\SMSResponse;
+use infobip\api\AbstractApiClient;
+use infobip\api\model\sms\mt\send\binary\SMSBinaryRequest;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
-class SendSingleBinarySms extends AbstractApiClient
-{
+class SendSingleBinarySms extends AbstractApiClient {
 
     public function __construct($configuration) {
         parent::__construct($configuration);

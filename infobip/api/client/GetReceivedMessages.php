@@ -8,10 +8,8 @@ use infobip\api\AbstractApiClient;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
-class GetReceivedMessages extends AbstractApiClient
-{
+class GetReceivedMessages extends AbstractApiClient {
 
     public function __construct($configuration) {
         parent::__construct($configuration);

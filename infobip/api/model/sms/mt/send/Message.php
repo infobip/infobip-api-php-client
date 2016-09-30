@@ -3,7 +3,6 @@ namespace infobip\api\model\sms\mt\send;
 
 /**
  * This is a generated class and is not intended for modification!
- * TODO: Point to Github contribution instructions
  */
 class Message implements \JsonSerializable
 {
@@ -18,10 +17,8 @@ class Message implements \JsonSerializable
     private $language;
     private $notify;
     private $notifyContentType;
-    /**
-     * @var \Long
-     */
     private $validityPeriod;
+    private $operatorClientId;
     /**
      * @var \infobip\api\model\sms\mt\send\binary\BinaryContent
      */
@@ -29,16 +26,17 @@ class Message implements \JsonSerializable
     private $callbackData;
     private $notifyUrl;
     private $from;
+    /**
+     * @var \string[]
+     */
+    private $to;
     private $text;
     /**
      * @var \DateTime
      */
     private $sendAt;
     private $transliteration;
-    /**
-     * @var \Boolean
-     */
-    private $flash = false;
+    private $flash;
     private $intermediateReport;
 
 
@@ -101,20 +99,22 @@ class Message implements \JsonSerializable
         return $this->notifyContentType;
     }
 
-    /**
-     * @param \Long $validityPeriod
-     */
     public function setValidityPeriod($validityPeriod)
     {
         $this->validityPeriod = $validityPeriod;
     }
-
-    /**
-     * @return \Long
-     */
     public function getValidityPeriod()
     {
         return $this->validityPeriod;
+    }
+
+    public function setOperatorClientId($operatorClientId)
+    {
+        $this->operatorClientId = $operatorClientId;
+    }
+    public function getOperatorClientId()
+    {
+        return $this->operatorClientId;
     }
 
     /**
@@ -160,6 +160,22 @@ class Message implements \JsonSerializable
         return $this->from;
     }
 
+    /**
+     * @param \string[] $to
+     */
+    public function setTo($to)
+    {
+        $this->to = $to;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getTo()
+    {
+        return $this->to;
+    }
+
     public function setText($text)
     {
         $this->text = $text;
@@ -194,17 +210,10 @@ class Message implements \JsonSerializable
         return $this->transliteration;
     }
 
-    /**
-     * @param \Boolean $flash
-     */
     public function setFlash($flash)
     {
         $this->flash = $flash;
     }
-
-    /**
-     * @return \Boolean
-     */
     public function isFlash()
     {
         return $this->flash;
@@ -221,10 +230,10 @@ class Message implements \JsonSerializable
 
 
   /**
-   * (PHP 5 &gt;= 5.4.0)
+   * (PHP 5 &gt;= 5.4.0)<br/>
    * Specify data which should be serialized to JSON
    * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-   * @return mixed data which can be serialized by json_encode,
+   * @return mixed data which can be serialized by <b>json_encode</b>,
    * which is a value of any type other than a resource.
    */
   function jsonSerialize()
@@ -232,5 +241,3 @@ class Message implements \JsonSerializable
       return get_object_vars($this);
   }
 }
-
-?>

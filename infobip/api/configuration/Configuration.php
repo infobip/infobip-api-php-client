@@ -2,12 +2,12 @@
 
 namespace infobip\api\configuration;
 
-abstract class Configuration
-{
+abstract class Configuration {
 
     public $baseUrl = 'https://api.infobip.com/';
 
-    public function __construct($baseUrl) {
+    public function __construct($baseUrl)
+    {
         if($baseUrl) {
             if ($baseUrl[strlen($baseUrl) - 1] != '/')
                 $baseUrl .= '/';
