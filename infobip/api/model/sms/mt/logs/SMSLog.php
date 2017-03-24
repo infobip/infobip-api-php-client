@@ -7,7 +7,7 @@ namespace infobip\api\model\sms\mt\logs;
 class SMSLog implements \JsonSerializable
 {
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $doneAt;
     private $bulkId;
@@ -22,7 +22,7 @@ class SMSLog implements \JsonSerializable
     private $to;
     private $text;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $sentAt;
     /**
@@ -40,7 +40,7 @@ class SMSLog implements \JsonSerializable
      */
     public function setDoneAt($doneAt)
     {
-        $this->doneAt = $doneAt;
+        $this->doneAt = new \infobip\api\model\FormattedDateTime($doneAt);
     }
 
     /**
@@ -135,7 +135,7 @@ class SMSLog implements \JsonSerializable
      */
     public function setSentAt($sentAt)
     {
-        $this->sentAt = $sentAt;
+        $this->sentAt = new \infobip\api\model\FormattedDateTime($sentAt);
     }
 
     /**

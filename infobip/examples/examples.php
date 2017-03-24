@@ -24,12 +24,14 @@ date_default_timezone_set('Europe/London');
 //require_once 'send_sms_example.php';
 //require_once 'send_sms_flash_example.php';
 //require_once 'send_sms_advanced_notify_example.php';
+//require_once 'send_sms_advanced_scheduled_example.php';
 //require_once 'send_sms_advanced_turkish_example.php';
 //require_once 'send_sms_advanced_tracking_example.php';
 //
 //require_once 'pull_sent_delivery_reports_example.php';
 //require_once 'deserialize_delivery_report_example.php';
 //require_once 'get_sent_logs_example.php';
+//require_once 'get_sent_logs_time_span_example.php';
 //require_once 'get_sent_logs_delivered_example.php';
 //
 //require_once 'number_context_query_example.php';

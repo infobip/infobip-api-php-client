@@ -14,7 +14,7 @@ class MOReport implements \JsonSerializable
     private $text;
     private $keyword;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $receivedAt;
 
@@ -87,7 +87,7 @@ class MOReport implements \JsonSerializable
      */
     public function setReceivedAt($receivedAt)
     {
-        $this->receivedAt = $receivedAt;
+        $this->receivedAt = new \infobip\api\model\FormattedDateTime($receivedAt);
     }
 
     /**

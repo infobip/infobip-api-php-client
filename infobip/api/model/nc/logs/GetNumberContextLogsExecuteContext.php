@@ -17,11 +17,11 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
     private $messageId;
     private $generalStatus;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $sentSince;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $sentUntil;
     private $limit;
@@ -84,7 +84,7 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
      */
     public function setSentSince($sentSince)
     {
-        $this->sentSince = $sentSince;
+        $this->sentSince = new \infobip\api\model\FormattedDateTime($sentSince);
     }
 
     /**
@@ -100,7 +100,7 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
      */
     public function setSentUntil($sentUntil)
     {
-        $this->sentUntil = $sentUntil;
+        $this->sentUntil = new \infobip\api\model\FormattedDateTime($sentUntil);
     }
 
     /**
