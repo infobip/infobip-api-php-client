@@ -8,11 +8,11 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
 {
     private $to;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $receivedSince;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $receivedUntil;
     private $limit;
@@ -33,7 +33,7 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
      */
     public function setReceivedSince($receivedSince)
     {
-        $this->receivedSince = $receivedSince;
+        $this->receivedSince = new \infobip\api\model\FormattedDateTime($receivedSince);
     }
 
     /**
@@ -49,7 +49,7 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
      */
     public function setReceivedUntil($receivedUntil)
     {
-        $this->receivedUntil = $receivedUntil;
+        $this->receivedUntil = new \infobip\api\model\FormattedDateTime($receivedUntil);
     }
 
     /**

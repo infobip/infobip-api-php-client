@@ -32,7 +32,7 @@ class Message implements \JsonSerializable
     private $to;
     private $text;
     /**
-     * @var \DateTime
+     * @var \infobip\api\model\FormattedDateTime
      */
     private $sendAt;
     private $transliteration;
@@ -190,7 +190,7 @@ class Message implements \JsonSerializable
      */
     public function setSendAt($sendAt)
     {
-        $this->sendAt = $sendAt;
+        $this->sendAt = new \infobip\api\model\FormattedDateTime($sendAt);
     }
 
     /**
