@@ -1,9 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mmilakovic
- * Date: 18/11/15
- */
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/9/15
- * Time: 4:11 PM
- */
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use infobip\api\client\GetSentSmsLogs;
