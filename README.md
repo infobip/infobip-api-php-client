@@ -2,12 +2,12 @@
 
 ## Prerequisites
 
-- You have installed a [PHP interpreter](http://php.net/manual/en/install.php).
-- You have installed a [composer](https://getcomposer.org/download).
+- You have installed a [PHP interpreter](http://php.net/manual/en/install.php) (minimal required version is 5.5).
+- You have installed [Composer](https://getcomposer.org/download).
 
 ## Installation
 
-For using Infobip API PHP client, you have to add the following to your `composer.json` file:
+For using Infobip API PHP client in your project, you have to add the following to your `composer.json` file:
 
 	"require": {
 		"infobip/infobip-api-php-client": "dev-master"
