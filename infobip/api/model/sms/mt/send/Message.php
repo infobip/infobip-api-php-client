@@ -15,6 +15,10 @@ class Message implements \JsonSerializable
      * @var \infobip\api\model\sms\mt\send\Language
      */
     private $language;
+    /**
+     * @var \infobip\api\model\sms\mt\send\DeliveryTimeWindow
+     */
+    private $deliveryTimeWindow;
     private $notify;
     private $notifyContentType;
     private $validityPeriod;
@@ -79,6 +83,22 @@ class Message implements \JsonSerializable
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    /**
+     * @param \infobip\api\model\sms\mt\send\DeliveryTimeWindow $deliveryTimeWindow
+     */
+    public function setDeliveryTimeWindow($deliveryTimeWindow)
+    {
+        $this->deliveryTimeWindow = $deliveryTimeWindow;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\DeliveryTimeWindow
+     */
+    public function getDeliveryTimeWindow()
+    {
+        return $this->deliveryTimeWindow;
     }
 
     public function setNotify($notify)
