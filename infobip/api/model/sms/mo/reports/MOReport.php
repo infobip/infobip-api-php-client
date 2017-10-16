@@ -8,6 +8,11 @@ class MOReport implements \JsonSerializable
 {
     private $cleanText;
     private $smsCount;
+    /**
+     * @var \infobip\api\model\Price
+     */
+    private $price;
+    private $callbackData;
     private $messageId;
     private $from;
     private $to;
@@ -35,6 +40,31 @@ class MOReport implements \JsonSerializable
     public function getSmsCount()
     {
         return $this->smsCount;
+    }
+
+    /**
+     * @param \infobip\api\model\Price $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return \infobip\api\model\Price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setCallbackData($callbackData)
+    {
+        $this->callbackData = $callbackData;
+    }
+    public function getCallbackData()
+    {
+        return $this->callbackData;
     }
 
     public function setMessageId($messageId)
