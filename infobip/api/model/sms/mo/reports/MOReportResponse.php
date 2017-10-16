@@ -6,11 +6,31 @@ namespace infobip\api\model\sms\mo\reports;
  */
 class MOReportResponse implements \JsonSerializable
 {
+    private $messageCount;
+    private $pendingMessageCount;
     /**
      * @var \infobip\api\model\sms\mo\reports\MOReport[]
      */
     private $results;
 
+
+    public function setMessageCount($messageCount)
+    {
+        $this->messageCount = $messageCount;
+    }
+    public function getMessageCount()
+    {
+        return $this->messageCount;
+    }
+
+    public function setPendingMessageCount($pendingMessageCount)
+    {
+        $this->pendingMessageCount = $pendingMessageCount;
+    }
+    public function getPendingMessageCount()
+    {
+        return $this->pendingMessageCount;
+    }
 
     /**
      * @param \infobip\api\model\sms\mo\reports\MOReport[] $results
