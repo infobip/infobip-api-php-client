@@ -1,7 +1,7 @@
 {
   "name": "infobip/infobip-api-php-client",
   "description": "Infobip SMS library for PHP",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "keywords": [
     "infobip",
     "sms",
@@ -42,10 +42,13 @@
       "infobip\\api\\model\\sms\\mo\\logs\\": "infobip/api/model/sms/mo/logs/",
       "infobip\\api\\model\\sms\\mo\\reports\\": "infobip/api/model/sms/mo/reports/",
       "infobip\\api\\model\\sms\\mt\\": "infobip/api/model/sms/mt/",
+      "infobip\\api\\model\\sms\\mt\\bulks\\": "infobip/api/model/sms/mt/bulks/",
+      "infobip\\api\\model\\sms\\mt\\bulks\\status\\": "infobip/api/model/sms/mt/bulks/status/",
       "infobip\\api\\model\\sms\\mt\\logs\\": "infobip/api/model/sms/mt/logs/",
       "infobip\\api\\model\\sms\\mt\\reports\\": "infobip/api/model/sms/mt/reports/",
       "infobip\\api\\model\\sms\\mt\\send\\": "infobip/api/model/sms/mt/send/",
       "infobip\\api\\model\\sms\\mt\\send\\binary\\": "infobip/api/model/sms/mt/send/binary/",
+      "infobip\\api\\model\\sms\\mt\\send\\preview\\": "infobip/api/model/sms/mt/send/preview/",
       "infobip\\api\\model\\sms\\mt\\send\\textual\\": "infobip/api/model/sms/mt/send/textual/"
     }
   }
