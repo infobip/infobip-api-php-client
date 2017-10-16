@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/10/15
- * Time: 4:44 PM
- */
-
-use infobip\api\model\sms\mt\reports\SMSReportResponse;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+
+use infobip\api\model\sms\mt\reports\SMSReport;
+use infobip\api\model\sms\mt\reports\SMSReportResponse;
 
 $responseBody = '{
   "results": [
@@ -45,8 +40,8 @@ $responseBody = '{
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new SMSReportResponse());
 
-for ($i = 0; $i < count($responseObject->getResults()); ++$i) {
-    $result = $responseObject->getResults()[$i];
+/** @var SMSReport $result */
+foreach ($responseObject->getResults() as $result) {
     echo "Message ID: " . $result->getMessageId() . "\n";
     echo "Sent at: " . $result->getSentAt()->format('Y-m-d H:i:s P') . "\n";
     echo "Done at: " . $result->getDoneAt()->format('Y-m-d H:i:s P') . "\n";
