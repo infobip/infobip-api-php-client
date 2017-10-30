@@ -7,6 +7,7 @@ namespace infobip\api\model\sms\mt\send;
 class SMSResponse implements \JsonSerializable
 {
     private $bulkId;
+    private $trackingProcessKey;
     /**
      * @var \infobip\api\model\sms\mt\send\SMSResponseDetails[]
      */
@@ -20,6 +21,15 @@ class SMSResponse implements \JsonSerializable
     public function getBulkId()
     {
         return $this->bulkId;
+    }
+
+    public function setTrackingProcessKey($trackingProcessKey)
+    {
+        $this->trackingProcessKey = $trackingProcessKey;
+    }
+    public function getTrackingProcessKey()
+    {
+        return $this->trackingProcessKey;
     }
 
     /**

@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/10/15
- * Time: 4:44 PM
- */
-
-use infobip\api\model\sms\mo\reports\MOReportResponse;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+
+use infobip\api\model\sms\mo\reports\MOReport;
+use infobip\api\model\sms\mo\reports\MOReportResponse;
 
 $responseBody = '{
    "results":[
@@ -28,6 +23,7 @@ $responseBody = '{
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new MOReportResponse());
 
+/** @var MOReport $result */
 $result = $responseObject->getResults()[0];
 echo "Message ID: " . $result->getMessageId() . "\n";
 echo "Received at: " . $result->getReceivedAt()->format('Y-m-d H:i:s P') . "\n";

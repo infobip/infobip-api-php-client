@@ -8,6 +8,7 @@ use infobip\api\model\sms\mt\logs\GetSentSmsLogsExecuteContext;
 
 // Initializing GetSentSmsLogs client with appropriate configuration
 $client = new GetSentSmsLogs(new BasicAuthConfiguration(USERNAME, PASSWORD));
+
 // Creating execution context
 $context = new GetSentSmsLogsExecuteContext();
 
@@ -18,8 +19,7 @@ $context->setSentUntil(new DateTime("now -10 minute"));
 // Executing request
 $response = $client->execute($context);
 
-for ($i = 0; $i < count($response->getResults()); ++$i) {
-    $result = $response->getResults()[$i];
+foreach ($response->getResults() as $result) {
     echo "Message ID: " . $result->getMessageId() . "\n";
     echo "Sent at: " . $result->getSentAt()->format('Y-m-d H:i:s P') . "\n";
     echo "Sender: " . $result->getFrom() . "\n";

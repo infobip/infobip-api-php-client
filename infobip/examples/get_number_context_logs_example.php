@@ -8,13 +8,14 @@ use infobip\api\model\nc\logs\GetNumberContextLogsExecuteContext;
 
 // Initializing GetNumberContextLogs client with appropriate configuration
 $client = new GetNumberContextLogs(new BasicAuthConfiguration(USERNAME, PASSWORD));
+
 // Creating execution context
 $context = new GetNumberContextLogsExecuteContext();
+
 // Executing request
 $response = $client->execute($context);
 
-for ($i = 0; $i < count($response->getResults()); ++$i) {
-    $result = $response->getResults()[$i];
+foreach ($response->getResults() as $result) {
     echo "Message ID: " . $result->getMessageId() . "\n";
     echo "Receiver: " . $result->getTo() . "\n";
     echo "MccMnc: " . $result->getMccMnc() . "\n";

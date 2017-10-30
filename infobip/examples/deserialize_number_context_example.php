@@ -1,14 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/10/15
- * Time: 4:44 PM
- */
-
-use infobip\api\model\nc\query\NumberContextResponse;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
+
+use infobip\api\model\nc\query\NumberContextResponse;
+use infobip\api\model\nc\query\NumberContextResponseDetails;
 
 $responseBody = '{
    "results":[
@@ -43,6 +38,7 @@ $responseBody = '{
 $mapper = new JsonMapper();
 $responseObject = $mapper->map(json_decode($responseBody), new NumberContextResponse());
 
+/** @var NumberContextResponseDetails $numberContext */
 $numberContext = $responseObject->getResults()[0];
 echo "Phone number: " . $numberContext->getTo() . "\n";
 echo "MccMnc: " . $numberContext->getMccMnc() . "\n";

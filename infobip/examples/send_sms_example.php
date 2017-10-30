@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/8/15
- * Time: 3:10 PM
- */
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use infobip\api\client\SendSingleTextualSms;

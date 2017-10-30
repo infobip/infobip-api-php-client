@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nmenkovic
- * Date: 9/11/15
- * Time: 11:48 AM
- */
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 use infobip\api\client\NumberContextQuery;
