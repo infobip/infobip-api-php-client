@@ -43,6 +43,8 @@ class Message implements \JsonSerializable
     private $flash;
     private $intermediateReport;
 
+    private $audioFileUrl;
+
 
     public function setCampaignId($campaignId)
     {
@@ -219,6 +221,16 @@ class Message implements \JsonSerializable
     public function getSendAt()
     {
         return $this->sendAt;
+    }
+
+    public function setAudioFileUrl($audioFileUrl)
+    {
+        $this->audioFileUrl = $audioFileUrl;
+    }
+
+    public function getAudioFileUrl()
+    {
+        return $this->audioFileUrl;
     }
 
     public function setTransliteration($transliteration)
