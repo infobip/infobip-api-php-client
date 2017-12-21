@@ -2,8 +2,8 @@
 
 namespace infobip\api\client;
 
-use infobip\api\model\sms\mt\send\SMSResponse;
 use infobip\api\AbstractApiClient;
+use infobip\api\model\sms\mt\send\SMSResponse;
 use infobip\api\model\sms\mt\send\voice\SMSMultiVoiceRequest;
 
 /**
@@ -11,13 +11,17 @@ use infobip\api\model\sms\mt\send\voice\SMSMultiVoiceRequest;
  */
 class SendMultipleVoiceSms extends AbstractApiClient {
 
+    /**
+     * SendMultipleVoiceSms constructor.
+     * @param $configuration
+     */
     public function __construct($configuration) {
         parent::__construct($configuration);
     }
 
     /**
      * @param SMSMultiVoiceRequest $body
-     * @return SMSResponse
+     * @return object
      */
     public function execute(SMSMultiVoiceRequest $body) {
         $restPath = $this->getRestUrl("/tts/3/multi");
