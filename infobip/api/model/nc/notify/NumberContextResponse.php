@@ -6,21 +6,12 @@ namespace infobip\api\model\nc\notify;
  */
 class NumberContextResponse implements \JsonSerializable
 {
-    private $bulkId;
     /**
      * @var \infobip\api\model\nc\notify\NumberContextResponseDetails[]
      */
     private $results;
+    private $bulkId;
 
-
-    public function setBulkId($bulkId)
-    {
-        $this->bulkId = $bulkId;
-    }
-    public function getBulkId()
-    {
-        return $this->bulkId;
-    }
 
     /**
      * @param \infobip\api\model\nc\notify\NumberContextResponseDetails[] $results
@@ -36,6 +27,15 @@ class NumberContextResponse implements \JsonSerializable
     public function getResults()
     {
         return $this->results;
+    }
+
+    public function setBulkId($bulkId)
+    {
+        $this->bulkId = $bulkId;
+    }
+    public function getBulkId()
+    {
+        return $this->bulkId;
     }
 
 

@@ -6,20 +6,11 @@ namespace infobip\api\model\nc;
  */
 class Network implements \JsonSerializable
 {
-    private $countryPrefix;
     private $networkName;
-    private $countryName;
     private $networkPrefix;
+    private $countryName;
+    private $countryPrefix;
 
-
-    public function setCountryPrefix($countryPrefix)
-    {
-        $this->countryPrefix = $countryPrefix;
-    }
-    public function getCountryPrefix()
-    {
-        return $this->countryPrefix;
-    }
 
     public function setNetworkName($networkName)
     {
@@ -28,6 +19,15 @@ class Network implements \JsonSerializable
     public function getNetworkName()
     {
         return $this->networkName;
+    }
+
+    public function setNetworkPrefix($networkPrefix)
+    {
+        $this->networkPrefix = $networkPrefix;
+    }
+    public function getNetworkPrefix()
+    {
+        return $this->networkPrefix;
     }
 
     public function setCountryName($countryName)
@@ -39,13 +39,13 @@ class Network implements \JsonSerializable
         return $this->countryName;
     }
 
-    public function setNetworkPrefix($networkPrefix)
+    public function setCountryPrefix($countryPrefix)
     {
-        $this->networkPrefix = $networkPrefix;
+        $this->countryPrefix = $countryPrefix;
     }
-    public function getNetworkPrefix()
+    public function getCountryPrefix()
     {
-        return $this->networkPrefix;
+        return $this->countryPrefix;
     }
 
 

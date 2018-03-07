@@ -6,50 +6,35 @@ namespace infobip\api\model\sms\mt\logs;
  */
 class SMSLog implements \JsonSerializable
 {
-    /**
-     * @var \infobip\api\model\FormattedDateTime
-     */
-    private $doneAt;
     private $bulkId;
-    private $mccMnc;
-    private $smsCount;
-    /**
-     * @var \infobip\api\model\Price
-     */
-    private $price;
     private $messageId;
-    private $from;
     private $to;
+    private $from;
     private $text;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
     private $sentAt;
     /**
-     * @var \infobip\api\model\Error
+     * @var \infobip\api\model\FormattedDateTime
      */
-    private $error;
+    private $doneAt;
+    private $smsCount;
+    private $mccMnc;
+    /**
+     * @var \infobip\api\model\Price
+     */
+    private $price;
     /**
      * @var \infobip\api\model\Status
      */
     private $status;
-
-
     /**
-     * @param \DateTime $doneAt
+     * @var \infobip\api\model\Error
      */
-    public function setDoneAt($doneAt)
-    {
-        $this->doneAt = new \infobip\api\model\FormattedDateTime($doneAt);
-    }
+    private $error;
+    private $callbackData;
 
-    /**
-     * @return \DateTime
-     */
-    public function getDoneAt()
-    {
-        return $this->doneAt;
-    }
 
     public function setBulkId($bulkId)
     {
@@ -58,40 +43,6 @@ class SMSLog implements \JsonSerializable
     public function getBulkId()
     {
         return $this->bulkId;
-    }
-
-    public function setMccMnc($mccMnc)
-    {
-        $this->mccMnc = $mccMnc;
-    }
-    public function getMccMnc()
-    {
-        return $this->mccMnc;
-    }
-
-    public function setSmsCount($smsCount)
-    {
-        $this->smsCount = $smsCount;
-    }
-    public function getSmsCount()
-    {
-        return $this->smsCount;
-    }
-
-    /**
-     * @param \infobip\api\model\Price $price
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-
-    /**
-     * @return \infobip\api\model\Price
-     */
-    public function getPrice()
-    {
-        return $this->price;
     }
 
     public function setMessageId($messageId)
@@ -103,15 +54,6 @@ class SMSLog implements \JsonSerializable
         return $this->messageId;
     }
 
-    public function setFrom($from)
-    {
-        $this->from = $from;
-    }
-    public function getFrom()
-    {
-        return $this->from;
-    }
-
     public function setTo($to)
     {
         $this->to = $to;
@@ -119,6 +61,15 @@ class SMSLog implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    public function setFrom($from)
+    {
+        $this->from = $from;
+    }
+    public function getFrom()
+    {
+        return $this->from;
     }
 
     public function setText($text)
@@ -147,19 +98,53 @@ class SMSLog implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\Error $error
+     * @param \DateTime $doneAt
      */
-    public function setError($error)
+    public function setDoneAt($doneAt)
     {
-        $this->error = $error;
+        $this->doneAt = new \infobip\api\model\FormattedDateTime($doneAt);
     }
 
     /**
-     * @return \infobip\api\model\Error
+     * @return \DateTime
      */
-    public function getError()
+    public function getDoneAt()
     {
-        return $this->error;
+        return $this->doneAt;
+    }
+
+    public function setSmsCount($smsCount)
+    {
+        $this->smsCount = $smsCount;
+    }
+    public function getSmsCount()
+    {
+        return $this->smsCount;
+    }
+
+    public function setMccMnc($mccMnc)
+    {
+        $this->mccMnc = $mccMnc;
+    }
+    public function getMccMnc()
+    {
+        return $this->mccMnc;
+    }
+
+    /**
+     * @param \infobip\api\model\Price $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return \infobip\api\model\Price
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     /**
@@ -176,6 +161,31 @@ class SMSLog implements \JsonSerializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @param \infobip\api\model\Error $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
+
+    /**
+     * @return \infobip\api\model\Error
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    public function setCallbackData($callbackData)
+    {
+        $this->callbackData = $callbackData;
+    }
+    public function getCallbackData()
+    {
+        return $this->callbackData;
     }
 
 

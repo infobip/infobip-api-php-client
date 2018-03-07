@@ -6,21 +6,12 @@ namespace infobip\api\model\sms\mt\send\textual;
  */
 class SMSMultiTextualRequest implements \JsonSerializable
 {
-    private $bulkId;
     /**
      * @var \infobip\api\model\sms\mt\send\Message[]
      */
     private $messages;
+    private $bulkId;
 
-
-    public function setBulkId($bulkId)
-    {
-        $this->bulkId = $bulkId;
-    }
-    public function getBulkId()
-    {
-        return $this->bulkId;
-    }
 
     /**
      * @param \infobip\api\model\sms\mt\send\Message[] $messages
@@ -36,6 +27,15 @@ class SMSMultiTextualRequest implements \JsonSerializable
     public function getMessages()
     {
         return $this->messages;
+    }
+
+    public function setBulkId($bulkId)
+    {
+        $this->bulkId = $bulkId;
+    }
+    public function getBulkId()
+    {
+        return $this->bulkId;
     }
 
 

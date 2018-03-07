@@ -6,13 +6,22 @@ namespace infobip\api\model;
  */
 class Error implements \JsonSerializable
 {
-    private $groupName;
-    private $permanent;
     private $groupId;
+    private $groupName;
+    private $id;
     private $name;
     private $description;
-    private $id;
+    private $permanent;
 
+
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
 
     public function setGroupName($groupName)
     {
@@ -23,22 +32,13 @@ class Error implements \JsonSerializable
         return $this->groupName;
     }
 
-    public function setPermanent($permanent)
+    public function setId($id)
     {
-        $this->permanent = $permanent;
+        $this->id = $id;
     }
-    public function isPermanent()
+    public function getId()
     {
-        return $this->permanent;
-    }
-
-    public function setGroupId($groupId)
-    {
-        $this->groupId = $groupId;
-    }
-    public function getGroupId()
-    {
-        return $this->groupId;
+        return $this->id;
     }
 
     public function setName($name)
@@ -59,13 +59,13 @@ class Error implements \JsonSerializable
         return $this->description;
     }
 
-    public function setId($id)
+    public function setPermanent($permanent)
     {
-        $this->id = $id;
+        $this->permanent = $permanent;
     }
-    public function getId()
+    public function isPermanent()
     {
-        return $this->id;
+        return $this->permanent;
     }
 
 

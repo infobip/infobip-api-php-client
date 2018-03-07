@@ -6,36 +6,18 @@ namespace infobip\api\model\sms\mo\logs;
  */
 class MOLog implements \JsonSerializable
 {
-    private $cleanText;
-    private $smsCount;
     private $messageId;
     private $from;
     private $to;
     private $text;
+    private $cleanText;
     private $keyword;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
     private $receivedAt;
+    private $smsCount;
 
-
-    public function setCleanText($cleanText)
-    {
-        $this->cleanText = $cleanText;
-    }
-    public function getCleanText()
-    {
-        return $this->cleanText;
-    }
-
-    public function setSmsCount($smsCount)
-    {
-        $this->smsCount = $smsCount;
-    }
-    public function getSmsCount()
-    {
-        return $this->smsCount;
-    }
 
     public function setMessageId($messageId)
     {
@@ -73,6 +55,15 @@ class MOLog implements \JsonSerializable
         return $this->text;
     }
 
+    public function setCleanText($cleanText)
+    {
+        $this->cleanText = $cleanText;
+    }
+    public function getCleanText()
+    {
+        return $this->cleanText;
+    }
+
     public function setKeyword($keyword)
     {
         $this->keyword = $keyword;
@@ -96,6 +87,15 @@ class MOLog implements \JsonSerializable
     public function getReceivedAt()
     {
         return $this->receivedAt;
+    }
+
+    public function setSmsCount($smsCount)
+    {
+        $this->smsCount = $smsCount;
+    }
+    public function getSmsCount()
+    {
+        return $this->smsCount;
     }
 
 

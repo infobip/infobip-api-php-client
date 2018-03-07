@@ -6,18 +6,9 @@ namespace infobip\api\model;
  */
 class Destination implements \JsonSerializable
 {
-    private $messageId;
     private $to;
+    private $messageId;
 
-
-    public function setMessageId($messageId)
-    {
-        $this->messageId = $messageId;
-    }
-    public function getMessageId()
-    {
-        return $this->messageId;
-    }
 
     public function setTo($to)
     {
@@ -26,6 +17,15 @@ class Destination implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+    }
+    public function getMessageId()
+    {
+        return $this->messageId;
     }
 
 

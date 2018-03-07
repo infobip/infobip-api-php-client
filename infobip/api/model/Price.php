@@ -6,19 +6,10 @@ namespace infobip\api\model;
  */
 class Price implements \JsonSerializable
 {
-    private $pricePerLookup;
     private $pricePerMessage;
+    private $pricePerLookup;
     private $currency;
 
-
-    public function setPricePerLookup($pricePerLookup)
-    {
-        $this->pricePerLookup = $pricePerLookup;
-    }
-    public function getPricePerLookup()
-    {
-        return $this->pricePerLookup;
-    }
 
     public function setPricePerMessage($pricePerMessage)
     {
@@ -27,6 +18,15 @@ class Price implements \JsonSerializable
     public function getPricePerMessage()
     {
         return $this->pricePerMessage;
+    }
+
+    public function setPricePerLookup($pricePerLookup)
+    {
+        $this->pricePerLookup = $pricePerLookup;
+    }
+    public function getPricePerLookup()
+    {
+        return $this->pricePerLookup;
     }
 
     public function setCurrency($currency)

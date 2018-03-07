@@ -6,34 +6,16 @@ namespace infobip\api\model\sms\mt\send\textual;
  */
 class SMSTextualRequest implements \JsonSerializable
 {
-    private $operatorClientId;
-    private $campaignId;
     private $from;
     /**
      * @var \string[]
      */
     private $to;
     private $text;
+    private $campaignId;
+    private $operatorClientId;
     private $transliteration;
 
-
-    public function setOperatorClientId($operatorClientId)
-    {
-        $this->operatorClientId = $operatorClientId;
-    }
-    public function getOperatorClientId()
-    {
-        return $this->operatorClientId;
-    }
-
-    public function setCampaignId($campaignId)
-    {
-        $this->campaignId = $campaignId;
-    }
-    public function getCampaignId()
-    {
-        return $this->campaignId;
-    }
 
     public function setFrom($from)
     {
@@ -67,6 +49,24 @@ class SMSTextualRequest implements \JsonSerializable
     public function getText()
     {
         return $this->text;
+    }
+
+    public function setCampaignId($campaignId)
+    {
+        $this->campaignId = $campaignId;
+    }
+    public function getCampaignId()
+    {
+        return $this->campaignId;
+    }
+
+    public function setOperatorClientId($operatorClientId)
+    {
+        $this->operatorClientId = $operatorClientId;
+    }
+    public function getOperatorClientId()
+    {
+        return $this->operatorClientId;
     }
 
     public function setTransliteration($transliteration)

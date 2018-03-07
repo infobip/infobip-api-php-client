@@ -6,7 +6,9 @@ namespace infobip\api\model\sms\mo\logs;
  */
 class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
 {
+    private $keyword;
     private $to;
+    private $limit;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
@@ -15,9 +17,16 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
      * @var \infobip\api\model\FormattedDateTime
      */
     private $receivedUntil;
-    private $limit;
-    private $keyword;
 
+
+    public function setKeyword($keyword)
+    {
+        $this->keyword = $keyword;
+    }
+    public function getKeyword()
+    {
+        return $this->keyword;
+    }
 
     public function setTo($to)
     {
@@ -26,6 +35,15 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+    }
+    public function getLimit()
+    {
+        return $this->limit;
     }
 
     /**
@@ -58,24 +76,6 @@ class GetReceivedSmsLogsExecuteContext implements \JsonSerializable
     public function getReceivedUntil()
     {
         return $this->receivedUntil;
-    }
-
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-    }
-    public function getLimit()
-    {
-        return $this->limit;
-    }
-
-    public function setKeyword($keyword)
-    {
-        $this->keyword = $keyword;
-    }
-    public function getKeyword()
-    {
-        return $this->keyword;
     }
 
 

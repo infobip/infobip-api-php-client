@@ -6,19 +6,10 @@ namespace infobip\api\model\sms\mt\send\binary;
  */
 class BinaryContent implements \JsonSerializable
 {
-    private $dataCoding;
     private $hex;
+    private $dataCoding;
     private $esmClass;
 
-
-    public function setDataCoding($dataCoding)
-    {
-        $this->dataCoding = $dataCoding;
-    }
-    public function getDataCoding()
-    {
-        return $this->dataCoding;
-    }
 
     public function setHex($hex)
     {
@@ -27,6 +18,15 @@ class BinaryContent implements \JsonSerializable
     public function getHex()
     {
         return $this->hex;
+    }
+
+    public function setDataCoding($dataCoding)
+    {
+        $this->dataCoding = $dataCoding;
+    }
+    public function getDataCoding()
+    {
+        return $this->dataCoding;
     }
 
     public function setEsmClass($esmClass)

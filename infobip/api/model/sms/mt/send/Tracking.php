@@ -6,19 +6,11 @@ namespace infobip\api\model\sms\mt\send;
  */
 class Tracking implements \JsonSerializable
 {
-    private $processKey;
     private $track;
+    private $processKey;
     private $type;
+    private $baseUrl;
 
-
-    public function setProcessKey($processKey)
-    {
-        $this->processKey = $processKey;
-    }
-    public function getProcessKey()
-    {
-        return $this->processKey;
-    }
 
     public function setTrack($track)
     {
@@ -29,6 +21,15 @@ class Tracking implements \JsonSerializable
         return $this->track;
     }
 
+    public function setProcessKey($processKey)
+    {
+        $this->processKey = $processKey;
+    }
+    public function getProcessKey()
+    {
+        return $this->processKey;
+    }
+
     public function setType($type)
     {
         $this->type = $type;
@@ -36,6 +37,15 @@ class Tracking implements \JsonSerializable
     public function getType()
     {
         return $this->type;
+    }
+
+    public function setBaseUrl($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
+    public function getBaseUrl()
+    {
+        return $this->baseUrl;
     }
 
 

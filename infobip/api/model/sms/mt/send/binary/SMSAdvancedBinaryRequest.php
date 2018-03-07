@@ -6,24 +6,31 @@ namespace infobip\api\model\sms\mt\send\binary;
  */
 class SMSAdvancedBinaryRequest implements \JsonSerializable
 {
-    private $bulkId;
-    /**
-     * @var \infobip\api\model\sms\mt\send\Message[]
-     */
-    private $messages;
     /**
      * @var \infobip\api\model\sms\mt\send\Tracking
      */
     private $tracking;
+    /**
+     * @var \infobip\api\model\sms\mt\send\Message[]
+     */
+    private $messages;
+    private $bulkId;
 
 
-    public function setBulkId($bulkId)
+    /**
+     * @param \infobip\api\model\sms\mt\send\Tracking $tracking
+     */
+    public function setTracking($tracking)
     {
-        $this->bulkId = $bulkId;
+        $this->tracking = $tracking;
     }
-    public function getBulkId()
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\Tracking
+     */
+    public function getTracking()
     {
-        return $this->bulkId;
+        return $this->tracking;
     }
 
     /**
@@ -42,20 +49,13 @@ class SMSAdvancedBinaryRequest implements \JsonSerializable
         return $this->messages;
     }
 
-    /**
-     * @param \infobip\api\model\sms\mt\send\Tracking $tracking
-     */
-    public function setTracking($tracking)
+    public function setBulkId($bulkId)
     {
-        $this->tracking = $tracking;
+        $this->bulkId = $bulkId;
     }
-
-    /**
-     * @return \infobip\api\model\sms\mt\send\Tracking
-     */
-    public function getTracking()
+    public function getBulkId()
     {
-        return $this->tracking;
+        return $this->bulkId;
     }
 
 

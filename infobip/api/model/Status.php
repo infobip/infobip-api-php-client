@@ -6,13 +6,22 @@ namespace infobip\api\model;
  */
 class Status implements \JsonSerializable
 {
-    private $groupName;
     private $groupId;
+    private $groupName;
+    private $id;
     private $name;
     private $description;
     private $action;
-    private $id;
 
+
+    public function setGroupId($groupId)
+    {
+        $this->groupId = $groupId;
+    }
+    public function getGroupId()
+    {
+        return $this->groupId;
+    }
 
     public function setGroupName($groupName)
     {
@@ -23,13 +32,13 @@ class Status implements \JsonSerializable
         return $this->groupName;
     }
 
-    public function setGroupId($groupId)
+    public function setId($id)
     {
-        $this->groupId = $groupId;
+        $this->id = $id;
     }
-    public function getGroupId()
+    public function getId()
     {
-        return $this->groupId;
+        return $this->id;
     }
 
     public function setName($name)
@@ -57,15 +66,6 @@ class Status implements \JsonSerializable
     public function getAction()
     {
         return $this->action;
-    }
-
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-    public function getId()
-    {
-        return $this->id;
     }
 
 
