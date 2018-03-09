@@ -7,6 +7,7 @@ use infobip\api\configuration\BasicAuthConfiguration;
 use infobip\api\model\Destination;
 use infobip\api\model\sms\mt\send\Message;
 use infobip\api\model\sms\mt\send\textual\SMSAdvancedTextualRequest;
+use infobip\api\model\sms\mt\send\Tracking;
 
 // Initializing SendMultipleTextualSmsAdvanced client with appropriate configuration
 $client = new SendMultipleTextualSmsAdvanced(new BasicAuthConfiguration(USERNAME, PASSWORD));
@@ -26,7 +27,7 @@ $message->setSendAt($tenMinutesInTheFuture);
 
 $requestBody = new SMSAdvancedTextualRequest();
 $requestBody->setMessages([$message]);
-$requestBody->setTracking($tracking);
+$requestBody->setTracking(null);
 
 // Executing request
 $response = $client->execute($requestBody);

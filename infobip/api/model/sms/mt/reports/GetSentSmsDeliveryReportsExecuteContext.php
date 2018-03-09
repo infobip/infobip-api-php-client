@@ -6,19 +6,10 @@ namespace infobip\api\model\sms\mt\reports;
  */
 class GetSentSmsDeliveryReportsExecuteContext implements \JsonSerializable
 {
-    private $bulkId;
     private $messageId;
+    private $bulkId;
     private $limit;
 
-
-    public function setBulkId($bulkId)
-    {
-        $this->bulkId = $bulkId;
-    }
-    public function getBulkId()
-    {
-        return $this->bulkId;
-    }
 
     public function setMessageId($messageId)
     {
@@ -27,6 +18,15 @@ class GetSentSmsDeliveryReportsExecuteContext implements \JsonSerializable
     public function getMessageId()
     {
         return $this->messageId;
+    }
+
+    public function setBulkId($bulkId)
+    {
+        $this->bulkId = $bulkId;
+    }
+    public function getBulkId()
+    {
+        return $this->bulkId;
     }
 
     public function setLimit($limit)

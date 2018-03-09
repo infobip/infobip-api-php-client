@@ -6,35 +6,96 @@ namespace infobip\api\model\sms\mt\reports;
  */
 class SMSReport implements \JsonSerializable
 {
-    /**
-     * @var \infobip\api\model\FormattedDateTime
-     */
-    private $doneAt;
-    private $smsCount;
+    private $bulkId;
     private $messageId;
+    private $to;
+    private $from;
+    private $text;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
     private $sentAt;
     /**
-     * @var \infobip\api\model\Error
+     * @var \infobip\api\model\FormattedDateTime
      */
-    private $error;
-    private $bulkId;
+    private $doneAt;
+    private $smsCount;
     private $mccMnc;
     /**
      * @var \infobip\api\model\Price
      */
     private $price;
-    private $callbackData;
-    private $from;
-    private $to;
-    private $text;
     /**
      * @var \infobip\api\model\Status
      */
     private $status;
+    /**
+     * @var \infobip\api\model\Error
+     */
+    private $error;
+    private $callbackData;
 
+
+    public function setBulkId($bulkId)
+    {
+        $this->bulkId = $bulkId;
+    }
+    public function getBulkId()
+    {
+        return $this->bulkId;
+    }
+
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+    }
+    public function getMessageId()
+    {
+        return $this->messageId;
+    }
+
+    public function setTo($to)
+    {
+        $this->to = $to;
+    }
+    public function getTo()
+    {
+        return $this->to;
+    }
+
+    public function setFrom($from)
+    {
+        $this->from = $from;
+    }
+    public function getFrom()
+    {
+        return $this->from;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param \DateTime $sentAt
+     */
+    public function setSentAt($sentAt)
+    {
+        $this->sentAt = new \infobip\api\model\FormattedDateTime($sentAt);
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getSentAt()
+    {
+        return $this->sentAt;
+    }
 
     /**
      * @param \DateTime $doneAt
@@ -59,56 +120,6 @@ class SMSReport implements \JsonSerializable
     public function getSmsCount()
     {
         return $this->smsCount;
-    }
-
-    public function setMessageId($messageId)
-    {
-        $this->messageId = $messageId;
-    }
-    public function getMessageId()
-    {
-        return $this->messageId;
-    }
-
-    /**
-     * @param \DateTime $sentAt
-     */
-    public function setSentAt($sentAt)
-    {
-        $this->sentAt = new \infobip\api\model\FormattedDateTime($sentAt);
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getSentAt()
-    {
-        return $this->sentAt;
-    }
-
-    /**
-     * @param \infobip\api\model\Error $error
-     */
-    public function setError($error)
-    {
-        $this->error = $error;
-    }
-
-    /**
-     * @return \infobip\api\model\Error
-     */
-    public function getError()
-    {
-        return $this->error;
-    }
-
-    public function setBulkId($bulkId)
-    {
-        $this->bulkId = $bulkId;
-    }
-    public function getBulkId()
-    {
-        return $this->bulkId;
     }
 
     public function setMccMnc($mccMnc)
@@ -136,42 +147,6 @@ class SMSReport implements \JsonSerializable
         return $this->price;
     }
 
-    public function setCallbackData($callbackData)
-    {
-        $this->callbackData = $callbackData;
-    }
-    public function getCallbackData()
-    {
-        return $this->callbackData;
-    }
-
-    public function setFrom($from)
-    {
-        $this->from = $from;
-    }
-    public function getFrom()
-    {
-        return $this->from;
-    }
-
-    public function setTo($to)
-    {
-        $this->to = $to;
-    }
-    public function getTo()
-    {
-        return $this->to;
-    }
-
-    public function setText($text)
-    {
-        $this->text = $text;
-    }
-    public function getText()
-    {
-        return $this->text;
-    }
-
     /**
      * @param \infobip\api\model\Status $status
      */
@@ -186,6 +161,31 @@ class SMSReport implements \JsonSerializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @param \infobip\api\model\Error $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
+
+    /**
+     * @return \infobip\api\model\Error
+     */
+    public function getError()
+    {
+        return $this->error;
+    }
+
+    public function setCallbackData($callbackData)
+    {
+        $this->callbackData = $callbackData;
+    }
+    public function getCallbackData()
+    {
+        return $this->callbackData;
     }
 
 

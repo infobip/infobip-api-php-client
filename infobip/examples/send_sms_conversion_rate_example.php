@@ -36,8 +36,8 @@ try {
     echo "Receiver: " . $sentMessageInfo->getTo() . "\n";
     echo "Message status: " . $sentMessageInfo->getStatus()->getName() . "\n";
     $endTagResponse = $endLogClient->execute($sentMessageInfo->getMessageId());
-    echo "Process Key: " . $endTagResponse->getProcessKey();
+    echo "Process Key: " . $endTagResponse->getProcessKey() . "\n";
 } catch (Exception $exception) {
     echo "HTTP status code: " . $exception->getCode() . "\n";
-    echo "Error message: " . $exception->getMessage();
+    echo "Error message: " . $exception->getMessage() . "\n";
 }

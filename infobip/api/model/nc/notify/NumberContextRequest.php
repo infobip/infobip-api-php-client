@@ -6,22 +6,13 @@ namespace infobip\api\model\nc\notify;
  */
 class NumberContextRequest implements \JsonSerializable
 {
-    private $notifyUrl;
     /**
      * @var \string[]
      */
     private $to;
+    private $notifyUrl;
     private $notifyContentType;
 
-
-    public function setNotifyUrl($notifyUrl)
-    {
-        $this->notifyUrl = $notifyUrl;
-    }
-    public function getNotifyUrl()
-    {
-        return $this->notifyUrl;
-    }
 
     /**
      * @param \string[] $to
@@ -37,6 +28,15 @@ class NumberContextRequest implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    public function setNotifyUrl($notifyUrl)
+    {
+        $this->notifyUrl = $notifyUrl;
+    }
+    public function getNotifyUrl()
+    {
+        return $this->notifyUrl;
     }
 
     public function setNotifyContentType($notifyContentType)

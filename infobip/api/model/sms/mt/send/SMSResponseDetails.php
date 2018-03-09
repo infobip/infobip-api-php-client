@@ -6,32 +6,14 @@ namespace infobip\api\model\sms\mt\send;
  */
 class SMSResponseDetails implements \JsonSerializable
 {
-    private $smsCount;
-    private $messageId;
     private $to;
     /**
      * @var \infobip\api\model\Status
      */
     private $status;
+    private $smsCount;
+    private $messageId;
 
-
-    public function setSmsCount($smsCount)
-    {
-        $this->smsCount = $smsCount;
-    }
-    public function getSmsCount()
-    {
-        return $this->smsCount;
-    }
-
-    public function setMessageId($messageId)
-    {
-        $this->messageId = $messageId;
-    }
-    public function getMessageId()
-    {
-        return $this->messageId;
-    }
 
     public function setTo($to)
     {
@@ -56,6 +38,24 @@ class SMSResponseDetails implements \JsonSerializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public function setSmsCount($smsCount)
+    {
+        $this->smsCount = $smsCount;
+    }
+    public function getSmsCount()
+    {
+        return $this->smsCount;
+    }
+
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+    }
+    public function getMessageId()
+    {
+        return $this->messageId;
     }
 
 

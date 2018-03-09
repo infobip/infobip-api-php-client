@@ -6,170 +6,43 @@ namespace infobip\api\model\sms\mt\send;
  */
 class Message implements \JsonSerializable
 {
-    private $campaignId;
-    /**
-     * @var \infobip\api\model\Destination[]
-     */
-    private $destinations;
-    /**
-     * @var \infobip\api\model\sms\mt\send\Language
-     */
-    private $language;
-    /**
-     * @var \infobip\api\model\sms\mt\send\DeliveryTimeWindow
-     */
-    private $deliveryTimeWindow;
-    private $notify;
-    private $notifyContentType;
-    private $validityPeriod;
-    private $operatorClientId;
-    /**
-     * @var \infobip\api\model\sms\mt\send\binary\BinaryContent
-     */
-    private $binary;
-    private $callbackData;
-    private $notifyUrl;
     private $from;
     /**
      * @var \string[]
      */
     private $to;
+    /**
+     * @var \infobip\api\model\Destination[]
+     */
+    private $destinations;
     private $text;
+    /**
+     * @var \infobip\api\model\sms\mt\send\binary\BinaryContent
+     */
+    private $binary;
+    private $flash;
+    /**
+     * @var \infobip\api\model\sms\mt\send\Language
+     */
+    private $language;
+    private $transliteration;
+    private $notify;
+    private $intermediateReport;
+    private $notifyUrl;
+    private $notifyContentType;
+    private $callbackData;
+    private $validityPeriod;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
     private $sendAt;
-    private $transliteration;
-    private $flash;
-    private $intermediateReport;
-
-
-    public function setCampaignId($campaignId)
-    {
-        $this->campaignId = $campaignId;
-    }
-    public function getCampaignId()
-    {
-        return $this->campaignId;
-    }
-
     /**
-     * @param \infobip\api\model\Destination[] $destinations
+     * @var \infobip\api\model\sms\mt\send\DeliveryTimeWindow
      */
-    public function setDestinations($destinations)
-    {
-        $this->destinations = $destinations;
-    }
+    private $deliveryTimeWindow;
+    private $campaignId;
+    private $operatorClientId;
 
-    /**
-     * @return \infobip\api\model\Destination[]
-     */
-    public function getDestinations()
-    {
-        return $this->destinations;
-    }
-
-    /**
-     * @param \infobip\api\model\sms\mt\send\Language $language
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-    }
-
-    /**
-     * @return \infobip\api\model\sms\mt\send\Language
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param \infobip\api\model\sms\mt\send\DeliveryTimeWindow $deliveryTimeWindow
-     */
-    public function setDeliveryTimeWindow($deliveryTimeWindow)
-    {
-        $this->deliveryTimeWindow = $deliveryTimeWindow;
-    }
-
-    /**
-     * @return \infobip\api\model\sms\mt\send\DeliveryTimeWindow
-     */
-    public function getDeliveryTimeWindow()
-    {
-        return $this->deliveryTimeWindow;
-    }
-
-    public function setNotify($notify)
-    {
-        $this->notify = $notify;
-    }
-    public function isNotify()
-    {
-        return $this->notify;
-    }
-
-    public function setNotifyContentType($notifyContentType)
-    {
-        $this->notifyContentType = $notifyContentType;
-    }
-    public function getNotifyContentType()
-    {
-        return $this->notifyContentType;
-    }
-
-    public function setValidityPeriod($validityPeriod)
-    {
-        $this->validityPeriod = $validityPeriod;
-    }
-    public function getValidityPeriod()
-    {
-        return $this->validityPeriod;
-    }
-
-    public function setOperatorClientId($operatorClientId)
-    {
-        $this->operatorClientId = $operatorClientId;
-    }
-    public function getOperatorClientId()
-    {
-        return $this->operatorClientId;
-    }
-
-    /**
-     * @param \infobip\api\model\sms\mt\send\binary\BinaryContent $binary
-     */
-    public function setBinary($binary)
-    {
-        $this->binary = $binary;
-    }
-
-    /**
-     * @return \infobip\api\model\sms\mt\send\binary\BinaryContent
-     */
-    public function getBinary()
-    {
-        return $this->binary;
-    }
-
-    public function setCallbackData($callbackData)
-    {
-        $this->callbackData = $callbackData;
-    }
-    public function getCallbackData()
-    {
-        return $this->callbackData;
-    }
-
-    public function setNotifyUrl($notifyUrl)
-    {
-        $this->notifyUrl = $notifyUrl;
-    }
-    public function getNotifyUrl()
-    {
-        return $this->notifyUrl;
-    }
 
     public function setFrom($from)
     {
@@ -196,6 +69,22 @@ class Message implements \JsonSerializable
         return $this->to;
     }
 
+    /**
+     * @param \infobip\api\model\Destination[] $destinations
+     */
+    public function setDestinations($destinations)
+    {
+        $this->destinations = $destinations;
+    }
+
+    /**
+     * @return \infobip\api\model\Destination[]
+     */
+    public function getDestinations()
+    {
+        return $this->destinations;
+    }
+
     public function setText($text)
     {
         $this->text = $text;
@@ -203,6 +92,110 @@ class Message implements \JsonSerializable
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * @param \infobip\api\model\sms\mt\send\binary\BinaryContent $binary
+     */
+    public function setBinary($binary)
+    {
+        $this->binary = $binary;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\binary\BinaryContent
+     */
+    public function getBinary()
+    {
+        return $this->binary;
+    }
+
+    public function setFlash($flash)
+    {
+        $this->flash = $flash;
+    }
+    public function isFlash()
+    {
+        return $this->flash;
+    }
+
+    /**
+     * @param \infobip\api\model\sms\mt\send\Language $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\Language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    public function setTransliteration($transliteration)
+    {
+        $this->transliteration = $transliteration;
+    }
+    public function getTransliteration()
+    {
+        return $this->transliteration;
+    }
+
+    public function setNotify($notify)
+    {
+        $this->notify = $notify;
+    }
+    public function isNotify()
+    {
+        return $this->notify;
+    }
+
+    public function setIntermediateReport($intermediateReport)
+    {
+        $this->intermediateReport = $intermediateReport;
+    }
+    public function isIntermediateReport()
+    {
+        return $this->intermediateReport;
+    }
+
+    public function setNotifyUrl($notifyUrl)
+    {
+        $this->notifyUrl = $notifyUrl;
+    }
+    public function getNotifyUrl()
+    {
+        return $this->notifyUrl;
+    }
+
+    public function setNotifyContentType($notifyContentType)
+    {
+        $this->notifyContentType = $notifyContentType;
+    }
+    public function getNotifyContentType()
+    {
+        return $this->notifyContentType;
+    }
+
+    public function setCallbackData($callbackData)
+    {
+        $this->callbackData = $callbackData;
+    }
+    public function getCallbackData()
+    {
+        return $this->callbackData;
+    }
+
+    public function setValidityPeriod($validityPeriod)
+    {
+        $this->validityPeriod = $validityPeriod;
+    }
+    public function getValidityPeriod()
+    {
+        return $this->validityPeriod;
     }
 
     /**
@@ -221,31 +214,38 @@ class Message implements \JsonSerializable
         return $this->sendAt;
     }
 
-    public function setTransliteration($transliteration)
+    /**
+     * @param \infobip\api\model\sms\mt\send\DeliveryTimeWindow $deliveryTimeWindow
+     */
+    public function setDeliveryTimeWindow($deliveryTimeWindow)
     {
-        $this->transliteration = $transliteration;
-    }
-    public function getTransliteration()
-    {
-        return $this->transliteration;
-    }
-
-    public function setFlash($flash)
-    {
-        $this->flash = $flash;
-    }
-    public function isFlash()
-    {
-        return $this->flash;
+        $this->deliveryTimeWindow = $deliveryTimeWindow;
     }
 
-    public function setIntermediateReport($intermediateReport)
+    /**
+     * @return \infobip\api\model\sms\mt\send\DeliveryTimeWindow
+     */
+    public function getDeliveryTimeWindow()
     {
-        $this->intermediateReport = $intermediateReport;
+        return $this->deliveryTimeWindow;
     }
-    public function isIntermediateReport()
+
+    public function setCampaignId($campaignId)
     {
-        return $this->intermediateReport;
+        $this->campaignId = $campaignId;
+    }
+    public function getCampaignId()
+    {
+        return $this->campaignId;
+    }
+
+    public function setOperatorClientId($operatorClientId)
+    {
+        $this->operatorClientId = $operatorClientId;
+    }
+    public function getOperatorClientId()
+    {
+        return $this->operatorClientId;
     }
 
 

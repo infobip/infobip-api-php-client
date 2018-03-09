@@ -6,50 +6,41 @@ namespace infobip\api\model\nc\query;
  */
 class NumberContextResponseDetails implements \JsonSerializable
 {
-    private $ported;
-    private $roaming;
-    private $mccMnc;
-    /**
-     * @var \infobip\api\model\nc\Network
-     */
-    private $roamingNetwork;
-    /**
-     * @var \infobip\api\model\nc\Network
-     */
-    private $portedNetwork;
     private $to;
+    private $mccMnc;
     private $imsi;
-    private $servingMSC;
-    /**
-     * @var \infobip\api\model\Error
-     */
-    private $error;
     /**
      * @var \infobip\api\model\nc\Network
      */
     private $originalNetwork;
+    private $ported;
+    /**
+     * @var \infobip\api\model\nc\Network
+     */
+    private $portedNetwork;
+    private $roaming;
+    /**
+     * @var \infobip\api\model\nc\Network
+     */
+    private $roamingNetwork;
+    private $servingMSC;
     /**
      * @var \infobip\api\model\Status
      */
     private $status;
+    /**
+     * @var \infobip\api\model\Error
+     */
+    private $error;
 
 
-    public function setPorted($ported)
+    public function setTo($to)
     {
-        $this->ported = $ported;
+        $this->to = $to;
     }
-    public function isPorted()
+    public function getTo()
     {
-        return $this->ported;
-    }
-
-    public function setRoaming($roaming)
-    {
-        $this->roaming = $roaming;
-    }
-    public function isRoaming()
-    {
-        return $this->roaming;
+        return $this->to;
     }
 
     public function setMccMnc($mccMnc)
@@ -61,47 +52,6 @@ class NumberContextResponseDetails implements \JsonSerializable
         return $this->mccMnc;
     }
 
-    /**
-     * @param \infobip\api\model\nc\Network $roamingNetwork
-     */
-    public function setRoamingNetwork($roamingNetwork)
-    {
-        $this->roamingNetwork = $roamingNetwork;
-    }
-
-    /**
-     * @return \infobip\api\model\nc\Network
-     */
-    public function getRoamingNetwork()
-    {
-        return $this->roamingNetwork;
-    }
-
-    /**
-     * @param \infobip\api\model\nc\Network $portedNetwork
-     */
-    public function setPortedNetwork($portedNetwork)
-    {
-        $this->portedNetwork = $portedNetwork;
-    }
-
-    /**
-     * @return \infobip\api\model\nc\Network
-     */
-    public function getPortedNetwork()
-    {
-        return $this->portedNetwork;
-    }
-
-    public function setTo($to)
-    {
-        $this->to = $to;
-    }
-    public function getTo()
-    {
-        return $this->to;
-    }
-
     public function setImsi($imsi)
     {
         $this->imsi = $imsi;
@@ -109,31 +59,6 @@ class NumberContextResponseDetails implements \JsonSerializable
     public function getImsi()
     {
         return $this->imsi;
-    }
-
-    public function setServingMSC($servingMSC)
-    {
-        $this->servingMSC = $servingMSC;
-    }
-    public function getServingMSC()
-    {
-        return $this->servingMSC;
-    }
-
-    /**
-     * @param \infobip\api\model\Error $error
-     */
-    public function setError($error)
-    {
-        $this->error = $error;
-    }
-
-    /**
-     * @return \infobip\api\model\Error
-     */
-    public function getError()
-    {
-        return $this->error;
     }
 
     /**
@@ -152,6 +77,65 @@ class NumberContextResponseDetails implements \JsonSerializable
         return $this->originalNetwork;
     }
 
+    public function setPorted($ported)
+    {
+        $this->ported = $ported;
+    }
+    public function isPorted()
+    {
+        return $this->ported;
+    }
+
+    /**
+     * @param \infobip\api\model\nc\Network $portedNetwork
+     */
+    public function setPortedNetwork($portedNetwork)
+    {
+        $this->portedNetwork = $portedNetwork;
+    }
+
+    /**
+     * @return \infobip\api\model\nc\Network
+     */
+    public function getPortedNetwork()
+    {
+        return $this->portedNetwork;
+    }
+
+    public function setRoaming($roaming)
+    {
+        $this->roaming = $roaming;
+    }
+    public function isRoaming()
+    {
+        return $this->roaming;
+    }
+
+    /**
+     * @param \infobip\api\model\nc\Network $roamingNetwork
+     */
+    public function setRoamingNetwork($roamingNetwork)
+    {
+        $this->roamingNetwork = $roamingNetwork;
+    }
+
+    /**
+     * @return \infobip\api\model\nc\Network
+     */
+    public function getRoamingNetwork()
+    {
+        return $this->roamingNetwork;
+    }
+
+    public function setServingMSC($servingMSC)
+    {
+        $this->servingMSC = $servingMSC;
+    }
+    public function getServingMSC()
+    {
+        return $this->servingMSC;
+    }
+
     /**
      * @param \infobip\api\model\Status $status
      */
@@ -166,6 +150,22 @@ class NumberContextResponseDetails implements \JsonSerializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @param \infobip\api\model\Error $error
+     */
+    public function setError($error)
+    {
+        $this->error = $error;
+    }
+
+    /**
+     * @return \infobip\api\model\Error
+     */
+    public function getError()
+    {
+        return $this->error;
     }
 
 

@@ -6,66 +6,23 @@ namespace infobip\api\model\sms\mo\reports;
  */
 class MOReport implements \JsonSerializable
 {
+    private $messageId;
+    private $from;
+    private $to;
+    private $text;
     private $cleanText;
+    private $keyword;
+    /**
+     * @var \infobip\api\model\FormattedDateTime
+     */
+    private $receivedAt;
     private $smsCount;
     /**
      * @var \infobip\api\model\Price
      */
     private $price;
     private $callbackData;
-    private $messageId;
-    private $from;
-    private $to;
-    private $text;
-    private $keyword;
-    /**
-     * @var \infobip\api\model\FormattedDateTime
-     */
-    private $receivedAt;
 
-
-    public function setCleanText($cleanText)
-    {
-        $this->cleanText = $cleanText;
-    }
-    public function getCleanText()
-    {
-        return $this->cleanText;
-    }
-
-    public function setSmsCount($smsCount)
-    {
-        $this->smsCount = $smsCount;
-    }
-    public function getSmsCount()
-    {
-        return $this->smsCount;
-    }
-
-    /**
-     * @param \infobip\api\model\Price $price
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-    }
-
-    /**
-     * @return \infobip\api\model\Price
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    public function setCallbackData($callbackData)
-    {
-        $this->callbackData = $callbackData;
-    }
-    public function getCallbackData()
-    {
-        return $this->callbackData;
-    }
 
     public function setMessageId($messageId)
     {
@@ -103,6 +60,15 @@ class MOReport implements \JsonSerializable
         return $this->text;
     }
 
+    public function setCleanText($cleanText)
+    {
+        $this->cleanText = $cleanText;
+    }
+    public function getCleanText()
+    {
+        return $this->cleanText;
+    }
+
     public function setKeyword($keyword)
     {
         $this->keyword = $keyword;
@@ -126,6 +92,40 @@ class MOReport implements \JsonSerializable
     public function getReceivedAt()
     {
         return $this->receivedAt;
+    }
+
+    public function setSmsCount($smsCount)
+    {
+        $this->smsCount = $smsCount;
+    }
+    public function getSmsCount()
+    {
+        return $this->smsCount;
+    }
+
+    /**
+     * @param \infobip\api\model\Price $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return \infobip\api\model\Price
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function setCallbackData($callbackData)
+    {
+        $this->callbackData = $callbackData;
+    }
+    public function getCallbackData()
+    {
+        return $this->callbackData;
     }
 
 

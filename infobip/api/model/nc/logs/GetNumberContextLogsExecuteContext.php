@@ -6,52 +6,43 @@ namespace infobip\api\model\nc\logs;
  */
 class GetNumberContextLogsExecuteContext implements \JsonSerializable
 {
-    private $to;
     /**
-     * @var \string[]
+     * @var \infobip\api\model\FormattedDateTime
      */
-    private $bulkId;
+    private $sentUntil;
     /**
      * @var \string[]
      */
     private $messageId;
+    private $to;
     private $generalStatus;
     /**
      * @var \infobip\api\model\FormattedDateTime
      */
     private $sentSince;
-    /**
-     * @var \infobip\api\model\FormattedDateTime
-     */
-    private $sentUntil;
-    private $limit;
     private $mcc;
+    private $limit;
+    /**
+     * @var \string[]
+     */
+    private $bulkId;
     private $mnc;
 
 
-    public function setTo($to)
+    /**
+     * @param \DateTime $sentUntil
+     */
+    public function setSentUntil($sentUntil)
     {
-        $this->to = $to;
-    }
-    public function getTo()
-    {
-        return $this->to;
+        $this->sentUntil = new \infobip\api\model\FormattedDateTime($sentUntil);
     }
 
     /**
-     * @param \string[] $bulkId
+     * @return \DateTime
      */
-    public function setBulkId($bulkId)
+    public function getSentUntil()
     {
-        $this->bulkId = $bulkId;
-    }
-
-    /**
-     * @return \string[]
-     */
-    public function getBulkId()
-    {
-        return $this->bulkId;
+        return $this->sentUntil;
     }
 
     /**
@@ -68,6 +59,15 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
     public function getMessageId()
     {
         return $this->messageId;
+    }
+
+    public function setTo($to)
+    {
+        $this->to = $to;
+    }
+    public function getTo()
+    {
+        return $this->to;
     }
 
     public function setGeneralStatus($generalStatus)
@@ -95,20 +95,13 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
         return $this->sentSince;
     }
 
-    /**
-     * @param \DateTime $sentUntil
-     */
-    public function setSentUntil($sentUntil)
+    public function setMcc($mcc)
     {
-        $this->sentUntil = new \infobip\api\model\FormattedDateTime($sentUntil);
+        $this->mcc = $mcc;
     }
-
-    /**
-     * @return \DateTime
-     */
-    public function getSentUntil()
+    public function getMcc()
     {
-        return $this->sentUntil;
+        return $this->mcc;
     }
 
     public function setLimit($limit)
@@ -120,13 +113,20 @@ class GetNumberContextLogsExecuteContext implements \JsonSerializable
         return $this->limit;
     }
 
-    public function setMcc($mcc)
+    /**
+     * @param \string[] $bulkId
+     */
+    public function setBulkId($bulkId)
     {
-        $this->mcc = $mcc;
+        $this->bulkId = $bulkId;
     }
-    public function getMcc()
+
+    /**
+     * @return \string[]
+     */
+    public function getBulkId()
     {
-        return $this->mcc;
+        return $this->bulkId;
     }
 
     public function setMnc($mnc)

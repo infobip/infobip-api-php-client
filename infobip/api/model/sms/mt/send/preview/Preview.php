@@ -8,11 +8,11 @@ class Preview implements \JsonSerializable
 {
     private $textPreview;
     private $messageCount;
+    private $charactersRemaining;
     /**
      * @var \infobip\api\model\sms\mt\send\preview\Configuration
      */
     private $configuration;
-    private $charactersRemaining;
 
 
     public function setTextPreview($textPreview)
@@ -33,6 +33,15 @@ class Preview implements \JsonSerializable
         return $this->messageCount;
     }
 
+    public function setCharactersRemaining($charactersRemaining)
+    {
+        $this->charactersRemaining = $charactersRemaining;
+    }
+    public function getCharactersRemaining()
+    {
+        return $this->charactersRemaining;
+    }
+
     /**
      * @param \infobip\api\model\sms\mt\send\preview\Configuration $configuration
      */
@@ -47,15 +56,6 @@ class Preview implements \JsonSerializable
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    public function setCharactersRemaining($charactersRemaining)
-    {
-        $this->charactersRemaining = $charactersRemaining;
-    }
-    public function getCharactersRemaining()
-    {
-        return $this->charactersRemaining;
     }
 
 

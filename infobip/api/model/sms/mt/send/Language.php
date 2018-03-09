@@ -6,19 +6,10 @@ namespace infobip\api\model\sms\mt\send;
  */
 class Language implements \JsonSerializable
 {
-    private $lockingShift;
     private $singleShift;
+    private $lockingShift;
     private $languageCode;
 
-
-    public function setLockingShift($lockingShift)
-    {
-        $this->lockingShift = $lockingShift;
-    }
-    public function isLockingShift()
-    {
-        return $this->lockingShift;
-    }
 
     public function setSingleShift($singleShift)
     {
@@ -27,6 +18,15 @@ class Language implements \JsonSerializable
     public function isSingleShift()
     {
         return $this->singleShift;
+    }
+
+    public function setLockingShift($lockingShift)
+    {
+        $this->lockingShift = $lockingShift;
+    }
+    public function isLockingShift()
+    {
+        return $this->lockingShift;
     }
 
     public function setLanguageCode($languageCode)

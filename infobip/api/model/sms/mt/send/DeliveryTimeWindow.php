@@ -7,10 +7,6 @@ namespace infobip\api\model\sms\mt\send;
 class DeliveryTimeWindow implements \JsonSerializable
 {
     /**
-     * @var \string[]
-     */
-    private $days;
-    /**
      * @var \infobip\api\model\sms\mt\send\DeliveryTime
      */
     private $from;
@@ -18,23 +14,11 @@ class DeliveryTimeWindow implements \JsonSerializable
      * @var \infobip\api\model\sms\mt\send\DeliveryTime
      */
     private $to;
-
-
     /**
-     * @param \string[] $days
+     * @var \string[]
      */
-    public function setDays($days)
-    {
-        $this->days = $days;
-    }
+    private $days;
 
-    /**
-     * @return \string[]
-     */
-    public function getDays()
-    {
-        return $this->days;
-    }
 
     /**
      * @param \infobip\api\model\sms\mt\send\DeliveryTime $from
@@ -66,6 +50,22 @@ class DeliveryTimeWindow implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    /**
+     * @param \string[] $days
+     */
+    public function setDays($days)
+    {
+        $this->days = $days;
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getDays()
+    {
+        return $this->days;
     }
 
 

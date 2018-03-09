@@ -6,22 +6,13 @@ namespace infobip\api\model\nc\notify;
  */
 class NumberContextResponseDetails implements \JsonSerializable
 {
-    private $messageId;
     private $to;
     /**
      * @var \infobip\api\model\Status
      */
     private $status;
+    private $messageId;
 
-
-    public function setMessageId($messageId)
-    {
-        $this->messageId = $messageId;
-    }
-    public function getMessageId()
-    {
-        return $this->messageId;
-    }
 
     public function setTo($to)
     {
@@ -46,6 +37,15 @@ class NumberContextResponseDetails implements \JsonSerializable
     public function getStatus()
     {
         return $this->status;
+    }
+
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+    }
+    public function getMessageId()
+    {
+        return $this->messageId;
     }
 
 

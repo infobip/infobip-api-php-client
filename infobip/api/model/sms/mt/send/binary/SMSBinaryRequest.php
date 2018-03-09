@@ -6,52 +6,18 @@ namespace infobip\api\model\sms\mt\send\binary;
  */
 class SMSBinaryRequest implements \JsonSerializable
 {
-    private $operatorClientId;
-    private $campaignId;
-    /**
-     * @var \infobip\api\model\sms\mt\send\binary\BinaryContent
-     */
-    private $binary;
     private $from;
     /**
      * @var \string[]
      */
     private $to;
-
-
-    public function setOperatorClientId($operatorClientId)
-    {
-        $this->operatorClientId = $operatorClientId;
-    }
-    public function getOperatorClientId()
-    {
-        return $this->operatorClientId;
-    }
-
-    public function setCampaignId($campaignId)
-    {
-        $this->campaignId = $campaignId;
-    }
-    public function getCampaignId()
-    {
-        return $this->campaignId;
-    }
-
     /**
-     * @param \infobip\api\model\sms\mt\send\binary\BinaryContent $binary
+     * @var \infobip\api\model\sms\mt\send\binary\BinaryContent
      */
-    public function setBinary($binary)
-    {
-        $this->binary = $binary;
-    }
+    private $binary;
+    private $campaignId;
+    private $operatorClientId;
 
-    /**
-     * @return \infobip\api\model\sms\mt\send\binary\BinaryContent
-     */
-    public function getBinary()
-    {
-        return $this->binary;
-    }
 
     public function setFrom($from)
     {
@@ -76,6 +42,40 @@ class SMSBinaryRequest implements \JsonSerializable
     public function getTo()
     {
         return $this->to;
+    }
+
+    /**
+     * @param \infobip\api\model\sms\mt\send\binary\BinaryContent $binary
+     */
+    public function setBinary($binary)
+    {
+        $this->binary = $binary;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\binary\BinaryContent
+     */
+    public function getBinary()
+    {
+        return $this->binary;
+    }
+
+    public function setCampaignId($campaignId)
+    {
+        $this->campaignId = $campaignId;
+    }
+    public function getCampaignId()
+    {
+        return $this->campaignId;
+    }
+
+    public function setOperatorClientId($operatorClientId)
+    {
+        $this->operatorClientId = $operatorClientId;
+    }
+    public function getOperatorClientId()
+    {
+        return $this->operatorClientId;
     }
 
 
