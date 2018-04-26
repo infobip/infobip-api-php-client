@@ -11,11 +11,22 @@ class AbstractApiClient
     const VERSION = '1.1.3';
     private $configuration;
     private $mapper;
+    private $modifiedCurlOptions = [];
 
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
         $this->mapper = new JsonMapper();
+    }
+
+    public function setConnectTimeout($timeoutInSeconds)
+    {
+        $this->modifiedCurlOptions[CURLOPT_CONNECTTIMEOUT] = $timeoutInSeconds;
+    }
+
+    public function setTimeout($timeoutInSeconds)
+    {
+        $this->modifiedCurlOptions[CURLOPT_TIMEOUT] = $timeoutInSeconds;
     }
 
     protected function executeGET($restPath, $params)
@@ -68,7 +79,7 @@ class AbstractApiClient
     {
         if ($queryParams == null)
             $queryParams = array();
-        if (!is_array($queryParams)){
+        if (!is_array($queryParams)) {
             $queryParams = $this->createFieldArray($queryParams);
         }
         if ($requestHeaders == null)
@@ -97,6 +108,10 @@ class AbstractApiClient
             CURLOPT_URL => $url,
             CURLOPT_HTTPHEADER => $sendHeaders
         );
+
+        foreach ($this->modifiedCurlOptions as $optionKey => $optionValue) {
+            $opts[$optionKey] = $optionValue;
+        }
 
         if ($this->configuration) {
             $opts[CURLOPT_HTTPHEADER][] = 'Authorization: ' . $this->configuration->getAuthenticationHeader();
@@ -169,7 +184,8 @@ class AbstractApiClient
         return ($rez);
     }
 
-    public function map($content, $className){
+    public function map($content, $className)
+    {
         return $this->mapper->map($content, new $className());
     }
 
