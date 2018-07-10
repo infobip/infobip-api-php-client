@@ -10,9 +10,6 @@ class MOReportResponse implements \JsonSerializable
      * @var \infobip\api\model\sms\mo\reports\MOReport[]
      */
     private $results;
-    private $messageCount;
-    private $pendingMessageCount;
-
 
     /**
      * @param \infobip\api\model\sms\mo\reports\MOReport[] $results
@@ -28,24 +25,6 @@ class MOReportResponse implements \JsonSerializable
     public function getResults()
     {
         return $this->results;
-    }
-
-    public function setMessageCount($messageCount)
-    {
-        $this->messageCount = $messageCount;
-    }
-    public function getMessageCount()
-    {
-        return $this->messageCount;
-    }
-
-    public function setPendingMessageCount($pendingMessageCount)
-    {
-        $this->pendingMessageCount = $pendingMessageCount;
-    }
-    public function getPendingMessageCount()
-    {
-        return $this->pendingMessageCount;
     }
 
 
