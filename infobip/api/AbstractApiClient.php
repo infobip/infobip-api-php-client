@@ -29,9 +29,9 @@ class AbstractApiClient
     }
 
     /**
-     * Set the given curl option to the given value
-     * @param $curlOpt
-     * @param $curlOptValue
+     * Set the given cURL option to the given value
+     * @param int $curlOpt a valid cURL option; @see https://www.php.net/manual/en/function.curl-setopt.php
+     * @param mixed $curlOptValue the desired value for the given cURL option
     */
     public function setCurlOpt($curlOpt, $curlOptValue)
     {
@@ -39,7 +39,7 @@ class AbstractApiClient
     }
 
 	/**
-	 * Get all currently-configured curl options
+	 * Get all currently-configured cURL options
 	 * @return array
 	 */
     public function getCurlOpts()
