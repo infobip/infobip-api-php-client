@@ -11,11 +11,40 @@ class AbstractApiClient
     const VERSION = '1.1.3';
     private $configuration;
     private $mapper;
+    private $curlOpts;
 
     public function __construct($configuration)
     {
         $this->configuration = $configuration;
         $this->mapper = new JsonMapper();
+        $this->curlOpts = array(
+            CURLOPT_FRESH_CONNECT => 1,
+            CURLOPT_CONNECTTIMEOUT => 60,
+            CURLOPT_TIMEOUT => 120,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3,
+            CURLOPT_USERAGENT => 'Php-Client-Library-' . self::VERSION,
+        );
+    }
+
+    /**
+     * Set the given curl option to the given value
+     * @param $curlOpt
+     * @param $curlOptValue
+    */
+    public function setCurlOpt($curlOpt, $curlOptValue)
+    {
+        $this->curlOpts[$curlOpt] = $curlOptValue;
+    }
+
+	/**
+	 * Get all currently-configured curl options
+	 * @return array
+	 */
+    public function getCurlOpts()
+    {
+        return $this->curlOpts;
     }
 
     protected function executeGET($restPath, $params)
@@ -85,18 +114,10 @@ class AbstractApiClient
             $url .= '?' . $this->buildQuery($queryParams);
         }
 
-        $opts = array(
-            CURLOPT_FRESH_CONNECT => 1,
-            CURLOPT_CONNECTTIMEOUT => 60,
-            CURLOPT_TIMEOUT => 120,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_MAXREDIRS => 3,
-            CURLOPT_USERAGENT => 'Php-Client-Library-' . self::VERSION,
-            CURLOPT_CUSTOMREQUEST => $httpMethod,
-            CURLOPT_URL => $url,
-            CURLOPT_HTTPHEADER => $sendHeaders
-        );
+        $opts = $this->getCurlOpts();
+        $opts[CURLOPT_CUSTOMREQUEST] = $httpMethod;
+        $opts[CURLOPT_URL] = $url;
+        $opts[CURLOPT_HTTPHEADER] = $sendHeaders;
 
         if ($this->configuration) {
             $opts[CURLOPT_HTTPHEADER][] = 'Authorization: ' . $this->configuration->getAuthenticationHeader();
