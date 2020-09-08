@@ -23,7 +23,7 @@ date_default_timezone_set('Europe/London');
 //require_once 'send_sms_advanced_tracking_example.php';
 //require_once 'send_sms_advanced_delivery_time_window_example.php';
 //require_once 'send_sms_advanced_multiple_destinations_example.php';
-//
+//require_once 'send_sms_advanced_india_dlt_example.php';
 //require_once 'sms_scheduling_example.php';
 //
 //require_once 'sms_preview_example.php';

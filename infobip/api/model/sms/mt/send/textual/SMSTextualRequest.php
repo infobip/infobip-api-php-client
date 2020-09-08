@@ -15,6 +15,7 @@ class SMSTextualRequest implements \JsonSerializable
     private $campaignId;
     private $operatorClientId;
     private $transliteration;
+    private $regional;
 
 
     public function setFrom($from)
@@ -78,6 +79,21 @@ class SMSTextualRequest implements \JsonSerializable
         return $this->transliteration;
     }
 
+    /**
+     * @param \infobip\api\model\sms\mt\send\RegionalOptions $regional
+     */
+    public function setRegional($regional)
+    {
+        $this->regional = $regional;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\RegionalOptions
+     */
+    public function getRegional()
+    {
+        return $this->regional;
+    }
 
   /**
    * (PHP 5 &gt;= 5.4.0)<br/>

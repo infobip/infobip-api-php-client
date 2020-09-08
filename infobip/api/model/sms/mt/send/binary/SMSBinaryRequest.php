@@ -17,6 +17,10 @@ class SMSBinaryRequest implements \JsonSerializable
     private $binary;
     private $campaignId;
     private $operatorClientId;
+    /**
+     * @var \infobip\api\model\sms\mt\send\RegionalOptions
+     */
+    private $regional;
 
 
     public function setFrom($from)
@@ -76,6 +80,16 @@ class SMSBinaryRequest implements \JsonSerializable
     public function getOperatorClientId()
     {
         return $this->operatorClientId;
+    }
+
+    public function setRegional($regional)
+    {
+        $this->regional = $regional;
+    }
+
+    public function getRegional()
+    {
+        return $this->regional;
     }
 
 
