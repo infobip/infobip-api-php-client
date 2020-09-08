@@ -42,6 +42,10 @@ class Message implements \JsonSerializable
     private $deliveryTimeWindow;
     private $campaignId;
     private $operatorClientId;
+    /**
+     * @var \infobip\api\model\sms\mt\send\RegionalOptions
+     */
+    private $regional;
 
 
     public function setFrom($from)
@@ -246,6 +250,22 @@ class Message implements \JsonSerializable
     public function getOperatorClientId()
     {
         return $this->operatorClientId;
+    }
+
+    /**
+     * @param \infobip\api\model\sms\mt\send\RegionalOptions $regional
+     */
+    public function setRegional($regional)
+    {
+        $this->regional = $regional;
+    }
+
+    /**
+     * @return \infobip\api\model\sms\mt\send\RegionalOptions
+     */
+    public function getRegional()
+    {
+        return $this->regional;
     }
 
 
