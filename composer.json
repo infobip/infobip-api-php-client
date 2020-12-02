@@ -1,7 +1,7 @@
 {
   "name": "infobip/infobip-api-php-client",
   "description": "Infobip SMS library for PHP",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "keywords": [
     "infobip",
     "sms",
@@ -22,7 +22,7 @@
   "license": "Apache-2.0",
   "minimum-stability": "dev",
   "require": {
-    "netresearch/jsonmapper": "0.9.0"
+    "netresearch/jsonmapper": "3.1.1"
   },
   "autoload": {
     "psr-4": {
