@@ -1,4 +1,5 @@
 <?php
+
 namespace infobip\api\model\omni\send;
 
 /**
@@ -48,6 +49,10 @@ class OmniAdvancedRequest implements \JsonSerializable
      * @var \infobip\api\model\omni\send\VKontakteData
      */
     private $vKontakte;
+    /**
+     * @var \infobip\api\model\omni\send\WhatsAppData
+     */
+    private $whatsApp;
     private $notify;
     private $intermediateReport;
     private $notifyUrl;
@@ -58,15 +63,6 @@ class OmniAdvancedRequest implements \JsonSerializable
      */
     private $sendAt;
 
-
-    /**
-     * @param \infobip\api\model\omni\Destination[] $destinations
-     */
-    public function setDestinations($destinations)
-    {
-        $this->destinations = $destinations;
-    }
-
     /**
      * @return \infobip\api\model\omni\Destination[]
      */
@@ -75,30 +71,32 @@ class OmniAdvancedRequest implements \JsonSerializable
         return $this->destinations;
     }
 
-    public function setBulkId($bulkId)
+    /**
+     * @param  \infobip\api\model\omni\Destination[]  $destinations
+     */
+    public function setDestinations($destinations)
     {
-        $this->bulkId = $bulkId;
+        $this->destinations = $destinations;
     }
+
     public function getBulkId()
     {
         return $this->bulkId;
     }
 
-    public function setScenarioKey($scenarioKey)
+    public function setBulkId($bulkId)
     {
-        $this->scenarioKey = $scenarioKey;
+        $this->bulkId = $bulkId;
     }
+
     public function getScenarioKey()
     {
         return $this->scenarioKey;
     }
 
-    /**
-     * @param \infobip\api\model\omni\send\SmsData $sms
-     */
-    public function setSms($sms)
+    public function setScenarioKey($scenarioKey)
     {
-        $this->sms = $sms;
+        $this->scenarioKey = $scenarioKey;
     }
 
     /**
@@ -110,11 +108,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\ParsecoData $parseco
+     * @param  \infobip\api\model\omni\send\SmsData  $sms
      */
-    public function setParseco($parseco)
+    public function setSms($sms)
     {
-        $this->parseco = $parseco;
+        $this->sms = $sms;
     }
 
     /**
@@ -126,11 +124,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\ViberData $viber
+     * @param  \infobip\api\model\omni\send\ParsecoData  $parseco
      */
-    public function setViber($viber)
+    public function setParseco($parseco)
     {
-        $this->viber = $viber;
+        $this->parseco = $parseco;
     }
 
     /**
@@ -142,11 +140,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\VoiceData $voice
+     * @param  \infobip\api\model\omni\send\ViberData  $viber
      */
-    public function setVoice($voice)
+    public function setViber($viber)
     {
-        $this->voice = $voice;
+        $this->viber = $viber;
     }
 
     /**
@@ -158,11 +156,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\EmailData $email
+     * @param  \infobip\api\model\omni\send\VoiceData  $voice
      */
-    public function setEmail($email)
+    public function setVoice($voice)
     {
-        $this->email = $email;
+        $this->voice = $voice;
     }
 
     /**
@@ -174,11 +172,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\PushData $push
+     * @param  \infobip\api\model\omni\send\EmailData  $email
      */
-    public function setPush($push)
+    public function setEmail($email)
     {
-        $this->push = $push;
+        $this->email = $email;
     }
 
     /**
@@ -190,11 +188,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\FacebookData $facebook
+     * @param  \infobip\api\model\omni\send\PushData  $push
      */
-    public function setFacebook($facebook)
+    public function setPush($push)
     {
-        $this->facebook = $facebook;
+        $this->push = $push;
     }
 
     /**
@@ -206,11 +204,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\LineData $line
+     * @param  \infobip\api\model\omni\send\FacebookData  $facebook
      */
-    public function setLine($line)
+    public function setFacebook($facebook)
     {
-        $this->line = $line;
+        $this->facebook = $facebook;
     }
 
     /**
@@ -222,11 +220,11 @@ class OmniAdvancedRequest implements \JsonSerializable
     }
 
     /**
-     * @param \infobip\api\model\omni\send\VKontakteData $vKontakte
+     * @param  \infobip\api\model\omni\send\LineData  $line
      */
-    public function setVKontakte($vKontakte)
+    public function setLine($line)
     {
-        $this->vKontakte = $vKontakte;
+        $this->line = $line;
     }
 
     /**
@@ -237,10 +235,35 @@ class OmniAdvancedRequest implements \JsonSerializable
         return $this->vKontakte;
     }
 
+    /**
+     * @param  \infobip\api\model\omni\send\VKontakteData  $vKontakte
+     */
+    public function setVKontakte($vKontakte)
+    {
+        $this->vKontakte = $vKontakte;
+    }
+
+    /**
+     * @return \infobip\api\model\omni\send\WhatsAppData
+     */
+    public function getWhatsApp()
+    {
+        return $this->whatsApp;
+    }
+
+    /**
+     * @param  \infobip\api\model\omni\send\WhatsAppData  $whatsApp
+     */
+    public function setWhatsApp($whatsApp)
+    {
+        $this->whatsApp = $whatsApp;
+    }
+
     public function setNotify($notify)
     {
         $this->notify = $notify;
     }
+
     public function isNotify()
     {
         return $this->notify;
@@ -250,44 +273,40 @@ class OmniAdvancedRequest implements \JsonSerializable
     {
         $this->intermediateReport = $intermediateReport;
     }
+
     public function isIntermediateReport()
     {
         return $this->intermediateReport;
+    }
+
+    public function getNotifyUrl()
+    {
+        return $this->notifyUrl;
     }
 
     public function setNotifyUrl($notifyUrl)
     {
         $this->notifyUrl = $notifyUrl;
     }
-    public function getNotifyUrl()
+
+    public function getNotifyContentType()
     {
-        return $this->notifyUrl;
+        return $this->notifyContentType;
     }
 
     public function setNotifyContentType($notifyContentType)
     {
         $this->notifyContentType = $notifyContentType;
     }
-    public function getNotifyContentType()
-    {
-        return $this->notifyContentType;
-    }
 
-    public function setCallbackData($callbackData)
-    {
-        $this->callbackData = $callbackData;
-    }
     public function getCallbackData()
     {
         return $this->callbackData;
     }
 
-    /**
-     * @param \DateTime $sendAt
-     */
-    public function setSendAt($sendAt)
+    public function setCallbackData($callbackData)
     {
-        $this->sendAt = new \infobip\api\model\FormattedDateTime($sendAt);
+        $this->callbackData = $callbackData;
     }
 
     /**
@@ -298,16 +317,24 @@ class OmniAdvancedRequest implements \JsonSerializable
         return $this->sendAt;
     }
 
+    /**
+     * @param  \DateTime  $sendAt
+     */
+    public function setSendAt($sendAt)
+    {
+        $this->sendAt = new \infobip\api\model\FormattedDateTime($sendAt);
+    }
 
-  /**
-   * (PHP 5 &gt;= 5.4.0)<br/>
-   * Specify data which should be serialized to JSON
-   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-   * @return mixed data which can be serialized by <b>json_encode</b>,
-   * which is a value of any type other than a resource.
-   */
-  function jsonSerialize()
-  {
-      return get_object_vars($this);
-  }
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     *
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }

@@ -15,6 +15,7 @@ class OmniChannel
     const FACEBOOK = "FACEBOOK";
     const LINE = "LINE";
     const VKONTAKTE = "VKONTAKTE";
+    const WHATSAPP = "WHATSAPP";
 
     public static function values() {
         return [
@@ -26,7 +27,8 @@ class OmniChannel
             OmniChannel::VIBER,
             OmniChannel::FACEBOOK,
             OmniChannel::LINE,
-            OmniChannel::VKONTAKTE
+            OmniChannel::VKONTAKTE,
+            OmniChannel::WHATSAPP,
         ];
     }
 

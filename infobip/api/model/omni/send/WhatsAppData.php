@@ -1,73 +1,69 @@
 <?php
+
 namespace infobip\api\model\omni\send;
 
 /**
  * This is a generated class and is not intended for modification!
  */
-class WhassappData implements \JsonSerializable
+class WhatsAppData implements \JsonSerializable
 {
-    private $type;
-    private $url;
-    private $text;
-    private $validityPeriod;
-    private $validityPeriodTimeUnit;
+    private $templateName;
+    private $templateNamespace;
+    private $templateData;
+    private $language;
 
 
-    public function setType($type)
+    public function setTemplateName($templateName)
     {
-        $this->type = $type;
-    }
-    public function getType()
-    {
-        return $this->type;
+        $this->templateName = $templateName;
     }
 
-    public function setUrl($url)
+    public function getTemplateName()
     {
-        $this->url = $url;
-    }
-    public function getUrl()
-    {
-        return $this->url;
+        return $this->templateName;
     }
 
-    public function setText($text)
+    public function setTemplateNamespace($templateNamespace)
     {
-        $this->text = $text;
-    }
-    public function getText()
-    {
-        return $this->text;
+        $this->templateNamespace = $templateNamespace;
     }
 
-    public function setValidityPeriod($validityPeriod)
+    public function getTemplateNamespace()
     {
-        $this->validityPeriod = $validityPeriod;
-    }
-    public function getValidityPeriod()
-    {
-        return $this->validityPeriod;
+        return $this->templateNamespace;
     }
 
-    public function setValidityPeriodTimeUnit($validityPeriodTimeUnit)
+    public function setTemplateData($templateData)
     {
-        $this->validityPeriodTimeUnit = $validityPeriodTimeUnit;
+        $this->templateData = $templateData;
     }
-    public function getValidityPeriodTimeUnit()
+
+    public function getTemplateData()
     {
-        return $this->validityPeriodTimeUnit;
+        return $this->templateData;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 
 
-  /**
-   * (PHP 5 &gt;= 5.4.0)<br/>
-   * Specify data which should be serialized to JSON
-   * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-   * @return mixed data which can be serialized by <b>json_encode</b>,
-   * which is a value of any type other than a resource.
-   */
-  function jsonSerialize()
-  {
-      return get_object_vars($this);
-  }
+    /**
+     * (PHP 5 &gt;= 5.4.0)<br/>
+     * Specify data which should be serialized to JSON
+     *
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     */
+    function jsonSerialize()
+    {
+        return get_object_vars($this);
+    }
 }
