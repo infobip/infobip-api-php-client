@@ -1,6 +1,6 @@
 # Infobip API PHP Client
 
-[![Packagist](https://badge.fury.io/ph/infobip%2Finfobip-api-php-client.svg)](https://badge.fury.io/ph/infobip%2Finfobip-api-php-client)
+[![Packagist](https://badgen.net/packagist/v/infobip/infobip-api-php-client)](https://packagist.org/packages/infobip/infobip-api-php-client)
 [![MIT License](https://badgen.net/github/license/infobip/infobip-api-php-client)](https://opensource.org/licenses/MIT)
 
 This is a PHP Client for Infobip API and you can use it as a dependency to add [Infobip APIs][apidocs] to your application.
