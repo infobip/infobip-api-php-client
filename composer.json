@@ -1,55 +1,42 @@
 {
-  "name": "infobip/infobip-api-php-client",
-  "description": "Infobip SMS library for PHP",
-  "version": "2.5.0",
-  "keywords": [
-    "infobip",
-    "sms",
-    "hlr",
-    "msisdn",
-    "api"
-  ],
-  "homepage": "http://dev.infobip.com",
-  "authors": [
-    {
-      "name": "",
-      "email": "libraries@infobip.com"
+    "name": "infobip/infobip-api-php-client",
+    "description": "PHP library for consuming Infobip's API",
+    "version": "3.0.0",
+    "keywords": [
+        "infobip",
+        "sms",
+        "php",
+        "tfa",
+        "sdk",
+        "rest",
+        "api",
+        "msisdn",
+        "2fa",
+        "openapi"
+    ],
+    "homepage": "https://www.infobip.com",
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Infobip Support",
+            "email": "support@infobip.com",
+            "homepage": "https://www.infobip.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.5"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.12"
+    },
+    "autoload": {
+        "psr-4": { "Infobip\\" : "Infobip/" }
+    },
+    "scripts": {
+        "post-update-cmd": "vendor/bin/php-cs-fixer fix Infobip"
     }
-  ],
-  "support": {
-    "email": "support@infobip.com"
-  },
-  "license": "Apache-2.0",
-  "minimum-stability": "dev",
-  "require": {
-    "netresearch/jsonmapper": "3.1.1"
-  },
-  "autoload": {
-    "psr-4": {
-      "infobip\\": "infobip/",
-      "infobip\\api\\": "infobip/api/",
-      "infobip\\api\\client\\": "infobip/api/client/",
-      "infobip\\api\\configuration\\": "infobip/api/configuration/",
-      "infobip\\api\\model\\": "infobip/api/model/",
-      "infobip\\api\\model\\account\\": "infobip/api/model/account/",
-      "infobip\\api\\model\\conversion\\": "infobip/api/model/conversion/",
-      "infobip\\api\\model\\nc\\": "infobip/api/model/nc/",
-      "infobip\\api\\model\\nc\\logs\\": "infobip/api/model/nc/logs/",
-      "infobip\\api\\model\\nc\\notify\\": "infobip/api/model/nc/notify/",
-      "infobip\\api\\model\\nc\\query\\": "infobip/api/model/nc/query/",
-      "infobip\\api\\model\\sms\\": "infobip/api/model/sms/",
-      "infobip\\api\\model\\sms\\mo\\": "infobip/api/model/sms/mo/",
-      "infobip\\api\\model\\sms\\mo\\logs\\": "infobip/api/model/sms/mo/logs/",
-      "infobip\\api\\model\\sms\\mo\\reports\\": "infobip/api/model/sms/mo/reports/",
-      "infobip\\api\\model\\sms\\mt\\": "infobip/api/model/sms/mt/",
-      "infobip\\api\\model\\sms\\mt\\bulks\\": "infobip/api/model/sms/mt/bulks/",
-      "infobip\\api\\model\\sms\\mt\\bulks\\status\\": "infobip/api/model/sms/mt/bulks/status/",
-      "infobip\\api\\model\\sms\\mt\\logs\\": "infobip/api/model/sms/mt/logs/",
-      "infobip\\api\\model\\sms\\mt\\reports\\": "infobip/api/model/sms/mt/reports/",
-      "infobip\\api\\model\\sms\\mt\\send\\": "infobip/api/model/sms/mt/send/",
-      "infobip\\api\\model\\sms\\mt\\send\\binary\\": "infobip/api/model/sms/mt/send/binary/",
-      "infobip\\api\\model\\sms\\mt\\send\\preview\\": "infobip/api/model/sms/mt/send/preview/",
-      "infobip\\api\\model\\sms\\mt\\send\\textual\\": "infobip/api/model/sms/mt/send/textual/"
-    }
-  }
 }

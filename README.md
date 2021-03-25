@@ -1,202 +1,177 @@
-# Infobip API PHP client
+# Infobip API PHP Client
 
-## Prerequisites
+[![Packegist](https://badgen.net/packagist/v/infobip/infobip-api-php-client)](https://packagist.org/packages/twilio/sdk?query=infobip-api-php-client)
+[![MIT License](https://badgen.net/github/license/infobip/infobip-api-php-client)](https://opensource.org/licenses/MIT)
 
-- You have installed a [PHP interpreter](http://php.net/manual/en/install.php) (minimal required version is 5.6).
-- You have installed [Composer](https://getcomposer.org/download).
+This is a PHP Client for Infobip API and you can use it as a dependency to add [Infobip APIs][apidocs] to your application.
+To use this, you'll need an Infobip account. If not already having one, you can create a [free trial][freetrial] account [here][signup].
+
+Built on top of [OpenAPI Specification](https://swagger.io/specification/), powered by [OpenAPI Generator](https://openapi-generator.tech/).
+
+<img src="https://udesigncss.com/wp-content/uploads/2020/01/Infobip-logo-transparent.png" height="124px" alt="Infobip" />
+
+#### Table of contents:
+* [Documentation](#documentation)
+* [General Info](#general-info)
+* [Installation](#installation)
+* [Quickstart](#quickstart)
+* [Ask for help](#ask-for-help)
+
+## Documentation
+
+Infobip API Documentation can be found [here][apidocs].
+
+## General Info
+For `infobip-api-php-client` versioning we use [Semantic Versioning][semver] scheme.
+
+Published under [MIT License][license].
+
+## PHP versions
+All versions above 7.2
 
 ## Installation
 
-For using Infobip API PHP client in your project, you have to add the following to your `composer.json` file:
+#### Using Composer
+To start using the library add it as dependecy in your `composer.json` file like shown below.
+```json
+"require": {
+	"infobip/infobip-api-php-client": "3.0.0"
+}
+```
+And simply run `composer install` to download dependencies.
+
+#### Without Composer
+If your setup prevents you from using `composer` you can manually download this package and all of its dependencies and reference them from your code. However, there are solutions that can automate this process.
+One of them is `php-download` online tool. You can use it to find pre-composed [infobip client package](https://php-download.com/package/infobip/infobip-api-php-client), download it from there and use in your project without manually collecting the dependencies.
+
+## Quickstart
+
+#### Initialize the Configuration & HTTP client
+
+We support multiple authentication methods, e.g. you can use [API Key Header](https://www.infobip.com/docs/essentials/api-authentication#api-key-header), in this case, `API_KEY_PREFIX` will be "App".
+
+The `API_KEY` can be created via the [web interface](https://portal.infobip.com/settings/accounts/api-keys).
+
+To see your `URL_BASE_PATH`, log in to the [Infobip API documentation][apidocs] hub with your Infobip credentials.
+
+```php
+    $configuration = (new Configuration())
+        ->setHost(URL_BASE_PATH)
+        ->setApiKeyPrefix('Authorization', API_KEY_PREFIX)
+        ->setApiKey('Authorization', API_KEY);
+
+    $client = new GuzzleHttp\Client();
+```
+
+#### Send an SMS
+Simple example for sending an SMS message.
+
+```php
+    $sendSmsApi = new SendSMSApi($client, $configuration);
+    $destination = (new SmsDestination())->setTo('41793026727');
+    $message = (new SmsTextualMessage())
+        ->setFrom('InfoSMS')
+        ->setText('This is a dummy SMS message sent using infobip-api-php-client')
+        ->setDestinations([$destination]);
+    $request = (new SmsAdvancedTextualRequest())
+        ->setMessages([$message]);
+```
+```php
+    try {
+        $smsResponse = $sendSmsApi->sendSmsMessage($request);
+    } catch (Throwable $apiException) {
+        // HANDLE THE EXCEPTION
+    }
+```
+
+Fields provided within `ApiException` object are `code` referring to the HTTP Code response, as well as the `responseHeaders` and `responseBody`.
+Also, you can get the deserialized response body using `getResponseObject` method.
+
+```php
+    $apiException->getCode();
+    $apiException->getResponseHeaders();
+    $apiException->getResponseBody();
+    $apiException->getResponseObject();
+```
+
+Additionally, you can pull out the `bulkId` and `messageId`(s) from `SmsResponse` object and use them to fetch a delivery report for given message or bulk.
+Bulk ID will be received only when you send a message to more than one destination address or multiple messages in a single request.
+
+```php
+    $bulkId = $smsResponse->getBulkId();
+    $messageId = $smsResponse->getMessages()[0]->getMessageId();
+```
+
+#### Receive SMS message delivery report
+For each SMS that you send out, we can send you a message delivery report in real time. All you need to do is specify your endpoint, e.g. `https://{yourDomain}/delivery-reports`, when sending SMS in `notifyUrl` field of `SmsTextualMessage`, or subscribe for reports by contacting our support team.
+
+You can use data models from the library and the pre-configured `\Infobip\ObjectSerializer` serializer.
+
+Example of webhook implementation:
+
+```php
+    use \Infobip\ObjectSerializer;
+
+    $data = file_get_contents("php://input");
+    $type = '\Infobip\Model\SmsDeliveryResult';
+    $deliveryReports = ObjectSerializer::deserialize($data, $type);
+
+    foreach ($deliveryReports->getResults() as $report) {
+        echo $report->getMessageId() . " - " . $report->getStatus()->getName() . "\n";
+    }
+```
+If you prefer to use your own serializer, please pay attention to the supported [date format](https://www.infobip.com/docs/essentials/integration-best-practices#date-formats).
+
+#### Fetching delivery reports
+If you are for any reason unable to receive real time delivery reports on your endpoint, you can use `messageId` or `bulkId` to fetch them.
+Each request will return a batch of delivery reports - only once.
+
+```php
+    $numberOfReportsLimit = 10;
+    $deliveryReports = $sendSmsApi->getOutboundSmsMessageDeliveryReports($bulkId, $messageId, $numberOfReportsLimit);
+    foreach ($deliveryReports->getResults() as $report) {
+        echo $report->getMessageId() . " - " . $report->getStatus()->getName() . "\n";
+    }
+```
 
-	"require": {
-		"infobip/infobip-api-php-client": "dev-master"
-	}
+#### Unicode & SMS preview
+Infobip API supports Unicode characters and automatically detects encoding. Unicode and non-standard GSM characters use additional space, avoid unpleasant surprises and check how different message configurations will affect your message text, number of characters and message parts.
 
-and run `composer install` command inside the project's root folder.
+```php
+    $previewResponse = $sendSmsApi->previewSmsMessage((new SmsPreviewRequest())
+        ->setText("Let's see how many characters will remain unused in this message."));
+    echo $previewResponse;
+```
 
-If your setup prevents you from using `composer` you can manually download this package and all of its dependencies and reference them from your code. However, there are solutions that can automate this process. One of them is `php-download` online tool. You can use it to find pre-composed [infobip client package](https://php-download.com/package/infobip/infobip-api-php-client), download it from there and use in your project without manually collecting the dependencies.
+#### Receive incoming SMS
+If you want to receive SMS messages from your subscribers we can have them delivered to you in real time. When you buy and configure a number capable of receiving SMS, specify your endpoint as explained [here](https://www.infobip.com/docs/api#channels/sms/receive-inbound-sms-messages),
+e.g. `https://{yourDomain}/incoming-sms`.
+Example of webhook implementation:
 
-## Running examples
+```php
+    use \Infobip\ObjectSerializer;
 
-Before you start any of the examples, you have to populate specific data (sender address, receiver address, etc.) to `infobip/examples/examples.php` file.
+    $data = file_get_contents("php://input");
+    $type = '\Infobip\Model\SmsInboundMessageResult';
+    $messages = ObjectSerializer::deserialize($data, $type);
 
-Then, you should uncomment the example you want to test and run the PHP script with your **username** and **password** (in plain text) as arguments like the following:
+    foreach ($messages->getResults() as $message) {
+        echo $message-> getFrom() . " - " . $message-> getCleanText() . "\n";
+    }
+```
 
-	php infobip/examples/examples.php YOUR_USERNAME YOUR_PASSWORD
+#### Two-Factor Authentication (2FA)
+For 2FA quick start guide please check [these examples](two-factor-authentication.md).
 
-### Basic messaging example
+## Ask for help
 
-The first thing that needs to be done is to include `autoload.php` and to initialize the messaging client:
+Feel free to open issues on the repository for any issue or feature request. As per pull requests, for details check the `CONTRIBUTING` [file][contributing] related to it - in short, we will not merge any pull requests, this code is auto-generated.
 
-	require_once '<PATH-TO-VENDOR-FOLDER>/autoload.php';
+If it is, however, something that requires our imminent attention feel free to contact us @ [support@infobip.com](mailto:support@infobip.com).
 
-    $client = new infobip\api\client\SendSingleTextualSms(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-You are basically logging in to Infobip, so an exception will be thrown if the username and/or password are incorrect. 
-
-The next step is to prepare the message:
-
-	$requestBody = new infobip\api\model\sms\mt\send\textual\SMSTextualRequest();
-	$requestBody->setFrom(FROM);
-	$requestBody->setTo(TO);
-	$requestBody->setText("This is an example message.");
-
-Now you are ready to send the message:
-
-	$response = $client->execute($requestBody);
-
-### Messaging with notification push example
-
-For sending SMS and expecting delivery report to be pushed to some notify URL, you have to initialize the messaging client:
-
-	$client = new infobip\api\client\SendMultipleTextualSmsAdvanced(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-And prepare the advanced message:
-
-	$destination = new infobip\api\model\Destination();
-	$destination->setTo(TO);
-
-	$message = new infobip\api\model\sms\mt\send\Message();
-	$message->setFrom(FROM);
-	$message->setDestinations([$destination]);
-	$message->setText("This is an example message.");
-	$message->setNotifyUrl(NOTIFY_URL);
-
-	$requestBody = new infobip\api\model\sms\mt\send\textual\SMSAdvancedTextualRequest();
-	$requestBody->setMessages([$message]);
-
-When the delivery notification is pushed to your server as a HTTP POST request, you could process body of the message with the following code:
-
-	$mapper = new JsonMapper();
-	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\sms\mt\reports\SMSReportResponse());
-
-	for ($i = 0; $i < count($responseObject->getResults()); ++$i) {
-		$result = $responseObject->getResults()[$i];
-		echo "Message ID: " . $result->getMessageId() . "\n";
-		echo "Sent at: " . $result->getSentAt()->format('y-M-d H:m:s T') . "\n";
-		echo "Receiver: " . $result->getTo() . "\n";
-		echo "Status: " . $result->getStatus()->getName() . "\n";
-		echo "Price: " . $result->getPrice()->getPricePerMessage() . " " . $result->getPrice()->getCurrency() . "\n\n";
-	}
-
-### Sending message with special characters example
-
-If you want to send message with special characters, this is how you initialize the client and prepare your message:
-
-	$client = new infobip\api\client\SendMultipleTextualSmsAdvanced(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-	$destination = new infobip\api\model\Destination();
-	$destination->setTo(TO);
-
-	$language = new infobip\api\model\sms\mt\send\Language();
-	//specific language code (TR stands for Turkish)
-	$language->setLanguageCode("TR");
-	//use single shift table for specific language ('false' or 'true')
-	$language->setSingleShift(true);
-	//use locking shift table for specific language ('false' or 'true')
-	$language->setLockingShift(false);
-
-	$message = new infobip\api\model\sms\mt\send\Message();
-	$message->setFrom(FROM);
-	$message->setDestinations([$destination]);
-	$message->setText("Artık Ulusal Dil Tanımlayıcısı ile Türkçe karakterli smslerinizi rahatlıkla iletebilirsiniz.");
-	$message->setLanguage($language);
-
-	$requestBody = new infobip\api\model\sms\mt\send\textual\SMSAdvancedTextualRequest();
-	$requestBody->setMessages([$message]);
-
-Currently supported languages (with their language codes) are: `Spanish - "ES"`, `Portuguese - "PT"`, `Turkish - "TR"`.
-
-### Number Context example
-
-Initialize the number context query client:
-
-    $client = new infobip\api\client\NumberContextQuery(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-Create request body:
-
-	$requestBody = new infobip\api\model\nc\query\NumberContextRequest();
-	$requestBody->setTo(TO);
-
-Retrieve the number context:
-
-	$response = $client->execute($requestBody);
-
-	$numberContext = $response->getResults()[0];
-	echo "Phone number: " . $numberContext->getTo() . "\n";
-	echo "MccMnc: " . $numberContext->getMccMnc() . "\n";
-	echo "Original country prefix: " . $numberContext->getOriginalNetwork()->getCountryPrefix() . "\n";
-	echo "Original network prefix: " . $numberContext->getOriginalNetwork()->getNetworkPrefix() . "\n";
-	echo "Serving MSC: " . $numberContext->getServingMSC();
-
-### Number Context with notification push example
-
-Similar to the previous example, but this time you must set the notification URL where the result will be pushed:
-
-	$client = new infobip\api\client\NumberContextNotify(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-	$requestBody = new infobip\api\model\nc\notify\NumberContextRequest();
-	$requestBody->setTo(TO);
-	$requestBody->setNotifyUrl(NOTIFY_URL);
-
-	$response = $client->execute($requestBody);
-
-When the number context notification is pushed to your server as a HTTP POST request, you could process the body of the message with the following code: 
-
-	$mapper = new JsonMapper();
-	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\nc\query\NumberContextResponse());
-
-	$numberContext = $responseObject->getResults()[0];
-	echo "Phone number: " . $numberContext->getTo() . "\n";
-	echo "MccMnc: " . $numberContext->getMccMnc() . "\n";
-	echo "Original country prefix: " . $numberContext->getOriginalNetwork()->getCountryPrefix() . "\n";
-	echo "Original network prefix: " . $numberContext->getOriginalNetwork()->getNetworkPrefix() . "\n";
-	echo "Status: " . $numberContext->getStatus()->getName();
-
-### Retrieve inbound messages example
-
-The client that has to be initialized is:
-
-	$client = new infobip\api\client\GetReceivedMessages(new infobip\api\configuration\BasicAuthConfiguration(USERNAME, PASSWORD));
-
-Then you have to create execution context:
-
-	$context = new infobip\api\model\sms\mo\reports\GetReceivedMessagesExecuteContext;
-
-If you want to filter inbound messages, you can do it by setting the value to any of execute context class fields.
-
-The response type will be `\infobip\api\model\sms\mo\reports\MOReportResponse`:
-
-    $response = $client->execute($context);
-
-	for ($i = 0; $i < count($response->getResults()); ++$i) {
-		$result = $response->getResults()[$i];
-		echo "Message ID: " . $result->getMessageId() . "\n";
-		echo "Received at: " . $result->getReceivedAt()->format('y-M-d H:m:s T') . "\n";
-		echo "Sender: " . $result->getFrom() . "\n";
-		echo "Receiver: " . $result->getTo() . "\n";
-		echo "Message text: " . $result->getText() . "\n\n";
-	}
-
-### Inbound message push example
-
-The subscription to receive inbound messages can be set up on [Infobip](https://www.infobip.com) platform.
-When the inbound message notification is pushed to your server as a HTTP POST request, you could process body of the message with the following code:
-
-	$mapper = new JsonMapper();
-	$responseObject = $mapper->map(json_decode($responseBody), new infobip\api\model\sms\mo\reports\MOReportResponse());
-
-	$result = $responseObject->getResults()[0];
-	echo "Message ID: " . $result->getMessageId() . "\n";
-	echo "Received at: " . $result->getReceivedAt()->format('y-M-d H:m:s T') . "\n";
-	echo "Sender: " . $result->getFrom() . "\n";
-	echo "Receiver: " . $result->getTo() . "\n";
-	echo "Message text: " . $result->getText() . "\n";
-	echo "Keyword: " . $result->getKeyword() . "\n";
-	echo "Clean text: " . $result->getCleanText() . "\n";
-	echo "Sms count: " . $result->getSmsCount() . "\n";
-
-## License
-
-This library is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
+[apidocs]: https://www.infobip.com/docs/api
+[freetrial]: https://www.infobip.com/docs/freetrial
+[signup]: https://www.infobip.com/signup
+[semver]: https://semver.org
+[license]: LICENSE
+[contributing]: CONTRIBUTING.md
