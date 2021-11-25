@@ -27,6 +27,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 use Infobip\ApiException;
 use Infobip\Configuration;
@@ -210,7 +211,6 @@ class SendSmsApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
         // query params
         if ($bulkId !== null) {
@@ -228,20 +228,16 @@ class SendSmsApi
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -253,7 +249,7 @@ class SendSmsApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -546,7 +542,6 @@ class SendSmsApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
         // query params
         if ($from !== null) {
@@ -592,20 +587,16 @@ class SendSmsApi
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -617,7 +608,7 @@ class SendSmsApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -865,22 +856,15 @@ class SendSmsApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($smsPreviewRequest)) {
@@ -890,7 +874,9 @@ class SendSmsApi
                 $httpBody = $smsPreviewRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -902,7 +888,7 @@ class SendSmsApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1150,22 +1136,15 @@ class SendSmsApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($smsAdvancedBinaryRequest)) {
@@ -1175,7 +1154,9 @@ class SendSmsApi
                 $httpBody = $smsAdvancedBinaryRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -1187,7 +1168,7 @@ class SendSmsApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1435,22 +1416,15 @@ class SendSmsApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($smsAdvancedTextualRequest)) {
@@ -1460,7 +1434,9 @@ class SendSmsApi
                 $httpBody = $smsAdvancedTextualRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -1472,7 +1448,7 @@ class SendSmsApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {

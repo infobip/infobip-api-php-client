@@ -203,6 +203,10 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
         if ($this->container['days'] === null) {
             $invalidProperties[] = "'days' can't be null";
         }
+        if ((count($this->container['days']) < 1)) {
+            $invalidProperties[] = "invalid value for 'days', number of items must be greater than or equal to 1.";
+        }
+
         return $invalidProperties;
     }
 
@@ -237,6 +241,9 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
      */
     public function setDays($days)
     {
+        if ((count($days) < 1)) {
+            throw new \InvalidArgumentException('invalid length for $days when calling SmsDeliveryTimeWindow., number of items must be greater than or equal to 1.');
+        }
         $this->container['days'] = $days;
 
         return $this;

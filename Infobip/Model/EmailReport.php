@@ -1,6 +1,6 @@
 <?php
 /**
- * TfaApplicationConfiguration
+ * EmailReport
  *
  * PHP version 7.2
  *
@@ -27,7 +27,7 @@ use \ArrayAccess;
 use \Infobip\ObjectSerializer;
 
 /**
- * TfaApplicationConfiguration Class Doc Comment
+ * EmailReport Class Doc Comment
  *
  * @category Class
  * @package  Infobip
@@ -37,7 +37,7 @@ use \Infobip\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonSerializable
+class EmailReport implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -46,7 +46,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       *
       * @var string
       */
-    protected static $openAPIModelName = 'TfaApplicationConfiguration';
+    protected static $openAPIModelName = 'EmailReport';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -54,12 +54,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       * @var string[]
       */
     protected static $openAPITypes = [
-        'allowMultiplePinVerifications' => 'bool',
-        'pinAttempts' => 'int',
-        'pinTimeToLive' => 'string',
-        'sendPinPerApplicationLimit' => 'string',
-        'sendPinPerPhoneNumberLimit' => 'string',
-        'verifyPinLimit' => 'string'
+        'bulkId' => 'string',
+        'messageId' => 'string',
+        'to' => 'string',
+        'sentAt' => '\DateTime',
+        'doneAt' => '\DateTime',
+        'messageCount' => 'int',
+        'price' => '\Infobip\Model\EmailPrice',
+        'status' => '\Infobip\Model\EmailStatus',
+        'error' => '\Infobip\Model\EmailReportError'
     ];
 
     /**
@@ -70,12 +73,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'allowMultiplePinVerifications' => null,
-        'pinAttempts' => 'int32',
-        'pinTimeToLive' => null,
-        'sendPinPerApplicationLimit' => null,
-        'sendPinPerPhoneNumberLimit' => null,
-        'verifyPinLimit' => null
+        'bulkId' => null,
+        'messageId' => null,
+        'to' => null,
+        'sentAt' => 'date-time',
+        'doneAt' => 'date-time',
+        'messageCount' => 'int32',
+        'price' => null,
+        'status' => null,
+        'error' => null
     ];
 
     /**
@@ -105,12 +111,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $attributeMap = [
-        'allowMultiplePinVerifications' => 'allowMultiplePinVerifications',
-        'pinAttempts' => 'pinAttempts',
-        'pinTimeToLive' => 'pinTimeToLive',
-        'sendPinPerApplicationLimit' => 'sendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'sendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'verifyPinLimit'
+        'bulkId' => 'bulkId',
+        'messageId' => 'messageId',
+        'to' => 'to',
+        'sentAt' => 'sentAt',
+        'doneAt' => 'doneAt',
+        'messageCount' => 'messageCount',
+        'price' => 'price',
+        'status' => 'status',
+        'error' => 'error'
     ];
 
     /**
@@ -119,12 +128,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $setters = [
-        'allowMultiplePinVerifications' => 'setAllowMultiplePinVerifications',
-        'pinAttempts' => 'setPinAttempts',
-        'pinTimeToLive' => 'setPinTimeToLive',
-        'sendPinPerApplicationLimit' => 'setSendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'setSendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'setVerifyPinLimit'
+        'bulkId' => 'setBulkId',
+        'messageId' => 'setMessageId',
+        'to' => 'setTo',
+        'sentAt' => 'setSentAt',
+        'doneAt' => 'setDoneAt',
+        'messageCount' => 'setMessageCount',
+        'price' => 'setPrice',
+        'status' => 'setStatus',
+        'error' => 'setError'
     ];
 
     /**
@@ -133,12 +145,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $getters = [
-        'allowMultiplePinVerifications' => 'getAllowMultiplePinVerifications',
-        'pinAttempts' => 'getPinAttempts',
-        'pinTimeToLive' => 'getPinTimeToLive',
-        'sendPinPerApplicationLimit' => 'getSendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'getSendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'getVerifyPinLimit'
+        'bulkId' => 'getBulkId',
+        'messageId' => 'getMessageId',
+        'to' => 'getTo',
+        'sentAt' => 'getSentAt',
+        'doneAt' => 'getDoneAt',
+        'messageCount' => 'getMessageCount',
+        'price' => 'getPrice',
+        'status' => 'getStatus',
+        'error' => 'getError'
     ];
 
     /**
@@ -201,12 +216,15 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      */
     public function __construct(array $data = null)
     {
-        $this->container['allowMultiplePinVerifications'] = $data['allowMultiplePinVerifications'] ?? true;
-        $this->container['pinAttempts'] = $data['pinAttempts'] ?? 10;
-        $this->container['pinTimeToLive'] = $data['pinTimeToLive'] ?? '15m';
-        $this->container['sendPinPerApplicationLimit'] = $data['sendPinPerApplicationLimit'] ?? '10000/1d';
-        $this->container['sendPinPerPhoneNumberLimit'] = $data['sendPinPerPhoneNumberLimit'] ?? '3/1d';
-        $this->container['verifyPinLimit'] = $data['verifyPinLimit'] ?? '1/3s';
+        $this->container['bulkId'] = $data['bulkId'] ?? null;
+        $this->container['messageId'] = $data['messageId'] ?? null;
+        $this->container['to'] = $data['to'] ?? null;
+        $this->container['sentAt'] = $data['sentAt'] ?? null;
+        $this->container['doneAt'] = $data['doneAt'] ?? null;
+        $this->container['messageCount'] = $data['messageCount'] ?? null;
+        $this->container['price'] = $data['price'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
+        $this->container['error'] = $data['error'] ?? null;
     }
 
     /**
@@ -234,145 +252,217 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
 
 
     /**
-     * Gets allowMultiplePinVerifications
+     * Gets bulkId
      *
-     * @return bool|null
+     * @return string|null
      */
-    public function getAllowMultiplePinVerifications()
+    public function getBulkId()
     {
-        return $this->container['allowMultiplePinVerifications'];
+        return $this->container['bulkId'];
     }
 
     /**
-     * Sets allowMultiplePinVerifications
+     * Sets bulkId
      *
-     * @param bool|null $allowMultiplePinVerifications Tells if multiple PIN verifications are allowed.
+     * @param string|null $bulkId The ID that uniquely identifies bulks of request.
      *
      * @return self
      */
-    public function setAllowMultiplePinVerifications($allowMultiplePinVerifications)
+    public function setBulkId($bulkId)
     {
-        $this->container['allowMultiplePinVerifications'] = $allowMultiplePinVerifications;
+        $this->container['bulkId'] = $bulkId;
 
         return $this;
     }
 
     /**
-     * Gets pinAttempts
+     * Gets messageId
+     *
+     * @return string|null
+     */
+    public function getMessageId()
+    {
+        return $this->container['messageId'];
+    }
+
+    /**
+     * Sets messageId
+     *
+     * @param string|null $messageId The ID that uniquely identifies the sent email request.
+     *
+     * @return self
+     */
+    public function setMessageId($messageId)
+    {
+        $this->container['messageId'] = $messageId;
+
+        return $this;
+    }
+
+    /**
+     * Gets to
+     *
+     * @return string|null
+     */
+    public function getTo()
+    {
+        return $this->container['to'];
+    }
+
+    /**
+     * Sets to
+     *
+     * @param string|null $to The recipient email address.
+     *
+     * @return self
+     */
+    public function setTo($to)
+    {
+        $this->container['to'] = $to;
+
+        return $this;
+    }
+
+    /**
+     * Gets sentAt
+     *
+     * @return \DateTime|null
+     */
+    public function getSentAt()
+    {
+        return $this->container['sentAt'];
+    }
+
+    /**
+     * Sets sentAt
+     *
+     * @param \DateTime|null $sentAt Tells when the email was initiated. Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
+     *
+     * @return self
+     */
+    public function setSentAt($sentAt)
+    {
+        $this->container['sentAt'] = $sentAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets doneAt
+     *
+     * @return \DateTime|null
+     */
+    public function getDoneAt()
+    {
+        return $this->container['doneAt'];
+    }
+
+    /**
+     * Sets doneAt
+     *
+     * @param \DateTime|null $doneAt Tells when the email request was processed by Infobip
+     *
+     * @return self
+     */
+    public function setDoneAt($doneAt)
+    {
+        $this->container['doneAt'] = $doneAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets messageCount
      *
      * @return int|null
      */
-    public function getPinAttempts()
+    public function getMessageCount()
     {
-        return $this->container['pinAttempts'];
+        return $this->container['messageCount'];
     }
 
     /**
-     * Sets pinAttempts
+     * Sets messageCount
      *
-     * @param int|null $pinAttempts Number of possible PIN attempts.
+     * @param int|null $messageCount Email request count.
      *
      * @return self
      */
-    public function setPinAttempts($pinAttempts)
+    public function setMessageCount($messageCount)
     {
-        $this->container['pinAttempts'] = $pinAttempts;
+        $this->container['messageCount'] = $messageCount;
 
         return $this;
     }
 
     /**
-     * Gets pinTimeToLive
+     * Gets price
      *
-     * @return string|null
+     * @return \Infobip\Model\EmailPrice|null
      */
-    public function getPinTimeToLive()
+    public function getPrice()
     {
-        return $this->container['pinTimeToLive'];
+        return $this->container['price'];
     }
 
     /**
-     * Sets pinTimeToLive
+     * Sets price
      *
-     * @param string|null $pinTimeToLive PIN time to live. Should be in format of `{timeLength}{timeUnit}`. Here `timeLength` is an optional positive integer with a default value of 1 and `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Must not be larger that one year, although much lower values are recommended.
+     * @param \Infobip\Model\EmailPrice|null $price price
      *
      * @return self
      */
-    public function setPinTimeToLive($pinTimeToLive)
+    public function setPrice($price)
     {
-        $this->container['pinTimeToLive'] = $pinTimeToLive;
+        $this->container['price'] = $price;
 
         return $this;
     }
 
     /**
-     * Gets sendPinPerApplicationLimit
+     * Gets status
      *
-     * @return string|null
+     * @return \Infobip\Model\EmailStatus|null
      */
-    public function getSendPinPerApplicationLimit()
+    public function getStatus()
     {
-        return $this->container['sendPinPerApplicationLimit'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets sendPinPerApplicationLimit
+     * Sets status
      *
-     * @param string|null $sendPinPerApplicationLimit Overall number of requests in time interval for generating a PIN and sending an SMS using single application. Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param \Infobip\Model\EmailStatus|null $status status
      *
      * @return self
      */
-    public function setSendPinPerApplicationLimit($sendPinPerApplicationLimit)
+    public function setStatus($status)
     {
-        $this->container['sendPinPerApplicationLimit'] = $sendPinPerApplicationLimit;
+        $this->container['status'] = $status;
 
         return $this;
     }
 
     /**
-     * Gets sendPinPerPhoneNumberLimit
+     * Gets error
      *
-     * @return string|null
+     * @return \Infobip\Model\EmailReportError|null
      */
-    public function getSendPinPerPhoneNumberLimit()
+    public function getError()
     {
-        return $this->container['sendPinPerPhoneNumberLimit'];
+        return $this->container['error'];
     }
 
     /**
-     * Sets sendPinPerPhoneNumberLimit
+     * Sets error
      *
-     * @param string|null $sendPinPerPhoneNumberLimit Number of requests in time interval for generating a PIN and sending an SMS to one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param \Infobip\Model\EmailReportError|null $error error
      *
      * @return self
      */
-    public function setSendPinPerPhoneNumberLimit($sendPinPerPhoneNumberLimit)
+    public function setError($error)
     {
-        $this->container['sendPinPerPhoneNumberLimit'] = $sendPinPerPhoneNumberLimit;
-
-        return $this;
-    }
-
-    /**
-     * Gets verifyPinLimit
-     *
-     * @return string|null
-     */
-    public function getVerifyPinLimit()
-    {
-        return $this->container['verifyPinLimit'];
-    }
-
-    /**
-     * Sets verifyPinLimit
-     *
-     * @param string|null $verifyPinLimit Number of PIN verification requests in time interval from one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one day, although much lower values are recommended.
-     *
-     * @return self
-     */
-    public function setVerifyPinLimit($verifyPinLimit)
-    {
-        $this->container['verifyPinLimit'] = $verifyPinLimit;
+        $this->container['error'] = $error;
 
         return $this;
     }

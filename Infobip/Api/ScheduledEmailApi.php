@@ -1,6 +1,6 @@
 <?php
 /**
- * ScheduledSmsApi
+ * ScheduledEmailApi
  * PHP version 7.2
  *
  * @category Class
@@ -35,14 +35,14 @@ use Infobip\HeaderSelector;
 use Infobip\ObjectSerializer;
 
 /**
- * ScheduledSmsApi Class Doc Comment
+ * ScheduledEmailApi Class Doc Comment
  *
  * @category Class
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-class ScheduledSmsApi
+class ScheduledEmailApi
 {
     /**
      * @var ClientInterface
@@ -83,42 +83,42 @@ class ScheduledSmsApi
     }
 
     /**
-     * Operation getScheduledSmsMessages
+     * Operation getScheduledEmailStatuses
      *
-     * Get scheduled SMS messages
+     * Get sent email bulks status
      *
      * @param  string $bulkId bulkId (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse
+     * @return \Infobip\Model\EmailBulkStatusResponse
      */
-    public function getScheduledSmsMessages($bulkId)
+    public function getScheduledEmailStatuses($bulkId)
     {
-        list($response) = $this->getScheduledSmsMessagesWithHttpInfo($bulkId);
+        list($response) = $this->getScheduledEmailStatusesWithHttpInfo($bulkId);
         return $response;
     }
 
     /**
-     * Operation getScheduledSmsMessagesWithHttpInfo
+     * Operation getScheduledEmailStatusesWithHttpInfo
      *
-     * Get scheduled SMS messages
+     * Get sent email bulks status
      *
      * @param  string $bulkId (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkStatusResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getScheduledSmsMessagesWithHttpInfo($bulkId)
+    public function getScheduledEmailStatusesWithHttpInfo($bulkId)
     {
-        $request = $this->getScheduledSmsMessagesRequest($bulkId);
+        $request = $this->getScheduledEmailStatusesRequest($bulkId);
 
         try {
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-                return $this->getScheduledSmsMessagesResponse($response, $request->getUri());
+                return $this->getScheduledEmailStatusesResponse($response, $request->getUri());
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -128,23 +128,23 @@ class ScheduledSmsApi
                 );
             }
         } catch (ApiException $e) {
-            throw $this->getScheduledSmsMessagesApiException($e);
+            throw $this->getScheduledEmailStatusesApiException($e);
         }
     }
 
     /**
-     * Operation getScheduledSmsMessagesAsync
+     * Operation getScheduledEmailStatusesAsync
      *
-     * Get scheduled SMS messages
+     * Get sent email bulks status
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getScheduledSmsMessagesAsync($bulkId)
+    public function getScheduledEmailStatusesAsync($bulkId)
     {
-        return $this->getScheduledSmsMessagesAsyncWithHttpInfo($bulkId)
+        return $this->getScheduledEmailStatusesAsyncWithHttpInfo($bulkId)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -153,24 +153,24 @@ class ScheduledSmsApi
     }
 
     /**
-     * Operation getScheduledSmsMessagesAsyncWithHttpInfo
+     * Operation getScheduledEmailStatusesAsyncWithHttpInfo
      *
-     * Get scheduled SMS messages
+     * Get sent email bulks status
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getScheduledSmsMessagesAsyncWithHttpInfo($bulkId)
+    public function getScheduledEmailStatusesAsyncWithHttpInfo($bulkId)
     {
-        $request = $this->getScheduledSmsMessagesRequest($bulkId);
+        $request = $this->getScheduledEmailStatusesRequest($bulkId);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($request) {
-                    return $this->getScheduledSmsMessagesResponse($response, $request->getUri());
+                    return $this->getScheduledEmailStatusesResponse($response, $request->getUri());
                 },
                 function ($exception) {
                     $statusCode = $exception->getCode();
@@ -181,29 +181,29 @@ class ScheduledSmsApi
                         $response ? $response->getHeaders() : null,
                         $response ? (string) $response->getBody() : null
                     );
-                    throw $this->getScheduledSmsMessagesApiException($e);
+                    throw $this->getScheduledEmailStatusesApiException($e);
                 }
             );
     }
 
     /**
-     * Create request for operation 'getScheduledSmsMessages'
+     * Create request for operation 'getScheduledEmailStatuses'
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getScheduledSmsMessagesRequest($bulkId)
+    protected function getScheduledEmailStatusesRequest($bulkId)
     {
         // verify the required parameter 'bulkId' is set
         if ($bulkId === null || (is_array($bulkId) && count($bulkId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $bulkId when calling getScheduledSmsMessages'
+                'Missing the required parameter $bulkId when calling getScheduledEmailStatuses'
             );
         }
 
-        $resourcePath = '/sms/1/bulks';
+        $resourcePath = '/email/1/bulks/status';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -218,7 +218,7 @@ class ScheduledSmsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', 'application/xml'],
+            ['application/json'],
             []
         );
 
@@ -287,15 +287,15 @@ class ScheduledSmsApi
     }
 
     /**
-     * Create response for operation 'getScheduledSmsMessages'
+     * Create response for operation 'getScheduledEmailStatuses'
      *
      * @param \GuzzleHttp\Psr7\Response $response
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkStatusResponse|null, HTTP status code, HTTP response headers (array of strings)
      */
-    protected function getScheduledSmsMessagesResponse($response, $requestUri)
+    protected function getScheduledEmailStatusesResponse($response, $requestUri)
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -312,14 +312,21 @@ class ScheduledSmsApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailBulkStatusResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\SmsBulkResponse';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -329,81 +336,56 @@ class ScheduledSmsApi
     }
 
     /**
-     * Adapt given \Infobip\ApiException for operation 'getScheduledSmsMessages'
+     * Adapt given \Infobip\ApiException for operation 'getScheduledEmailStatuses'
      *
      * @param \Infobip\ApiException $apiException
      *
      * @return \Infobip\ApiException
      */
-    protected function getScheduledSmsMessagesApiException($apiException)
+    protected function getScheduledEmailStatusesApiException($apiException)
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode >= 400 && $statusCode <= 499) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-        if ($statusCode >= 500 && $statusCode <= 599) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\SmsBulkResponse',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 
     /**
-     * Operation getScheduledSmsMessagesStatus
+     * Operation getScheduledEmails
      *
-     * Get scheduled SMS messages status
+     * Get sent email bulks
      *
      * @param  string $bulkId bulkId (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse
+     * @return \Infobip\Model\EmailBulkScheduleResponse
      */
-    public function getScheduledSmsMessagesStatus($bulkId)
+    public function getScheduledEmails($bulkId)
     {
-        list($response) = $this->getScheduledSmsMessagesStatusWithHttpInfo($bulkId);
+        list($response) = $this->getScheduledEmailsWithHttpInfo($bulkId);
         return $response;
     }
 
     /**
-     * Operation getScheduledSmsMessagesStatusWithHttpInfo
+     * Operation getScheduledEmailsWithHttpInfo
      *
-     * Get scheduled SMS messages status
+     * Get sent email bulks
      *
      * @param  string $bulkId (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkScheduleResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getScheduledSmsMessagesStatusWithHttpInfo($bulkId)
+    public function getScheduledEmailsWithHttpInfo($bulkId)
     {
-        $request = $this->getScheduledSmsMessagesStatusRequest($bulkId);
+        $request = $this->getScheduledEmailsRequest($bulkId);
 
         try {
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-                return $this->getScheduledSmsMessagesStatusResponse($response, $request->getUri());
+                return $this->getScheduledEmailsResponse($response, $request->getUri());
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -413,23 +395,23 @@ class ScheduledSmsApi
                 );
             }
         } catch (ApiException $e) {
-            throw $this->getScheduledSmsMessagesStatusApiException($e);
+            throw $this->getScheduledEmailsApiException($e);
         }
     }
 
     /**
-     * Operation getScheduledSmsMessagesStatusAsync
+     * Operation getScheduledEmailsAsync
      *
-     * Get scheduled SMS messages status
+     * Get sent email bulks
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getScheduledSmsMessagesStatusAsync($bulkId)
+    public function getScheduledEmailsAsync($bulkId)
     {
-        return $this->getScheduledSmsMessagesStatusAsyncWithHttpInfo($bulkId)
+        return $this->getScheduledEmailsAsyncWithHttpInfo($bulkId)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -438,24 +420,24 @@ class ScheduledSmsApi
     }
 
     /**
-     * Operation getScheduledSmsMessagesStatusAsyncWithHttpInfo
+     * Operation getScheduledEmailsAsyncWithHttpInfo
      *
-     * Get scheduled SMS messages status
+     * Get sent email bulks
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getScheduledSmsMessagesStatusAsyncWithHttpInfo($bulkId)
+    public function getScheduledEmailsAsyncWithHttpInfo($bulkId)
     {
-        $request = $this->getScheduledSmsMessagesStatusRequest($bulkId);
+        $request = $this->getScheduledEmailsRequest($bulkId);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($request) {
-                    return $this->getScheduledSmsMessagesStatusResponse($response, $request->getUri());
+                    return $this->getScheduledEmailsResponse($response, $request->getUri());
                 },
                 function ($exception) {
                     $statusCode = $exception->getCode();
@@ -466,29 +448,29 @@ class ScheduledSmsApi
                         $response ? $response->getHeaders() : null,
                         $response ? (string) $response->getBody() : null
                     );
-                    throw $this->getScheduledSmsMessagesStatusApiException($e);
+                    throw $this->getScheduledEmailsApiException($e);
                 }
             );
     }
 
     /**
-     * Create request for operation 'getScheduledSmsMessagesStatus'
+     * Create request for operation 'getScheduledEmails'
      *
      * @param  string $bulkId (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getScheduledSmsMessagesStatusRequest($bulkId)
+    protected function getScheduledEmailsRequest($bulkId)
     {
         // verify the required parameter 'bulkId' is set
         if ($bulkId === null || (is_array($bulkId) && count($bulkId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $bulkId when calling getScheduledSmsMessagesStatus'
+                'Missing the required parameter $bulkId when calling getScheduledEmails'
             );
         }
 
-        $resourcePath = '/sms/1/bulks/status';
+        $resourcePath = '/email/1/bulks';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -503,7 +485,7 @@ class ScheduledSmsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', 'application/xml'],
+            ['application/json'],
             []
         );
 
@@ -572,15 +554,15 @@ class ScheduledSmsApi
     }
 
     /**
-     * Create response for operation 'getScheduledSmsMessagesStatus'
+     * Create response for operation 'getScheduledEmails'
      *
      * @param \GuzzleHttp\Psr7\Response $response
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkScheduleResponse|null, HTTP status code, HTTP response headers (array of strings)
      */
-    protected function getScheduledSmsMessagesStatusResponse($response, $requestUri)
+    protected function getScheduledEmailsResponse($response, $requestUri)
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -597,14 +579,21 @@ class ScheduledSmsApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailBulkScheduleResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\SmsBulkStatusResponse';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -614,83 +603,58 @@ class ScheduledSmsApi
     }
 
     /**
-     * Adapt given \Infobip\ApiException for operation 'getScheduledSmsMessagesStatus'
+     * Adapt given \Infobip\ApiException for operation 'getScheduledEmails'
      *
      * @param \Infobip\ApiException $apiException
      *
      * @return \Infobip\ApiException
      */
-    protected function getScheduledSmsMessagesStatusApiException($apiException)
+    protected function getScheduledEmailsApiException($apiException)
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode >= 400 && $statusCode <= 499) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-        if ($statusCode >= 500 && $statusCode <= 599) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\SmsBulkStatusResponse',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 
     /**
-     * Operation rescheduleSmsMessages
+     * Operation rescheduleEmails
      *
-     * Reschedule SMS messages
+     * Reschedule Email messages
      *
      * @param  string $bulkId bulkId (required)
-     * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest smsBulkRequest (optional)
+     * @param  \Infobip\Model\EmailBulkRescheduleRequest $emailBulkRescheduleRequest emailBulkRescheduleRequest (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse
+     * @return \Infobip\Model\EmailBulkRescheduleResponse
      */
-    public function rescheduleSmsMessages($bulkId, $smsBulkRequest = null)
+    public function rescheduleEmails($bulkId, $emailBulkRescheduleRequest)
     {
-        list($response) = $this->rescheduleSmsMessagesWithHttpInfo($bulkId, $smsBulkRequest);
+        list($response) = $this->rescheduleEmailsWithHttpInfo($bulkId, $emailBulkRescheduleRequest);
         return $response;
     }
 
     /**
-     * Operation rescheduleSmsMessagesWithHttpInfo
+     * Operation rescheduleEmailsWithHttpInfo
      *
-     * Reschedule SMS messages
+     * Reschedule Email messages
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
+     * @param  \Infobip\Model\EmailBulkRescheduleRequest $emailBulkRescheduleRequest (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkRescheduleResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function rescheduleSmsMessagesWithHttpInfo($bulkId, $smsBulkRequest = null)
+    public function rescheduleEmailsWithHttpInfo($bulkId, $emailBulkRescheduleRequest)
     {
-        $request = $this->rescheduleSmsMessagesRequest($bulkId, $smsBulkRequest);
+        $request = $this->rescheduleEmailsRequest($bulkId, $emailBulkRescheduleRequest);
 
         try {
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-                return $this->rescheduleSmsMessagesResponse($response, $request->getUri());
+                return $this->rescheduleEmailsResponse($response, $request->getUri());
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -700,24 +664,24 @@ class ScheduledSmsApi
                 );
             }
         } catch (ApiException $e) {
-            throw $this->rescheduleSmsMessagesApiException($e);
+            throw $this->rescheduleEmailsApiException($e);
         }
     }
 
     /**
-     * Operation rescheduleSmsMessagesAsync
+     * Operation rescheduleEmailsAsync
      *
-     * Reschedule SMS messages
+     * Reschedule Email messages
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
+     * @param  \Infobip\Model\EmailBulkRescheduleRequest $emailBulkRescheduleRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function rescheduleSmsMessagesAsync($bulkId, $smsBulkRequest = null)
+    public function rescheduleEmailsAsync($bulkId, $emailBulkRescheduleRequest)
     {
-        return $this->rescheduleSmsMessagesAsyncWithHttpInfo($bulkId, $smsBulkRequest)
+        return $this->rescheduleEmailsAsyncWithHttpInfo($bulkId, $emailBulkRescheduleRequest)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -726,25 +690,25 @@ class ScheduledSmsApi
     }
 
     /**
-     * Operation rescheduleSmsMessagesAsyncWithHttpInfo
+     * Operation rescheduleEmailsAsyncWithHttpInfo
      *
-     * Reschedule SMS messages
+     * Reschedule Email messages
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
+     * @param  \Infobip\Model\EmailBulkRescheduleRequest $emailBulkRescheduleRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function rescheduleSmsMessagesAsyncWithHttpInfo($bulkId, $smsBulkRequest = null)
+    public function rescheduleEmailsAsyncWithHttpInfo($bulkId, $emailBulkRescheduleRequest)
     {
-        $request = $this->rescheduleSmsMessagesRequest($bulkId, $smsBulkRequest);
+        $request = $this->rescheduleEmailsRequest($bulkId, $emailBulkRescheduleRequest);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($request) {
-                    return $this->rescheduleSmsMessagesResponse($response, $request->getUri());
+                    return $this->rescheduleEmailsResponse($response, $request->getUri());
                 },
                 function ($exception) {
                     $statusCode = $exception->getCode();
@@ -755,30 +719,36 @@ class ScheduledSmsApi
                         $response ? $response->getHeaders() : null,
                         $response ? (string) $response->getBody() : null
                     );
-                    throw $this->rescheduleSmsMessagesApiException($e);
+                    throw $this->rescheduleEmailsApiException($e);
                 }
             );
     }
 
     /**
-     * Create request for operation 'rescheduleSmsMessages'
+     * Create request for operation 'rescheduleEmails'
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
+     * @param  \Infobip\Model\EmailBulkRescheduleRequest $emailBulkRescheduleRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function rescheduleSmsMessagesRequest($bulkId, $smsBulkRequest = null)
+    protected function rescheduleEmailsRequest($bulkId, $emailBulkRescheduleRequest)
     {
         // verify the required parameter 'bulkId' is set
         if ($bulkId === null || (is_array($bulkId) && count($bulkId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $bulkId when calling rescheduleSmsMessages'
+                'Missing the required parameter $bulkId when calling rescheduleEmails'
+            );
+        }
+        // verify the required parameter 'emailBulkRescheduleRequest' is set
+        if ($emailBulkRescheduleRequest === null || (is_array($emailBulkRescheduleRequest) && count($emailBulkRescheduleRequest) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $emailBulkRescheduleRequest when calling rescheduleEmails'
             );
         }
 
-        $resourcePath = '/sms/1/bulks';
+        $resourcePath = '/email/1/bulks';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -793,16 +763,16 @@ class ScheduledSmsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', 'application/xml'],
-            ['application/json', 'application/xml']
+            ['application/json'],
+            ['application/json']
         );
 
         // for model (json/xml)
-        if (isset($smsBulkRequest)) {
+        if (isset($emailBulkRescheduleRequest)) {
             if ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($smsBulkRequest));
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($emailBulkRescheduleRequest));
             } else {
-                $httpBody = $smsBulkRequest;
+                $httpBody = $emailBulkRescheduleRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
@@ -868,15 +838,15 @@ class ScheduledSmsApi
     }
 
     /**
-     * Create response for operation 'rescheduleSmsMessages'
+     * Create response for operation 'rescheduleEmails'
      *
      * @param \GuzzleHttp\Psr7\Response $response
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkRescheduleResponse|null, HTTP status code, HTTP response headers (array of strings)
      */
-    protected function rescheduleSmsMessagesResponse($response, $requestUri)
+    protected function rescheduleEmailsResponse($response, $requestUri)
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -893,14 +863,21 @@ class ScheduledSmsApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailBulkRescheduleResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\SmsBulkResponse';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -910,83 +887,58 @@ class ScheduledSmsApi
     }
 
     /**
-     * Adapt given \Infobip\ApiException for operation 'rescheduleSmsMessages'
+     * Adapt given \Infobip\ApiException for operation 'rescheduleEmails'
      *
      * @param \Infobip\ApiException $apiException
      *
      * @return \Infobip\ApiException
      */
-    protected function rescheduleSmsMessagesApiException($apiException)
+    protected function rescheduleEmailsApiException($apiException)
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode >= 400 && $statusCode <= 499) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-        if ($statusCode >= 500 && $statusCode <= 599) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\SmsBulkResponse',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 
     /**
-     * Operation updateScheduledSmsMessagesStatus
+     * Operation updateScheduledEmailStatuses
      *
-     * Update scheduled SMS messages status
+     * Update scheduled Email messages status
      *
      * @param  string $bulkId bulkId (required)
-     * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest smsUpdateStatusRequest (optional)
+     * @param  \Infobip\Model\EmailBulkUpdateStatusRequest $emailBulkUpdateStatusRequest emailBulkUpdateStatusRequest (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse
+     * @return \Infobip\Model\EmailBulkUpdateStatusResponse
      */
-    public function updateScheduledSmsMessagesStatus($bulkId, $smsUpdateStatusRequest = null)
+    public function updateScheduledEmailStatuses($bulkId, $emailBulkUpdateStatusRequest)
     {
-        list($response) = $this->updateScheduledSmsMessagesStatusWithHttpInfo($bulkId, $smsUpdateStatusRequest);
+        list($response) = $this->updateScheduledEmailStatusesWithHttpInfo($bulkId, $emailBulkUpdateStatusRequest);
         return $response;
     }
 
     /**
-     * Operation updateScheduledSmsMessagesStatusWithHttpInfo
+     * Operation updateScheduledEmailStatusesWithHttpInfo
      *
-     * Update scheduled SMS messages status
+     * Update scheduled Email messages status
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
+     * @param  \Infobip\Model\EmailBulkUpdateStatusRequest $emailBulkUpdateStatusRequest (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkUpdateStatusResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function updateScheduledSmsMessagesStatusWithHttpInfo($bulkId, $smsUpdateStatusRequest = null)
+    public function updateScheduledEmailStatusesWithHttpInfo($bulkId, $emailBulkUpdateStatusRequest)
     {
-        $request = $this->updateScheduledSmsMessagesStatusRequest($bulkId, $smsUpdateStatusRequest);
+        $request = $this->updateScheduledEmailStatusesRequest($bulkId, $emailBulkUpdateStatusRequest);
 
         try {
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-                return $this->updateScheduledSmsMessagesStatusResponse($response, $request->getUri());
+                return $this->updateScheduledEmailStatusesResponse($response, $request->getUri());
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -996,24 +948,24 @@ class ScheduledSmsApi
                 );
             }
         } catch (ApiException $e) {
-            throw $this->updateScheduledSmsMessagesStatusApiException($e);
+            throw $this->updateScheduledEmailStatusesApiException($e);
         }
     }
 
     /**
-     * Operation updateScheduledSmsMessagesStatusAsync
+     * Operation updateScheduledEmailStatusesAsync
      *
-     * Update scheduled SMS messages status
+     * Update scheduled Email messages status
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
+     * @param  \Infobip\Model\EmailBulkUpdateStatusRequest $emailBulkUpdateStatusRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateScheduledSmsMessagesStatusAsync($bulkId, $smsUpdateStatusRequest = null)
+    public function updateScheduledEmailStatusesAsync($bulkId, $emailBulkUpdateStatusRequest)
     {
-        return $this->updateScheduledSmsMessagesStatusAsyncWithHttpInfo($bulkId, $smsUpdateStatusRequest)
+        return $this->updateScheduledEmailStatusesAsyncWithHttpInfo($bulkId, $emailBulkUpdateStatusRequest)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -1022,25 +974,25 @@ class ScheduledSmsApi
     }
 
     /**
-     * Operation updateScheduledSmsMessagesStatusAsyncWithHttpInfo
+     * Operation updateScheduledEmailStatusesAsyncWithHttpInfo
      *
-     * Update scheduled SMS messages status
+     * Update scheduled Email messages status
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
+     * @param  \Infobip\Model\EmailBulkUpdateStatusRequest $emailBulkUpdateStatusRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function updateScheduledSmsMessagesStatusAsyncWithHttpInfo($bulkId, $smsUpdateStatusRequest = null)
+    public function updateScheduledEmailStatusesAsyncWithHttpInfo($bulkId, $emailBulkUpdateStatusRequest)
     {
-        $request = $this->updateScheduledSmsMessagesStatusRequest($bulkId, $smsUpdateStatusRequest);
+        $request = $this->updateScheduledEmailStatusesRequest($bulkId, $emailBulkUpdateStatusRequest);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($request) {
-                    return $this->updateScheduledSmsMessagesStatusResponse($response, $request->getUri());
+                    return $this->updateScheduledEmailStatusesResponse($response, $request->getUri());
                 },
                 function ($exception) {
                     $statusCode = $exception->getCode();
@@ -1051,30 +1003,36 @@ class ScheduledSmsApi
                         $response ? $response->getHeaders() : null,
                         $response ? (string) $response->getBody() : null
                     );
-                    throw $this->updateScheduledSmsMessagesStatusApiException($e);
+                    throw $this->updateScheduledEmailStatusesApiException($e);
                 }
             );
     }
 
     /**
-     * Create request for operation 'updateScheduledSmsMessagesStatus'
+     * Create request for operation 'updateScheduledEmailStatuses'
      *
      * @param  string $bulkId (required)
-     * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
+     * @param  \Infobip\Model\EmailBulkUpdateStatusRequest $emailBulkUpdateStatusRequest (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function updateScheduledSmsMessagesStatusRequest($bulkId, $smsUpdateStatusRequest = null)
+    protected function updateScheduledEmailStatusesRequest($bulkId, $emailBulkUpdateStatusRequest)
     {
         // verify the required parameter 'bulkId' is set
         if ($bulkId === null || (is_array($bulkId) && count($bulkId) === 0)) {
             throw new \InvalidArgumentException(
-                'Missing the required parameter $bulkId when calling updateScheduledSmsMessagesStatus'
+                'Missing the required parameter $bulkId when calling updateScheduledEmailStatuses'
+            );
+        }
+        // verify the required parameter 'emailBulkUpdateStatusRequest' is set
+        if ($emailBulkUpdateStatusRequest === null || (is_array($emailBulkUpdateStatusRequest) && count($emailBulkUpdateStatusRequest) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $emailBulkUpdateStatusRequest when calling updateScheduledEmailStatuses'
             );
         }
 
-        $resourcePath = '/sms/1/bulks/status';
+        $resourcePath = '/email/1/bulks/status';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -1089,16 +1047,16 @@ class ScheduledSmsApi
 
 
         $headers = $this->headerSelector->selectHeaders(
-            ['application/json', 'application/xml'],
-            ['application/json', 'application/xml']
+            ['application/json'],
+            ['application/json']
         );
 
         // for model (json/xml)
-        if (isset($smsUpdateStatusRequest)) {
+        if (isset($emailBulkUpdateStatusRequest)) {
             if ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($smsUpdateStatusRequest));
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($emailBulkUpdateStatusRequest));
             } else {
-                $httpBody = $smsUpdateStatusRequest;
+                $httpBody = $emailBulkUpdateStatusRequest;
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
@@ -1164,15 +1122,15 @@ class ScheduledSmsApi
     }
 
     /**
-     * Create response for operation 'updateScheduledSmsMessagesStatus'
+     * Create response for operation 'updateScheduledEmailStatuses'
      *
      * @param \GuzzleHttp\Psr7\Response $response
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsBulkStatusResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailBulkUpdateStatusResponse|null, HTTP status code, HTTP response headers (array of strings)
      */
-    protected function updateScheduledSmsMessagesStatusResponse($response, $requestUri)
+    protected function updateScheduledEmailStatusesResponse($response, $requestUri)
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -1189,14 +1147,21 @@ class ScheduledSmsApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailBulkUpdateStatusResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\SmsBulkStatusResponse';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -1206,41 +1171,16 @@ class ScheduledSmsApi
     }
 
     /**
-     * Adapt given \Infobip\ApiException for operation 'updateScheduledSmsMessagesStatus'
+     * Adapt given \Infobip\ApiException for operation 'updateScheduledEmailStatuses'
      *
      * @param \Infobip\ApiException $apiException
      *
      * @return \Infobip\ApiException
      */
-    protected function updateScheduledSmsMessagesStatusApiException($apiException)
+    protected function updateScheduledEmailStatusesApiException($apiException)
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode >= 400 && $statusCode <= 499) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-        if ($statusCode >= 500 && $statusCode <= 599) {
-            $data = ObjectSerializer::deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
-                $apiException->getResponseHeaders()
-            );
-            $apiException->setResponseObject($data);
-            return $apiException;
-        }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\SmsBulkStatusResponse',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 

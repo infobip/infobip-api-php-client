@@ -1,6 +1,6 @@
 <?php
 /**
- * TfaStartAuthenticationRequest
+ * EmailPrice
  *
  * PHP version 7.2
  *
@@ -27,9 +27,10 @@ use \ArrayAccess;
 use \Infobip\ObjectSerializer;
 
 /**
- * TfaStartAuthenticationRequest Class Doc Comment
+ * EmailPrice Class Doc Comment
  *
  * @category Class
+ * @description Sent email price.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -37,7 +38,7 @@ use \Infobip\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class EmailPrice implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -46,7 +47,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       *
       * @var string
       */
-    protected static $openAPIModelName = 'TfaStartAuthenticationRequest';
+    protected static $openAPIModelName = 'EmailPrice';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -54,11 +55,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @var string[]
       */
     protected static $openAPITypes = [
-        'applicationId' => 'string',
-        'from' => 'string',
-        'messageId' => 'string',
-        'placeholders' => 'array<string,string>',
-        'to' => 'string'
+        'pricePerMessage' => 'float',
+        'currency' => 'string'
     ];
 
     /**
@@ -69,11 +67,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'applicationId' => null,
-        'from' => null,
-        'messageId' => null,
-        'placeholders' => null,
-        'to' => null
+        'pricePerMessage' => null,
+        'currency' => null
     ];
 
     /**
@@ -103,11 +98,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'applicationId' => 'applicationId',
-        'from' => 'from',
-        'messageId' => 'messageId',
-        'placeholders' => 'placeholders',
-        'to' => 'to'
+        'pricePerMessage' => 'pricePerMessage',
+        'currency' => 'currency'
     ];
 
     /**
@@ -116,11 +108,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'applicationId' => 'setApplicationId',
-        'from' => 'setFrom',
-        'messageId' => 'setMessageId',
-        'placeholders' => 'setPlaceholders',
-        'to' => 'setTo'
+        'pricePerMessage' => 'setPricePerMessage',
+        'currency' => 'setCurrency'
     ];
 
     /**
@@ -129,11 +118,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'applicationId' => 'getApplicationId',
-        'from' => 'getFrom',
-        'messageId' => 'getMessageId',
-        'placeholders' => 'getPlaceholders',
-        'to' => 'getTo'
+        'pricePerMessage' => 'getPricePerMessage',
+        'currency' => 'getCurrency'
     ];
 
     /**
@@ -196,11 +182,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->container['applicationId'] = $data['applicationId'] ?? null;
-        $this->container['from'] = $data['from'] ?? null;
-        $this->container['messageId'] = $data['messageId'] ?? null;
-        $this->container['placeholders'] = $data['placeholders'] ?? null;
-        $this->container['to'] = $data['to'] ?? null;
+        $this->container['pricePerMessage'] = $data['pricePerMessage'] ?? null;
+        $this->container['currency'] = $data['currency'] ?? null;
     }
 
     /**
@@ -212,15 +195,6 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
     {
         $invalidProperties = [];
 
-        if ($this->container['applicationId'] === null) {
-            $invalidProperties[] = "'applicationId' can't be null";
-        }
-        if ($this->container['messageId'] === null) {
-            $invalidProperties[] = "'messageId' can't be null";
-        }
-        if ($this->container['to'] === null) {
-            $invalidProperties[] = "'to' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -237,121 +211,49 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
 
 
     /**
-     * Gets applicationId
+     * Gets pricePerMessage
      *
-     * @return string
+     * @return float|null
      */
-    public function getApplicationId()
+    public function getPricePerMessage()
     {
-        return $this->container['applicationId'];
+        return $this->container['pricePerMessage'];
     }
 
     /**
-     * Sets applicationId
+     * Sets pricePerMessage
      *
-     * @param string $applicationId 2FA application ID.
+     * @param float|null $pricePerMessage Price per one email request.
      *
      * @return self
      */
-    public function setApplicationId($applicationId)
+    public function setPricePerMessage($pricePerMessage)
     {
-        $this->container['applicationId'] = $applicationId;
+        $this->container['pricePerMessage'] = $pricePerMessage;
 
         return $this;
     }
 
     /**
-     * Gets from
+     * Gets currency
      *
      * @return string|null
      */
-    public function getFrom()
+    public function getCurrency()
     {
-        return $this->container['from'];
+        return $this->container['currency'];
     }
 
     /**
-     * Sets from
+     * Sets currency
      *
-     * @param string|null $from Use this parameter if you wish to override the sender ID from the [created](#channels/sms/create-2fa-message-template) message template parameter `senderId`.
+     * @param string|null $currency The currency in which the price is expressed.
      *
      * @return self
      */
-    public function setFrom($from)
+    public function setCurrency($currency)
     {
-        $this->container['from'] = $from;
-
-        return $this;
-    }
-
-    /**
-     * Gets messageId
-     *
-     * @return string
-     */
-    public function getMessageId()
-    {
-        return $this->container['messageId'];
-    }
-
-    /**
-     * Sets messageId
-     *
-     * @param string $messageId Message template ID that will be sent to phone number.
-     *
-     * @return self
-     */
-    public function setMessageId($messageId)
-    {
-        $this->container['messageId'] = $messageId;
-
-        return $this;
-    }
-
-    /**
-     * Gets placeholders
-     *
-     * @return array<string,string>|null
-     */
-    public function getPlaceholders()
-    {
-        return $this->container['placeholders'];
-    }
-
-    /**
-     * Sets placeholders
-     *
-     * @param array<string,string>|null $placeholders Key value pairs that will be replaced during message sending. Placeholder keys should NOT contain curly brackets and should NOT contain a `pin` placeholder. Valid example: `\"placeholders\":{\"firstName\":\"John\"}`
-     *
-     * @return self
-     */
-    public function setPlaceholders($placeholders)
-    {
-        $this->container['placeholders'] = $placeholders;
-
-        return $this;
-    }
-
-    /**
-     * Gets to
-     *
-     * @return string
-     */
-    public function getTo()
-    {
-        return $this->container['to'];
-    }
-
-    /**
-     * Sets to
-     *
-     * @param string $to Phone number to which the 2FA message will be sent. Example: 41793026727.
-     *
-     * @return self
-     */
-    public function setTo($to)
-    {
-        $this->container['to'] = $to;
+        $this->container['currency'] = $currency;
 
         return $this;
     }

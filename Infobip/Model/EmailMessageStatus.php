@@ -1,6 +1,6 @@
 <?php
 /**
- * TfaApplicationConfiguration
+ * EmailMessageStatus
  *
  * PHP version 7.2
  *
@@ -27,7 +27,7 @@ use \ArrayAccess;
 use \Infobip\ObjectSerializer;
 
 /**
- * TfaApplicationConfiguration Class Doc Comment
+ * EmailMessageStatus Class Doc Comment
  *
  * @category Class
  * @package  Infobip
@@ -37,7 +37,7 @@ use \Infobip\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonSerializable
+class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -46,7 +46,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       *
       * @var string
       */
-    protected static $openAPIModelName = 'TfaApplicationConfiguration';
+    protected static $openAPIModelName = 'EmailMessageStatus';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -54,12 +54,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       * @var string[]
       */
     protected static $openAPITypes = [
-        'allowMultiplePinVerifications' => 'bool',
-        'pinAttempts' => 'int',
-        'pinTimeToLive' => 'string',
-        'sendPinPerApplicationLimit' => 'string',
-        'sendPinPerPhoneNumberLimit' => 'string',
-        'verifyPinLimit' => 'string'
+        'action' => 'string',
+        'description' => 'string',
+        'groupId' => 'int',
+        'groupName' => 'string',
+        'id' => 'int',
+        'name' => 'string'
     ];
 
     /**
@@ -70,12 +70,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'allowMultiplePinVerifications' => null,
-        'pinAttempts' => 'int32',
-        'pinTimeToLive' => null,
-        'sendPinPerApplicationLimit' => null,
-        'sendPinPerPhoneNumberLimit' => null,
-        'verifyPinLimit' => null
+        'action' => null,
+        'description' => null,
+        'groupId' => 'int32',
+        'groupName' => null,
+        'id' => 'int32',
+        'name' => null
     ];
 
     /**
@@ -105,12 +105,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $attributeMap = [
-        'allowMultiplePinVerifications' => 'allowMultiplePinVerifications',
-        'pinAttempts' => 'pinAttempts',
-        'pinTimeToLive' => 'pinTimeToLive',
-        'sendPinPerApplicationLimit' => 'sendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'sendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'verifyPinLimit'
+        'action' => 'action',
+        'description' => 'description',
+        'groupId' => 'groupId',
+        'groupName' => 'groupName',
+        'id' => 'id',
+        'name' => 'name'
     ];
 
     /**
@@ -119,12 +119,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $setters = [
-        'allowMultiplePinVerifications' => 'setAllowMultiplePinVerifications',
-        'pinAttempts' => 'setPinAttempts',
-        'pinTimeToLive' => 'setPinTimeToLive',
-        'sendPinPerApplicationLimit' => 'setSendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'setSendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'setVerifyPinLimit'
+        'action' => 'setAction',
+        'description' => 'setDescription',
+        'groupId' => 'setGroupId',
+        'groupName' => 'setGroupName',
+        'id' => 'setId',
+        'name' => 'setName'
     ];
 
     /**
@@ -133,12 +133,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      * @var string[]
      */
     protected static $getters = [
-        'allowMultiplePinVerifications' => 'getAllowMultiplePinVerifications',
-        'pinAttempts' => 'getPinAttempts',
-        'pinTimeToLive' => 'getPinTimeToLive',
-        'sendPinPerApplicationLimit' => 'getSendPinPerApplicationLimit',
-        'sendPinPerPhoneNumberLimit' => 'getSendPinPerPhoneNumberLimit',
-        'verifyPinLimit' => 'getVerifyPinLimit'
+        'action' => 'getAction',
+        'description' => 'getDescription',
+        'groupId' => 'getGroupId',
+        'groupName' => 'getGroupName',
+        'id' => 'getId',
+        'name' => 'getName'
     ];
 
     /**
@@ -201,12 +201,12 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
      */
     public function __construct(array $data = null)
     {
-        $this->container['allowMultiplePinVerifications'] = $data['allowMultiplePinVerifications'] ?? true;
-        $this->container['pinAttempts'] = $data['pinAttempts'] ?? 10;
-        $this->container['pinTimeToLive'] = $data['pinTimeToLive'] ?? '15m';
-        $this->container['sendPinPerApplicationLimit'] = $data['sendPinPerApplicationLimit'] ?? '10000/1d';
-        $this->container['sendPinPerPhoneNumberLimit'] = $data['sendPinPerPhoneNumberLimit'] ?? '3/1d';
-        $this->container['verifyPinLimit'] = $data['verifyPinLimit'] ?? '1/3s';
+        $this->container['action'] = $data['action'] ?? null;
+        $this->container['description'] = $data['description'] ?? null;
+        $this->container['groupId'] = $data['groupId'] ?? null;
+        $this->container['groupName'] = $data['groupName'] ?? null;
+        $this->container['id'] = $data['id'] ?? null;
+        $this->container['name'] = $data['name'] ?? null;
     }
 
     /**
@@ -234,145 +234,145 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
 
 
     /**
-     * Gets allowMultiplePinVerifications
+     * Gets action
      *
-     * @return bool|null
+     * @return string|null
      */
-    public function getAllowMultiplePinVerifications()
+    public function getAction()
     {
-        return $this->container['allowMultiplePinVerifications'];
+        return $this->container['action'];
     }
 
     /**
-     * Sets allowMultiplePinVerifications
+     * Sets action
      *
-     * @param bool|null $allowMultiplePinVerifications Tells if multiple PIN verifications are allowed.
+     * @param string|null $action action
      *
      * @return self
      */
-    public function setAllowMultiplePinVerifications($allowMultiplePinVerifications)
+    public function setAction($action)
     {
-        $this->container['allowMultiplePinVerifications'] = $allowMultiplePinVerifications;
+        $this->container['action'] = $action;
 
         return $this;
     }
 
     /**
-     * Gets pinAttempts
+     * Gets description
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description
+     *
+     * @param string|null $description description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
+
+        return $this;
+    }
+
+    /**
+     * Gets groupId
      *
      * @return int|null
      */
-    public function getPinAttempts()
+    public function getGroupId()
     {
-        return $this->container['pinAttempts'];
+        return $this->container['groupId'];
     }
 
     /**
-     * Sets pinAttempts
+     * Sets groupId
      *
-     * @param int|null $pinAttempts Number of possible PIN attempts.
+     * @param int|null $groupId groupId
      *
      * @return self
      */
-    public function setPinAttempts($pinAttempts)
+    public function setGroupId($groupId)
     {
-        $this->container['pinAttempts'] = $pinAttempts;
+        $this->container['groupId'] = $groupId;
 
         return $this;
     }
 
     /**
-     * Gets pinTimeToLive
+     * Gets groupName
      *
      * @return string|null
      */
-    public function getPinTimeToLive()
+    public function getGroupName()
     {
-        return $this->container['pinTimeToLive'];
+        return $this->container['groupName'];
     }
 
     /**
-     * Sets pinTimeToLive
+     * Sets groupName
      *
-     * @param string|null $pinTimeToLive PIN time to live. Should be in format of `{timeLength}{timeUnit}`. Here `timeLength` is an optional positive integer with a default value of 1 and `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Must not be larger that one year, although much lower values are recommended.
+     * @param string|null $groupName groupName
      *
      * @return self
      */
-    public function setPinTimeToLive($pinTimeToLive)
+    public function setGroupName($groupName)
     {
-        $this->container['pinTimeToLive'] = $pinTimeToLive;
+        $this->container['groupName'] = $groupName;
 
         return $this;
     }
 
     /**
-     * Gets sendPinPerApplicationLimit
+     * Gets id
      *
-     * @return string|null
+     * @return int|null
      */
-    public function getSendPinPerApplicationLimit()
+    public function getId()
     {
-        return $this->container['sendPinPerApplicationLimit'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets sendPinPerApplicationLimit
+     * Sets id
      *
-     * @param string|null $sendPinPerApplicationLimit Overall number of requests in time interval for generating a PIN and sending an SMS using single application. Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param int|null $id id
      *
      * @return self
      */
-    public function setSendPinPerApplicationLimit($sendPinPerApplicationLimit)
+    public function setId($id)
     {
-        $this->container['sendPinPerApplicationLimit'] = $sendPinPerApplicationLimit;
+        $this->container['id'] = $id;
 
         return $this;
     }
 
     /**
-     * Gets sendPinPerPhoneNumberLimit
+     * Gets name
      *
      * @return string|null
      */
-    public function getSendPinPerPhoneNumberLimit()
+    public function getName()
     {
-        return $this->container['sendPinPerPhoneNumberLimit'];
+        return $this->container['name'];
     }
 
     /**
-     * Sets sendPinPerPhoneNumberLimit
+     * Sets name
      *
-     * @param string|null $sendPinPerPhoneNumberLimit Number of requests in time interval for generating a PIN and sending an SMS to one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param string|null $name name
      *
      * @return self
      */
-    public function setSendPinPerPhoneNumberLimit($sendPinPerPhoneNumberLimit)
+    public function setName($name)
     {
-        $this->container['sendPinPerPhoneNumberLimit'] = $sendPinPerPhoneNumberLimit;
-
-        return $this;
-    }
-
-    /**
-     * Gets verifyPinLimit
-     *
-     * @return string|null
-     */
-    public function getVerifyPinLimit()
-    {
-        return $this->container['verifyPinLimit'];
-    }
-
-    /**
-     * Sets verifyPinLimit
-     *
-     * @param string|null $verifyPinLimit Number of PIN verification requests in time interval from one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one day, although much lower values are recommended.
-     *
-     * @return self
-     */
-    public function setVerifyPinLimit($verifyPinLimit)
-    {
-        $this->container['verifyPinLimit'] = $verifyPinLimit;
+        $this->container['name'] = $name;
 
         return $this;
     }

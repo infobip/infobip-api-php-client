@@ -36,7 +36,10 @@ use Infobip\Model\ModelInterface;
 class ObjectSerializer
 {
     /** @var string */
-    private static $dateTimeFormat = "Y-m-d\TH:i:s.vO";
+    private static $dateTimeFormat = "Y-m-d\TH:i:s.vP";
+
+    private const DISCRIMINATOR_MAPPINGS = [
+    ];
 
     /**
      * Serialize data
@@ -259,11 +262,11 @@ class ObjectSerializer
 
         if (strcasecmp(substr($class, -2), '[]') === 0) {
             $data = is_string($data) ? json_decode($data) : $data;
-            
+
             if (!is_array($data)) {
                 throw new \InvalidArgumentException("Invalid array '$class'");
             }
-            
+
             $subClass = substr($class, 0, -2);
             $values = [];
             foreach ($data as $key => $value) {
@@ -272,7 +275,7 @@ class ObjectSerializer
             return $values;
         }
 
-        if (substr($class, 0, 4) === 'map[') { // for associative array e.g. map[string,int]
+        if (preg_match('/^(array<|map\[)/', $class)) { // for associative array e.g. array<string,int>
             $data = is_string($data) ? json_decode($data) : $data;
             settype($data, 'array');
             $inner = substr($class, 4, -1);
@@ -349,7 +352,7 @@ class ObjectSerializer
             // If a discriminator is defined and points to a valid subclass, use it.
             $discriminator = $class::DISCRIMINATOR;
             if (!empty($discriminator) && isset($data->{$discriminator}) && is_string($data->{$discriminator})) {
-                $subclass = '\Infobip\Model\\' . $data->{$discriminator};
+                $subclass = '\Infobip\Model\\' . self::DISCRIMINATOR_MAPPINGS[$data->{$discriminator}];
                 if (is_subclass_of($subclass, $class)) {
                     $class = $subclass;
                 }

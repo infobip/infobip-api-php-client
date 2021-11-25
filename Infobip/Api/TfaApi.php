@@ -27,6 +27,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\RequestOptions;
 use Infobip\ApiException;
 use Infobip\Configuration;
@@ -200,22 +201,15 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaApplicationRequest)) {
@@ -225,7 +219,9 @@ class TfaApi
                 $httpBody = $tfaApplicationRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -237,7 +233,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -497,7 +493,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -511,16 +506,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaCreateMessageRequest)) {
@@ -530,7 +519,9 @@ class TfaApi
                 $httpBody = $tfaCreateMessageRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -542,7 +533,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -797,7 +788,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -811,20 +801,16 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -836,7 +822,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1079,26 +1065,21 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -1110,7 +1091,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1376,7 +1357,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -1398,20 +1378,16 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -1423,7 +1399,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1678,7 +1654,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -1692,20 +1667,16 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -1717,7 +1688,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -1993,7 +1964,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
         // query params
         if ($msisdn !== null) {
@@ -2019,20 +1989,16 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                []
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            []
+        );
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -2044,7 +2010,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -2304,7 +2270,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -2318,16 +2283,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaResendPinRequest)) {
@@ -2337,7 +2296,9 @@ class TfaApi
                 $httpBody = $tfaResendPinRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -2349,7 +2310,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -2609,7 +2570,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -2623,16 +2583,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaResendPinRequest)) {
@@ -2642,7 +2596,9 @@ class TfaApi
                 $httpBody = $tfaResendPinRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -2654,7 +2610,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -2907,7 +2863,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
         // query params
         if ($ncNeeded !== null) {
@@ -2917,16 +2872,10 @@ class TfaApi
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaStartAuthenticationRequest)) {
@@ -2936,7 +2885,9 @@ class TfaApi
                 $httpBody = $tfaStartAuthenticationRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -2948,7 +2899,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -3196,22 +3147,15 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaStartAuthenticationRequest)) {
@@ -3221,7 +3165,9 @@ class TfaApi
                 $httpBody = $tfaStartAuthenticationRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -3233,7 +3179,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -3493,7 +3439,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -3507,16 +3452,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaApplicationRequest)) {
@@ -3526,7 +3465,9 @@ class TfaApi
                 $httpBody = $tfaApplicationRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -3538,7 +3479,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -3809,7 +3750,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -3831,16 +3771,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaUpdateMessageRequest)) {
@@ -3850,7 +3784,9 @@ class TfaApi
                 $httpBody = $tfaUpdateMessageRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -3862,7 +3798,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {
@@ -4122,7 +4058,6 @@ class TfaApi
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
-        $multipart = false;
 
 
 
@@ -4136,16 +4071,10 @@ class TfaApi
         }
 
 
-        if ($multipart) {
-            $headers = $this->headerSelector->selectHeadersForMultipart(
-                ['application/json', 'application/xml']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json', 'application/xml'],
-                ['application/json', 'application/xml']
-            );
-        }
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json', 'application/xml'],
+            ['application/json', 'application/xml']
+        );
 
         // for model (json/xml)
         if (isset($tfaVerifyPinRequest)) {
@@ -4155,7 +4084,9 @@ class TfaApi
                 $httpBody = $tfaVerifyPinRequest;
             }
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.sha1(uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
                     $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
@@ -4167,7 +4098,7 @@ class TfaApi
                     }
                 }
                 // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents);
+                $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = \GuzzleHttp\json_encode($formParams);
             } else {

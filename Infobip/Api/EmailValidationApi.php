@@ -1,6 +1,6 @@
 <?php
 /**
- * ReceiveSmsApi
+ * EmailValidationApi
  * PHP version 7.2
  *
  * @category Class
@@ -35,14 +35,14 @@ use Infobip\HeaderSelector;
 use Infobip\ObjectSerializer;
 
 /**
- * ReceiveSmsApi Class Doc Comment
+ * EmailValidationApi Class Doc Comment
  *
  * @category Class
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-class ReceiveSmsApi
+class EmailValidationApi
 {
     /**
      * @var ClientInterface
@@ -83,42 +83,42 @@ class ReceiveSmsApi
     }
 
     /**
-     * Operation getInboundSmsMessages
+     * Operation validateEmailAddresses
      *
-     * Get inbound SMS messages
+     * Validate email addresses
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  \Infobip\Model\EmailValidationRequest $emailValidationRequest emailValidationRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsInboundMessageResult
+     * @return \Infobip\Model\EmailValidationResponse|\Infobip\Model\EmailValidationApiException|\Infobip\Model\EmailValidationApiException
      */
-    public function getInboundSmsMessages($limit = null)
+    public function validateEmailAddresses($emailValidationRequest = null)
     {
-        list($response) = $this->getInboundSmsMessagesWithHttpInfo($limit);
+        list($response) = $this->validateEmailAddressesWithHttpInfo($emailValidationRequest);
         return $response;
     }
 
     /**
-     * Operation getInboundSmsMessagesWithHttpInfo
+     * Operation validateEmailAddressesWithHttpInfo
      *
-     * Get inbound SMS messages
+     * Validate email addresses
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  \Infobip\Model\EmailValidationRequest $emailValidationRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsInboundMessageResult, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailValidationResponse|\Infobip\Model\EmailValidationApiException|\Infobip\Model\EmailValidationApiException, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getInboundSmsMessagesWithHttpInfo($limit = null)
+    public function validateEmailAddressesWithHttpInfo($emailValidationRequest = null)
     {
-        $request = $this->getInboundSmsMessagesRequest($limit);
+        $request = $this->validateEmailAddressesRequest($emailValidationRequest);
 
         try {
             $options = $this->createHttpClientOption();
             try {
                 $response = $this->client->send($request, $options);
-                return $this->getInboundSmsMessagesResponse($response, $request->getUri());
+                return $this->validateEmailAddressesResponse($response, $request->getUri());
             } catch (RequestException $e) {
                 throw new ApiException(
                     "[{$e->getCode()}] {$e->getMessage()}",
@@ -128,23 +128,23 @@ class ReceiveSmsApi
                 );
             }
         } catch (ApiException $e) {
-            throw $this->getInboundSmsMessagesApiException($e);
+            throw $this->validateEmailAddressesApiException($e);
         }
     }
 
     /**
-     * Operation getInboundSmsMessagesAsync
+     * Operation validateEmailAddressesAsync
      *
-     * Get inbound SMS messages
+     * Validate email addresses
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  \Infobip\Model\EmailValidationRequest $emailValidationRequest (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInboundSmsMessagesAsync($limit = null)
+    public function validateEmailAddressesAsync($emailValidationRequest = null)
     {
-        return $this->getInboundSmsMessagesAsyncWithHttpInfo($limit)
+        return $this->validateEmailAddressesAsyncWithHttpInfo($emailValidationRequest)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -153,24 +153,24 @@ class ReceiveSmsApi
     }
 
     /**
-     * Operation getInboundSmsMessagesAsyncWithHttpInfo
+     * Operation validateEmailAddressesAsyncWithHttpInfo
      *
-     * Get inbound SMS messages
+     * Validate email addresses
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  \Infobip\Model\EmailValidationRequest $emailValidationRequest (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getInboundSmsMessagesAsyncWithHttpInfo($limit = null)
+    public function validateEmailAddressesAsyncWithHttpInfo($emailValidationRequest = null)
     {
-        $request = $this->getInboundSmsMessagesRequest($limit);
+        $request = $this->validateEmailAddressesRequest($emailValidationRequest);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
             ->then(
                 function ($response) use ($request) {
-                    return $this->getInboundSmsMessagesResponse($response, $request->getUri());
+                    return $this->validateEmailAddressesResponse($response, $request->getUri());
                 },
                 function ($exception) {
                     $statusCode = $exception->getCode();
@@ -181,42 +181,44 @@ class ReceiveSmsApi
                         $response ? $response->getHeaders() : null,
                         $response ? (string) $response->getBody() : null
                     );
-                    throw $this->getInboundSmsMessagesApiException($e);
+                    throw $this->validateEmailAddressesApiException($e);
                 }
             );
     }
 
     /**
-     * Create request for operation 'getInboundSmsMessages'
+     * Create request for operation 'validateEmailAddresses'
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  \Infobip\Model\EmailValidationRequest $emailValidationRequest (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getInboundSmsMessagesRequest($limit = null)
+    protected function validateEmailAddressesRequest($emailValidationRequest = null)
     {
-        $resourcePath = '/sms/1/inbox/reports';
+        $resourcePath = '/email/2/validation';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
 
-        // query params
-        if ($limit !== null) {
-            $queryParams['limit'] = $limit;
-        }
 
 
 
 
         $headers = $this->headerSelector->selectHeaders(
             ['application/json', 'application/xml'],
-            []
+            ['application/json', 'application/x-www-form-urlencoded']
         );
 
         // for model (json/xml)
-        if (count($formParams) > 0) {
+        if (isset($emailValidationRequest)) {
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($emailValidationRequest));
+            } else {
+                $httpBody = $emailValidationRequest;
+            }
+        } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----'.sha1(uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -272,7 +274,7 @@ class ReceiveSmsApi
 
         $query = \GuzzleHttp\Psr7\Query::build($queryParams);
         return new Request(
-            'GET',
+            'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
@@ -280,15 +282,15 @@ class ReceiveSmsApi
     }
 
     /**
-     * Create response for operation 'getInboundSmsMessages'
+     * Create response for operation 'validateEmailAddresses'
      *
      * @param \GuzzleHttp\Psr7\Response $response
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\SmsApiException|\Infobip\Model\SmsApiException|\Infobip\Model\SmsInboundMessageResult|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailValidationResponse|\Infobip\Model\EmailValidationApiException|\Infobip\Model\EmailValidationApiException|null, HTTP status code, HTTP response headers (array of strings)
      */
-    protected function getInboundSmsMessagesResponse($response, $requestUri)
+    protected function validateEmailAddressesResponse($response, $requestUri)
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -305,14 +307,21 @@ class ReceiveSmsApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailValidationResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\SmsInboundMessageResult';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -322,41 +331,34 @@ class ReceiveSmsApi
     }
 
     /**
-     * Adapt given \Infobip\ApiException for operation 'getInboundSmsMessages'
+     * Adapt given \Infobip\ApiException for operation 'validateEmailAddresses'
      *
      * @param \Infobip\ApiException $apiException
      *
      * @return \Infobip\ApiException
      */
-    protected function getInboundSmsMessagesApiException($apiException)
+    protected function validateEmailAddressesApiException($apiException)
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode >= 400 && $statusCode <= 499) {
+        if ($statusCode === 400) {
             $data = ObjectSerializer::deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
+                '\Infobip\Model\EmailValidationApiException',
                 $apiException->getResponseHeaders()
             );
             $apiException->setResponseObject($data);
             return $apiException;
         }
-        if ($statusCode >= 500 && $statusCode <= 599) {
+        if ($statusCode === 500) {
             $data = ObjectSerializer::deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\SmsApiException',
+                '\Infobip\Model\EmailValidationApiException',
                 $apiException->getResponseHeaders()
             );
             $apiException->setResponseObject($data);
             return $apiException;
         }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\SmsInboundMessageResult',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 

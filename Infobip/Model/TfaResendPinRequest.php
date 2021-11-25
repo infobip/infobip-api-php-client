@@ -54,7 +54,7 @@ class TfaResendPinRequest implements ModelInterface, ArrayAccess, \JsonSerializa
       * @var string[]
       */
     protected static $openAPITypes = [
-        'placeholders' => 'map[string,string]'
+        'placeholders' => 'array<string,string>'
     ];
 
     /**
@@ -206,7 +206,7 @@ class TfaResendPinRequest implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Gets placeholders
      *
-     * @return map[string,string]|null
+     * @return array<string,string>|null
      */
     public function getPlaceholders()
     {
@@ -216,7 +216,7 @@ class TfaResendPinRequest implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets placeholders
      *
-     * @param map[string,string]|null $placeholders Key value pairs that will be replaced during message sending. Placeholder keys should NOT contain curly brackets and should NOT contain a `pin` placeholder. Valid example: `\"placeholders\":{\"firstName\":\"John\"}`
+     * @param array<string,string>|null $placeholders Key value pairs that will be replaced during message sending. Placeholder keys should NOT contain curly brackets and should NOT contain a `pin` placeholder. Valid example: `\"placeholders\":{\"firstName\":\"John\"}`
      *
      * @return self
      */

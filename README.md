@@ -1,6 +1,6 @@
 # Infobip API PHP Client
 
-[![Packagist](https://badgen.net/packagist/v/infobip/infobip-api-php-client)](https://packagist.org/packages/infobip/infobip-api-php-client)
+[![Packegist](https://badgen.net/packagist/v/infobip/infobip-api-php-client)](https://packagist.org/packages/infobip/infobip-api-php-client)
 [![MIT License](https://badgen.net/github/license/infobip/infobip-api-php-client)](https://opensource.org/licenses/MIT)
 
 This is a PHP Client for Infobip API and you can use it as a dependency to add [Infobip APIs][apidocs] to your application.
@@ -35,7 +35,7 @@ All versions above 7.2
 To start using the library add it as dependecy in your `composer.json` file like shown below.
 ```json
 "require": {
-	"infobip/infobip-api-php-client": "3.0.0"
+	"infobip/infobip-api-php-client": "3.1.0"
 }
 ```
 And simply run `composer install` to download dependencies.
@@ -162,6 +162,9 @@ Example of webhook implementation:
 
 #### Two-Factor Authentication (2FA)
 For 2FA quick start guide please check [these examples](two-factor-authentication.md).
+
+#### Send email
+For send email quick start guide please check [these examples](email.md).
 
 ## Ask for help
 

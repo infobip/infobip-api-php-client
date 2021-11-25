@@ -53,6 +53,8 @@ class TfaLanguage
     const RU = 'ru';
     const SV = 'sv';
     const FI = 'fi';
+    const HR = 'hr';
+    const SL = 'sl';
     const PT_PT = 'pt-pt';
     const PT_BR = 'pt-br';
     const ZH_CN = 'zh-cn';
@@ -80,6 +82,8 @@ class TfaLanguage
             self::RU,
             self::SV,
             self::FI,
+            self::HR,
+            self::SL,
             self::PT_PT,
             self::PT_BR,
             self::ZH_CN,

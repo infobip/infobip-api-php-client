@@ -1,6 +1,6 @@
 <?php
 /**
- * TfaStartAuthenticationRequest
+ * EmailBulkUpdateStatusRequest
  *
  * PHP version 7.2
  *
@@ -27,7 +27,7 @@ use \ArrayAccess;
 use \Infobip\ObjectSerializer;
 
 /**
- * TfaStartAuthenticationRequest Class Doc Comment
+ * EmailBulkUpdateStatusRequest Class Doc Comment
  *
  * @category Class
  * @package  Infobip
@@ -37,7 +37,7 @@ use \Infobip\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class EmailBulkUpdateStatusRequest implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -46,7 +46,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       *
       * @var string
       */
-    protected static $openAPIModelName = 'TfaStartAuthenticationRequest';
+    protected static $openAPIModelName = 'EmailBulkUpdateStatusRequest';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -54,11 +54,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @var string[]
       */
     protected static $openAPITypes = [
-        'applicationId' => 'string',
-        'from' => 'string',
-        'messageId' => 'string',
-        'placeholders' => 'array<string,string>',
-        'to' => 'string'
+        'status' => '\Infobip\Model\EmailBulkStatus'
     ];
 
     /**
@@ -69,11 +65,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'applicationId' => null,
-        'from' => null,
-        'messageId' => null,
-        'placeholders' => null,
-        'to' => null
+        'status' => null
     ];
 
     /**
@@ -103,11 +95,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'applicationId' => 'applicationId',
-        'from' => 'from',
-        'messageId' => 'messageId',
-        'placeholders' => 'placeholders',
-        'to' => 'to'
+        'status' => 'status'
     ];
 
     /**
@@ -116,11 +104,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'applicationId' => 'setApplicationId',
-        'from' => 'setFrom',
-        'messageId' => 'setMessageId',
-        'placeholders' => 'setPlaceholders',
-        'to' => 'setTo'
+        'status' => 'setStatus'
     ];
 
     /**
@@ -129,11 +113,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'applicationId' => 'getApplicationId',
-        'from' => 'getFrom',
-        'messageId' => 'getMessageId',
-        'placeholders' => 'getPlaceholders',
-        'to' => 'getTo'
+        'status' => 'getStatus'
     ];
 
     /**
@@ -196,11 +176,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->container['applicationId'] = $data['applicationId'] ?? null;
-        $this->container['from'] = $data['from'] ?? null;
-        $this->container['messageId'] = $data['messageId'] ?? null;
-        $this->container['placeholders'] = $data['placeholders'] ?? null;
-        $this->container['to'] = $data['to'] ?? null;
+        $this->container['status'] = $data['status'] ?? null;
     }
 
     /**
@@ -212,14 +188,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
     {
         $invalidProperties = [];
 
-        if ($this->container['applicationId'] === null) {
-            $invalidProperties[] = "'applicationId' can't be null";
-        }
-        if ($this->container['messageId'] === null) {
-            $invalidProperties[] = "'messageId' can't be null";
-        }
-        if ($this->container['to'] === null) {
-            $invalidProperties[] = "'to' can't be null";
+        if ($this->container['status'] === null) {
+            $invalidProperties[] = "'status' can't be null";
         }
         return $invalidProperties;
     }
@@ -237,121 +207,25 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
 
 
     /**
-     * Gets applicationId
+     * Gets status
      *
-     * @return string
+     * @return \Infobip\Model\EmailBulkStatus
      */
-    public function getApplicationId()
+    public function getStatus()
     {
-        return $this->container['applicationId'];
+        return $this->container['status'];
     }
 
     /**
-     * Sets applicationId
+     * Sets status
      *
-     * @param string $applicationId 2FA application ID.
+     * @param \Infobip\Model\EmailBulkStatus $status status
      *
      * @return self
      */
-    public function setApplicationId($applicationId)
+    public function setStatus($status)
     {
-        $this->container['applicationId'] = $applicationId;
-
-        return $this;
-    }
-
-    /**
-     * Gets from
-     *
-     * @return string|null
-     */
-    public function getFrom()
-    {
-        return $this->container['from'];
-    }
-
-    /**
-     * Sets from
-     *
-     * @param string|null $from Use this parameter if you wish to override the sender ID from the [created](#channels/sms/create-2fa-message-template) message template parameter `senderId`.
-     *
-     * @return self
-     */
-    public function setFrom($from)
-    {
-        $this->container['from'] = $from;
-
-        return $this;
-    }
-
-    /**
-     * Gets messageId
-     *
-     * @return string
-     */
-    public function getMessageId()
-    {
-        return $this->container['messageId'];
-    }
-
-    /**
-     * Sets messageId
-     *
-     * @param string $messageId Message template ID that will be sent to phone number.
-     *
-     * @return self
-     */
-    public function setMessageId($messageId)
-    {
-        $this->container['messageId'] = $messageId;
-
-        return $this;
-    }
-
-    /**
-     * Gets placeholders
-     *
-     * @return array<string,string>|null
-     */
-    public function getPlaceholders()
-    {
-        return $this->container['placeholders'];
-    }
-
-    /**
-     * Sets placeholders
-     *
-     * @param array<string,string>|null $placeholders Key value pairs that will be replaced during message sending. Placeholder keys should NOT contain curly brackets and should NOT contain a `pin` placeholder. Valid example: `\"placeholders\":{\"firstName\":\"John\"}`
-     *
-     * @return self
-     */
-    public function setPlaceholders($placeholders)
-    {
-        $this->container['placeholders'] = $placeholders;
-
-        return $this;
-    }
-
-    /**
-     * Gets to
-     *
-     * @return string
-     */
-    public function getTo()
-    {
-        return $this->container['to'];
-    }
-
-    /**
-     * Sets to
-     *
-     * @param string $to Phone number to which the 2FA message will be sent. Example: 41793026727.
-     *
-     * @return self
-     */
-    public function setTo($to)
-    {
-        $this->container['to'] = $to;
+        $this->container['status'] = $status;
 
         return $this;
     }

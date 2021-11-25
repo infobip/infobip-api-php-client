@@ -1,6 +1,6 @@
 <?php
 /**
- * TfaStartAuthenticationRequest
+ * EmailBulkStatusResponse
  *
  * PHP version 7.2
  *
@@ -27,7 +27,7 @@ use \ArrayAccess;
 use \Infobip\ObjectSerializer;
 
 /**
- * TfaStartAuthenticationRequest Class Doc Comment
+ * EmailBulkStatusResponse Class Doc Comment
  *
  * @category Class
  * @package  Infobip
@@ -37,7 +37,7 @@ use \Infobip\ObjectSerializer;
  * @template TKey int|null
  * @template TValue mixed|null
  */
-class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \JsonSerializable
+class EmailBulkStatusResponse implements ModelInterface, ArrayAccess, \JsonSerializable
 {
     public const DISCRIMINATOR = null;
 
@@ -46,7 +46,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       *
       * @var string
       */
-    protected static $openAPIModelName = 'TfaStartAuthenticationRequest';
+    protected static $openAPIModelName = 'EmailBulkStatusResponse';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -54,11 +54,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @var string[]
       */
     protected static $openAPITypes = [
-        'applicationId' => 'string',
-        'from' => 'string',
-        'messageId' => 'string',
-        'placeholders' => 'array<string,string>',
-        'to' => 'string'
+        'externalBulkId' => 'string',
+        'bulks' => '\Infobip\Model\EmailBulkStatusInfo[]'
     ];
 
     /**
@@ -69,11 +66,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'applicationId' => null,
-        'from' => null,
-        'messageId' => null,
-        'placeholders' => null,
-        'to' => null
+        'externalBulkId' => null,
+        'bulks' => null
     ];
 
     /**
@@ -103,11 +97,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $attributeMap = [
-        'applicationId' => 'applicationId',
-        'from' => 'from',
-        'messageId' => 'messageId',
-        'placeholders' => 'placeholders',
-        'to' => 'to'
+        'externalBulkId' => 'externalBulkId',
+        'bulks' => 'bulks'
     ];
 
     /**
@@ -116,11 +107,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $setters = [
-        'applicationId' => 'setApplicationId',
-        'from' => 'setFrom',
-        'messageId' => 'setMessageId',
-        'placeholders' => 'setPlaceholders',
-        'to' => 'setTo'
+        'externalBulkId' => 'setExternalBulkId',
+        'bulks' => 'setBulks'
     ];
 
     /**
@@ -129,11 +117,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      * @var string[]
      */
     protected static $getters = [
-        'applicationId' => 'getApplicationId',
-        'from' => 'getFrom',
-        'messageId' => 'getMessageId',
-        'placeholders' => 'getPlaceholders',
-        'to' => 'getTo'
+        'externalBulkId' => 'getExternalBulkId',
+        'bulks' => 'getBulks'
     ];
 
     /**
@@ -196,11 +181,8 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
      */
     public function __construct(array $data = null)
     {
-        $this->container['applicationId'] = $data['applicationId'] ?? null;
-        $this->container['from'] = $data['from'] ?? null;
-        $this->container['messageId'] = $data['messageId'] ?? null;
-        $this->container['placeholders'] = $data['placeholders'] ?? null;
-        $this->container['to'] = $data['to'] ?? null;
+        $this->container['externalBulkId'] = $data['externalBulkId'] ?? null;
+        $this->container['bulks'] = $data['bulks'] ?? null;
     }
 
     /**
@@ -212,15 +194,6 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
     {
         $invalidProperties = [];
 
-        if ($this->container['applicationId'] === null) {
-            $invalidProperties[] = "'applicationId' can't be null";
-        }
-        if ($this->container['messageId'] === null) {
-            $invalidProperties[] = "'messageId' can't be null";
-        }
-        if ($this->container['to'] === null) {
-            $invalidProperties[] = "'to' can't be null";
-        }
         return $invalidProperties;
     }
 
@@ -237,121 +210,49 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
 
 
     /**
-     * Gets applicationId
-     *
-     * @return string
-     */
-    public function getApplicationId()
-    {
-        return $this->container['applicationId'];
-    }
-
-    /**
-     * Sets applicationId
-     *
-     * @param string $applicationId 2FA application ID.
-     *
-     * @return self
-     */
-    public function setApplicationId($applicationId)
-    {
-        $this->container['applicationId'] = $applicationId;
-
-        return $this;
-    }
-
-    /**
-     * Gets from
+     * Gets externalBulkId
      *
      * @return string|null
      */
-    public function getFrom()
+    public function getExternalBulkId()
     {
-        return $this->container['from'];
+        return $this->container['externalBulkId'];
     }
 
     /**
-     * Sets from
+     * Sets externalBulkId
      *
-     * @param string|null $from Use this parameter if you wish to override the sender ID from the [created](#channels/sms/create-2fa-message-template) message template parameter `senderId`.
+     * @param string|null $externalBulkId externalBulkId
      *
      * @return self
      */
-    public function setFrom($from)
+    public function setExternalBulkId($externalBulkId)
     {
-        $this->container['from'] = $from;
+        $this->container['externalBulkId'] = $externalBulkId;
 
         return $this;
     }
 
     /**
-     * Gets messageId
+     * Gets bulks
      *
-     * @return string
+     * @return \Infobip\Model\EmailBulkStatusInfo[]|null
      */
-    public function getMessageId()
+    public function getBulks()
     {
-        return $this->container['messageId'];
+        return $this->container['bulks'];
     }
 
     /**
-     * Sets messageId
+     * Sets bulks
      *
-     * @param string $messageId Message template ID that will be sent to phone number.
+     * @param \Infobip\Model\EmailBulkStatusInfo[]|null $bulks bulks
      *
      * @return self
      */
-    public function setMessageId($messageId)
+    public function setBulks($bulks)
     {
-        $this->container['messageId'] = $messageId;
-
-        return $this;
-    }
-
-    /**
-     * Gets placeholders
-     *
-     * @return array<string,string>|null
-     */
-    public function getPlaceholders()
-    {
-        return $this->container['placeholders'];
-    }
-
-    /**
-     * Sets placeholders
-     *
-     * @param array<string,string>|null $placeholders Key value pairs that will be replaced during message sending. Placeholder keys should NOT contain curly brackets and should NOT contain a `pin` placeholder. Valid example: `\"placeholders\":{\"firstName\":\"John\"}`
-     *
-     * @return self
-     */
-    public function setPlaceholders($placeholders)
-    {
-        $this->container['placeholders'] = $placeholders;
-
-        return $this;
-    }
-
-    /**
-     * Gets to
-     *
-     * @return string
-     */
-    public function getTo()
-    {
-        return $this->container['to'];
-    }
-
-    /**
-     * Sets to
-     *
-     * @param string $to Phone number to which the 2FA message will be sent. Example: 41793026727.
-     *
-     * @return self
-     */
-    public function setTo($to)
-    {
-        $this->container['to'] = $to;
+        $this->container['bulks'] = $bulks;
 
         return $this;
     }

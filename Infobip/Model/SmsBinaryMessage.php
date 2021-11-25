@@ -254,6 +254,10 @@ class SmsBinaryMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     {
         $invalidProperties = [];
 
+        if (!is_null($this->container['destinations']) && (count($this->container['destinations']) < 1)) {
+            $invalidProperties[] = "invalid value for 'destinations', number of items must be greater than or equal to 1.";
+        }
+
         return $invalidProperties;
     }
 
@@ -360,6 +364,9 @@ class SmsBinaryMessage implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setDestinations($destinations)
     {
+        if (!is_null($destinations) && (count($destinations) < 1)) {
+            throw new \InvalidArgumentException('invalid length for $destinations when calling SmsBinaryMessage., number of items must be greater than or equal to 1.');
+        }
         $this->container['destinations'] = $destinations;
 
         return $this;
