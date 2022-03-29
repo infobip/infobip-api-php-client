@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaApplicationRequest Class Doc Comment
@@ -167,9 +167,9 @@ class TfaApplicationRequest implements ModelInterface, ArrayAccess, \JsonSeriali
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -255,7 +255,7 @@ class TfaApplicationRequest implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets enabled
      *
-     * @param bool|null $enabled Indicates if the created application is enabled.
+     * @param bool|null $enabled Indicates whether the created application is enabled.
      *
      * @return self
      */

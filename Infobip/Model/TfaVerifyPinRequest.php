@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaVerifyPinRequest Class Doc Comment
@@ -157,9 +157,9 @@ class TfaVerifyPinRequest implements ModelInterface, ArrayAccess, \JsonSerializa
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -219,7 +219,7 @@ class TfaVerifyPinRequest implements ModelInterface, ArrayAccess, \JsonSerializa
     /**
      * Sets pin
      *
-     * @param string $pin PIN code to verify
+     * @param string $pin The PIN code to verify.
      *
      * @return self
      */

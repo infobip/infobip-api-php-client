@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsResponseDetails Class Doc Comment
  *
  * @category Class
+ * @description An array of message objects of a single message or multiple messages sent under one bulk ID.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -167,9 +168,9 @@ class SmsResponseDetails implements ModelInterface, ArrayAccess, \JsonSerializab
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -228,7 +229,7 @@ class SmsResponseDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets messageId
      *
-     * @param string|null $messageId The ID that uniquely identifies the message sent.
+     * @param string|null $messageId Unique message ID. If not passed, it will be automatically generated and returned in a response.
      *
      * @return self
      */
@@ -252,7 +253,7 @@ class SmsResponseDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets status
      *
-     * @param \Infobip\Model\SmsStatus|null $status Indicates whether the message is successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status.
+     * @param \Infobip\Model\SmsStatus|null $status status
      *
      * @return self
      */
@@ -276,7 +277,7 @@ class SmsResponseDetails implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets to
      *
-     * @param string|null $to The message destination address.
+     * @param string|null $to The destination address of the message.
      *
      * @return self
      */

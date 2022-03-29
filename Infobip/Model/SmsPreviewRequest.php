@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsPreviewRequest Class Doc Comment
@@ -167,9 +167,9 @@ class SmsPreviewRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -239,7 +239,7 @@ class SmsPreviewRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets languageCode
      *
-     * @param string|null $languageCode Code for language character set of a message text. Possible values: `TR` for Turkish, `ES` for Spanish, `PT` for Portuguese and `AUTODETECT` to let platform pick character set automatically based on the message text.
+     * @param string|null $languageCode Language code for the correct character set. Possible values: `TR` for Turkish, `ES` for Spanish, `PT` for Portuguese, or `AUTODETECT` to let platform select the character set based on message content.
      *
      * @return self
      */
@@ -267,7 +267,7 @@ class SmsPreviewRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets text
      *
-     * @param string $text Message text to preview.
+     * @param string $text Content of the message being sent.
      *
      * @return self
      */
@@ -291,7 +291,7 @@ class SmsPreviewRequest implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets transliteration
      *
-     * @param string|null $transliteration Conversion of a message text from one script to another. Possible values: `TURKISH`, `GREEK`, `CYRILLIC`, `SERBIAN_CYRILLIC`, `CENTRAL_EUROPEAN`, `BALTIC` and `NON_UNICODE`.
+     * @param string|null $transliteration The transliteration of your sent message from one script to another. Transliteration is used to replace characters which are not recognized as part of your defaulted alphabet. Possible values: `TURKISH`, `GREEK`, `CYRILLIC`, `SERBIAN_CYRILLIC`, `CENTRAL_EUROPEAN`, `BALTIC` and `NON_UNICODE`.
      *
      * @return self
      */

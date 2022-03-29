@@ -23,7 +23,7 @@
 
 namespace Infobip\Model;
 
-use \Infobip\ObjectSerializer;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaLanguage Class Doc Comment
@@ -38,28 +38,28 @@ class TfaLanguage
     /**
      * Possible values of this enum
      */
-    const EN = 'en';
-    const ES = 'es';
-    const CA = 'ca';
-    const DA = 'da';
-    const NL = 'nl';
-    const FR = 'fr';
-    const DE = 'de';
-    const IT = 'it';
-    const JA = 'ja';
-    const KO = 'ko';
-    const NO = 'no';
-    const PL = 'pl';
-    const RU = 'ru';
-    const SV = 'sv';
-    const FI = 'fi';
-    const HR = 'hr';
-    const SL = 'sl';
-    const PT_PT = 'pt-pt';
-    const PT_BR = 'pt-br';
-    const ZH_CN = 'zh-cn';
-    const ZH_TW = 'zh-tw';
-    
+    public const EN = 'en';
+    public const ES = 'es';
+    public const CA = 'ca';
+    public const DA = 'da';
+    public const NL = 'nl';
+    public const FR = 'fr';
+    public const DE = 'de';
+    public const IT = 'it';
+    public const JA = 'ja';
+    public const KO = 'ko';
+    public const NO = 'no';
+    public const PL = 'pl';
+    public const RU = 'ru';
+    public const SV = 'sv';
+    public const FI = 'fi';
+    public const HR = 'hr';
+    public const SL = 'sl';
+    public const PT_PT = 'pt-pt';
+    public const PT_BR = 'pt-br';
+    public const ZH_CN = 'zh-cn';
+    public const ZH_TW = 'zh-tw';
+
     /**
      * Gets allowable values of the enum
      * @return string[]

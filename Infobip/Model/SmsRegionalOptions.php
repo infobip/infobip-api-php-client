@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsRegionalOptions Class Doc Comment
  *
  * @category Class
+ * @description Region-specific parameters, often imposed by local laws. Use this, if country or region that you are sending an SMS to requires additional information.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -157,9 +158,9 @@ class SmsRegionalOptions implements ModelInterface, ArrayAccess, \JsonSerializab
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -216,7 +217,7 @@ class SmsRegionalOptions implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets indiaDlt
      *
-     * @param \Infobip\Model\SmsIndiaDltOptions|null $indiaDlt Distributed Ledger Technology (DLT) specific parameters required for sending SMS to phone numbers registered in India.
+     * @param \Infobip\Model\SmsIndiaDltOptions|null $indiaDlt indiaDlt
      *
      * @return self
      */

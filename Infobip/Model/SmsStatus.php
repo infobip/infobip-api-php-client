@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsStatus Class Doc Comment
  *
  * @category Class
+ * @description Indicates the [status](https://www.infobip.com/docs/essentials/response-status-and-error-codes#api-status-codes) of the message and how to recover from an error should there be any.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -182,9 +183,9 @@ class SmsStatus implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -246,7 +247,7 @@ class SmsStatus implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets action
      *
-     * @param string|null $action Action that should be taken to eliminate the error.
+     * @param string|null $action Action that should be taken to recover from the error.
      *
      * @return self
      */
@@ -318,7 +319,7 @@ class SmsStatus implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets groupName
      *
-     * @param string|null $groupName Status group name.
+     * @param string|null $groupName Status group name that describes which category the status code belongs to, e.g. PENDING, UNDELIVERABLE, DELIVERED, EXPIRED, REJECTED.
      *
      * @return self
      */
@@ -366,7 +367,7 @@ class SmsStatus implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets name
      *
-     * @param string|null $name Status name.
+     * @param string|null $name [Status name](https://www.infobip.com/docs/essentials/response-status-and-error-codes).
      *
      * @return self
      */

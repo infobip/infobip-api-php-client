@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * EmailBulkUpdateStatusResponse Class Doc Comment
@@ -162,9 +162,9 @@ class EmailBulkUpdateStatusResponse implements ModelInterface, ArrayAccess, \Jso
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values

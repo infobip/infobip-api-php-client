@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaStartAuthenticationRequest Class Doc Comment
@@ -177,9 +177,9 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -249,7 +249,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets applicationId
      *
-     * @param string $applicationId 2FA application ID.
+     * @param string $applicationId The ID of the application that represents your service, e.g. 2FA for login, 2FA for changing the password, etc.
      *
      * @return self
      */
@@ -297,7 +297,7 @@ class TfaStartAuthenticationRequest implements ModelInterface, ArrayAccess, \Jso
     /**
      * Sets messageId
      *
-     * @param string $messageId Message template ID that will be sent to phone number.
+     * @param string $messageId The ID of the message template (message body with the PIN placeholder) that is sent to the recipient.
      *
      * @return self
      */

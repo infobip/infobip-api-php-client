@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsInboundMessage Class Doc Comment
@@ -202,9 +202,9 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -270,7 +270,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets callbackData
      *
-     * @param string|null $callbackData Custom callback data can be inserted during the setup phase.
+     * @param string|null $callbackData Custom callback data sent over the notifyUrl.
      *
      * @return self
      */
@@ -294,7 +294,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets cleanText
      *
-     * @param string|null $cleanText Text of received message without a keyword (if a keyword was sent).
+     * @param string|null $cleanText Content of the message without a keyword (if a keyword was sent).
      *
      * @return self
      */
@@ -342,7 +342,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets keyword
      *
-     * @param string|null $keyword Keyword extracted from the message text.
+     * @param string|null $keyword Keyword extracted from the message content.
      *
      * @return self
      */
@@ -366,7 +366,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets messageId
      *
-     * @param string|null $messageId The ID that uniquely identifies the received message.
+     * @param string|null $messageId Unique message ID.
      *
      * @return self
      */
@@ -390,7 +390,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets price
      *
-     * @param \Infobip\Model\SmsPrice|null $price price
+     * @param \Infobip\Model\SmsPrice|null $price A price object showing currency and a price per each message.
      *
      * @return self
      */
@@ -414,7 +414,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets receivedAt
      *
-     * @param \DateTime|null $receivedAt Tells when Infobip platform received the message. It has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
+     * @param \DateTime|null $receivedAt Indicates when the Infobip platform received the message. Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
      *
      * @return self
      */
@@ -438,7 +438,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets smsCount
      *
-     * @param int|null $smsCount The number of sent message segments.
+     * @param int|null $smsCount The number of characters within a message
      *
      * @return self
      */
@@ -462,7 +462,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets text
      *
-     * @param string|null $text Full text of the received message.
+     * @param string|null $text Full content of the message.
      *
      * @return self
      */
@@ -486,7 +486,7 @@ class SmsInboundMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets to
      *
-     * @param string|null $to The message destination address.
+     * @param string|null $to The destination address of the message.
      *
      * @return self
      */

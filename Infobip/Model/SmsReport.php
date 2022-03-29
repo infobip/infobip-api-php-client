@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsReport Class Doc Comment
@@ -212,9 +212,9 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -282,7 +282,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets bulkId
      *
-     * @param string|null $bulkId Bulk ID.
+     * @param string|null $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request.
      *
      * @return self
      */
@@ -306,7 +306,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets callbackData
      *
-     * @param string|null $callbackData Callback data sent through `callbackData` field in fully featured SMS message.
+     * @param string|null $callbackData Custom data sent over to the `notifyUrl`.
      *
      * @return self
      */
@@ -330,7 +330,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets doneAt
      *
-     * @param \DateTime|null $doneAt Tells when the SMS was finished processing by Infobip (i.e., delivered to the destination, delivered to the destination network, etc.). Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
+     * @param \DateTime|null $doneAt Date and time when the Infobip services finished processing the message (i.e., delivered to the destination, delivered to the destination network, etc.). Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
      *
      * @return self
      */
@@ -354,7 +354,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets error
      *
-     * @param \Infobip\Model\SmsError|null $error Indicates whether the error occurred during the query execution.
+     * @param \Infobip\Model\SmsError|null $error Indicates whether an error occurred during the query execution.
      *
      * @return self
      */
@@ -378,7 +378,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets from
      *
-     * @param string|null $from Sender ID that can be alphanumeric or numeric.
+     * @param string|null $from The sender ID which can be alphanumeric or numeric (e.g., `CompanyName`).
      *
      * @return self
      */
@@ -426,7 +426,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets messageId
      *
-     * @param string|null $messageId Message ID.
+     * @param string|null $messageId Unique message ID.
      *
      * @return self
      */
@@ -474,7 +474,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sentAt
      *
-     * @param \DateTime|null $sentAt Tells when the SMS was sent. Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
+     * @param \DateTime|null $sentAt Date and time when the message was [scheduled](#channels/sms/get-scheduled-sms-messages) to be sent. Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
      *
      * @return self
      */
@@ -498,7 +498,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets smsCount
      *
-     * @param int|null $smsCount The number of parts the sent SMS was split into.
+     * @param int|null $smsCount The number of parts the message content was split into.
      *
      * @return self
      */
@@ -522,7 +522,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets status
      *
-     * @param \Infobip\Model\SmsStatus|null $status Indicates whether the message is successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status.
+     * @param \Infobip\Model\SmsStatus|null $status Indicates the [status](https://www.infobip.com/docs/essentials/response-status-and-error-codes#api-status-codes) of the message and how to recover from an error should there be any.
      *
      * @return self
      */
@@ -546,7 +546,7 @@ class SmsReport implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets to
      *
-     * @param string|null $to Destination address.
+     * @param string|null $to Message destination address.
      *
      * @return self
      */

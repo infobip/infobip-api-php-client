@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaCreateMessageRequest Class Doc Comment
@@ -192,9 +192,9 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -264,7 +264,7 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets language
      *
-     * @param \Infobip\Model\TfaLanguage|null $language Language code of language in which message text is written. It is used for reading the message when it is sent via voice. If no language is set, message will be read in `English`.
+     * @param \Infobip\Model\TfaLanguage|null $language The language code which message is written in used when sending text-to-speech messages. If not defined, it will default to English (`en`).
      *
      * @return self
      */
@@ -288,7 +288,7 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets messageText
      *
-     * @param string $messageText Text of a message that will be sent. It can contain placeholders that will be replaced upon sending. Placeholder format is `{{placeholderName}}`. Message text must contain `{{pin}}` placeholder.
+     * @param string $messageText Content of the message being sent which contains at minimum one placeholder for a PIN code (`{{pin}}`). Placeholder format is `{{placeholderName}}`.
      *
      * @return self
      */
@@ -360,7 +360,7 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets regional
      *
-     * @param \Infobip\Model\TfaRegionalOptions|null $regional Region specific parameters, often specified by local laws. Use this if country or region that you are sending SMS to requires some extra parameters.
+     * @param \Infobip\Model\TfaRegionalOptions|null $regional Region-specific parameters, often imposed by local laws. Use this, if country or region that you are sending a message to requires additional information.
      *
      * @return self
      */
@@ -384,7 +384,7 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets repeatDTMF
      *
-     * @param string|null $repeatDTMF In case PIN message is sent by Voice, DTMF code will enable replaying the message.
+     * @param string|null $repeatDTMF If the PIN is sent as a voice message, the DTMF code allows the recipient to replay the message.
      *
      * @return self
      */
@@ -432,7 +432,7 @@ class TfaCreateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets speechRate
      *
-     * @param double|null $speechRate In case PIN message is sent by Voice, the speed of speech can be set for the message. Supported range is from `0.5` to `2`.
+     * @param double|null $speechRate The speed of narration for messages sent as voice. Supported range is from `0.5` to `2`.
      *
      * @return self
      */

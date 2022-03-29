@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsPreview Class Doc Comment
@@ -172,9 +172,9 @@ class SmsPreview implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -234,7 +234,7 @@ class SmsPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets charactersRemaining
      *
-     * @param int|null $charactersRemaining Number of remaining characters in the last SMS part.
+     * @param int|null $charactersRemaining Number of remaining characters in the last part of the SMS.
      *
      * @return self
      */
@@ -258,7 +258,7 @@ class SmsPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets configuration
      *
-     * @param \Infobip\Model\SmsLanguageConfiguration|null $configuration Configuration that, when sent with the original text, results in this preview.
+     * @param \Infobip\Model\SmsLanguageConfiguration|null $configuration Sets up additional configuration that changes the original message content you can preview with this call.
      *
      * @return self
      */
@@ -306,7 +306,7 @@ class SmsPreview implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets textPreview
      *
-     * @param string|null $textPreview Preview of the text as it should appear on the recipient’s device.
+     * @param string|null $textPreview Preview of the message content as it should appear on the recipient’s device.
      *
      * @return self
      */

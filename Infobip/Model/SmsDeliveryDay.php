@@ -23,12 +23,13 @@
 
 namespace Infobip\Model;
 
-use \Infobip\ObjectSerializer;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsDeliveryDay Class Doc Comment
  *
  * @category Class
+ * @description Days of the week which are included in the delivery time window. At least one day must be provided. Separate multiple days with a comma.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -38,14 +39,14 @@ class SmsDeliveryDay
     /**
      * Possible values of this enum
      */
-    const MONDAY = 'MONDAY';
-    const TUESDAY = 'TUESDAY';
-    const WEDNESDAY = 'WEDNESDAY';
-    const THURSDAY = 'THURSDAY';
-    const FRIDAY = 'FRIDAY';
-    const SATURDAY = 'SATURDAY';
-    const SUNDAY = 'SUNDAY';
-    
+    public const MONDAY = 'MONDAY';
+    public const TUESDAY = 'TUESDAY';
+    public const WEDNESDAY = 'WEDNESDAY';
+    public const THURSDAY = 'THURSDAY';
+    public const FRIDAY = 'FRIDAY';
+    public const SATURDAY = 'SATURDAY';
+    public const SUNDAY = 'SUNDAY';
+
     /**
      * Gets allowable values of the enum
      * @return string[]

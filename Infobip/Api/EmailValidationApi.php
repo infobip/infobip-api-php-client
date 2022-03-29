@@ -220,7 +220,7 @@ class EmailValidationApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

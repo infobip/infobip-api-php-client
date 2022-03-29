@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaApplicationResponse Class Doc Comment
@@ -172,9 +172,9 @@ class TfaApplicationResponse implements ModelInterface, ArrayAccess, \JsonSerial
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -234,7 +234,7 @@ class TfaApplicationResponse implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets applicationId
      *
-     * @param string|null $applicationId 2FA application ID.
+     * @param string|null $applicationId The ID of the application that represents your service, e.g. 2FA for login, 2FA for changing the password, etc.
      *
      * @return self
      */
@@ -282,7 +282,7 @@ class TfaApplicationResponse implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets enabled
      *
-     * @param bool|null $enabled Indicates if the created application is enabled.
+     * @param bool|null $enabled Indicates whether the created application is enabled.
      *
      * @return self
      */

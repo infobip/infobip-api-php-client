@@ -22,7 +22,7 @@
 
 namespace Infobip;
 
-use \Exception;
+use Exception;
 
 /**
  * ApiException Class Doc Comment
@@ -34,7 +34,6 @@ use \Exception;
  */
 class HeaderSelector
 {
-
     /**
      * @param string[] $accept
      * @param string[] $contentTypes

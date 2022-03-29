@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaMessage Class Doc Comment
@@ -207,9 +207,9 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -276,7 +276,7 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets applicationId
      *
-     * @param string|null $applicationId 2FA application ID for which the requested message is created.
+     * @param string|null $applicationId The ID of the application that represents your service (e.g. 2FA for login, 2FA for changing the password, etc.) for which the requested message has been created.
      *
      * @return self
      */
@@ -300,7 +300,7 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets language
      *
-     * @param \Infobip\Model\TfaLanguage|null $language Language code of language in which message text is written. It is used for reading the message when it is sent via voice. If no language is set, message will be read in `English`.
+     * @param \Infobip\Model\TfaLanguage|null $language The language code which message is written in used when sending text-to-speech messages. If not defined, it will default to English (`en`).
      *
      * @return self
      */
@@ -324,7 +324,7 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets messageId
      *
-     * @param string|null $messageId Message template ID.
+     * @param string|null $messageId The ID of the message template (message body with the PIN placeholder) that is sent to the recipient.
      *
      * @return self
      */
@@ -396,7 +396,7 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets pinPlaceholder
      *
-     * @param string|null $pinPlaceholder PIN code placeholder that will be replaced with generated PIN code.
+     * @param string|null $pinPlaceholder The PIN code placeholder that will be replaced with a generated PIN code.
      *
      * @return self
      */
@@ -420,7 +420,7 @@ class TfaMessage implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets pinType
      *
-     * @param \Infobip\Model\TfaPinType|null $pinType Type of PIN code that will be generated and sent as part of 2FA message. You can set PIN type to numeric, alpha, alphanumeric or hex.
+     * @param \Infobip\Model\TfaPinType|null $pinType The type of PIN code that will be generated and sent as part of 2FA message. You can set PIN type to numeric, alpha, alphanumeric or hex.
      *
      * @return self
      */

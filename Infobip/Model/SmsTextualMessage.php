@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsTextualMessage Class Doc Comment
  *
  * @category Class
+ * @description An array of message objects of a single message or multiple messages sent under one bulk ID.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -222,9 +223,9 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -244,7 +245,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
         $this->container['callbackData'] = $data['callbackData'] ?? null;
         $this->container['deliveryTimeWindow'] = $data['deliveryTimeWindow'] ?? null;
         $this->container['destinations'] = $data['destinations'] ?? null;
-        $this->container['flash'] = $data['flash'] ?? null;
+        $this->container['flash'] = $data['flash'] ?? false;
         $this->container['from'] = $data['from'] ?? null;
         $this->container['intermediateReport'] = $data['intermediateReport'] ?? null;
         $this->container['language'] = $data['language'] ?? null;
@@ -266,10 +267,17 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     {
         $invalidProperties = [];
 
-        if (!is_null($this->container['destinations']) && (count($this->container['destinations']) < 1)) {
-            $invalidProperties[] = "invalid value for 'destinations', number of items must be greater than or equal to 1.";
+        if (!is_null($this->container['callbackData']) && (mb_strlen($this->container['callbackData']) > 4000)) {
+            $invalidProperties[] = "invalid value for 'callbackData', the character length must be smaller than or equal to 4000.";
         }
 
+        if (!is_null($this->container['callbackData']) && (mb_strlen($this->container['callbackData']) < 0)) {
+            $invalidProperties[] = "invalid value for 'callbackData', the character length must be bigger than or equal to 0.";
+        }
+
+        if ($this->container['destinations'] === null) {
+            $invalidProperties[] = "'destinations' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -298,12 +306,19 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets callbackData
      *
-     * @param string|null $callbackData Additional client's data that will be sent on the notifyUrl. The maximum value is 200 characters.
+     * @param string|null $callbackData Additional data that can be used for identifying, managing, or monitoring a message. Data included here will also be automatically included in the message [Delivery Report](#channels/sms/get-outbound-sms-message-delivery-reports). The maximum value is 4000 characters and any overhead may be truncated.
      *
      * @return self
      */
     public function setCallbackData($callbackData)
     {
+        if (!is_null($callbackData) && (mb_strlen($callbackData) > 4000)) {
+            throw new \InvalidArgumentException('invalid length for $callbackData when calling SmsTextualMessage., must be smaller than or equal to 4000.');
+        }
+        if (!is_null($callbackData) && (mb_strlen($callbackData) < 0)) {
+            throw new \InvalidArgumentException('invalid length for $callbackData when calling SmsTextualMessage., must be bigger than or equal to 0.');
+        }
+
         $this->container['callbackData'] = $callbackData;
 
         return $this;
@@ -322,7 +337,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets deliveryTimeWindow
      *
-     * @param \Infobip\Model\SmsDeliveryTimeWindow|null $deliveryTimeWindow Scheduling object that allows setting up detailed time windows in which the message can be sent. Consists of `from`, `to` and `days` properties. `Days` property is mandatory. `From` and `to` properties should be either both included, to allow finer time window granulation or both omitted, to include whole days in the delivery time window.
+     * @param \Infobip\Model\SmsDeliveryTimeWindow|null $deliveryTimeWindow deliveryTimeWindow
      *
      * @return self
      */
@@ -336,7 +351,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Gets destinations
      *
-     * @return \Infobip\Model\SmsDestination[]|null
+     * @return \Infobip\Model\SmsDestination[]
      */
     public function getDestinations()
     {
@@ -346,15 +361,12 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets destinations
      *
-     * @param \Infobip\Model\SmsDestination[]|null $destinations destinations
+     * @param \Infobip\Model\SmsDestination[] $destinations An array of destination objects for where messages are being sent. A valid destination is required.
      *
      * @return self
      */
     public function setDestinations($destinations)
     {
-        if (!is_null($destinations) && (count($destinations) < 1)) {
-            throw new \InvalidArgumentException('invalid length for $destinations when calling SmsTextualMessage., number of items must be greater than or equal to 1.');
-        }
         $this->container['destinations'] = $destinations;
 
         return $this;
@@ -373,7 +385,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets flash
      *
-     * @param bool|null $flash Can be `true` or `false`. If the value is set to `true`, a flash SMS will be sent. Otherwise, a normal SMS will be sent. The default value is `false`.
+     * @param bool|null $flash Allows for sending a [flash SMS](https://www.infobip.com/docs/sms/message-types#flash-sms) to automatically appear on recipient devices without interaction. Set to `true` to enable flash SMS, or leave the default value, `false` to send a standard SMS.
      *
      * @return self
      */
@@ -397,7 +409,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets from
      *
-     * @param string|null $from Represents a sender ID which can be alphanumeric or numeric. Alphanumeric sender ID length should be between 3 and 11 characters (Example: `CompanyName`). Numeric sender ID length should be between 3 and 14 characters.
+     * @param string|null $from The sender ID which can be alphanumeric or numeric (e.g., `CompanyName`). Make sure you don't exceed [character limit](https://www.infobip.com/docs/sms/get-started#sender-names).
      *
      * @return self
      */
@@ -421,7 +433,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets intermediateReport
      *
-     * @param bool|null $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. Can be `true` or `false`.
+     * @param bool|null $intermediateReport The [real-time intermediate delivery report](#channels/sms/receive-outbound-sms-message-report) containing GSM error codes, messages status, pricing, network and country codes, etc., which will be sent on your callback server. Defaults to `false`.
      *
      * @return self
      */
@@ -469,7 +481,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets notifyContentType
      *
-     * @param string|null $notifyContentType Preferred Delivery report content type. Can be `application/json` or `application/xml`.
+     * @param string|null $notifyContentType Preferred delivery report content type, `application/json` or `application/xml`.
      *
      * @return self
      */
@@ -493,7 +505,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets notifyUrl
      *
-     * @param string|null $notifyUrl The URL on your call back server on which the Delivery report will be sent.
+     * @param string|null $notifyUrl The URL on your call back server on to which a delivery report will be sent. The [retry cycle](https://www.infobip.com/docs/sms/api#notify-url) for when your URL becomes unavailable uses the following formula: `1min + (1min * retryNumber * retryNumber)`.
      *
      * @return self
      */
@@ -517,7 +529,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets regional
      *
-     * @param \Infobip\Model\SmsRegionalOptions|null $regional Region specific parameters, often specified by local laws. Use this if country or region that you are sending SMS to requires some extra parameters.
+     * @param \Infobip\Model\SmsRegionalOptions|null $regional regional
      *
      * @return self
      */
@@ -541,7 +553,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets sendAt
      *
-     * @param \DateTime|null $sendAt Date and time when the message is to be sent. Used for scheduled SMS (SMS not sent immediately, but at the scheduled time). Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`.
+     * @param \DateTime|null $sendAt Date and time when the message is to be sent. Used for [scheduled SMS](#channels/sms/get-scheduled-sms-messages). Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, and can only be scheduled for no later than 180 days in advance.
      *
      * @return self
      */
@@ -565,7 +577,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets text
      *
-     * @param string|null $text Text of the message that will be sent.
+     * @param string|null $text Content of the message being sent.
      *
      * @return self
      */
@@ -589,7 +601,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets transliteration
      *
-     * @param string|null $transliteration Conversion of a message text from one script to another. Possible values: `TURKISH`, `GREEK`, `CYRILLIC`, `SERBIAN_CYRILLIC`, `CENTRAL_EUROPEAN`, `BALTIC` and `NON_UNICODE`.
+     * @param string|null $transliteration The transliteration of your sent message from one script to another. Transliteration is used to replace characters which are not recognized as part of your defaulted alphabet. Possible values: `TURKISH`, `GREEK`, `CYRILLIC`, `SERBIAN_CYRILLIC`, `CENTRAL_EUROPEAN`, `BALTIC` and `NON_UNICODE`.
      *
      * @return self
      */
@@ -613,7 +625,7 @@ class SmsTextualMessage implements ModelInterface, ArrayAccess, \JsonSerializabl
     /**
      * Sets validityPeriod
      *
-     * @param int|null $validityPeriod The message validity period in minutes. When the period expires, it will not be allowed for the message to be sent. Validity period longer than 48h is not supported (in this case, it will be automatically set to 48h).
+     * @param int|null $validityPeriod The message validity period in minutes. When the period expires, it will not be allowed for the message to be sent. Validity period longer than 48h is not supported. Any bigger value will automatically default back to `2880`.
      *
      * @return self
      */

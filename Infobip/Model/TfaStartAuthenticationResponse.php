@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaStartAuthenticationResponse Class Doc Comment
@@ -177,9 +177,9 @@ class TfaStartAuthenticationResponse implements ModelInterface, ArrayAccess, \Js
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -240,7 +240,7 @@ class TfaStartAuthenticationResponse implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets callStatus
      *
-     * @param string|null $callStatus Call status.
+     * @param string|null $callStatus Call status, e.g. `PENDING_ACCEPTED`.
      *
      * @return self
      */
@@ -264,7 +264,7 @@ class TfaStartAuthenticationResponse implements ModelInterface, ArrayAccess, \Js
     /**
      * Sets ncStatus
      *
-     * @param string|null $ncStatus Status of sent Number Lookup. Number Lookup status can have one of the following values: `NC_DESTINATION_UNKNOWN`, `NC_DESTINATION_REACHABLE`, `NC_DESTINATION_NOT_REACHABLE`, `NC_NOT_CONFIGURED`. If you get the `NC_NOT_CONFIGURED` status, you should contact your Account Manager. SMS will not be sent only if Number Lookup status is `NC_NOT_REACHABLE`.
+     * @param string|null $ncStatus Status of sent [Number Lookup](https://www.infobip.com/docs/number-lookup). Number Lookup status can have one of the following values: `NC_DESTINATION_UNKNOWN`, `NC_DESTINATION_REACHABLE`, `NC_DESTINATION_NOT_REACHABLE`, `NC_NOT_CONFIGURED`. Contact your Account Manager, if you get the `NC_NOT_CONFIGURED` status. SMS will not be sent only if Number Lookup status is `NC_NOT_REACHABLE`.
      *
      * @return self
      */

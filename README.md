@@ -35,7 +35,7 @@ All versions above 7.2
 To start using the library add it as dependecy in your `composer.json` file like shown below.
 ```json
 "require": {
-	"infobip/infobip-api-php-client": "3.1.0"
+	"infobip/infobip-api-php-client": "3.2.0"
 }
 ```
 And simply run `composer install` to download dependencies.
@@ -165,6 +165,9 @@ For 2FA quick start guide please check [these examples](two-factor-authenticatio
 
 #### Send email
 For send email quick start guide please check [these examples](email.md).
+
+#### WhatsApp
+For WhatsApp quick start guide, view [these examples](whatsapp.md).
 
 ## Ask for help
 

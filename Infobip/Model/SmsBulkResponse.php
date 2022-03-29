@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsBulkResponse Class Doc Comment
@@ -162,9 +162,9 @@ class SmsBulkResponse implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -222,7 +222,7 @@ class SmsBulkResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets bulkId
      *
-     * @param string|null $bulkId bulkId
+     * @param string|null $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request.
      *
      * @return self
      */
@@ -246,7 +246,7 @@ class SmsBulkResponse implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets sendAt
      *
-     * @param \DateTime|null $sendAt sendAt
+     * @param \DateTime|null $sendAt Date and time when the message is to be sent. Used for scheduled SMS (see [Scheduled SMS endpoints](#channels/sms/get-scheduled-sms-messages) for more details). Has the following format: `yyyy-MM-dd'T'HH:mm:ss.SSSZ`, and can only be scheduled for no later than 180 days in advance.
      *
      * @return self
      */

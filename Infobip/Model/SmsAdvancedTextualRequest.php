@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsAdvancedTextualRequest Class Doc Comment
@@ -172,9 +172,9 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -206,6 +206,9 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
     {
         $invalidProperties = [];
 
+        if ($this->container['messages'] === null) {
+            $invalidProperties[] = "'messages' can't be null";
+        }
         return $invalidProperties;
     }
 
@@ -234,7 +237,7 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets bulkId
      *
-     * @param string|null $bulkId The ID which uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address.
+     * @param string|null $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. If not provided, it will be auto-generated and returned in the API response. Typically, used to fetch [delivery reports](#channels/sms/get-outbound-sms-message-delivery-reports) and [message logs](#channels/sms/get-outbound-sms-message-logs).
      *
      * @return self
      */
@@ -248,7 +251,7 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Gets messages
      *
-     * @return \Infobip\Model\SmsTextualMessage[]|null
+     * @return \Infobip\Model\SmsTextualMessage[]
      */
     public function getMessages()
     {
@@ -258,7 +261,7 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets messages
      *
-     * @param \Infobip\Model\SmsTextualMessage[]|null $messages messages
+     * @param \Infobip\Model\SmsTextualMessage[] $messages An array of message objects of a single message or multiple messages sent under one bulk ID.
      *
      * @return self
      */
@@ -282,7 +285,7 @@ class SmsAdvancedTextualRequest implements ModelInterface, ArrayAccess, \JsonSer
     /**
      * Sets sendingSpeedLimit
      *
-     * @param \Infobip\Model\SmsSendingSpeedLimit|null $sendingSpeedLimit Limit the sending speed for message bulks. In some use cases, you might want to reduce message sending speed if your message call to action involves visiting a website, calling your contact center or similar recipient activity, in which you can handle a limited amount of load. This setting helps you to spread the delivery of the messages over a longer period, allowing your systems or agents to handle incoming traffic in real-time, resulting in better customer satisfaction.
+     * @param \Infobip\Model\SmsSendingSpeedLimit|null $sendingSpeedLimit sendingSpeedLimit
      *
      * @return self
      */

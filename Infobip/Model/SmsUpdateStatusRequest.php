@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsUpdateStatusRequest Class Doc Comment
@@ -157,9 +157,9 @@ class SmsUpdateStatusRequest implements ModelInterface, ArrayAccess, \JsonSerial
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -219,7 +219,7 @@ class SmsUpdateStatusRequest implements ModelInterface, ArrayAccess, \JsonSerial
     /**
      * Sets status
      *
-     * @param \Infobip\Model\SmsBulkStatus $status status
+     * @param \Infobip\Model\SmsBulkStatus $status The status of the message(s).
      *
      * @return self
      */

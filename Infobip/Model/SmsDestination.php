@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsDestination Class Doc Comment
  *
  * @category Class
+ * @description An array of destination objects for where messages are being sent. A valid destination is required.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -162,9 +163,9 @@ class SmsDestination implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -197,6 +198,14 @@ class SmsDestination implements ModelInterface, ArrayAccess, \JsonSerializable
         if ($this->container['to'] === null) {
             $invalidProperties[] = "'to' can't be null";
         }
+        if ((mb_strlen($this->container['to']) > 50)) {
+            $invalidProperties[] = "invalid value for 'to', the character length must be smaller than or equal to 50.";
+        }
+
+        if ((mb_strlen($this->container['to']) < 0)) {
+            $invalidProperties[] = "invalid value for 'to', the character length must be bigger than or equal to 0.";
+        }
+
         return $invalidProperties;
     }
 
@@ -255,6 +264,13 @@ class SmsDestination implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function setTo($to)
     {
+        if ((mb_strlen($to) > 50)) {
+            throw new \InvalidArgumentException('invalid length for $to when calling SmsDestination., must be smaller than or equal to 50.');
+        }
+        if ((mb_strlen($to) < 0)) {
+            throw new \InvalidArgumentException('invalid length for $to when calling SmsDestination., must be bigger than or equal to 0.');
+        }
+
         $this->container['to'] = $to;
 
         return $this;

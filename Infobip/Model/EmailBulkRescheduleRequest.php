@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * EmailBulkRescheduleRequest Class Doc Comment
@@ -157,9 +157,9 @@ class EmailBulkRescheduleRequest implements ModelInterface, ArrayAccess, \JsonSe
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values

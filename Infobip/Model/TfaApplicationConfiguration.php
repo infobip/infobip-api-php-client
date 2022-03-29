@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaApplicationConfiguration Class Doc Comment
@@ -182,9 +182,9 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -246,7 +246,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets allowMultiplePinVerifications
      *
-     * @param bool|null $allowMultiplePinVerifications Tells if multiple PIN verifications are allowed.
+     * @param bool|null $allowMultiplePinVerifications Indicates whether multiple PIN verification is allowed.
      *
      * @return self
      */
@@ -294,7 +294,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets pinTimeToLive
      *
-     * @param string|null $pinTimeToLive PIN time to live. Should be in format of `{timeLength}{timeUnit}`. Here `timeLength` is an optional positive integer with a default value of 1 and `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Must not be larger that one year, although much lower values are recommended.
+     * @param string|null $pinTimeToLive Validity period of PIN in specified time unit. Required format: `{timeLength}{timeUnit}`. `timeLength` is optional with a default value of 1. `timeUnit` can be set to: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours, and days respectively. Must not exceed one year, although much lower value is recommended.
      *
      * @return self
      */
@@ -318,7 +318,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets sendPinPerApplicationLimit
      *
-     * @param string|null $sendPinPerApplicationLimit Overall number of requests in time interval for generating a PIN and sending an SMS using single application. Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param string|null $sendPinPerApplicationLimit Overall number of requests over a specififed time period for generating a PIN and sending an SMS using a single application. Required format: `{attempts}/{timeLength}{timeUnit}`. `attempts` is mandatory and `timeLength` is optional with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours, and days respectively. Must not exceed one year, although much lower value is recommended.
      *
      * @return self
      */
@@ -342,7 +342,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets sendPinPerPhoneNumberLimit
      *
-     * @param string|null $sendPinPerPhoneNumberLimit Number of requests in time interval for generating a PIN and sending an SMS to one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one year, although much lower values are recommended.
+     * @param string|null $sendPinPerPhoneNumberLimit Number of requests over a specififed time period for generating a PIN and sending an SMS to one phone number (MSISDN). Required format: `{attempts}/{timeLength}{timeUnit}`. `attempts` is mandatory and `timeLength` is optional with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours, and days respectively. Must not exceed one year, although much lower value is recommended.
      *
      * @return self
      */
@@ -366,7 +366,7 @@ class TfaApplicationConfiguration implements ModelInterface, ArrayAccess, \JsonS
     /**
      * Sets verifyPinLimit
      *
-     * @param string|null $verifyPinLimit Number of PIN verification requests in time interval from one phone number (MSISDN). Should be in format of `{attempts}/{timeLength}{timeUnit}`. Here `attempts` is a mandatory positive integer and `timeLength` is an optional positive integer with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours and days respectively. Time component must not be larger that one day, although much lower values are recommended.
+     * @param string|null $verifyPinLimit The number of PIN verification requests over a specififed time period from one phone number (MSISDN). Required format: `{attempts}/{timeLength}{timeUnit}`. `attempts` is mandatory and `timeLength` is optional with a default value of 1. `timeUnit` is one of: `ms`, `s`, `m`, `h` or `d` representing milliseconds, seconds, minutes, hours, and days respectively. Must not exceed one day, although much lower value is recommended.
      *
      * @return self
      */

@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsIndiaDltOptions Class Doc Comment
  *
  * @category Class
+ * @description Distributed Ledger Technology (DLT) specific parameters required for sending SMS to phone numbers registered in India.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -162,9 +163,9 @@ class SmsIndiaDltOptions implements ModelInterface, ArrayAccess, \JsonSerializab
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -225,7 +226,7 @@ class SmsIndiaDltOptions implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets contentTemplateId
      *
-     * @param string|null $contentTemplateId Id of your registered DTL content template that matches this message's text.
+     * @param string|null $contentTemplateId Registered DLT content template ID which matches message you are sending.
      *
      * @return self
      */
@@ -249,7 +250,7 @@ class SmsIndiaDltOptions implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets principalEntityId
      *
-     * @param string $principalEntityId Your assigned DTL principal entity id.
+     * @param string $principalEntityId Your assigned DLT principal entity ID.
      *
      * @return self
      */

@@ -225,7 +225,7 @@ class ScheduledEmailApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -492,7 +492,7 @@ class ScheduledEmailApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -776,7 +776,7 @@ class ScheduledEmailApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1060,7 +1060,7 @@ class ScheduledEmailApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

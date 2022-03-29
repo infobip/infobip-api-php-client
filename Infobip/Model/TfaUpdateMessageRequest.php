@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaUpdateMessageRequest Class Doc Comment
@@ -192,9 +192,9 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -258,7 +258,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets language
      *
-     * @param \Infobip\Model\TfaLanguage|null $language Language code of language in which message text is written. It is used for reading the message when it is sent via voice. If no language is set, message will be read in `English`.
+     * @param \Infobip\Model\TfaLanguage|null $language Language code which message is written in. This is used when sending text-to-speech messages. If not defined, it will default to English (`en`).
      *
      * @return self
      */
@@ -282,7 +282,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets messageText
      *
-     * @param string|null $messageText Text of a message that will be sent. Message text must contain `pinPlaceholder`.
+     * @param string|null $messageText Content of the message being sent which contains at minimum one placeholder for a PIN code (`{{pin}}`). Placeholder format is `{{placeholderName}}`.
      *
      * @return self
      */
@@ -330,7 +330,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets pinType
      *
-     * @param \Infobip\Model\TfaPinType|null $pinType Type of PIN code that will be generated and sent as part of 2FA message. You can set PIN type to numeric, alpha, alphanumeric or hex.
+     * @param \Infobip\Model\TfaPinType|null $pinType The type of PIN code that will be generated and sent as part of a 2FA message.
      *
      * @return self
      */
@@ -354,7 +354,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets regional
      *
-     * @param \Infobip\Model\TfaRegionalOptions|null $regional Region specific parameters, often specified by local laws. Use this if country or region that you are sending SMS to requires some extra parameters.
+     * @param \Infobip\Model\TfaRegionalOptions|null $regional Region-specific parameters, often imposed by local laws. Use this, if country or region that you are sending a message to requires additional information.
      *
      * @return self
      */
@@ -378,7 +378,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets repeatDTMF
      *
-     * @param string|null $repeatDTMF In case PIN message is sent by Voice, DTMF code will enable replaying the message.
+     * @param string|null $repeatDTMF If the PIN is sent as a voice message, the DTMF code allows the recipient to replay the message.
      *
      * @return self
      */
@@ -402,7 +402,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets senderId
      *
-     * @param string|null $senderId The name that will appear as the sender of the 2FA message (Example: CompanyName).
+     * @param string|null $senderId The name that will appear as the sender of the 2FA message (e.g. CompanyName).
      *
      * @return self
      */
@@ -426,7 +426,7 @@ class TfaUpdateMessageRequest implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets speechRate
      *
-     * @param double|null $speechRate In case PIN message is sent by Voice, the speed of speech can be set for the message. Supported range is from `0.5` to `2`.
+     * @param double|null $speechRate The speed of narration for messages sent as voice. Supported range is from `0.5` to `2`.
      *
      * @return self
      */

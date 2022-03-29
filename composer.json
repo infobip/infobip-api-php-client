@@ -1,7 +1,7 @@
 {
     "name": "infobip/infobip-api-php-client",
     "description": "PHP library for consuming Infobip's API",
-    "version": "3.1.0",
+    "version": "3.2.0",
     "keywords": [
         "infobip",
         "sms",
@@ -30,13 +30,7 @@
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "^7.3"
     },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.12"
-    },
     "autoload": {
         "psr-4": { "Infobip\\" : "Infobip/" }
-    },
-    "scripts": {
-        "post-update-cmd": "vendor/bin/php-cs-fixer fix Infobip"
     }
 }

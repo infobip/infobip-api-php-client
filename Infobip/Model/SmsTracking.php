@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsTracking Class Doc Comment
  *
  * @category Class
+ * @description Sets up tracking parameters to track conversion metrics and type.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -172,9 +173,9 @@ class SmsTracking implements ModelInterface, ArrayAccess, \JsonSerializable
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -234,7 +235,7 @@ class SmsTracking implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets baseUrl
      *
-     * @param string|null $baseUrl Custom base url used for shortening links from SMS text in `URL` Conversion rate tracking use-case.
+     * @param string|null $baseUrl Custom base URL for shortened links in messages when tracking URL conversions.
      *
      * @return self
      */
@@ -258,7 +259,7 @@ class SmsTracking implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets processKey
      *
-     * @param string|null $processKey Key that uniquely identifies Conversion tracking process.
+     * @param string|null $processKey The process key which uniquely identifies conversion tracking.
      *
      * @return self
      */
@@ -282,7 +283,7 @@ class SmsTracking implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets track
      *
-     * @param string|null $track Indicates if the message has to be tracked for Conversion rates. Possible values: `SMS` and `URL`
+     * @param string|null $track Indicates if a message has to be tracked for conversion rates. Values are: `SMS` and `URL`.
      *
      * @return self
      */
@@ -306,7 +307,7 @@ class SmsTracking implements ModelInterface, ArrayAccess, \JsonSerializable
     /**
      * Sets type
      *
-     * @param string|null $type User-defined type of the Conversion tracking process or flow type or message type, etc. Example: `ONE_TIME_PIN or SOCIAL_INVITES`.
+     * @param string|null $type Sets a custom conversion type naming convention, e.g. `ONE_TIME_PIN` or `SOCIAL_INVITES`.
      *
      * @return self
      */

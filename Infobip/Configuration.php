@@ -85,7 +85,7 @@ class Configuration
      *
      * @var string
      */
-    protected $userAgent = 'infobip-api-client-php/3.1.0';
+    protected $userAgent = 'infobip-api-client-php/3.2.0';
 
     /**
      * Debug switch (default set to false)
@@ -375,7 +375,7 @@ class Configuration
         $report  = 'PHP SDK (Infobip) Debug Report:' . PHP_EOL;
         $report .= '    OS: ' . php_uname() . PHP_EOL;
         $report .= '    PHP Version: ' . PHP_VERSION . PHP_EOL;
-        $report .= '    SDK Package Version: 3.1.0' . PHP_EOL;
+        $report .= '    SDK Package Version: 3.2.0' . PHP_EOL;
         $report .= '    Temp Folder Path: ' . self::getDefaultConfiguration()->getTempFolderPath() . PHP_EOL;
 
         return $report;

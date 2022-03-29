@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsInboundMessageResult Class Doc Comment
@@ -167,9 +167,9 @@ class SmsInboundMessageResult implements ModelInterface, ArrayAccess, \JsonSeria
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -228,7 +228,7 @@ class SmsInboundMessageResult implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets messageCount
      *
-     * @param int|null $messageCount messageCount
+     * @param int|null $messageCount The number of messages returned in the `results` array.
      *
      * @return self
      */
@@ -252,7 +252,7 @@ class SmsInboundMessageResult implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets pendingMessageCount
      *
-     * @param int|null $pendingMessageCount pendingMessageCount
+     * @param int|null $pendingMessageCount The number of messages that have not been pulled in.
      *
      * @return self
      */
@@ -276,7 +276,7 @@ class SmsInboundMessageResult implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets results
      *
-     * @param \Infobip\Model\SmsInboundMessage[]|null $results results
+     * @param \Infobip\Model\SmsInboundMessage[]|null $results An array of result objects.
      *
      * @return self
      */

@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsBulkStatusResponse Class Doc Comment
@@ -162,9 +162,9 @@ class SmsBulkStatusResponse implements ModelInterface, ArrayAccess, \JsonSeriali
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -222,7 +222,7 @@ class SmsBulkStatusResponse implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets bulkId
      *
-     * @param string|null $bulkId bulkId
+     * @param string|null $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request.
      *
      * @return self
      */
@@ -246,7 +246,7 @@ class SmsBulkStatusResponse implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets status
      *
-     * @param \Infobip\Model\SmsBulkStatus|null $status status
+     * @param \Infobip\Model\SmsBulkStatus|null $status The status of the message(s).
      *
      * @return self
      */

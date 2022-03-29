@@ -23,13 +23,14 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsDeliveryTimeWindow Class Doc Comment
  *
  * @category Class
+ * @description Sets specific scheduling options to send a message within daily or hourly intervals.
  * @package  Infobip
  * @author   Infobip Support
  * @link     https://www.infobip.com
@@ -167,9 +168,9 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -203,10 +204,6 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
         if ($this->container['days'] === null) {
             $invalidProperties[] = "'days' can't be null";
         }
-        if ((count($this->container['days']) < 1)) {
-            $invalidProperties[] = "invalid value for 'days', number of items must be greater than or equal to 1.";
-        }
-
         return $invalidProperties;
     }
 
@@ -235,15 +232,12 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets days
      *
-     * @param \Infobip\Model\SmsDeliveryDay[] $days Days which are included in the delivery time window. Values are: `MONDAY`, `TUESDAY`, `WEDNESDAY`, `THURSDAY`, `FRIDAY`, `SATURDAY`, `SUNDAY`. At least one day must be stated.
+     * @param \Infobip\Model\SmsDeliveryDay[] $days Days of the week which are included in the delivery time window. At least one day must be provided. Separate multiple days with a comma.
      *
      * @return self
      */
     public function setDays($days)
     {
-        if ((count($days) < 1)) {
-            throw new \InvalidArgumentException('invalid length for $days when calling SmsDeliveryTimeWindow., number of items must be greater than or equal to 1.');
-        }
         $this->container['days'] = $days;
 
         return $this;
@@ -262,7 +256,7 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets from
      *
-     * @param \Infobip\Model\SmsDeliveryTime|null $from Exact time of day in which the sending can start. Consists of hour and minute properties, both mandatory. Time is expressed in the UTC time zone.
+     * @param \Infobip\Model\SmsDeliveryTime|null $from from
      *
      * @return self
      */
@@ -286,7 +280,7 @@ class SmsDeliveryTimeWindow implements ModelInterface, ArrayAccess, \JsonSeriali
     /**
      * Sets to
      *
-     * @param \Infobip\Model\SmsDeliveryTime|null $to Exact time of day in which the sending will end. Consists of an hour and minute properties, both mandatory. Time is expressed in the UTC time zone.
+     * @param \Infobip\Model\SmsDeliveryTime|null $to to
      *
      * @return self
      */

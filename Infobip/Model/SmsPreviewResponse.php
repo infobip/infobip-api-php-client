@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsPreviewResponse Class Doc Comment
@@ -162,9 +162,9 @@ class SmsPreviewResponse implements ModelInterface, ArrayAccess, \JsonSerializab
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -222,7 +222,7 @@ class SmsPreviewResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets originalText
      *
-     * @param string|null $originalText Text supplied in the request.
+     * @param string|null $originalText Message content supplied in the request.
      *
      * @return self
      */
@@ -246,7 +246,7 @@ class SmsPreviewResponse implements ModelInterface, ArrayAccess, \JsonSerializab
     /**
      * Sets previews
      *
-     * @param \Infobip\Model\SmsPreview[]|null $previews Previews of applying different configurations to the original text.
+     * @param \Infobip\Model\SmsPreview[]|null $previews Allows for previewing the original message content once additional language configuration has been applied to it.
      *
      * @return self
      */

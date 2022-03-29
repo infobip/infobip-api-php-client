@@ -220,7 +220,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -520,7 +520,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -667,7 +667,7 @@ class TfaApi
      *
      * Get 2FA application
      *
-     * @param  string $appId Requested application ID. (required)
+     * @param  string $appId ID of application for which configuration view was requested. (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -684,7 +684,7 @@ class TfaApi
      *
      * Get 2FA application
      *
-     * @param  string $appId Requested application ID. (required)
+     * @param  string $appId ID of application for which configuration view was requested. (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -717,7 +717,7 @@ class TfaApi
      *
      * Get 2FA application
      *
-     * @param  string $appId Requested application ID. (required)
+     * @param  string $appId ID of application for which configuration view was requested. (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -737,7 +737,7 @@ class TfaApi
      *
      * Get 2FA application
      *
-     * @param  string $appId Requested application ID. (required)
+     * @param  string $appId ID of application for which configuration view was requested. (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -769,7 +769,7 @@ class TfaApi
     /**
      * Create request for operation 'getTfaApplication'
      *
-     * @param  string $appId Requested application ID. (required)
+     * @param  string $appId ID of application for which configuration view was requested. (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -809,7 +809,7 @@ class TfaApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1078,7 +1078,7 @@ class TfaApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1386,7 +1386,7 @@ class TfaApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1675,7 +1675,7 @@ class TfaApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -1997,7 +1997,7 @@ class TfaApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2297,7 +2297,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2597,7 +2597,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -2886,7 +2886,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -3166,7 +3166,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -3466,7 +3466,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -3785,7 +3785,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -4085,7 +4085,7 @@ class TfaApi
             }
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

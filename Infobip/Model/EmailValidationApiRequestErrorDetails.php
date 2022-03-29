@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * EmailValidationApiRequestErrorDetails Class Doc Comment
@@ -167,9 +167,9 @@ class EmailValidationApiRequestErrorDetails implements ModelInterface, ArrayAcce
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values

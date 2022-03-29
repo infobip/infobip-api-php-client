@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsApiRequestErrorDetails Class Doc Comment
@@ -55,7 +55,8 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
       */
     protected static $openAPITypes = [
         'messageId' => 'string',
-        'text' => 'string'
+        'text' => 'string',
+        'validationErrors' => 'array<string,string[]>'
     ];
 
     /**
@@ -67,7 +68,8 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
       */
     protected static $openAPIFormats = [
         'messageId' => null,
-        'text' => null
+        'text' => null,
+        'validationErrors' => null
     ];
 
     /**
@@ -98,7 +100,8 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
      */
     protected static $attributeMap = [
         'messageId' => 'messageId',
-        'text' => 'text'
+        'text' => 'text',
+        'validationErrors' => 'validationErrors'
     ];
 
     /**
@@ -108,7 +111,8 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
      */
     protected static $setters = [
         'messageId' => 'setMessageId',
-        'text' => 'setText'
+        'text' => 'setText',
+        'validationErrors' => 'setValidationErrors'
     ];
 
     /**
@@ -118,7 +122,8 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
      */
     protected static $getters = [
         'messageId' => 'getMessageId',
-        'text' => 'getText'
+        'text' => 'getText',
+        'validationErrors' => 'getValidationErrors'
     ];
 
     /**
@@ -162,9 +167,9 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -183,6 +188,7 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
     {
         $this->container['messageId'] = $data['messageId'] ?? null;
         $this->container['text'] = $data['text'] ?? null;
+        $this->container['validationErrors'] = $data['validationErrors'] ?? null;
     }
 
     /**
@@ -253,6 +259,30 @@ class SmsApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonSer
     public function setText($text)
     {
         $this->container['text'] = $text;
+
+        return $this;
+    }
+
+    /**
+     * Gets validationErrors
+     *
+     * @return array<string,string[]>|null
+     */
+    public function getValidationErrors()
+    {
+        return $this->container['validationErrors'];
+    }
+
+    /**
+     * Sets validationErrors
+     *
+     * @param array<string,string[]>|null $validationErrors Map of validation errors.
+     *
+     * @return self
+     */
+    public function setValidationErrors($validationErrors)
+    {
+        $this->container['validationErrors'] = $validationErrors;
 
         return $this;
     }

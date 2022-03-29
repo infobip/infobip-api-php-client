@@ -236,7 +236,7 @@ class SendEmailApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -383,20 +383,20 @@ class SendEmailApi
      *
      * Get email logs
      *
-     * @param  string[] $messageId The ID that uniquely identifies the sent email. (optional)
-     * @param  string $from from (optional, default to '')
-     * @param  string $to to (optional, default to '')
-     * @param  string $bulkId bulkId (optional, default to '')
-     * @param  string $generalStatus generalStatus (optional, default to '')
-     * @param  \DateTime $sentSince sentSince (optional)
-     * @param  \DateTime $sentUntil sentUntil (optional)
-     * @param  int $limit limit (optional)
+     * @param  string $messageId The ID that uniquely identifies the sent email. (optional)
+     * @param  string $from From email address. (optional)
+     * @param  string $to The recipient email address. (optional)
+     * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
+     * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
+     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\EmailLogResponse
+     * @return \Infobip\Model\EmailLogsResponse
      */
-    public function getEmailLogs($messageId = null, $from = '', $to = '', $bulkId = '', $generalStatus = '', $sentSince = null, $sentUntil = null, $limit = null)
+    public function getEmailLogs($messageId = null, $from = null, $to = null, $bulkId = null, $generalStatus = null, $sentSince = null, $sentUntil = null, $limit = null)
     {
         list($response) = $this->getEmailLogsWithHttpInfo($messageId, $from, $to, $bulkId, $generalStatus, $sentSince, $sentUntil, $limit);
         return $response;
@@ -407,20 +407,20 @@ class SendEmailApi
      *
      * Get email logs
      *
-     * @param  string[] $messageId The ID that uniquely identifies the sent email. (optional)
-     * @param  string $from (optional, default to '')
-     * @param  string $to (optional, default to '')
-     * @param  string $bulkId (optional, default to '')
-     * @param  string $generalStatus (optional, default to '')
-     * @param  \DateTime $sentSince (optional)
-     * @param  \DateTime $sentUntil (optional)
-     * @param  int $limit (optional)
+     * @param  string $messageId The ID that uniquely identifies the sent email. (optional)
+     * @param  string $from From email address. (optional)
+     * @param  string $to The recipient email address. (optional)
+     * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
+     * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
+     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\EmailLogResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailLogsResponse, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getEmailLogsWithHttpInfo($messageId = null, $from = '', $to = '', $bulkId = '', $generalStatus = '', $sentSince = null, $sentUntil = null, $limit = null)
+    public function getEmailLogsWithHttpInfo($messageId = null, $from = null, $to = null, $bulkId = null, $generalStatus = null, $sentSince = null, $sentUntil = null, $limit = null)
     {
         $request = $this->getEmailLogsRequest($messageId, $from, $to, $bulkId, $generalStatus, $sentSince, $sentUntil, $limit);
 
@@ -447,19 +447,19 @@ class SendEmailApi
      *
      * Get email logs
      *
-     * @param  string[] $messageId The ID that uniquely identifies the sent email. (optional)
-     * @param  string $from (optional, default to '')
-     * @param  string $to (optional, default to '')
-     * @param  string $bulkId (optional, default to '')
-     * @param  string $generalStatus (optional, default to '')
-     * @param  \DateTime $sentSince (optional)
-     * @param  \DateTime $sentUntil (optional)
-     * @param  int $limit (optional)
+     * @param  string $messageId The ID that uniquely identifies the sent email. (optional)
+     * @param  string $from From email address. (optional)
+     * @param  string $to The recipient email address. (optional)
+     * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
+     * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
+     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getEmailLogsAsync($messageId = null, $from = '', $to = '', $bulkId = '', $generalStatus = '', $sentSince = null, $sentUntil = null, $limit = null)
+    public function getEmailLogsAsync($messageId = null, $from = null, $to = null, $bulkId = null, $generalStatus = null, $sentSince = null, $sentUntil = null, $limit = null)
     {
         return $this->getEmailLogsAsyncWithHttpInfo($messageId, $from, $to, $bulkId, $generalStatus, $sentSince, $sentUntil, $limit)
             ->then(
@@ -474,19 +474,19 @@ class SendEmailApi
      *
      * Get email logs
      *
-     * @param  string[] $messageId The ID that uniquely identifies the sent email. (optional)
-     * @param  string $from (optional, default to '')
-     * @param  string $to (optional, default to '')
-     * @param  string $bulkId (optional, default to '')
-     * @param  string $generalStatus (optional, default to '')
-     * @param  \DateTime $sentSince (optional)
-     * @param  \DateTime $sentUntil (optional)
-     * @param  int $limit (optional)
+     * @param  string $messageId The ID that uniquely identifies the sent email. (optional)
+     * @param  string $from From email address. (optional)
+     * @param  string $to The recipient email address. (optional)
+     * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
+     * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
+     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getEmailLogsAsyncWithHttpInfo($messageId = null, $from = '', $to = '', $bulkId = '', $generalStatus = '', $sentSince = null, $sentUntil = null, $limit = null)
+    public function getEmailLogsAsyncWithHttpInfo($messageId = null, $from = null, $to = null, $bulkId = null, $generalStatus = null, $sentSince = null, $sentUntil = null, $limit = null)
     {
         $request = $this->getEmailLogsRequest($messageId, $from, $to, $bulkId, $generalStatus, $sentSince, $sentUntil, $limit);
 
@@ -513,19 +513,19 @@ class SendEmailApi
     /**
      * Create request for operation 'getEmailLogs'
      *
-     * @param  string[] $messageId The ID that uniquely identifies the sent email. (optional)
-     * @param  string $from (optional, default to '')
-     * @param  string $to (optional, default to '')
-     * @param  string $bulkId (optional, default to '')
-     * @param  string $generalStatus (optional, default to '')
-     * @param  \DateTime $sentSince (optional)
-     * @param  \DateTime $sentUntil (optional)
-     * @param  int $limit (optional)
+     * @param  string $messageId The ID that uniquely identifies the sent email. (optional)
+     * @param  string $from From email address. (optional)
+     * @param  string $to The recipient email address. (optional)
+     * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
+     * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
+     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getEmailLogsRequest($messageId = null, $from = '', $to = '', $bulkId = '', $generalStatus = '', $sentSince = null, $sentUntil = null, $limit = null)
+    protected function getEmailLogsRequest($messageId = null, $from = null, $to = null, $bulkId = null, $generalStatus = null, $sentSince = null, $sentUntil = null, $limit = null)
     {
         $resourcePath = '/email/1/logs';
         $formParams = [];
@@ -577,7 +577,7 @@ class SendEmailApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {
@@ -645,7 +645,7 @@ class SendEmailApi
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\EmailLogResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailLogsResponse|null, HTTP status code, HTTP response headers (array of strings)
      */
     protected function getEmailLogsResponse($response, $requestUri)
     {
@@ -665,7 +665,7 @@ class SendEmailApi
         $responseObject = null;
 
         if ($statusCode === 200) {
-            $type = '\Infobip\Model\EmailLogResponse';
+            $type = '\Infobip\Model\EmailLogsResponse';
             if ($type === '\SplFileObject') {
                 $content = $responseBody; //stream goes to serializer
             } else {
@@ -732,7 +732,7 @@ class SendEmailApi
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
      * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
-     * @param  string $landingPagePlaceholder Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
+     * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
      * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -776,7 +776,7 @@ class SendEmailApi
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
      * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
-     * @param  string $landingPagePlaceholder Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
+     * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
      * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -836,7 +836,7 @@ class SendEmailApi
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
      * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
-     * @param  string $landingPagePlaceholder Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
+     * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
      * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
@@ -883,7 +883,7 @@ class SendEmailApi
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
      * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
-     * @param  string $landingPagePlaceholder Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
+     * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
      * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
@@ -942,7 +942,7 @@ class SendEmailApi
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
      * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
-     * @param  string $landingPagePlaceholder Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
+     * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
      * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
@@ -975,7 +975,7 @@ class SendEmailApi
         $notifyUrl = array_key_exists('notifyUrl', $associative_array) ? $associative_array['notifyUrl'] : null;
         $notifyContentType = array_key_exists('notifyContentType', $associative_array) ? $associative_array['notifyContentType'] : null;
         $sendAt = array_key_exists('sendAt', $associative_array) ? $associative_array['sendAt'] : null;
-        $landingPagePlaceholder = array_key_exists('landingPagePlaceholder', $associative_array) ? $associative_array['landingPagePlaceholder'] : null;
+        $landingPagePlaceholders = array_key_exists('landingPagePlaceholders', $associative_array) ? $associative_array['landingPagePlaceholders'] : null;
         $landingPageId = array_key_exists('landingPageId', $associative_array) ? $associative_array['landingPageId'] : null;
 
         // verify the required parameter 'from' is set
@@ -1117,8 +1117,8 @@ class SendEmailApi
             $formParams['sendAt'] = ObjectSerializer::toFormValue($sendAt);
         }
         // form params
-        if ($landingPagePlaceholder !== null) {
-            $formParams['landingPagePlaceholder'] = ObjectSerializer::toFormValue($landingPagePlaceholder);
+        if ($landingPagePlaceholders !== null) {
+            $formParams['landingPagePlaceholders'] = ObjectSerializer::toFormValue($landingPagePlaceholders);
         }
         // form params
         if ($landingPageId !== null) {
@@ -1133,7 +1133,7 @@ class SendEmailApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

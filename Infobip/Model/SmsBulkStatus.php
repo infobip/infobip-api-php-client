@@ -23,7 +23,7 @@
 
 namespace Infobip\Model;
 
-use \Infobip\ObjectSerializer;
+use Infobip\ObjectSerializer;
 
 /**
  * SmsBulkStatus Class Doc Comment
@@ -38,13 +38,13 @@ class SmsBulkStatus
     /**
      * Possible values of this enum
      */
-    const PENDING = 'PENDING';
-    const PAUSED = 'PAUSED';
-    const PROCESSING = 'PROCESSING';
-    const CANCELED = 'CANCELED';
-    const FINISHED = 'FINISHED';
-    const FAILED = 'FAILED';
-    
+    public const PENDING = 'PENDING';
+    public const PAUSED = 'PAUSED';
+    public const PROCESSING = 'PROCESSING';
+    public const CANCELED = 'CANCELED';
+    public const FINISHED = 'FINISHED';
+    public const FAILED = 'FAILED';
+
     /**
      * Gets allowable values of the enum
      * @return string[]

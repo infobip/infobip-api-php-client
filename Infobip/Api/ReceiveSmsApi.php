@@ -87,7 +87,7 @@ class ReceiveSmsApi
      *
      * Get inbound SMS messages
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  int $limit Maximum number of messages to be returned in a response. If not set, the latest 50 records are returned. Maximum limit value is &#x60;1000&#x60; and you can only access messages for the last 48h. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -104,7 +104,7 @@ class ReceiveSmsApi
      *
      * Get inbound SMS messages
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  int $limit Maximum number of messages to be returned in a response. If not set, the latest 50 records are returned. Maximum limit value is &#x60;1000&#x60; and you can only access messages for the last 48h. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -137,7 +137,7 @@ class ReceiveSmsApi
      *
      * Get inbound SMS messages
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  int $limit Maximum number of messages to be returned in a response. If not set, the latest 50 records are returned. Maximum limit value is &#x60;1000&#x60; and you can only access messages for the last 48h. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -157,7 +157,7 @@ class ReceiveSmsApi
      *
      * Get inbound SMS messages
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  int $limit Maximum number of messages to be returned in a response. If not set, the latest 50 records are returned. Maximum limit value is &#x60;1000&#x60; and you can only access messages for the last 48h. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -189,7 +189,7 @@ class ReceiveSmsApi
     /**
      * Create request for operation 'getInboundSmsMessages'
      *
-     * @param  int $limit Maximal number of received messages that will be returned. (optional)
+     * @param  int $limit Maximum number of messages to be returned in a response. If not set, the latest 50 records are returned. Maximum limit value is &#x60;1000&#x60; and you can only access messages for the last 48h. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -218,7 +218,7 @@ class ReceiveSmsApi
         // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----'.sha1(uniqid('', true));
+                $boundary = '----'.hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
                 $multipartContents = [];
                 foreach ($formParams as $formParamName => $formParamValue) {

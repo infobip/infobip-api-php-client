@@ -23,7 +23,7 @@
 
 namespace Infobip\Model;
 
-use \Infobip\ObjectSerializer;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaPinType Class Doc Comment
@@ -38,11 +38,11 @@ class TfaPinType
     /**
      * Possible values of this enum
      */
-    const NUMERIC = 'NUMERIC';
-    const ALPHA = 'ALPHA';
-    const HEX = 'HEX';
-    const ALPHANUMERIC = 'ALPHANUMERIC';
-    
+    public const NUMERIC = 'NUMERIC';
+    public const ALPHA = 'ALPHA';
+    public const HEX = 'HEX';
+    public const ALPHANUMERIC = 'ALPHANUMERIC';
+
     /**
      * Gets allowable values of the enum
      * @return string[]

@@ -23,8 +23,8 @@
 
 namespace Infobip\Model;
 
-use \ArrayAccess;
-use \Infobip\ObjectSerializer;
+use ArrayAccess;
+use Infobip\ObjectSerializer;
 
 /**
  * TfaVerifyPinResponse Class Doc Comment
@@ -177,9 +177,9 @@ class TfaVerifyPinResponse implements ModelInterface, ArrayAccess, \JsonSerializ
         return self::$openAPIModelName;
     }
 
-    
 
-    
+
+
 
     /**
      * Associative array for storing property values
@@ -288,7 +288,7 @@ class TfaVerifyPinResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets pinError
      *
-     * @param string|null $pinError Indicates if any error occurs during PIN verification.
+     * @param string|null $pinError Indicates whether an error has occurred during PIN verification.
      *
      * @return self
      */
@@ -336,7 +336,7 @@ class TfaVerifyPinResponse implements ModelInterface, ArrayAccess, \JsonSerializ
     /**
      * Sets verified
      *
-     * @param bool|null $verified Indicates if the phone number (`MSISDN`) was successfully verified.
+     * @param bool|null $verified Indicates whether the phone number (`MSISDN`) was successfully verified.
      *
      * @return self
      */
