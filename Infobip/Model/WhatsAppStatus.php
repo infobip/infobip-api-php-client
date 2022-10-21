@@ -45,6 +45,10 @@ class WhatsAppStatus
     public const REJECTED = 'REJECTED';
     public const PENDING_DELETION = 'PENDING_DELETION';
     public const DELETED = 'DELETED';
+    public const REINSTATED = 'REINSTATED';
+    public const FLAGGED = 'FLAGGED';
+    public const FIRST_PAUSED = 'FIRST_PAUSED';
+    public const SECOND_PAUSED = 'SECOND_PAUSED';
     public const DISABLED = 'DISABLED';
 
     /**
@@ -60,6 +64,10 @@ class WhatsAppStatus
             self::REJECTED,
             self::PENDING_DELETION,
             self::DELETED,
+            self::REINSTATED,
+            self::FLAGGED,
+            self::FIRST_PAUSED,
+            self::SECOND_PAUSED,
             self::DISABLED,
         ];
     }

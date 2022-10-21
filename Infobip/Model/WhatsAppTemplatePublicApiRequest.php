@@ -55,7 +55,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
       */
     protected static $openAPITypes = [
         'name' => 'string',
-        'language' => 'string',
+        'language' => '\Infobip\Model\WhatsAppLanguage',
         'category' => 'string',
         'structure' => '\Infobip\Model\WhatsAppTemplateStructureApiData'
     ];
@@ -172,166 +172,11 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
         return self::$openAPIModelName;
     }
 
-    public const LANGUAGE_AF = 'af';
-    public const LANGUAGE_SQ = 'sq';
-    public const LANGUAGE_AR = 'ar';
-    public const LANGUAGE_AZ = 'az';
-    public const LANGUAGE_BN = 'bn';
-    public const LANGUAGE_BG = 'bg';
-    public const LANGUAGE_CA = 'ca';
-    public const LANGUAGE_ZH_CN = 'zh_CN';
-    public const LANGUAGE_ZH_HK = 'zh_HK';
-    public const LANGUAGE_ZH_TW = 'zh_TW';
-    public const LANGUAGE_HR = 'hr';
-    public const LANGUAGE_CS = 'cs';
-    public const LANGUAGE_DA = 'da';
-    public const LANGUAGE_NL = 'nl';
-    public const LANGUAGE_EN = 'en';
-    public const LANGUAGE_EN_GB = 'en_GB';
-    public const LANGUAGE_EN_US = 'en_US';
-    public const LANGUAGE_ET = 'et';
-    public const LANGUAGE_FIL = 'fil';
-    public const LANGUAGE_FI = 'fi';
-    public const LANGUAGE_FR = 'fr';
-    public const LANGUAGE_DE = 'de';
-    public const LANGUAGE_EL = 'el';
-    public const LANGUAGE_GU = 'gu';
-    public const LANGUAGE_HA = 'ha';
-    public const LANGUAGE_HE = 'he';
-    public const LANGUAGE_HI = 'hi';
-    public const LANGUAGE_HU = 'hu';
-    public const LANGUAGE_ID = 'id';
-    public const LANGUAGE_GA = 'ga';
-    public const LANGUAGE_IT = 'it';
-    public const LANGUAGE_JA = 'ja';
-    public const LANGUAGE_KN = 'kn';
-    public const LANGUAGE_KK = 'kk';
-    public const LANGUAGE_KO = 'ko';
-    public const LANGUAGE_LO = 'lo';
-    public const LANGUAGE_LV = 'lv';
-    public const LANGUAGE_LT = 'lt';
-    public const LANGUAGE_MK = 'mk';
-    public const LANGUAGE_MS = 'ms';
-    public const LANGUAGE_ML = 'ml';
-    public const LANGUAGE_MR = 'mr';
-    public const LANGUAGE_NB = 'nb';
-    public const LANGUAGE_FA = 'fa';
-    public const LANGUAGE_PL = 'pl';
-    public const LANGUAGE_PT_BR = 'pt_BR';
-    public const LANGUAGE_PT_PT = 'pt_PT';
-    public const LANGUAGE_PA = 'pa';
-    public const LANGUAGE_RO = 'ro';
-    public const LANGUAGE_RU = 'ru';
-    public const LANGUAGE_SR = 'sr';
-    public const LANGUAGE_SK = 'sk';
-    public const LANGUAGE_SL = 'sl';
-    public const LANGUAGE_ES = 'es';
-    public const LANGUAGE_ES_AR = 'es_AR';
-    public const LANGUAGE_ES_ES = 'es_ES';
-    public const LANGUAGE_ES_MX = 'es_MX';
-    public const LANGUAGE_SW = 'sw';
-    public const LANGUAGE_SV = 'sv';
-    public const LANGUAGE_TA = 'ta';
-    public const LANGUAGE_TE = 'te';
-    public const LANGUAGE_TH = 'th';
-    public const LANGUAGE_TR = 'tr';
-    public const LANGUAGE_UK = 'uk';
-    public const LANGUAGE_UR = 'ur';
-    public const LANGUAGE_UZ = 'uz';
-    public const LANGUAGE_VI = 'vi';
-    public const LANGUAGE_UNKNOWN = 'unknown';
-    public const CATEGORY_ACCOUNT_UPDATE = 'ACCOUNT_UPDATE';
-    public const CATEGORY_PAYMENT_UPDATE = 'PAYMENT_UPDATE';
-    public const CATEGORY_PERSONAL_FINANCE_UPDATE = 'PERSONAL_FINANCE_UPDATE';
-    public const CATEGORY_SHIPPING_UPDATE = 'SHIPPING_UPDATE';
-    public const CATEGORY_RESERVATION_UPDATE = 'RESERVATION_UPDATE';
-    public const CATEGORY_ISSUE_RESOLUTION = 'ISSUE_RESOLUTION';
-    public const CATEGORY_APPOINTMENT_UPDATE = 'APPOINTMENT_UPDATE';
-    public const CATEGORY_TRANSPORTATION_UPDATE = 'TRANSPORTATION_UPDATE';
-    public const CATEGORY_TICKET_UPDATE = 'TICKET_UPDATE';
-    public const CATEGORY_ALERT_UPDATE = 'ALERT_UPDATE';
-    public const CATEGORY_AUTO_REPLY = 'AUTO_REPLY';
+    public const CATEGORY_MARKETING = 'MARKETING';
+    public const CATEGORY_TRANSACTIONAL = 'TRANSACTIONAL';
+    public const CATEGORY_OTP = 'OTP';
 
 
-
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getLanguageAllowableValues()
-    {
-        return [
-            self::LANGUAGE_AF,
-            self::LANGUAGE_SQ,
-            self::LANGUAGE_AR,
-            self::LANGUAGE_AZ,
-            self::LANGUAGE_BN,
-            self::LANGUAGE_BG,
-            self::LANGUAGE_CA,
-            self::LANGUAGE_ZH_CN,
-            self::LANGUAGE_ZH_HK,
-            self::LANGUAGE_ZH_TW,
-            self::LANGUAGE_HR,
-            self::LANGUAGE_CS,
-            self::LANGUAGE_DA,
-            self::LANGUAGE_NL,
-            self::LANGUAGE_EN,
-            self::LANGUAGE_EN_GB,
-            self::LANGUAGE_EN_US,
-            self::LANGUAGE_ET,
-            self::LANGUAGE_FIL,
-            self::LANGUAGE_FI,
-            self::LANGUAGE_FR,
-            self::LANGUAGE_DE,
-            self::LANGUAGE_EL,
-            self::LANGUAGE_GU,
-            self::LANGUAGE_HA,
-            self::LANGUAGE_HE,
-            self::LANGUAGE_HI,
-            self::LANGUAGE_HU,
-            self::LANGUAGE_ID,
-            self::LANGUAGE_GA,
-            self::LANGUAGE_IT,
-            self::LANGUAGE_JA,
-            self::LANGUAGE_KN,
-            self::LANGUAGE_KK,
-            self::LANGUAGE_KO,
-            self::LANGUAGE_LO,
-            self::LANGUAGE_LV,
-            self::LANGUAGE_LT,
-            self::LANGUAGE_MK,
-            self::LANGUAGE_MS,
-            self::LANGUAGE_ML,
-            self::LANGUAGE_MR,
-            self::LANGUAGE_NB,
-            self::LANGUAGE_FA,
-            self::LANGUAGE_PL,
-            self::LANGUAGE_PT_BR,
-            self::LANGUAGE_PT_PT,
-            self::LANGUAGE_PA,
-            self::LANGUAGE_RO,
-            self::LANGUAGE_RU,
-            self::LANGUAGE_SR,
-            self::LANGUAGE_SK,
-            self::LANGUAGE_SL,
-            self::LANGUAGE_ES,
-            self::LANGUAGE_ES_AR,
-            self::LANGUAGE_ES_ES,
-            self::LANGUAGE_ES_MX,
-            self::LANGUAGE_SW,
-            self::LANGUAGE_SV,
-            self::LANGUAGE_TA,
-            self::LANGUAGE_TE,
-            self::LANGUAGE_TH,
-            self::LANGUAGE_TR,
-            self::LANGUAGE_UK,
-            self::LANGUAGE_UR,
-            self::LANGUAGE_UZ,
-            self::LANGUAGE_VI,
-            self::LANGUAGE_UNKNOWN,
-        ];
-    }
 
     /**
      * Gets allowable values of the enum
@@ -341,17 +186,9 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
     public function getCategoryAllowableValues()
     {
         return [
-            self::CATEGORY_ACCOUNT_UPDATE,
-            self::CATEGORY_PAYMENT_UPDATE,
-            self::CATEGORY_PERSONAL_FINANCE_UPDATE,
-            self::CATEGORY_SHIPPING_UPDATE,
-            self::CATEGORY_RESERVATION_UPDATE,
-            self::CATEGORY_ISSUE_RESOLUTION,
-            self::CATEGORY_APPOINTMENT_UPDATE,
-            self::CATEGORY_TRANSPORTATION_UPDATE,
-            self::CATEGORY_TICKET_UPDATE,
-            self::CATEGORY_ALERT_UPDATE,
-            self::CATEGORY_AUTO_REPLY,
+            self::CATEGORY_MARKETING,
+            self::CATEGORY_TRANSACTIONAL,
+            self::CATEGORY_OTP,
         ];
     }
 
@@ -392,15 +229,6 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
         if ($this->container['language'] === null) {
             $invalidProperties[] = "'language' can't be null";
         }
-        $allowedValues = $this->getLanguageAllowableValues();
-        if (!is_null($this->container['language']) && !in_array($this->container['language'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value '%s' for 'language', must be one of '%s'",
-                $this->container['language'],
-                implode("', '", $allowedValues)
-            );
-        }
-
         if ($this->container['category'] === null) {
             $invalidProperties[] = "'category' can't be null";
         }
@@ -458,7 +286,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
     /**
      * Gets language
      *
-     * @return string
+     * @return \Infobip\Model\WhatsAppLanguage
      */
     public function getLanguage()
     {
@@ -468,22 +296,12 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
     /**
      * Sets language
      *
-     * @param string $language The language code or locale to use. Multiple templates with different language codes can be registered under the same template name.
+     * @param \Infobip\Model\WhatsAppLanguage $language language
      *
      * @return self
      */
     public function setLanguage($language)
     {
-        $allowedValues = $this->getLanguageAllowableValues();
-        if (!in_array($language, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value '%s' for 'language', must be one of '%s'",
-                    $language,
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
         $this->container['language'] = $language;
 
         return $this;
@@ -553,7 +371,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -565,7 +383,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -578,7 +396,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -594,7 +412,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -606,7 +424,7 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface, ArrayAccess, \
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

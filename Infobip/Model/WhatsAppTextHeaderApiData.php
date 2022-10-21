@@ -53,7 +53,8 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
       * @var string[]
       */
     protected static $openAPITypes = [
-        'text' => 'string'
+        'text' => 'string',
+        'example' => 'string'
     ];
 
     /**
@@ -64,7 +65,8 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'text' => null
+        'text' => null,
+        'example' => null
     ];
 
     /**
@@ -94,7 +96,8 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $attributeMap = [
-        'text' => 'text'
+        'text' => 'text',
+        'example' => 'example'
     ];
 
     /**
@@ -103,7 +106,8 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $setters = [
-        'text' => 'setText'
+        'text' => 'setText',
+        'example' => 'setExample'
     ];
 
     /**
@@ -112,7 +116,8 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $getters = [
-        'text' => 'getText'
+        'text' => 'getText',
+        'example' => 'getExample'
     ];
 
     /**
@@ -172,6 +177,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
         parent::__construct($data);
 
         $this->container['text'] = $data['text'] ?? null;
+        $this->container['example'] = $data['example'] ?? null;
 
         $this->container['format'] = 'TEXT';
     }
@@ -226,6 +232,30 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
 
         return $this;
     }
+
+    /**
+     * Gets example
+     *
+     * @return string|null
+     */
+    public function getExample()
+    {
+        return $this->container['example'];
+    }
+
+    /**
+     * Sets example
+     *
+     * @param string|null $example An example of the content for the template header a user could use. Cannot contain placeholders.
+     *
+     * @return self
+     */
+    public function setExample($example)
+    {
+        $this->container['example'] = $example;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -233,7 +263,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -245,7 +275,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -258,7 +288,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -274,7 +304,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -286,7 +316,7 @@ class WhatsAppTextHeaderApiData extends WhatsAppHeaderApiData
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

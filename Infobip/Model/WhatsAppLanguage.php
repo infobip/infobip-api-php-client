@@ -60,6 +60,7 @@ class WhatsAppLanguage
     public const FIL = 'fil';
     public const FI = 'fi';
     public const FR = 'fr';
+    public const KA = 'ka';
     public const DE = 'de';
     public const EL = 'el';
     public const GU = 'gu';
@@ -73,7 +74,9 @@ class WhatsAppLanguage
     public const JA = 'ja';
     public const KN = 'kn';
     public const KK = 'kk';
+    public const RW_RW = 'rw_RW';
     public const KO = 'ko';
+    public const KY_KG = 'ky_KG';
     public const LO = 'lo';
     public const LV = 'lv';
     public const LT = 'lt';
@@ -106,6 +109,7 @@ class WhatsAppLanguage
     public const UR = 'ur';
     public const UZ = 'uz';
     public const VI = 'vi';
+    public const ZU = 'zu';
     public const UNKNOWN = 'unknown';
 
     /**
@@ -136,6 +140,7 @@ class WhatsAppLanguage
             self::FIL,
             self::FI,
             self::FR,
+            self::KA,
             self::DE,
             self::EL,
             self::GU,
@@ -149,7 +154,9 @@ class WhatsAppLanguage
             self::JA,
             self::KN,
             self::KK,
+            self::RW_RW,
             self::KO,
+            self::KY_KG,
             self::LO,
             self::LV,
             self::LT,
@@ -182,6 +189,7 @@ class WhatsAppLanguage
             self::UR,
             self::UZ,
             self::VI,
+            self::ZU,
             self::UNKNOWN,
         ];
     }

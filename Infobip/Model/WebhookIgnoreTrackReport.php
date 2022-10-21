@@ -61,7 +61,8 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         'sendDateTime' => 'string',
         'messageId' => 'string',
         'bulkId' => 'string',
-        'recipientInfo' => '\Infobip\Model\WebhookIgnoreRecipientInfo'
+        'recipientInfo' => '\Infobip\Model\WebhookIgnoreRecipientInfo',
+        'geoLocation' => '\Infobip\Model\WebhookIgnoreGeoLocation'
     ];
 
     /**
@@ -79,7 +80,8 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         'sendDateTime' => null,
         'messageId' => null,
         'bulkId' => null,
-        'recipientInfo' => null
+        'recipientInfo' => null,
+        'geoLocation' => null
     ];
 
     /**
@@ -116,7 +118,8 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         'sendDateTime' => 'sendDateTime',
         'messageId' => 'messageId',
         'bulkId' => 'bulkId',
-        'recipientInfo' => 'recipientInfo'
+        'recipientInfo' => 'recipientInfo',
+        'geoLocation' => 'geoLocation'
     ];
 
     /**
@@ -132,7 +135,8 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         'sendDateTime' => 'setSendDateTime',
         'messageId' => 'setMessageId',
         'bulkId' => 'setBulkId',
-        'recipientInfo' => 'setRecipientInfo'
+        'recipientInfo' => 'setRecipientInfo',
+        'geoLocation' => 'setGeoLocation'
     ];
 
     /**
@@ -148,7 +152,8 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         'sendDateTime' => 'getSendDateTime',
         'messageId' => 'getMessageId',
         'bulkId' => 'getBulkId',
-        'recipientInfo' => 'getRecipientInfo'
+        'recipientInfo' => 'getRecipientInfo',
+        'geoLocation' => 'getGeoLocation'
     ];
 
     /**
@@ -219,6 +224,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
         $this->container['messageId'] = $data['messageId'] ?? null;
         $this->container['bulkId'] = $data['bulkId'] ?? null;
         $this->container['recipientInfo'] = $data['recipientInfo'] ?? null;
+        $this->container['geoLocation'] = $data['geoLocation'] ?? null;
     }
 
     /**
@@ -258,7 +264,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
     /**
      * Sets notificationType
      *
-     * @param string|null $notificationType Tells the type of user event that took place. Possible events: `OPENED`, `CLICKED`, `UNSUBSCRIBED`.
+     * @param string|null $notificationType Tells the type of user event that took place. Possible events: `OPENED`, `CLICKED`, `COMPLAINED`, `UNSUBSCRIBED`.
      *
      * @return self
      */
@@ -436,6 +442,30 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
 
         return $this;
     }
+
+    /**
+     * Gets geoLocation
+     *
+     * @return \Infobip\Model\WebhookIgnoreGeoLocation|null
+     */
+    public function getGeoLocation()
+    {
+        return $this->container['geoLocation'];
+    }
+
+    /**
+     * Sets geoLocation
+     *
+     * @param \Infobip\Model\WebhookIgnoreGeoLocation|null $geoLocation Geolocation data such as Country, City, Latitude and Longitude. This data will be available only for opens and clicks.
+     *
+     * @return self
+     */
+    public function setGeoLocation($geoLocation)
+    {
+        $this->container['geoLocation'] = $geoLocation;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -443,7 +473,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -455,7 +485,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -468,7 +498,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -484,7 +514,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -496,7 +526,7 @@ class WebhookIgnoreTrackReport implements ModelInterface, ArrayAccess, \JsonSeri
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

@@ -27,7 +27,7 @@ For `infobip-api-php-client` versioning we use [Semantic Versioning][semver] sch
 Published under [MIT License][license].
 
 ## PHP versions
-All versions above 7.2
+8.0 and above
 
 ## Installation
 
@@ -35,7 +35,7 @@ All versions above 7.2
 To start using the library add it as dependecy in your `composer.json` file like shown below.
 ```json
 "require": {
-	"infobip/infobip-api-php-client": "3.2.0"
+	"infobip/infobip-api-php-client": "4.0.0"
 }
 ```
 And simply run `composer install` to download dependencies.

@@ -2,7 +2,22 @@
 
 All notable changes to the library will be documented in this file.
 
-The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in [README.md][readme] file.
+The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
+
+## [ [4.0.0](https://github.com/infobip/infobip-api-php-client/releases/tag/4.0.0) ] - 2022-10-21
+
+⚠️ **IMPORTANT NOTE:** This release contains breaking changes!
+
+### Changed
+- The minimum supported PHP version has been changed to 8.0
+- Get WhatsApp template / Create WhatsApp template have breaking changes as they're using the new v2 API endpoints. The body and footer are no longer strings but objects.
+- **getEmailLogs**' input parameters **sentSince** and **sentUntil** now correctly defined as `DateTime` type
+
+### Added
+- Delete WhatsApp template
+
+### Fixed
+- [PHP 8 deprecation issues](https://github.com/infobip/infobip-api-php-client/issues/47)
 
 ## [ [3.2.0](https://github.com/infobip/infobip-api-php-client/releases/tag/3.2.0) ] - 2022-03-29
 

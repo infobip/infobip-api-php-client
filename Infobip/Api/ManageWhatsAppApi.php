@@ -214,7 +214,7 @@ class ManageWhatsAppApi
             );
         }
 
-        $resourcePath = '/whatsapp/1/senders/{sender}/templates';
+        $resourcePath = '/whatsapp/2/senders/{sender}/templates';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -704,6 +704,316 @@ class ManageWhatsAppApi
     }
 
     /**
+     * Operation deleteWhatsAppTemplate
+     *
+     * Delete WhatsApp Template
+     *
+     * @param  string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param  string $templateName Template name. Must only contain lowercase alphanumeric characters and underscores. (required)
+     *
+     * @throws \Infobip\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return void
+     */
+    public function deleteWhatsAppTemplate($sender, $templateName)
+    {
+        $this->deleteWhatsAppTemplateWithHttpInfo($sender, $templateName);
+    }
+
+    /**
+     * Operation deleteWhatsAppTemplateWithHttpInfo
+     *
+     * Delete WhatsApp Template
+     *
+     * @param  string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param  string $templateName Template name. Must only contain lowercase alphanumeric characters and underscores. (required)
+     *
+     * @throws \Infobip\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of null, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function deleteWhatsAppTemplateWithHttpInfo($sender, $templateName)
+    {
+        $request = $this->deleteWhatsAppTemplateRequest($sender, $templateName);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+                return $this->deleteWhatsAppTemplateResponse($response, $request->getUri());
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? (string) $e->getResponse()->getBody() : null
+                );
+            }
+        } catch (ApiException $e) {
+            throw $this->deleteWhatsAppTemplateApiException($e);
+        }
+    }
+
+    /**
+     * Operation deleteWhatsAppTemplateAsync
+     *
+     * Delete WhatsApp Template
+     *
+     * @param  string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param  string $templateName Template name. Must only contain lowercase alphanumeric characters and underscores. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function deleteWhatsAppTemplateAsync($sender, $templateName)
+    {
+        return $this->deleteWhatsAppTemplateAsyncWithHttpInfo($sender, $templateName)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation deleteWhatsAppTemplateAsyncWithHttpInfo
+     *
+     * Delete WhatsApp Template
+     *
+     * @param  string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param  string $templateName Template name. Must only contain lowercase alphanumeric characters and underscores. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function deleteWhatsAppTemplateAsyncWithHttpInfo($sender, $templateName)
+    {
+        $request = $this->deleteWhatsAppTemplateRequest($sender, $templateName);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($request) {
+                    return $this->deleteWhatsAppTemplateResponse($response, $request->getUri());
+                },
+                function ($exception) {
+                    $statusCode = $exception->getCode();
+                    $response = $exception->getResponse();
+                    $e = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response ? $response->getHeaders() : null,
+                        $response ? (string) $response->getBody() : null
+                    );
+                    throw $this->deleteWhatsAppTemplateApiException($e);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'deleteWhatsAppTemplate'
+     *
+     * @param  string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param  string $templateName Template name. Must only contain lowercase alphanumeric characters and underscores. (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function deleteWhatsAppTemplateRequest($sender, $templateName)
+    {
+        // verify the required parameter 'sender' is set
+        if ($sender === null || (is_array($sender) && count($sender) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $sender when calling deleteWhatsAppTemplate'
+            );
+        }
+        // verify the required parameter 'templateName' is set
+        if ($templateName === null || (is_array($templateName) && count($templateName) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $templateName when calling deleteWhatsAppTemplate'
+            );
+        }
+
+        $resourcePath = '/whatsapp/2/senders/{sender}/templates/{templateName}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                ObjectSerializer::toPathValue($sender),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($templateName !== null) {
+            $resourcePath = str_replace(
+                '{' . 'templateName' . '}',
+                ObjectSerializer::toPathValue($templateName),
+                $resourcePath
+            );
+        }
+
+
+        $headers = $this->headerSelector->selectHeaders(
+            ['application/json'],
+            []
+        );
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----'.hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = is_array($formParamValue) ? $formParamValue : [$formParamValue];
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\Query::build($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+        // this endpoint requires HTTP basic authentication
+        if (!empty($this->config->getUsername()) || !(empty($this->config->getPassword()))) {
+            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+        }
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+        // this endpoint requires OAuth (access token)
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\Query::build($queryParams);
+        return new Request(
+            'DELETE',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'deleteWhatsAppTemplate'
+     *
+     * @param \GuzzleHttp\Psr7\Response $response
+     * @param string $requestUri
+     *
+     * @throws \Infobip\ApiException on non-2xx response
+     * @return array of , HTTP status code, HTTP response headers (array of strings)
+     */
+    protected function deleteWhatsAppTemplateResponse($response, $requestUri)
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] Error connecting to the API (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseObject = null;
+
+
+        return [
+            $responseObject,
+            $statusCode,
+            $responseHeaders
+        ];
+    }
+
+    /**
+     * Adapt given \Infobip\ApiException for operation 'deleteWhatsAppTemplate'
+     *
+     * @param \Infobip\ApiException $apiException
+     *
+     * @return \Infobip\ApiException
+     */
+    protected function deleteWhatsAppTemplateApiException($apiException)
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = ObjectSerializer::deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\WhatsAppApiException',
+                $apiException->getResponseHeaders()
+            );
+            $apiException->setResponseObject($data);
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = ObjectSerializer::deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\WhatsAppApiException',
+                $apiException->getResponseHeaders()
+            );
+            $apiException->setResponseObject($data);
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = ObjectSerializer::deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\WhatsAppApiException',
+                $apiException->getResponseHeaders()
+            );
+            $apiException->setResponseObject($data);
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = ObjectSerializer::deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\WhatsAppApiException',
+                $apiException->getResponseHeaders()
+            );
+            $apiException->setResponseObject($data);
+            return $apiException;
+        }
+        return $apiException;
+    }
+
+    /**
      * Operation getWhatsAppTemplates
      *
      * Get WhatsApp Templates
@@ -824,7 +1134,7 @@ class ManageWhatsAppApi
             );
         }
 
-        $resourcePath = '/whatsapp/1/senders/{sender}/templates';
+        $resourcePath = '/whatsapp/2/senders/{sender}/templates';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];

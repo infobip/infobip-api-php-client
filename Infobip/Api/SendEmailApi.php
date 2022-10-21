@@ -388,8 +388,8 @@ class SendEmailApi
      * @param  string $to The recipient email address. (optional)
      * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
      * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
-     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
-     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
      * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -412,8 +412,8 @@ class SendEmailApi
      * @param  string $to The recipient email address. (optional)
      * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
      * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
-     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
-     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
      * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -452,8 +452,8 @@ class SendEmailApi
      * @param  string $to The recipient email address. (optional)
      * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
      * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
-     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
-     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
      * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
@@ -479,8 +479,8 @@ class SendEmailApi
      * @param  string $to The recipient email address. (optional)
      * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
      * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
-     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
-     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
      * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
@@ -518,8 +518,8 @@ class SendEmailApi
      * @param  string $to The recipient email address. (optional)
      * @param  string $bulkId Bulk ID that uniquely identifies the request. (optional)
      * @param  string $generalStatus Indicates whether the initiated email has been successfully sent, not sent, delivered, not delivered, waiting for delivery or any other possible status. (optional)
-     * @param  string $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
-     * @param  string $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentSince Tells when the email was initiated. Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
+     * @param  \DateTime $sentUntil Tells when the email request was processed by Infobip.Has the following format: &#x60;yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ&#x60;. (optional)
      * @param  int $limit Maximum number of logs. (optional)
      *
      * @throws \InvalidArgumentException
@@ -710,34 +710,34 @@ class SendEmailApi
      *
      * @param  string $from Email address with optional sender name. (required)
      * @param  string $to Email address of the recipient. (required)
-     * @param  string $subject Message subject. (required)
      * @param  string $cc CC recipient email address. (optional)
      * @param  string $bcc BCC recipient email address. (optional)
-     * @param  string $text Body of message. (optional)
-     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an Email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
-     * @param  string $messageId The ID that uniquely identifies the message sent for a recipient. (Optional Field) (optional)
-     * @param  int $templateid Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then html and text values are ignored.   NOTE : This field supports value of broadcast templateId only. Content templateId is not supported. (optional)
-     * @param  \SplFileObject $attachment File attachment (optional)
-     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing any external link to image. (optional)
-     * @param  string $hTML HTML body of the message. If HTML and text fields are present, text field will be ignored and HTML will be delivered as message body. (optional)
-     * @param  string $replyto Email address to which recipients of the email can reply. (optional)
-     * @param  string $defaultplaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
-     * @param  bool $preserverecipients This parameter enables preserving To recipients for an email when value is true, default value is false for this parameter. (optional)
+     * @param  string $subject Message subject.  NOTE: This field is required if templateId is blank (optional)
+     * @param  string $text Body of the message. (optional)
+     * @param  string $html HTML body of the message. If HTML and text fields are present, the text field will be ignored and HTML will be delivered as a message body. (optional)
+     * @param  int $templateId Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then HTML and text values are ignored. NOTE: This field supports the value of broadcast templateId only. Content templateId is not supported. (optional)
+     * @param  \SplFileObject $attachment File attachment. (optional)
+     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing an external link to the image. (optional)
+     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
+     * @param  string $messageId The ID that uniquely identifies the message sent to a recipient. (Optional Field) (optional)
+     * @param  string $replyTo Email address to which recipients of the email can reply. (optional)
+     * @param  string $defaultPlaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
+     * @param  bool $preserveRecipients This parameter enables preserving recipients for an email when the value is true, the default value is false for this parameter. (optional)
      * @param  string $trackingUrl The URL on your callback server on which the open and click notifications will be sent. If you are passing this parameter then track&#x3D;true will be assigned, you don&#39;t need to pass track&#x3D;true separately. See the section \\\&quot;Tracking Notifications\\\&quot; below for details. (optional)
-     * @param  bool $trackclicks This parameter enables or disables track click feature. (optional)
-     * @param  bool $trackopens This parameter enables or disables track open feature. (optional)
-     * @param  bool $track Enable or disable open and click tracking.Default value is true. Passing true will only enable tracking and the statistics would be visible in web interface alone. This can be explicitly overridden by trackopens and trackclikcs. (optional)
+     * @param  bool $trackClicks This parameter enables or disables track click feature. (optional)
+     * @param  bool $trackOpens This parameter enables or disables track open feature. (optional)
+     * @param  bool $track Enable or disable open and click tracking. The default value is true. Passing true will only enable tracking and the statistics would be visible in the web interface alone. This can be explicitly overridden by trackOpens and trackClicks. (optional)
      * @param  string $callbackData Additional client data that will be sent on the notifyUrl. The maximum value is 4000 characters. (optional)
      * @param  bool $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. (optional)
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
-     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
+     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
      * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
-     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
+     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks the unsubscribe link. If not present default opt out landing page will be displayed. Create a landing page on IB’s portal and use the last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return \Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException|\Infobip\Model\EmailSendResponse
+     * @return \Infobip\Model\EmailSendResponse|\Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException
      */
     public function sendEmail($associative_array)
     {
@@ -754,34 +754,34 @@ class SendEmailApi
      *
      * @param  string $from Email address with optional sender name. (required)
      * @param  string $to Email address of the recipient. (required)
-     * @param  string $subject Message subject. (required)
      * @param  string $cc CC recipient email address. (optional)
      * @param  string $bcc BCC recipient email address. (optional)
-     * @param  string $text Body of message. (optional)
-     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an Email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
-     * @param  string $messageId The ID that uniquely identifies the message sent for a recipient. (Optional Field) (optional)
-     * @param  int $templateid Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then html and text values are ignored.   NOTE : This field supports value of broadcast templateId only. Content templateId is not supported. (optional)
-     * @param  \SplFileObject $attachment File attachment (optional)
-     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing any external link to image. (optional)
-     * @param  string $hTML HTML body of the message. If HTML and text fields are present, text field will be ignored and HTML will be delivered as message body. (optional)
-     * @param  string $replyto Email address to which recipients of the email can reply. (optional)
-     * @param  string $defaultplaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
-     * @param  bool $preserverecipients This parameter enables preserving To recipients for an email when value is true, default value is false for this parameter. (optional)
+     * @param  string $subject Message subject.  NOTE: This field is required if templateId is blank (optional)
+     * @param  string $text Body of the message. (optional)
+     * @param  string $html HTML body of the message. If HTML and text fields are present, the text field will be ignored and HTML will be delivered as a message body. (optional)
+     * @param  int $templateId Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then HTML and text values are ignored. NOTE: This field supports the value of broadcast templateId only. Content templateId is not supported. (optional)
+     * @param  \SplFileObject $attachment File attachment. (optional)
+     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing an external link to the image. (optional)
+     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
+     * @param  string $messageId The ID that uniquely identifies the message sent to a recipient. (Optional Field) (optional)
+     * @param  string $replyTo Email address to which recipients of the email can reply. (optional)
+     * @param  string $defaultPlaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
+     * @param  bool $preserveRecipients This parameter enables preserving recipients for an email when the value is true, the default value is false for this parameter. (optional)
      * @param  string $trackingUrl The URL on your callback server on which the open and click notifications will be sent. If you are passing this parameter then track&#x3D;true will be assigned, you don&#39;t need to pass track&#x3D;true separately. See the section \\\&quot;Tracking Notifications\\\&quot; below for details. (optional)
-     * @param  bool $trackclicks This parameter enables or disables track click feature. (optional)
-     * @param  bool $trackopens This parameter enables or disables track open feature. (optional)
-     * @param  bool $track Enable or disable open and click tracking.Default value is true. Passing true will only enable tracking and the statistics would be visible in web interface alone. This can be explicitly overridden by trackopens and trackclikcs. (optional)
+     * @param  bool $trackClicks This parameter enables or disables track click feature. (optional)
+     * @param  bool $trackOpens This parameter enables or disables track open feature. (optional)
+     * @param  bool $track Enable or disable open and click tracking. The default value is true. Passing true will only enable tracking and the statistics would be visible in the web interface alone. This can be explicitly overridden by trackOpens and trackClicks. (optional)
      * @param  string $callbackData Additional client data that will be sent on the notifyUrl. The maximum value is 4000 characters. (optional)
      * @param  bool $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. (optional)
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
-     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
+     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
      * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
-     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
+     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks the unsubscribe link. If not present default opt out landing page will be displayed. Create a landing page on IB’s portal and use the last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
-     * @return array of \Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException|\Infobip\Model\EmailSendResponse, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailSendResponse|\Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException, HTTP status code, HTTP response headers (array of strings)
      */
     public function sendEmailWithHttpInfo($associative_array)
     {
@@ -814,30 +814,30 @@ class SendEmailApi
      *
      * @param  string $from Email address with optional sender name. (required)
      * @param  string $to Email address of the recipient. (required)
-     * @param  string $subject Message subject. (required)
      * @param  string $cc CC recipient email address. (optional)
      * @param  string $bcc BCC recipient email address. (optional)
-     * @param  string $text Body of message. (optional)
-     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an Email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
-     * @param  string $messageId The ID that uniquely identifies the message sent for a recipient. (Optional Field) (optional)
-     * @param  int $templateid Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then html and text values are ignored.   NOTE : This field supports value of broadcast templateId only. Content templateId is not supported. (optional)
-     * @param  \SplFileObject $attachment File attachment (optional)
-     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing any external link to image. (optional)
-     * @param  string $hTML HTML body of the message. If HTML and text fields are present, text field will be ignored and HTML will be delivered as message body. (optional)
-     * @param  string $replyto Email address to which recipients of the email can reply. (optional)
-     * @param  string $defaultplaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
-     * @param  bool $preserverecipients This parameter enables preserving To recipients for an email when value is true, default value is false for this parameter. (optional)
+     * @param  string $subject Message subject.  NOTE: This field is required if templateId is blank (optional)
+     * @param  string $text Body of the message. (optional)
+     * @param  string $html HTML body of the message. If HTML and text fields are present, the text field will be ignored and HTML will be delivered as a message body. (optional)
+     * @param  int $templateId Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then HTML and text values are ignored. NOTE: This field supports the value of broadcast templateId only. Content templateId is not supported. (optional)
+     * @param  \SplFileObject $attachment File attachment. (optional)
+     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing an external link to the image. (optional)
+     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
+     * @param  string $messageId The ID that uniquely identifies the message sent to a recipient. (Optional Field) (optional)
+     * @param  string $replyTo Email address to which recipients of the email can reply. (optional)
+     * @param  string $defaultPlaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
+     * @param  bool $preserveRecipients This parameter enables preserving recipients for an email when the value is true, the default value is false for this parameter. (optional)
      * @param  string $trackingUrl The URL on your callback server on which the open and click notifications will be sent. If you are passing this parameter then track&#x3D;true will be assigned, you don&#39;t need to pass track&#x3D;true separately. See the section \\\&quot;Tracking Notifications\\\&quot; below for details. (optional)
-     * @param  bool $trackclicks This parameter enables or disables track click feature. (optional)
-     * @param  bool $trackopens This parameter enables or disables track open feature. (optional)
-     * @param  bool $track Enable or disable open and click tracking.Default value is true. Passing true will only enable tracking and the statistics would be visible in web interface alone. This can be explicitly overridden by trackopens and trackclikcs. (optional)
+     * @param  bool $trackClicks This parameter enables or disables track click feature. (optional)
+     * @param  bool $trackOpens This parameter enables or disables track open feature. (optional)
+     * @param  bool $track Enable or disable open and click tracking. The default value is true. Passing true will only enable tracking and the statistics would be visible in the web interface alone. This can be explicitly overridden by trackOpens and trackClicks. (optional)
      * @param  string $callbackData Additional client data that will be sent on the notifyUrl. The maximum value is 4000 characters. (optional)
      * @param  bool $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. (optional)
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
-     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
+     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
      * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
-     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
+     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks the unsubscribe link. If not present default opt out landing page will be displayed. Create a landing page on IB’s portal and use the last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -861,30 +861,30 @@ class SendEmailApi
      *
      * @param  string $from Email address with optional sender name. (required)
      * @param  string $to Email address of the recipient. (required)
-     * @param  string $subject Message subject. (required)
      * @param  string $cc CC recipient email address. (optional)
      * @param  string $bcc BCC recipient email address. (optional)
-     * @param  string $text Body of message. (optional)
-     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an Email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
-     * @param  string $messageId The ID that uniquely identifies the message sent for a recipient. (Optional Field) (optional)
-     * @param  int $templateid Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then html and text values are ignored.   NOTE : This field supports value of broadcast templateId only. Content templateId is not supported. (optional)
-     * @param  \SplFileObject $attachment File attachment (optional)
-     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing any external link to image. (optional)
-     * @param  string $hTML HTML body of the message. If HTML and text fields are present, text field will be ignored and HTML will be delivered as message body. (optional)
-     * @param  string $replyto Email address to which recipients of the email can reply. (optional)
-     * @param  string $defaultplaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
-     * @param  bool $preserverecipients This parameter enables preserving To recipients for an email when value is true, default value is false for this parameter. (optional)
+     * @param  string $subject Message subject.  NOTE: This field is required if templateId is blank (optional)
+     * @param  string $text Body of the message. (optional)
+     * @param  string $html HTML body of the message. If HTML and text fields are present, the text field will be ignored and HTML will be delivered as a message body. (optional)
+     * @param  int $templateId Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then HTML and text values are ignored. NOTE: This field supports the value of broadcast templateId only. Content templateId is not supported. (optional)
+     * @param  \SplFileObject $attachment File attachment. (optional)
+     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing an external link to the image. (optional)
+     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
+     * @param  string $messageId The ID that uniquely identifies the message sent to a recipient. (Optional Field) (optional)
+     * @param  string $replyTo Email address to which recipients of the email can reply. (optional)
+     * @param  string $defaultPlaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
+     * @param  bool $preserveRecipients This parameter enables preserving recipients for an email when the value is true, the default value is false for this parameter. (optional)
      * @param  string $trackingUrl The URL on your callback server on which the open and click notifications will be sent. If you are passing this parameter then track&#x3D;true will be assigned, you don&#39;t need to pass track&#x3D;true separately. See the section \\\&quot;Tracking Notifications\\\&quot; below for details. (optional)
-     * @param  bool $trackclicks This parameter enables or disables track click feature. (optional)
-     * @param  bool $trackopens This parameter enables or disables track open feature. (optional)
-     * @param  bool $track Enable or disable open and click tracking.Default value is true. Passing true will only enable tracking and the statistics would be visible in web interface alone. This can be explicitly overridden by trackopens and trackclikcs. (optional)
+     * @param  bool $trackClicks This parameter enables or disables track click feature. (optional)
+     * @param  bool $trackOpens This parameter enables or disables track open feature. (optional)
+     * @param  bool $track Enable or disable open and click tracking. The default value is true. Passing true will only enable tracking and the statistics would be visible in the web interface alone. This can be explicitly overridden by trackOpens and trackClicks. (optional)
      * @param  string $callbackData Additional client data that will be sent on the notifyUrl. The maximum value is 4000 characters. (optional)
      * @param  bool $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. (optional)
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
-     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
+     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
      * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
-     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
+     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks the unsubscribe link. If not present default opt out landing page will be displayed. Create a landing page on IB’s portal and use the last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -920,30 +920,30 @@ class SendEmailApi
      *
      * @param  string $from Email address with optional sender name. (required)
      * @param  string $to Email address of the recipient. (required)
-     * @param  string $subject Message subject. (required)
      * @param  string $cc CC recipient email address. (optional)
      * @param  string $bcc BCC recipient email address. (optional)
-     * @param  string $text Body of message. (optional)
-     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an Email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
-     * @param  string $messageId The ID that uniquely identifies the message sent for a recipient. (Optional Field) (optional)
-     * @param  int $templateid Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then html and text values are ignored.   NOTE : This field supports value of broadcast templateId only. Content templateId is not supported. (optional)
-     * @param  \SplFileObject $attachment File attachment (optional)
-     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing any external link to image. (optional)
-     * @param  string $hTML HTML body of the message. If HTML and text fields are present, text field will be ignored and HTML will be delivered as message body. (optional)
-     * @param  string $replyto Email address to which recipients of the email can reply. (optional)
-     * @param  string $defaultplaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
-     * @param  bool $preserverecipients This parameter enables preserving To recipients for an email when value is true, default value is false for this parameter. (optional)
+     * @param  string $subject Message subject.  NOTE: This field is required if templateId is blank (optional)
+     * @param  string $text Body of the message. (optional)
+     * @param  string $html HTML body of the message. If HTML and text fields are present, the text field will be ignored and HTML will be delivered as a message body. (optional)
+     * @param  int $templateId Template identifier based on which the email message is generated. The template is created over Infobip web interface. If templateId is present then HTML and text values are ignored. NOTE: This field supports the value of broadcast templateId only. Content templateId is not supported. (optional)
+     * @param  \SplFileObject $attachment File attachment. (optional)
+     * @param  \SplFileObject $inlineImage Using an inline image, it is possible to insert the image file inside the HTML code of the email by using cid:FILENAME instead of providing an external link to the image. (optional)
+     * @param  string $bulkId The ID uniquely identifies the sent Email request. This filter will enable you to query delivery reports for all the messages using just one request. You will receive a bulkId in the response after sending an email request. If you don&#39;t set your own bulkId, unique ID will be generated by our system and returned in the API response. (Optional Field) (optional)
+     * @param  string $messageId The ID that uniquely identifies the message sent to a recipient. (Optional Field) (optional)
+     * @param  string $replyTo Email address to which recipients of the email can reply. (optional)
+     * @param  string $defaultPlaceholders Default placeholder values used for all recipients. The values are used to generate the email message. (optional)
+     * @param  bool $preserveRecipients This parameter enables preserving recipients for an email when the value is true, the default value is false for this parameter. (optional)
      * @param  string $trackingUrl The URL on your callback server on which the open and click notifications will be sent. If you are passing this parameter then track&#x3D;true will be assigned, you don&#39;t need to pass track&#x3D;true separately. See the section \\\&quot;Tracking Notifications\\\&quot; below for details. (optional)
-     * @param  bool $trackclicks This parameter enables or disables track click feature. (optional)
-     * @param  bool $trackopens This parameter enables or disables track open feature. (optional)
-     * @param  bool $track Enable or disable open and click tracking.Default value is true. Passing true will only enable tracking and the statistics would be visible in web interface alone. This can be explicitly overridden by trackopens and trackclikcs. (optional)
+     * @param  bool $trackClicks This parameter enables or disables track click feature. (optional)
+     * @param  bool $trackOpens This parameter enables or disables track open feature. (optional)
+     * @param  bool $track Enable or disable open and click tracking. The default value is true. Passing true will only enable tracking and the statistics would be visible in the web interface alone. This can be explicitly overridden by trackOpens and trackClicks. (optional)
      * @param  string $callbackData Additional client data that will be sent on the notifyUrl. The maximum value is 4000 characters. (optional)
      * @param  bool $intermediateReport The real-time Intermediate delivery report that will be sent on your callback server. (optional)
      * @param  string $notifyUrl The URL on your callback server on which the Delivery report will be sent. (optional)
      * @param  string $notifyContentType Preferred Delivery report content type. Can be application/json or application/xml. (optional)
-     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSXXX. (optional)
+     * @param  \DateTime $sendAt To schedule message at a given time in future. Time provided should be in UTC in the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
      * @param  string $landingPagePlaceholders Personalize opt out landing page by inserting placeholders. Insert placeholder or tag while designing landing page. (optional)
-     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks unsubscribe link. If not present default opt out landing page will be displayed. Create landing page on IB’s portal and use last 6 digits from URL to use that opt out page. (optional)
+     * @param  string $landingPageId Opt out landing page which will be used and displayed once end user clicks the unsubscribe link. If not present default opt out landing page will be displayed. Create a landing page on IB’s portal and use the last 6 digits from URL to use that opt out page. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -953,22 +953,22 @@ class SendEmailApi
         // unbox the parameters from the associative array
         $from = array_key_exists('from', $associative_array) ? $associative_array['from'] : null;
         $to = array_key_exists('to', $associative_array) ? $associative_array['to'] : null;
-        $subject = array_key_exists('subject', $associative_array) ? $associative_array['subject'] : null;
         $cc = array_key_exists('cc', $associative_array) ? $associative_array['cc'] : null;
         $bcc = array_key_exists('bcc', $associative_array) ? $associative_array['bcc'] : null;
+        $subject = array_key_exists('subject', $associative_array) ? $associative_array['subject'] : null;
         $text = array_key_exists('text', $associative_array) ? $associative_array['text'] : null;
-        $bulkId = array_key_exists('bulkId', $associative_array) ? $associative_array['bulkId'] : null;
-        $messageId = array_key_exists('messageId', $associative_array) ? $associative_array['messageId'] : null;
-        $templateid = array_key_exists('templateid', $associative_array) ? $associative_array['templateid'] : null;
+        $html = array_key_exists('html', $associative_array) ? $associative_array['html'] : null;
+        $templateId = array_key_exists('templateId', $associative_array) ? $associative_array['templateId'] : null;
         $attachment = array_key_exists('attachment', $associative_array) ? $associative_array['attachment'] : null;
         $inlineImage = array_key_exists('inlineImage', $associative_array) ? $associative_array['inlineImage'] : null;
-        $hTML = array_key_exists('hTML', $associative_array) ? $associative_array['hTML'] : null;
-        $replyto = array_key_exists('replyto', $associative_array) ? $associative_array['replyto'] : null;
-        $defaultplaceholders = array_key_exists('defaultplaceholders', $associative_array) ? $associative_array['defaultplaceholders'] : null;
-        $preserverecipients = array_key_exists('preserverecipients', $associative_array) ? $associative_array['preserverecipients'] : null;
+        $bulkId = array_key_exists('bulkId', $associative_array) ? $associative_array['bulkId'] : null;
+        $messageId = array_key_exists('messageId', $associative_array) ? $associative_array['messageId'] : null;
+        $replyTo = array_key_exists('replyTo', $associative_array) ? $associative_array['replyTo'] : null;
+        $defaultPlaceholders = array_key_exists('defaultPlaceholders', $associative_array) ? $associative_array['defaultPlaceholders'] : null;
+        $preserveRecipients = array_key_exists('preserveRecipients', $associative_array) ? $associative_array['preserveRecipients'] : null;
         $trackingUrl = array_key_exists('trackingUrl', $associative_array) ? $associative_array['trackingUrl'] : null;
-        $trackclicks = array_key_exists('trackclicks', $associative_array) ? $associative_array['trackclicks'] : null;
-        $trackopens = array_key_exists('trackopens', $associative_array) ? $associative_array['trackopens'] : null;
+        $trackClicks = array_key_exists('trackClicks', $associative_array) ? $associative_array['trackClicks'] : null;
+        $trackOpens = array_key_exists('trackOpens', $associative_array) ? $associative_array['trackOpens'] : null;
         $track = array_key_exists('track', $associative_array) ? $associative_array['track'] : null;
         $callbackData = array_key_exists('callbackData', $associative_array) ? $associative_array['callbackData'] : null;
         $intermediateReport = array_key_exists('intermediateReport', $associative_array) ? $associative_array['intermediateReport'] : null;
@@ -988,12 +988,6 @@ class SendEmailApi
         if ($to === null || (is_array($to) && count($to) === 0)) {
             throw new \InvalidArgumentException(
                 'Missing the required parameter $to when calling sendEmail'
-            );
-        }
-        // verify the required parameter 'subject' is set
-        if ($subject === null || (is_array($subject) && count($subject) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $subject when calling sendEmail'
             );
         }
 
@@ -1031,16 +1025,12 @@ class SendEmailApi
             $formParams['text'] = ObjectSerializer::toFormValue($text);
         }
         // form params
-        if ($bulkId !== null) {
-            $formParams['bulkId'] = ObjectSerializer::toFormValue($bulkId);
+        if ($html !== null) {
+            $formParams['html'] = ObjectSerializer::toFormValue($html);
         }
         // form params
-        if ($messageId !== null) {
-            $formParams['messageId'] = ObjectSerializer::toFormValue($messageId);
-        }
-        // form params
-        if ($templateid !== null) {
-            $formParams['templateid'] = ObjectSerializer::toFormValue($templateid);
+        if ($templateId !== null) {
+            $formParams['templateId'] = ObjectSerializer::toFormValue($templateId);
         }
         // form params
         if ($attachment !== null) {
@@ -1065,32 +1055,36 @@ class SendEmailApi
             }
         }
         // form params
-        if ($hTML !== null) {
-            $formParams['HTML'] = ObjectSerializer::toFormValue($hTML);
+        if ($bulkId !== null) {
+            $formParams['bulkId'] = ObjectSerializer::toFormValue($bulkId);
         }
         // form params
-        if ($replyto !== null) {
-            $formParams['replyto'] = ObjectSerializer::toFormValue($replyto);
+        if ($messageId !== null) {
+            $formParams['messageId'] = ObjectSerializer::toFormValue($messageId);
         }
         // form params
-        if ($defaultplaceholders !== null) {
-            $formParams['defaultplaceholders'] = ObjectSerializer::toFormValue($defaultplaceholders);
+        if ($replyTo !== null) {
+            $formParams['replyTo'] = ObjectSerializer::toFormValue($replyTo);
         }
         // form params
-        if ($preserverecipients !== null) {
-            $formParams['preserverecipients'] = ObjectSerializer::toFormValue($preserverecipients);
+        if ($defaultPlaceholders !== null) {
+            $formParams['defaultPlaceholders'] = ObjectSerializer::toFormValue($defaultPlaceholders);
+        }
+        // form params
+        if ($preserveRecipients !== null) {
+            $formParams['preserveRecipients'] = ObjectSerializer::toFormValue($preserveRecipients);
         }
         // form params
         if ($trackingUrl !== null) {
             $formParams['trackingUrl'] = ObjectSerializer::toFormValue($trackingUrl);
         }
         // form params
-        if ($trackclicks !== null) {
-            $formParams['trackclicks'] = ObjectSerializer::toFormValue($trackclicks);
+        if ($trackClicks !== null) {
+            $formParams['trackClicks'] = ObjectSerializer::toFormValue($trackClicks);
         }
         // form params
-        if ($trackopens !== null) {
-            $formParams['trackopens'] = ObjectSerializer::toFormValue($trackopens);
+        if ($trackOpens !== null) {
+            $formParams['trackOpens'] = ObjectSerializer::toFormValue($trackOpens);
         }
         // form params
         if ($track !== null) {
@@ -1201,7 +1195,7 @@ class SendEmailApi
      * @param string $requestUri
      *
      * @throws \Infobip\ApiException on non-2xx response
-     * @return array of \Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException|\Infobip\Model\EmailSendResponse|null, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \Infobip\Model\EmailSendResponse|\Infobip\Model\EmailApiException|\Infobip\Model\EmailApiException|null, HTTP status code, HTTP response headers (array of strings)
      */
     protected function sendEmailResponse($response, $requestUri)
     {
@@ -1220,14 +1214,21 @@ class SendEmailApi
 
         $responseObject = null;
 
+        if ($statusCode === 200) {
+            $type = '\Infobip\Model\EmailSendResponse';
+            if ($type === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = (string) $responseBody;
+            }
+            $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
-        $type = '\Infobip\Model\EmailSendResponse';
-        if ($type === '\SplFileObject') {
-            $content = $responseBody; //stream goes to serializer
-        } else {
-            $content = (string) $responseBody;
+            return [
+                $responseObject,
+                $statusCode,
+                $responseHeaders
+            ];
         }
-        $responseObject = ObjectSerializer::deserialize($content, $type, $responseHeaders);
 
         return [
             $responseObject,
@@ -1265,13 +1266,6 @@ class SendEmailApi
             $apiException->setResponseObject($data);
             return $apiException;
         }
-
-        $data = ObjectSerializer::deserialize(
-            $apiException->getResponseBody(),
-            '\Infobip\Model\EmailSendResponse',
-            $apiException->getResponseHeaders()
-        );
-        $apiException->setResponseObject($data);
         return $apiException;
     }
 

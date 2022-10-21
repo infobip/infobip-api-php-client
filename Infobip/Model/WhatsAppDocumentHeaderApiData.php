@@ -53,7 +53,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
       * @var string[]
       */
     protected static $openAPITypes = [
-
+        'example' => 'string'
     ];
 
     /**
@@ -64,7 +64,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-
+        'example' => null
     ];
 
     /**
@@ -94,7 +94,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $attributeMap = [
-
+        'example' => 'example'
     ];
 
     /**
@@ -103,7 +103,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $setters = [
-
+        'example' => 'setExample'
     ];
 
     /**
@@ -112,7 +112,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      * @var string[]
      */
     protected static $getters = [
-
+        'example' => 'getExample'
     ];
 
     /**
@@ -171,6 +171,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
     {
         parent::__construct($data);
 
+        $this->container['example'] = $data['example'] ?? null;
 
         $this->container['format'] = 'DOCUMENT';
     }
@@ -198,6 +199,30 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
         return count($this->listInvalidProperties()) === 0;
     }
 
+
+    /**
+     * Gets example
+     *
+     * @return string|null
+     */
+    public function getExample()
+    {
+        return $this->container['example'];
+    }
+
+    /**
+     * Sets example
+     *
+     * @param string|null $example An example of a template header document a user could create. Should be a valid URL that starts with `http` or `https`. Supported document type is `PDF`. Maximum document size is 16MB. Cannot contain placeholders.
+     *
+     * @return self
+     */
+    public function setExample($example)
+    {
+        $this->container['example'] = $example;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -205,7 +230,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -217,7 +242,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -230,7 +255,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -246,7 +271,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -258,7 +283,7 @@ class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

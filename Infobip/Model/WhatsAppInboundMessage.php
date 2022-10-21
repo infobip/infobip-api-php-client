@@ -56,7 +56,8 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
     protected static $openAPITypes = [
         'type' => '\Infobip\Model\WhatsAppType',
         'context' => '\Infobip\Model\WhatsAppContext',
-        'identity' => '\Infobip\Model\WhatsAppIdentity'
+        'identity' => '\Infobip\Model\WhatsAppIdentity',
+        'referral' => '\Infobip\Model\WhatsAppReferral'
     ];
 
     /**
@@ -69,7 +70,8 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
     protected static $openAPIFormats = [
         'type' => null,
         'context' => null,
-        'identity' => null
+        'identity' => null,
+        'referral' => null
     ];
 
     /**
@@ -101,7 +103,8 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
     protected static $attributeMap = [
         'type' => 'type',
         'context' => 'context',
-        'identity' => 'identity'
+        'identity' => 'identity',
+        'referral' => 'referral'
     ];
 
     /**
@@ -112,7 +115,8 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
     protected static $setters = [
         'type' => 'setType',
         'context' => 'setContext',
-        'identity' => 'setIdentity'
+        'identity' => 'setIdentity',
+        'referral' => 'setReferral'
     ];
 
     /**
@@ -123,7 +127,8 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
     protected static $getters = [
         'type' => 'getType',
         'context' => 'getContext',
-        'identity' => 'getIdentity'
+        'identity' => 'getIdentity',
+        'referral' => 'getReferral'
     ];
 
     /**
@@ -189,6 +194,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
         $this->container['type'] = $data['type'] ?? null;
         $this->container['context'] = $data['context'] ?? null;
         $this->container['identity'] = $data['identity'] ?? null;
+        $this->container['referral'] = $data['referral'] ?? null;
     }
 
     /**
@@ -286,6 +292,30 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
 
         return $this;
     }
+
+    /**
+     * Gets referral
+     *
+     * @return \Infobip\Model\WhatsAppReferral|null
+     */
+    public function getReferral()
+    {
+        return $this->container['referral'];
+    }
+
+    /**
+     * Sets referral
+     *
+     * @param \Infobip\Model\WhatsAppReferral|null $referral referral
+     *
+     * @return self
+     */
+    public function setReferral($referral)
+    {
+        $this->container['referral'] = $referral;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -293,7 +323,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -305,7 +335,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -318,7 +348,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -334,7 +364,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -346,7 +376,7 @@ class WhatsAppInboundMessage implements ModelInterface, ArrayAccess, \JsonSerial
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

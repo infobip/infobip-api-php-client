@@ -50,6 +50,9 @@ class WhatsAppCategory
     public const TICKET_UPDATE = 'TICKET_UPDATE';
     public const ALERT_UPDATE = 'ALERT_UPDATE';
     public const AUTO_REPLY = 'AUTO_REPLY';
+    public const MARKETING = 'MARKETING';
+    public const TRANSACTIONAL = 'TRANSACTIONAL';
+    public const OTP = 'OTP';
 
     /**
      * Gets allowable values of the enum
@@ -69,6 +72,9 @@ class WhatsAppCategory
             self::TICKET_UPDATE,
             self::ALERT_UPDATE,
             self::AUTO_REPLY,
+            self::MARKETING,
+            self::TRANSACTIONAL,
+            self::OTP,
         ];
     }
 }

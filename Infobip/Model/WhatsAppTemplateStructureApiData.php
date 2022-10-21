@@ -56,8 +56,8 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
       */
     protected static $openAPITypes = [
         'header' => '\Infobip\Model\WhatsAppHeaderApiData',
-        'body' => 'string',
-        'footer' => 'string',
+        'body' => '\Infobip\Model\WhatsAppBodyApiData',
+        'footer' => '\Infobip\Model\WhatsAppFooterApiData',
         'buttons' => '\Infobip\Model\WhatsAppButtonApiData[]',
         'type' => 'string'
     ];
@@ -233,14 +233,6 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
         if ($this->container['body'] === null) {
             $invalidProperties[] = "'body' can't be null";
         }
-        if (!is_null($this->container['footer']) && (mb_strlen($this->container['footer']) > 60)) {
-            $invalidProperties[] = "invalid value for 'footer', the character length must be smaller than or equal to 60.";
-        }
-
-        if (!is_null($this->container['footer']) && (mb_strlen($this->container['footer']) < 0)) {
-            $invalidProperties[] = "invalid value for 'footer', the character length must be bigger than or equal to 0.";
-        }
-
         if (!is_null($this->container['buttons']) && (count($this->container['buttons']) > 3)) {
             $invalidProperties[] = "invalid value for 'buttons', number of items must be less than or equal to 3.";
         }
@@ -300,7 +292,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
     /**
      * Gets body
      *
-     * @return string
+     * @return \Infobip\Model\WhatsAppBodyApiData
      */
     public function getBody()
     {
@@ -310,7 +302,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
     /**
      * Sets body
      *
-     * @param string $body Template body. Can be registered as plain text or text with placeholders. Placeholders have to be correctly formatted and in the correct order, regardless of other sections. Example: {{1}}, {{2}}, {{3}}...
+     * @param \Infobip\Model\WhatsAppBodyApiData $body body
      *
      * @return self
      */
@@ -324,7 +316,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
     /**
      * Gets footer
      *
-     * @return string|null
+     * @return \Infobip\Model\WhatsAppFooterApiData|null
      */
     public function getFooter()
     {
@@ -334,19 +326,12 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
     /**
      * Sets footer
      *
-     * @param string|null $footer Template footer. Plain text, up to 60 characters.
+     * @param \Infobip\Model\WhatsAppFooterApiData|null $footer footer
      *
      * @return self
      */
     public function setFooter($footer)
     {
-        if (!is_null($footer) && (mb_strlen($footer) > 60)) {
-            throw new \InvalidArgumentException('invalid length for $footer when calling WhatsAppTemplateStructureApiData., must be smaller than or equal to 60.');
-        }
-        if (!is_null($footer) && (mb_strlen($footer) < 0)) {
-            throw new \InvalidArgumentException('invalid length for $footer when calling WhatsAppTemplateStructureApiData., must be bigger than or equal to 0.');
-        }
-
         $this->container['footer'] = $footer;
 
         return $this;
@@ -422,7 +407,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -434,7 +419,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -447,7 +432,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -463,7 +448,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -475,7 +460,7 @@ class WhatsAppTemplateStructureApiData implements ModelInterface, ArrayAccess, \
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

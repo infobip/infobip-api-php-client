@@ -60,7 +60,8 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         'catchAll' => 'bool',
         'didYouMean' => 'string',
         'disposable' => 'bool',
-        'roleBased' => 'bool'
+        'roleBased' => 'bool',
+        'reason' => 'string'
     ];
 
     /**
@@ -77,7 +78,8 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         'catchAll' => null,
         'didYouMean' => null,
         'disposable' => null,
-        'roleBased' => null
+        'roleBased' => null,
+        'reason' => null
     ];
 
     /**
@@ -113,7 +115,8 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         'catchAll' => 'catchAll',
         'didYouMean' => 'didYouMean',
         'disposable' => 'disposable',
-        'roleBased' => 'roleBased'
+        'roleBased' => 'roleBased',
+        'reason' => 'reason'
     ];
 
     /**
@@ -128,7 +131,8 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         'catchAll' => 'setCatchAll',
         'didYouMean' => 'setDidYouMean',
         'disposable' => 'setDisposable',
-        'roleBased' => 'setRoleBased'
+        'roleBased' => 'setRoleBased',
+        'reason' => 'setReason'
     ];
 
     /**
@@ -143,7 +147,8 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         'catchAll' => 'getCatchAll',
         'didYouMean' => 'getDidYouMean',
         'disposable' => 'getDisposable',
-        'roleBased' => 'getRoleBased'
+        'roleBased' => 'getRoleBased',
+        'reason' => 'getReason'
     ];
 
     /**
@@ -213,6 +218,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
         $this->container['didYouMean'] = $data['didYouMean'] ?? null;
         $this->container['disposable'] = $data['disposable'] ?? null;
         $this->container['roleBased'] = $data['roleBased'] ?? null;
+        $this->container['reason'] = $data['reason'] ?? null;
     }
 
     /**
@@ -252,7 +258,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets to
      *
-     * @param string|null $to to
+     * @param string|null $to Email address of the recipient.
      *
      * @return self
      */
@@ -276,7 +282,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets validMailbox
      *
-     * @param string|null $validMailbox validMailbox
+     * @param string|null $validMailbox Represents status of recipient email address.
      *
      * @return self
      */
@@ -300,7 +306,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets validSyntax
      *
-     * @param bool|null $validSyntax validSyntax
+     * @param bool|null $validSyntax Represents syntax of recipient email address.
      *
      * @return self
      */
@@ -324,7 +330,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets catchAll
      *
-     * @param bool|null $catchAll catchAll
+     * @param bool|null $catchAll Denotes catch all status of recipient email address.
      *
      * @return self
      */
@@ -348,7 +354,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
     /**
      * Sets didYouMean
      *
-     * @param string|null $didYouMean didYouMean
+     * @param string|null $didYouMean Suggests alternate addresses that maybe valid.
      *
      * @return self
      */
@@ -406,6 +412,30 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
 
         return $this;
     }
+
+    /**
+     * Gets reason
+     *
+     * @return string|null
+     */
+    public function getReason()
+    {
+        return $this->container['reason'];
+    }
+
+    /**
+     * Sets reason
+     *
+     * @param string|null $reason Reason is provided when validMailbox status is unknown. 1. INBOX_FULL - The user quota exceeded / The user inbox is full / The user doesn't accept any more requests.  2. UNEXPECTED_FAILURE - The mail Server returned a temporary error. 3. THROTTLED - The mail server is not allowing us momentarily because of too many requests. 4. TIMED_OUT - The Mail Server took a longer time to respond / there was a delay in the network. 5. TEMP_REJECTION - Mail server temporarily rejected. 6. UNABLE_TO_CONNECT - Unable to connect to the Mail Server.
+     *
+     * @return self
+     */
+    public function setReason($reason)
+    {
+        $this->container['reason'] = $reason;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -413,7 +443,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -425,7 +455,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -438,7 +468,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -454,7 +484,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -466,7 +496,7 @@ class EmailValidationResponse implements ModelInterface, ArrayAccess, \JsonSeria
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

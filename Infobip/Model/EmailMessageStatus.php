@@ -54,12 +54,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
       * @var string[]
       */
     protected static $openAPITypes = [
-        'action' => 'string',
-        'description' => 'string',
         'groupId' => 'int',
         'groupName' => 'string',
         'id' => 'int',
-        'name' => 'string'
+        'name' => 'string',
+        'description' => 'string',
+        'action' => 'string'
     ];
 
     /**
@@ -70,12 +70,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'action' => null,
-        'description' => null,
         'groupId' => 'int32',
         'groupName' => null,
         'id' => 'int32',
-        'name' => null
+        'name' => null,
+        'description' => null,
+        'action' => null
     ];
 
     /**
@@ -105,12 +105,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $attributeMap = [
-        'action' => 'action',
-        'description' => 'description',
         'groupId' => 'groupId',
         'groupName' => 'groupName',
         'id' => 'id',
-        'name' => 'name'
+        'name' => 'name',
+        'description' => 'description',
+        'action' => 'action'
     ];
 
     /**
@@ -119,12 +119,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $setters = [
-        'action' => 'setAction',
-        'description' => 'setDescription',
         'groupId' => 'setGroupId',
         'groupName' => 'setGroupName',
         'id' => 'setId',
-        'name' => 'setName'
+        'name' => 'setName',
+        'description' => 'setDescription',
+        'action' => 'setAction'
     ];
 
     /**
@@ -133,12 +133,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      * @var string[]
      */
     protected static $getters = [
-        'action' => 'getAction',
-        'description' => 'getDescription',
         'groupId' => 'getGroupId',
         'groupName' => 'getGroupName',
         'id' => 'getId',
-        'name' => 'getName'
+        'name' => 'getName',
+        'description' => 'getDescription',
+        'action' => 'getAction'
     ];
 
     /**
@@ -201,12 +201,12 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      */
     public function __construct(array $data = null)
     {
-        $this->container['action'] = $data['action'] ?? null;
-        $this->container['description'] = $data['description'] ?? null;
         $this->container['groupId'] = $data['groupId'] ?? null;
         $this->container['groupName'] = $data['groupName'] ?? null;
         $this->container['id'] = $data['id'] ?? null;
         $this->container['name'] = $data['name'] ?? null;
+        $this->container['description'] = $data['description'] ?? null;
+        $this->container['action'] = $data['action'] ?? null;
     }
 
     /**
@@ -232,54 +232,6 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
         return count($this->listInvalidProperties()) === 0;
     }
 
-
-    /**
-     * Gets action
-     *
-     * @return string|null
-     */
-    public function getAction()
-    {
-        return $this->container['action'];
-    }
-
-    /**
-     * Sets action
-     *
-     * @param string|null $action action
-     *
-     * @return self
-     */
-    public function setAction($action)
-    {
-        $this->container['action'] = $action;
-
-        return $this;
-    }
-
-    /**
-     * Gets description
-     *
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->container['description'];
-    }
-
-    /**
-     * Sets description
-     *
-     * @param string|null $description description
-     *
-     * @return self
-     */
-    public function setDescription($description)
-    {
-        $this->container['description'] = $description;
-
-        return $this;
-    }
 
     /**
      * Gets groupId
@@ -376,6 +328,54 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
 
         return $this;
     }
+
+    /**
+     * Gets description
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->container['description'];
+    }
+
+    /**
+     * Sets description
+     *
+     * @param string|null $description description
+     *
+     * @return self
+     */
+    public function setDescription($description)
+    {
+        $this->container['description'] = $description;
+
+        return $this;
+    }
+
+    /**
+     * Gets action
+     *
+     * @return string|null
+     */
+    public function getAction()
+    {
+        return $this->container['action'];
+    }
+
+    /**
+     * Sets action
+     *
+     * @param string|null $action action
+     *
+     * @return self
+     */
+    public function setAction($action)
+    {
+        $this->container['action'] = $action;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -383,7 +383,7 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -395,7 +395,7 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -408,7 +408,7 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -424,7 +424,7 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -436,7 +436,7 @@ class EmailMessageStatus implements ModelInterface, ArrayAccess, \JsonSerializab
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

@@ -54,10 +54,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       * @var string[]
       */
     protected static $openAPITypes = [
+        'to' => 'string',
         'messageCount' => 'int',
         'messageId' => 'string',
-        'status' => '\Infobip\Model\EmailMessageStatus',
-        'to' => 'string'
+        'status' => '\Infobip\Model\EmailMessageStatus'
     ];
 
     /**
@@ -68,10 +68,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
+        'to' => null,
         'messageCount' => 'int32',
         'messageId' => null,
-        'status' => null,
-        'to' => null
+        'status' => null
     ];
 
     /**
@@ -101,10 +101,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $attributeMap = [
+        'to' => 'to',
         'messageCount' => 'messageCount',
         'messageId' => 'messageId',
-        'status' => 'status',
-        'to' => 'to'
+        'status' => 'status'
     ];
 
     /**
@@ -113,10 +113,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $setters = [
+        'to' => 'setTo',
         'messageCount' => 'setMessageCount',
         'messageId' => 'setMessageId',
-        'status' => 'setStatus',
-        'to' => 'setTo'
+        'status' => 'setStatus'
     ];
 
     /**
@@ -125,10 +125,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @var string[]
      */
     protected static $getters = [
+        'to' => 'getTo',
         'messageCount' => 'getMessageCount',
         'messageId' => 'getMessageId',
-        'status' => 'getStatus',
-        'to' => 'getTo'
+        'status' => 'getStatus'
     ];
 
     /**
@@ -191,10 +191,10 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      */
     public function __construct(array $data = null)
     {
+        $this->container['to'] = $data['to'] ?? null;
         $this->container['messageCount'] = $data['messageCount'] ?? null;
         $this->container['messageId'] = $data['messageId'] ?? null;
         $this->container['status'] = $data['status'] ?? null;
-        $this->container['to'] = $data['to'] ?? null;
     }
 
     /**
@@ -220,6 +220,30 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
         return count($this->listInvalidProperties()) === 0;
     }
 
+
+    /**
+     * Gets to
+     *
+     * @return string|null
+     */
+    public function getTo()
+    {
+        return $this->container['to'];
+    }
+
+    /**
+     * Sets to
+     *
+     * @param string|null $to to
+     *
+     * @return self
+     */
+    public function setTo($to)
+    {
+        $this->container['to'] = $to;
+
+        return $this;
+    }
 
     /**
      * Gets messageCount
@@ -292,30 +316,6 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
 
         return $this;
     }
-
-    /**
-     * Gets to
-     *
-     * @return string|null
-     */
-    public function getTo()
-    {
-        return $this->container['to'];
-    }
-
-    /**
-     * Sets to
-     *
-     * @param string|null $to to
-     *
-     * @return self
-     */
-    public function setTo($to)
-    {
-        $this->container['to'] = $to;
-
-        return $this;
-    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -323,7 +323,7 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -335,7 +335,7 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -348,7 +348,7 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -364,7 +364,7 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -376,7 +376,7 @@ class EmailMessageInfo implements ModelInterface, ArrayAccess, \JsonSerializable
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

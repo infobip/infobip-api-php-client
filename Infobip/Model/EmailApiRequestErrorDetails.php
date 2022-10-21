@@ -55,7 +55,8 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
       */
     protected static $openAPITypes = [
         'messageId' => 'string',
-        'text' => 'string'
+        'text' => 'string',
+        'validationErrors' => 'array<string,string[]>'
     ];
 
     /**
@@ -67,7 +68,8 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
       */
     protected static $openAPIFormats = [
         'messageId' => null,
-        'text' => null
+        'text' => null,
+        'validationErrors' => null
     ];
 
     /**
@@ -98,7 +100,8 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      */
     protected static $attributeMap = [
         'messageId' => 'messageId',
-        'text' => 'text'
+        'text' => 'text',
+        'validationErrors' => 'validationErrors'
     ];
 
     /**
@@ -108,7 +111,8 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      */
     protected static $setters = [
         'messageId' => 'setMessageId',
-        'text' => 'setText'
+        'text' => 'setText',
+        'validationErrors' => 'setValidationErrors'
     ];
 
     /**
@@ -118,7 +122,8 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      */
     protected static $getters = [
         'messageId' => 'getMessageId',
-        'text' => 'getText'
+        'text' => 'getText',
+        'validationErrors' => 'getValidationErrors'
     ];
 
     /**
@@ -183,6 +188,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
     {
         $this->container['messageId'] = $data['messageId'] ?? null;
         $this->container['text'] = $data['text'] ?? null;
+        $this->container['validationErrors'] = $data['validationErrors'] ?? null;
     }
 
     /**
@@ -256,6 +262,30 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
 
         return $this;
     }
+
+    /**
+     * Gets validationErrors
+     *
+     * @return array<string,string[]>|null
+     */
+    public function getValidationErrors()
+    {
+        return $this->container['validationErrors'];
+    }
+
+    /**
+     * Sets validationErrors
+     *
+     * @param array<string,string[]>|null $validationErrors Map of validation errors
+     *
+     * @return self
+     */
+    public function setValidationErrors($validationErrors)
+    {
+        $this->container['validationErrors'] = $validationErrors;
+
+        return $this;
+    }
     /**
      * Returns true if offset exists. False otherwise.
      *
@@ -263,7 +293,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -275,7 +305,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -288,7 +318,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -304,7 +334,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -316,7 +346,7 @@ class EmailApiRequestErrorDetails implements ModelInterface, ArrayAccess, \JsonS
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

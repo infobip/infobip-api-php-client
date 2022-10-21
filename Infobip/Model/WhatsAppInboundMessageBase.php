@@ -288,7 +288,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
     /**
      * Sets receivedAt
      *
-     * @param \DateTime|null $receivedAt Tells when Infobip platform received the message.
+     * @param \DateTime|null $receivedAt Date and time when Infobip received the message.
      *
      * @return self
      */
@@ -353,7 +353,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -365,7 +365,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -378,7 +378,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -394,7 +394,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -406,7 +406,7 @@ class WhatsAppInboundMessageBase implements ModelInterface, ArrayAccess, \JsonSe
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

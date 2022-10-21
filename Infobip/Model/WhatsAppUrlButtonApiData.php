@@ -53,7 +53,8 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
       * @var string[]
       */
     protected static $openAPITypes = [
-        'url' => 'string'
+        'url' => 'string',
+        'example' => 'string'
     ];
 
     /**
@@ -64,7 +65,8 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
       * @psalm-var array<string, string|null>
       */
     protected static $openAPIFormats = [
-        'url' => null
+        'url' => null,
+        'example' => null
     ];
 
     /**
@@ -94,7 +96,8 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      * @var string[]
      */
     protected static $attributeMap = [
-        'url' => 'url'
+        'url' => 'url',
+        'example' => 'example'
     ];
 
     /**
@@ -103,7 +106,8 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      * @var string[]
      */
     protected static $setters = [
-        'url' => 'setUrl'
+        'url' => 'setUrl',
+        'example' => 'setExample'
     ];
 
     /**
@@ -112,7 +116,8 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      * @var string[]
      */
     protected static $getters = [
-        'url' => 'getUrl'
+        'url' => 'getUrl',
+        'example' => 'getExample'
     ];
 
     /**
@@ -172,6 +177,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
         parent::__construct($data);
 
         $this->container['url'] = $data['url'] ?? null;
+        $this->container['example'] = $data['example'] ?? null;
 
         $this->container['type'] = 'URL';
     }
@@ -216,13 +222,37 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
     /**
      * Sets url
      *
-     * @param string $url URL to which the end-user will be directed when hitting the button. URL is expected to start with `https://` or `http://`. Can be static or dynamic. For dynamic URL registration, add a placeholder {{1}} at the end of the link. Example: `https://www.infobip.com/{{1}}`
+     * @param string $url URL to which the end-user will be directed when hitting the button. URL is expected to start with `https://` or `http://`. Can be static or dynamic. For dynamic URL registration, add a placeholder {{1}} at the end of the link. Example: `https://www.infobip.com/{{1}}`.
      *
      * @return self
      */
     public function setUrl($url)
     {
         $this->container['url'] = $url;
+
+        return $this;
+    }
+
+    /**
+     * Gets example
+     *
+     * @return string|null
+     */
+    public function getExample()
+    {
+        return $this->container['example'];
+    }
+
+    /**
+     * Sets example
+     *
+     * @param string|null $example An example of a URL a user could use. Should be a valid URL that starts with `https://` or `http://`. Cannot contain placeholders.
+     *
+     * @return self
+     */
+    public function setExample($example)
+    {
+        $this->container['example'] = $example;
 
         return $this;
     }
@@ -233,7 +263,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      *
      * @return boolean
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->container[$offset]);
     }
@@ -245,7 +275,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      *
      * @return mixed|null
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->container[$offset] ?? null;
     }
@@ -258,7 +288,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      *
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->container[] = $value;
@@ -274,7 +304,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      *
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->container[$offset]);
     }
@@ -286,7 +316,7 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
      * @return mixed Returns data which can be serialized by json_encode(), which is a value
      * of any type other than a resource.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return ObjectSerializer::sanitizeForSerialization($this);
     }

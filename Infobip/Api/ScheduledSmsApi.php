@@ -87,7 +87,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages
      *
-     * @param  string $bulkId bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -104,7 +104,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -137,7 +137,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -157,7 +157,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -189,7 +189,7 @@ class ScheduledSmsApi
     /**
      * Create request for operation 'getScheduledSmsMessages'
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -372,7 +372,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages status
      *
-     * @param  string $bulkId bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -389,7 +389,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \Infobip\ApiException on non-2xx response
      * @throws \InvalidArgumentException
@@ -422,7 +422,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -442,7 +442,7 @@ class ScheduledSmsApi
      *
      * Get scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
@@ -474,7 +474,7 @@ class ScheduledSmsApi
     /**
      * Create request for operation 'getScheduledSmsMessagesStatus'
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
@@ -657,7 +657,7 @@ class ScheduledSmsApi
      *
      * Reschedule SMS messages
      *
-     * @param  string $bulkId bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest smsBulkRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -675,7 +675,7 @@ class ScheduledSmsApi
      *
      * Reschedule SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -709,7 +709,7 @@ class ScheduledSmsApi
      *
      * Reschedule SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
      *
      * @throws \InvalidArgumentException
@@ -730,7 +730,7 @@ class ScheduledSmsApi
      *
      * Reschedule SMS messages
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
      *
      * @throws \InvalidArgumentException
@@ -763,7 +763,7 @@ class ScheduledSmsApi
     /**
      * Create request for operation 'rescheduleSmsMessages'
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsBulkRequest $smsBulkRequest (optional)
      *
      * @throws \InvalidArgumentException
@@ -953,7 +953,7 @@ class ScheduledSmsApi
      *
      * Update scheduled SMS messages status
      *
-     * @param  string $bulkId bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest smsUpdateStatusRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -971,7 +971,7 @@ class ScheduledSmsApi
      *
      * Update scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
      *
      * @throws \Infobip\ApiException on non-2xx response
@@ -1005,7 +1005,7 @@ class ScheduledSmsApi
      *
      * Update scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
      *
      * @throws \InvalidArgumentException
@@ -1026,7 +1026,7 @@ class ScheduledSmsApi
      *
      * Update scheduled SMS messages status
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
      *
      * @throws \InvalidArgumentException
@@ -1059,7 +1059,7 @@ class ScheduledSmsApi
     /**
      * Create request for operation 'updateScheduledSmsMessagesStatus'
      *
-     * @param  string $bulkId (required)
+     * @param  string $bulkId  (required)
      * @param  \Infobip\Model\SmsUpdateStatusRequest $smsUpdateStatusRequest (optional)
      *
      * @throws \InvalidArgumentException
