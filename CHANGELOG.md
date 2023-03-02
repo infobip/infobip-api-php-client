@@ -4,6 +4,24 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+## [ [5.0.0](https://github.com/infobip/infobip-api-php-client/releases/tag/5.0.0) ] - 2023-03-01
+
+⚠️ **IMPORTANT NOTE:** This release contains breaking changes!
+
+🎉 **NEW Major Version of `infobip-api-php-client`.**
+
+### Added
+* Support for [Infobip MMS API](https://www.infobip.com/docs/api/channels/mms).
+* Support for [Infobip Voice API](https://www.infobip.com/docs/api/channels/voice).
+* Support for [Infobip WebRTC API](https://www.infobip.com/docs/api/channels/webrtc).
+* Support for [Infobip Viber API](https://www.infobip.com/docs/api/channels/viber).
+* Most recent [Infobip SMS API](https://www.infobip.com/docs/api/channels/sms) feature set.
+* Most recent [Email](https://www.infobip.com/docs/api/channels/email) feature set.
+* Most recent [WhatsApp](https://www.infobip.com/docs/api/channels/whatsapp) feature set.
+
+### Changed
+- Fully refactored codebase using Symfony components
+
 ## [ [4.0.0](https://github.com/infobip/infobip-api-php-client/releases/tag/4.0.0) ] - 2022-10-21
 
 ⚠️ **IMPORTANT NOTE:** This release contains breaking changes!

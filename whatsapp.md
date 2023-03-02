@@ -5,21 +5,18 @@ This quick guide aims to help you get started with Infobip WhatsApp API. After r
 
 The first step is to create a `Configuration` instance with your API credentials.
 ```php
-    use GuzzleHttp\Client;
-    use Infobip\Api\SendWhatsAppApi;
+    use Infobip\Api\WhatsAppApi;
     use Infobip\Configuration;
     
-    $client = new Client();
-
-    $configuration = (new Configuration())
-        ->setHost('Your API host which can be found in Infobip Portal')
-        ->setApiKeyPrefix('Authorization', 'App')
-        ->setApiKey('Authorization', 'Your API key which can be found in Infobip Portal');
+    $configuration = new Configuration(
+        host: 'your-base-url',
+        apiKey: 'your-api-key'
+    );
 ```
-Now, you can create an instance of `SendWhatsAppApi` that allows you to send WhatsApp messages.
+Now, you can create an instance of `WhatsAppApi` that allows you to send WhatsApp messages.
 
 ```php
-    $whatsAppApi = new SendWhatsAppApi($client, $configuration);
+    $whatsAppApi = new WhatsAppApi(config: $configuration);
 ```
 
 ### Activate your test sender
@@ -44,25 +41,22 @@ Infobip test sender has a lot of predefined templates that you can fetch by usin
 The example below shows how to use a template named `welcome_multiple_languages` with only one placeholder. 
 First, create an instance of `WhatsAppMessage` and provide the required data like recipient number as `to` parameter. We'll use `en` as the language parameter, but you can change it to a few others that are predefined in the template. 
 ```php
-    $message = (new WhatsAppMessage())
-        ->setFrom('447860099299')
-        ->setTo('<PUT YOUR NUMBER>')
-        ->setContent(
-            (new WhatsAppTemplateContent())
-                ->setLanguage('en')
-                ->setTemplateName('welcome_multiple_languages')
-                ->setTemplateData(
-                    (new WhatsAppTemplateDataContent())
-                        ->setBody(
-                            (new WhatsAppTemplateBodyContent())
-                                ->setPlaceholders(['<PUT YOUR NAME>'])
-                        )
-                )
-        );
+    $message = new WhatsAppMessage(
+        from: '447860099299',
+        to: '<PUT YOUR NUMBER>',
+        content: new WhatsAppTemplateContent(
+            templateName: 'welcome_multiple_languages',
+            templateData: new WhatsAppTemplateDataContent(
+            body: new WhatsAppTemplateBodyContent(
+                placeholders: ['<PUT YOUR NAME>']
+            )
+        ),
+        language: 'en'
+    ));
 ```
 Next step is to create a `WhatsAppBulkMessage` instance that serves as a container for multiple messages, like the one we created above.
 ```php
-    $bulkMessage = (new WhatsAppBulkMessage())->setMessages([$message]);
+    $bulkMessage = new WhatsAppBulkMessage(messages: [$message]);
 ```
 
 Use the instance of `SendWhatsAppApi` which we created at the beginning to send a message.
@@ -83,52 +77,43 @@ For sending another message we'll choose a more complex template example called 
 This time, we'll start by creating an instance of `WhatsAppTemplateContent`.
 
 ```php
-    $templateContent = (new WhatsAppTemplateContent())
-        ->setLanguage('en')
-        ->setTemplateName('registration_success')
-        ->setTemplateData(
-            (new WhatsAppTemplateDataContent())
-                ->setHeader(
-                    (new WhatsAppTemplateImageHeaderContent())
-                        ->setMediaUrl('https://api.infobip.com/ott/1/media/infobipLogo')
-                )
-                ->setBody(
-                    (new WhatsAppTemplateBodyContent())
-                        ->setPlaceholders(
-                            [
-                                '<PUT YOUR NAME>',
-                                'WhatsApp message',
-                                'delivered',
-                                'exploring Infobip API',
-                            ]
-                        )
-                )
-                ->setButtons(
-                    [
-                        (new WhatsAppTemplateQuickReplyButtonContent())
-                            ->setParameter('Yes'),
-                        (new WhatsAppTemplateQuickReplyButtonContent())
-                            ->setParameter('No'),
-                        (new WhatsAppTemplateQuickReplyButtonContent())
-                            ->setParameter('Later'),
-                    ]
-                )
-            );
+    $templateContent = new WhatsAppTemplateContent(
+        templateName: 'registration_success',
+        templateData: new WhatsAppTemplateDataContent(
+            body: new WhatsAppTemplateBodyContent(
+                placeholders: [
+                    '<PUT YOUR NAME>',
+                    'WhatsApp message',
+                    'delivered',
+                    'exploring Infobip API',
+                ]
+            ),
+            header: new WhatsAppTemplateImageHeaderContent(
+                mediaUrl: 'https://api.infobip.com/ott/1/media/infobipLogo'
+            ),
+            buttons: [
+                new WhatsAppTemplateQuickReplyButtonContent(parameter: 'Yes'),
+                new WhatsAppTemplateQuickReplyButtonContent(parameter: 'No'),
+                new WhatsAppTemplateQuickReplyButtonContent(parameter: 'Later')
+            ]
+        ),
+        language: 'en'
+    );
 ```
 Once the object is created, we can create an instance of `WhatsAppBulkMessage` and use the object as its `content` field.
 The rest is the same as in the previous example. We are again using the `$whatsAppApi` instance to send the message.
 ```php
-    $bulkMessage = (new WhatsAppBulkMessage())
-        ->setMessages(
-            [
-                (new WhatsAppMessage())
-                    ->setFrom('447860099299')
-                    ->setTo('<PUT YOUR NUMBER>')
-                    ->setContent($templateContent)
-            ]
-        );
+    $bulkMessage = new WhatsAppBulkMessage(
+        messages: [
+            new WhatsAppMessage(
+                from: '447860099299',
+                to: '<PUT YOUR NUMBER>',
+                content: $templateContent
+            )
+        ]
+    );
 
-    $whatsAppApi = new SendWhatsAppApi($client, $configuration);
+    $whatsAppApi = new WhatsAppApi(config: $configuration);
     
     $messageInfo = $whatsAppApi->sendWhatsAppTemplateMessage($bulkMessage);
 
@@ -143,15 +128,15 @@ You may respond to user messages with any type of message within 24 hours of rec
 And so, to send a freestyle message, you have to initiate a WhatsApp conversation from your registered number.
 
 ```php
-    $textMessage = (new WhatsAppTextMessage())
-            ->setFrom('447860099299')
-            ->setTo('<PUT YOUR NUMBER>')
-            ->setContent(
-                (new WhatsAppTextContent())
-                    ->setText('This is my first WhatsApp message sent using Infobip API client library')
-            );
+    $textMessage = new WhatsAppTextMessage(
+        from: '447860099299',
+        to: '<PUT YOUR NUMBER>',
+        content: new WhatsAppTextContent(
+            text: 'This is my first WhatsApp message sent using Infobip API client library'
+        )
+    );
 
-    $whatsAppApi = new SendWhatsAppApi($client, $configuration);
+    $whatsAppApi = new WhatsAppApi(config: $configuration);
     
     $messageInfo = $whatsAppApi->sendWhatsAppTextMessage($textMessage);
 
@@ -172,43 +157,48 @@ You can find more details about the structure of the message you can expect on y
 ```php
 namespace App\Controller\Webhook;
 
+use Infobip\Model\WhatsAppWebhookInboundContactMessage;
+use Infobip\Model\WhatsAppWebhookInboundDocumentMessage;
+use Infobip\Model\WhatsAppWebhookInboundImageMessage;
+use Infobip\Model\WhatsAppWebhookInboundLocationMessage;
+use Infobip\Model\WhatsAppWebhookInboundMessageResult;
+use Infobip\Model\WhatsAppWebhookInboundTextMessage;
 use Infobip\ObjectSerializer;
-use Infobip\Model\WhatsAppInboundMessageResult;
-use Infobip\Model\WhatsAppInboundTextMessage;
-use Infobip\Model\WhatsAppInboundImageMessage;
-use Infobip\Model\WhatsAppInboundDocumentMessage;
-use Infobip\Model\WhatsAppInboundLocationMessage;
-use Infobip\Model\WhatsAppInboundContactMessage;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class WhatsAppController extends AbstractController
+#[AsController]
+class WhatsAppController
 {
+    public function __construct(private ObjectSerializer $objectSerializer)
+    {
+    }
+
     #[Route('/whatsapp', name: 'webhook_whatsapp', methods: ['POST'])]
     public function receiveAction(Request $request)
     {
         /**
-         * @var WhatsAppInboundMessageResult $messageData
+         * @var WhatsAppWebhookInboundMessageResult $messageData
          */
-        $messageDataResult = ObjectSerializer::deserialize(
+        $messageDataResult = $this->objectSerializer->deserialize(
             $request->getContent(),
-            WhatsAppInboundMessageResult::class
+            WhatsAppWebhookInboundMessageResult::class
         );
 
         foreach ($messageDataResult as $messageData) {
             foreach ($messageData->getResults() as $result) {
                 $message = $result->getMessage();
 
-                if ($message instanceof WhatsAppInboundTextMessage) {
+                if ($message instanceof WhatsAppWebhookInboundTextMessage) {
                     $text = $message->getText();
-                } elseif ($message instanceof WhatsAppInboundImageMessage) {
+                } elseif ($message instanceof WhatsAppWebhookInboundImageMessage) {
                     $text = $message->getCaption();
-                } elseif ($message instanceof WhatsAppInboundDocumentMessage) {
+                } elseif ($message instanceof WhatsAppWebhookInboundDocumentMessage) {
                     $text = $message->getCaption();
-                } elseif ($message instanceof WhatsAppInboundLocationMessage) {
+                } elseif ($message instanceof WhatsAppWebhookInboundLocationMessage) {
                     $text = $message->getAddress();
-                } elseif ($message instanceof WhatsAppInboundContactMessage) {
+                } elseif ($message instanceof WhatsAppWebhookInboundContactMessage) {
                     $names = array_map(
                         function ($contact) {
                             $nameModel = $contact->getName();

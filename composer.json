@@ -1,7 +1,7 @@
 {
     "name": "infobip/infobip-api-php-client",
     "description": "PHP library for consuming Infobip's API",
-    "version": "4.0.0",
+    "version": "5.0.0",
     "keywords": [
         "infobip",
         "sms",
@@ -28,9 +28,21 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "guzzlehttp/guzzle": "^7.3"
+        "guzzlehttp/guzzle": "~7.0",
+        "symfony/validator": "^5.0|^6.0",
+        "symfony/serializer": "^5.0|^6.0",
+        "symfony/property-access": "^5.0|^6.0",
+        "symfony/cache": "^5.0|^6.0",
+        "doctrine/annotations": "~1.0",
+        "phpdocumentor/reflection-docblock": "^5.0|^6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0"
     },
     "autoload": {
         "psr-4": { "Infobip\\" : "Infobip/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Infobip\\Test\\" : "Infobip/test/" }
     }
 }
