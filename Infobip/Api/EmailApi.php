@@ -3780,8 +3780,6 @@ final class EmailApi
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;

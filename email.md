@@ -2,19 +2,21 @@
 
 ### Prepare configuration
 
-First step is to initialize `Configuration` object to handle API authentication. In this case value for `ApiKeyPrefix` in example below will be `App`.
+First step is to initialize `Configuration` instance with your API credentials.
 ```php
-    $configuration = (new Configuration())
-        ->setHost(URL_BASE_PATH)
-        ->setApiKeyPrefix('Authorization', API_KEY_PREFIX)
-        ->setApiKey('Authorization', API_KEY);
-
-    $client = new GuzzleHttp\Client();
+    use Infobip\Api\EmailApi;
+    use Infobip\Configuration;
+    use SplFileObject;
+    
+    $configuration = new Configuration(
+        host: 'your-base-url',
+        apiKey: 'your-api-key'
+    );
 ```
 
 Now we can initialize Email API client.
-```csharp
-    $sendEmailApi = new SendEmailApi($client, $configuration);
+```php
+    $sendEmailApi = new EmailApi(config: $configuration);
 ```
 
 #### Send email
@@ -27,17 +29,21 @@ Keep in mind following restrictions while using trial account
 - you can only use your emails address with Infobip test domain in following form `YourUserName@selfserviceib.com`
 
 ```php
-    $sendParams = [
-        'from'          => 'joan.doe0@example.com',
-        'to'            => 'joan.doe0@example.com',
-        'subject'       => 'Email test message',
-        'text'          => 'This is sample email message',
-        'attachment'    => '/tmp/testfile.pdf' // example how to attach a file
-    ];
+    $response = $sendEmailApi->sendEmail(
+        to: [
+            'john.smith@example.com',
+            'alice.smith@example.com',
+            '{"to": "alice.grey@example.com", "placeholders": {"Name":"Alice Grey"}}'
+        ],
+        from: 'joan.doe@example.com',
+        subject: 'Email test message',
+        text: 'This is sample email message',
+        attachment: [
+            new SplFileObject('/tmp/testfile.pdf'),
+        ]
+    );
 
-    $response = $sendEmailApi->sendEmail($sendParams);
-
-    $response->getResults()[0]->getBulkId();
+    echo sprintf('Bulk ID: %s', $response->getBulkId()) . PHP_EOL;
 ```
 
 You can also send delayed emails very easily. All you need to define is the desired date of the email delivery as `sendAt` parameter of the `sendEmail` method.
@@ -49,9 +55,10 @@ All you need to do is specify your endpoint when sending email in `notifyUrl` fi
 Additionally, you can use `messageId` or `bulkId` to fetch reports.
 
 ```php
-    $numberOfReportsLimit = 10;
-    $response = $sendEmailApi->getEmailDeliveryReports($bulkId, $messageId, $numberOfReportsLimit);
+    $deliveryReports = $sendEmailApi
+        ->getEmailDeliveryReports(bulkId: 'some-bulk-id', messageId: 'some-message-id', limit: 10);
+
     foreach ($deliveryReports->getResults() as $report) {
-        echo $report->getMessageId() . " - " . $report->getStatus()->getName() . "\n";
-    }  
+        echo $report->getMessageId() . " - " . $report->getStatus()->getName() . PHP_EOL;
+    }
 ```
