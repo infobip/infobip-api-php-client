@@ -1,10 +1,10 @@
 <?php
 
 namespace Infobip\Api;
-use Infobip\Configuration;
+use Infobip\Client;
 
 final class SMS {
-    public function __construct(Configuration $configuration) {
+    public function __construct(public Client $client) {
 
     }
 }
