@@ -50,6 +50,7 @@
     "scripts": {
         "unit": "./vendor/bin/phpunit test",
         "bugs": "./vendor/bin/phpstan analyse -l 3 Infobip",
-        "lint": "./vendor/bin/phpcs ./Infobip"
+        "lint": "./vendor/bin/phpcs ./Infobip",
+        "tests": "composer lint && composer unit && composer bugs"
     }
 }
