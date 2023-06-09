@@ -37,12 +37,20 @@
         "phpdocumentor/reflection-docblock": "^5.0|^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~9.0"
+        "phpunit/phpunit": "~9.0",
+        "phpstan/phpstan": "^1.10",
+        "squizlabs/php_codesniffer": "*"
     },
     "autoload": {
         "psr-4": { "Infobip\\" : "Infobip/" }
     },
     "autoload-dev": {
         "psr-4": { "Infobip\\Test\\" : "Infobip/test/" }
+    },
+    "scripts": {
+        "unit": "./vendor/bin/phpunit test",
+        "bugs": "./vendor/bin/phpstan analyse -l 3 Infobip",
+        "lint": "./vendor/bin/phpcs ./Infobip",
+        "tests": "composer lint && composer unit && composer bugs"
     }
 }
