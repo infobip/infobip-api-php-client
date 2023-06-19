@@ -4,6 +4,16 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+## [ [5.1.3](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.3) ] - 2023-06-19
+
+### Fixed
+- https://github.com/infobip/infobip-api-php-client/issues/54
+
+## [ [5.1.2](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.2) ] - 2023-06-09
+
+### Changed
+- Removed Snyk
+
 ## [ [5.1.1](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.1) ] - 2023-05-19
 
 ### Changed

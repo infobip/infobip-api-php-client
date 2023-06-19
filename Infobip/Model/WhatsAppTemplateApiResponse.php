@@ -51,7 +51,6 @@ class WhatsAppTemplateApiResponse implements ModelInterface
         #[Assert\Choice(['APPROVED','IN_APPEAL','PENDING','REJECTED','PENDING_DELETION','DELETED','REINSTATED','FLAGGED','FIRST_PAUSED','SECOND_PAUSED','DISABLED',])]
 
     protected ?string $status = null,
-        #[Assert\Choice(['ACCOUNT_UPDATE','PAYMENT_UPDATE','PERSONAL_FINANCE_UPDATE','SHIPPING_UPDATE','RESERVATION_UPDATE','ISSUE_RESOLUTION','APPOINTMENT_UPDATE','TRANSPORTATION_UPDATE','TICKET_UPDATE','ALERT_UPDATE','AUTO_REPLY','MARKETING','TRANSACTIONAL','OTP',])]
 
     protected ?string $category = null,
         #[Assert\Valid]

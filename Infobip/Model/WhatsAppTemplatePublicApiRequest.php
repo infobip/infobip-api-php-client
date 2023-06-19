@@ -47,7 +47,6 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface
 
     protected string $language,
         #[Assert\NotBlank]
-    #[Assert\Choice(['MARKETING','TRANSACTIONAL','OTP',])]
 
     protected string $category,
         #[Assert\Valid]
