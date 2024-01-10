@@ -34,7 +34,7 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
@@ -56,7 +56,7 @@ final class ObjectSerializer
     public function __construct(?SerializerInterface $serializer = null)
     {
         if ($serializer === null) {
-            $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+            $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(new AnnotationReader()));
             $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
 
             $serializer = new Serializer(

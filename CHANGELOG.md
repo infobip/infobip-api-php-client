@@ -4,6 +4,11 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+## [ [5.1.5](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.3) ] - 2024-01-09
+
+### Changed
+- Updated symfony/serializer dependency to ^5.4
+
 ## [ [5.1.3](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.3) ] - 2023-06-19
 
 ### Fixed

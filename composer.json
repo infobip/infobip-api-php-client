@@ -30,7 +30,7 @@
         "ext-mbstring": "*",
         "guzzlehttp/guzzle": "~7.0",
         "symfony/validator": "^5.0|^6.0",
-        "symfony/serializer": "^5.0|^6.0",
+        "symfony/serializer": "^5.4",
         "symfony/property-access": "^5.0|^6.0",
         "symfony/cache": "^5.0|^6.0",
         "doctrine/annotations": "~1.0",
