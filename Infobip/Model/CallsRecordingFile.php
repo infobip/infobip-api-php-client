@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,74 +18,34 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsRecordingFile implements ModelInterface
+class CallsRecordingFile
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsRecordingFile';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'name' => null,
-        'fileFormat' => null,
-        'size' => 'int64',
-        'creationMethod' => null,
-        'creationTime' => 'date-time',
-        'expirationTime' => 'date-time',
-        'duration' => 'int64',
-        'startTime' => 'date-time',
-        'endTime' => 'date-time',
-        'location' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $name,
+        protected string $name,
         #[Assert\NotBlank]
-    #[Assert\Choice(['MP3','WAV','MP4',])]
-
-    protected string $fileFormat,
+        protected string $fileFormat,
         protected ?string $id = null,
         protected ?int $size = null,
-        #[Assert\Choice(['UPLOADED','SYNTHESIZED','RECORDED',])]
-
-    protected ?string $creationMethod = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $creationTime = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $expirationTime = null,
+        protected ?\DateTime $creationTime = null,
         protected ?int $duration = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
-        #[Assert\Choice(['SFTP','HOSTED',])]
-
-    protected ?string $location = null,
+        protected ?\DateTime $endTime = null,
+        protected ?string $location = null,
+        protected ?string $sftpUploadStatus = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {
@@ -133,17 +91,6 @@ class CallsRecordingFile implements ModelInterface
         return $this;
     }
 
-    public function getCreationMethod(): mixed
-    {
-        return $this->creationMethod;
-    }
-
-    public function setCreationMethod($creationMethod): self
-    {
-        $this->creationMethod = $creationMethod;
-        return $this;
-    }
-
     public function getCreationTime(): \DateTime|null
     {
         return $this->creationTime;
@@ -152,17 +99,6 @@ class CallsRecordingFile implements ModelInterface
     public function setCreationTime(?\DateTime $creationTime): self
     {
         $this->creationTime = $creationTime;
-        return $this;
-    }
-
-    public function getExpirationTime(): \DateTime|null
-    {
-        return $this->expirationTime;
-    }
-
-    public function setExpirationTime(?\DateTime $expirationTime): self
-    {
-        $this->expirationTime = $expirationTime;
         return $this;
     }
 
@@ -207,6 +143,34 @@ class CallsRecordingFile implements ModelInterface
     public function setLocation($location): self
     {
         $this->location = $location;
+        return $this;
+    }
+
+    public function getSftpUploadStatus(): mixed
+    {
+        return $this->sftpUploadStatus;
+    }
+
+    public function setSftpUploadStatus($sftpUploadStatus): self
+    {
+        $this->sftpUploadStatus = $sftpUploadStatus;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
         return $this;
     }
 }

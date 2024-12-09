@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,58 +18,42 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsInboundMessage implements ModelInterface
+class SmsInboundMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsInboundMessage';
-
-    public const OPENAPI_FORMATS = [
-        'callbackData' => null,
-        'cleanText' => null,
-        'from' => null,
-        'keyword' => null,
-        'messageId' => null,
-        'price' => null,
-        'receivedAt' => 'date-time',
-        'smsCount' => 'int32',
-        'text' => null,
-        'to' => null
-    ];
-
     /**
      */
     public function __construct(
+        protected ?string $applicationId = null,
         protected ?string $callbackData = null,
+        protected ?string $campaignReferenceId = null,
         protected ?string $cleanText = null,
+        protected ?string $entityId = null,
         protected ?string $from = null,
         protected ?string $keyword = null,
         protected ?string $messageId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsPrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $receivedAt = null,
+        protected ?\DateTime $receivedAt = null,
         protected ?int $smsCount = null,
         protected ?string $text = null,
         protected ?string $to = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getApplicationId(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->applicationId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setApplicationId(?string $applicationId): self
     {
-        return self::DISCRIMINATOR;
+        $this->applicationId = $applicationId;
+        return $this;
     }
 
     public function getCallbackData(): string|null
@@ -85,6 +67,17 @@ class SmsInboundMessage implements ModelInterface
         return $this;
     }
 
+    public function getCampaignReferenceId(): string|null
+    {
+        return $this->campaignReferenceId;
+    }
+
+    public function setCampaignReferenceId(?string $campaignReferenceId): self
+    {
+        $this->campaignReferenceId = $campaignReferenceId;
+        return $this;
+    }
+
     public function getCleanText(): string|null
     {
         return $this->cleanText;
@@ -93,6 +86,17 @@ class SmsInboundMessage implements ModelInterface
     public function setCleanText(?string $cleanText): self
     {
         $this->cleanText = $cleanText;
+        return $this;
+    }
+
+    public function getEntityId(): string|null
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
         return $this;
     }
 
@@ -129,12 +133,12 @@ class SmsInboundMessage implements ModelInterface
         return $this;
     }
 
-    public function getPrice(): \Infobip\Model\SmsPrice|null
+    public function getPrice(): \Infobip\Model\MessagePrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?\Infobip\Model\SmsPrice $price): self
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
     {
         $this->price = $price;
         return $this;

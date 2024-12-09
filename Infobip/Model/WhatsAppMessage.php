@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,72 +17,46 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppMessage implements ModelInterface
+class WhatsAppMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppMessage';
-
-    public const OPENAPI_FORMATS = [
-        'from' => null,
-        'to' => null,
-        'messageId' => null,
-        'content' => null,
-        'callbackData' => null,
-        'notifyUrl' => null,
-        'smsFailover' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 24)]
-    #[Assert\Length(min: 1)]
-
-    protected string $from,
+        #[Assert\Length(max: 24)]
+        #[Assert\Length(min: 1)]
+        protected string $from,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 24)]
-    #[Assert\Length(min: 1)]
-
-    protected string $to,
+        #[Assert\Length(max: 24)]
+        #[Assert\Length(min: 1)]
+        protected string $to,
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppTemplateContent $content,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\WhatsAppTemplateContent $content,
         #[Assert\Length(max: 100)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $messageId = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $messageId = null,
         #[Assert\Length(max: 4000)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $callbackData = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $callbackData = null,
         #[Assert\Length(max: 2048)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $notifyUrl = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $notifyUrl = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppFailover $smsFailover = null,
+        protected ?\Infobip\Model\UrlOptions $urlOptions = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\WhatsAppFailover $smsFailover = null,
+        #[Assert\Length(max: 255)]
+        #[Assert\Length(min: 0)]
+        protected ?string $entityId = null,
+        #[Assert\Length(max: 255)]
+        #[Assert\Length(min: 0)]
+        protected ?string $applicationId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFrom(): string
     {
@@ -152,6 +124,17 @@ class WhatsAppMessage implements ModelInterface
         return $this;
     }
 
+    public function getUrlOptions(): \Infobip\Model\UrlOptions|null
+    {
+        return $this->urlOptions;
+    }
+
+    public function setUrlOptions(?\Infobip\Model\UrlOptions $urlOptions): self
+    {
+        $this->urlOptions = $urlOptions;
+        return $this;
+    }
+
     public function getSmsFailover(): \Infobip\Model\WhatsAppFailover|null
     {
         return $this->smsFailover;
@@ -160,6 +143,28 @@ class WhatsAppMessage implements ModelInterface
     public function setSmsFailover(?\Infobip\Model\WhatsAppFailover $smsFailover): self
     {
         $this->smsFailover = $smsFailover;
+        return $this;
+    }
+
+    public function getEntityId(): string|null
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
+        return $this;
+    }
+
+    public function getApplicationId(): string|null
+    {
+        return $this->applicationId;
+    }
+
+    public function setApplicationId(?string $applicationId): self
+    {
+        $this->applicationId = $applicationId;
         return $this;
     }
 }

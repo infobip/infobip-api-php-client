@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**

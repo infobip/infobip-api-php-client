@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,28 +17,9 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailWebhookTrackResponse implements ModelInterface
+class EmailWebhookTrackResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailWebhookTrackResponse';
-
-    public const OPENAPI_FORMATS = [
-        'notificationType' => null,
-        'domain' => null,
-        'recipient' => null,
-        'url' => null,
-        'sendDateTime' => null,
-        'messageId' => null,
-        'bulkId' => null,
-        'recipientInfo' => null,
-        'geoLocation' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -51,26 +30,15 @@ class EmailWebhookTrackResponse implements ModelInterface
         protected ?float $sendDateTime = null,
         protected ?string $messageId = null,
         protected ?string $bulkId = null,
+        protected ?string $callbackData = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailWebhookRecipientInfo $recipientInfo = null,
+        protected ?\Infobip\Model\EmailWebhookRecipientInfo $recipientInfo = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailWebhookGeoLocation $geoLocation = null,
+        protected ?\Infobip\Model\EmailWebhookGeoLocation $geoLocation = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getNotificationType(): string|null
     {
@@ -146,6 +114,17 @@ class EmailWebhookTrackResponse implements ModelInterface
     public function setBulkId(?string $bulkId): self
     {
         $this->bulkId = $bulkId;
+        return $this;
+    }
+
+    public function getCallbackData(): string|null
+    {
+        return $this->callbackData;
+    }
+
+    public function setCallbackData(?string $callbackData): self
+    {
+        $this->callbackData = $callbackData;
         return $this;
     }
 

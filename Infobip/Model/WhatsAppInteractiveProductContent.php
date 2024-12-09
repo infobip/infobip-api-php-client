@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,49 +17,23 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppInteractiveProductContent implements ModelInterface
+class WhatsAppInteractiveProductContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppInteractiveProductContent';
-
-    public const OPENAPI_FORMATS = [
-        'action' => null,
-        'body' => null,
-        'footer' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppInteractiveProductActionContent $action,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\WhatsAppInteractiveProductActionContent $action,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppInteractiveBodyContent $body = null,
+        protected ?\Infobip\Model\WhatsAppInteractiveBodyContent $body = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppInteractiveFooterContent $footer = null,
+        protected ?\Infobip\Model\WhatsAppInteractiveFooterContent $footer = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAction(): \Infobip\Model\WhatsAppInteractiveProductActionContent
     {

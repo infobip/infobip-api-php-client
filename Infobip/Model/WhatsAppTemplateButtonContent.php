@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,29 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
 #[DiscriminatorMap(typeProperty: "type", mapping: [
+    "CATALOG" => "\Infobip\Model\WhatsAppTemplateCatalogButtonContent",
+    "COPY_CODE" => "\Infobip\Model\WhatsAppTemplateCopyCodeButtonContent",
+    "FLOW" => "\Infobip\Model\WhatsAppTemplateFlowButtonContent",
+    "MULTI_PRODUCT" => "\Infobip\Model\WhatsAppTemplateMultiProductButtonContent",
+    "ORDER_DETAILS" => "\Infobip\Model\WhatsAppTemplateOrderDetailsButtonContent",
     "QUICK_REPLY" => "\Infobip\Model\WhatsAppTemplateQuickReplyButtonContent",
     "URL" => "\Infobip\Model\WhatsAppTemplateUrlButtonContent",
-    "WhatsAppTemplateQuickReplyButtonContent" => "\Infobip\Model\WhatsAppTemplateQuickReplyButtonContent",
-    "WhatsAppTemplateUrlButtonContent" => "\Infobip\Model\WhatsAppTemplateUrlButtonContent",
 ])]
-class WhatsAppTemplateButtonContent implements ModelInterface
+
+class WhatsAppTemplateButtonContent
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplateButtonContent';
-
-    public const OPENAPI_FORMATS = [
-        'type' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $type,
+        protected string $type,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getType(): string
     {

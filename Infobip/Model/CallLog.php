@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,95 +18,54 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallLog implements ModelInterface
+class CallLog
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallLog';
-
-    public const OPENAPI_FORMATS = [
-        'callId' => null,
-        'endpoint' => null,
-        'from' => null,
-        'to' => null,
-        'direction' => null,
-        'state' => null,
-        'startTime' => 'date-time',
-        'answerTime' => 'date-time',
-        'endTime' => 'date-time',
-        'parentCallId' => null,
-        'machineDetection' => null,
-        'ringDuration' => 'int64',
-        'applicationIds' => null,
-        'conferenceIds' => null,
-        'duration' => 'int64',
-        'hasCameraVideo' => null,
-        'hasScreenshareVideo' => null,
-        'errorCode' => null,
-        'customData' => null,
-        'dialogId' => null
-    ];
-
     /**
-     * @param string[] $applicationIds
+     * @param string[] $callsConfigurationIds
      * @param string[] $conferenceIds
      * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\Length(max: 128)]
         protected ?string $callId = null,
         protected ?string $from = null,
         protected ?string $to = null,
-        #[Assert\Choice(['INBOUND','OUTBOUND',])]
-
-    protected ?string $direction = null,
-        #[Assert\Choice(['CALLING','RINGING','PRE_ESTABLISHED','ESTABLISHED','FINISHED','FAILED','CANCELLED','NO_ANSWER','BUSY',])]
-
-    protected ?string $state = null,
+        protected ?string $direction = null,
+        protected ?string $state = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $answerTime = null,
+        protected ?\DateTime $answerTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
+        protected ?\DateTime $endTime = null,
+        #[Assert\Length(max: 128)]
         protected ?string $parentCallId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMachineDetectionProperties $machineDetection = null,
+        protected ?\Infobip\Model\CallsMachineDetectionProperties $machineDetection = null,
         protected ?int $ringDuration = null,
-        protected ?array $applicationIds = null,
+        protected ?array $callsConfigurationIds = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
         protected ?array $conferenceIds = null,
         protected ?int $duration = null,
         protected ?bool $hasCameraVideo = null,
         protected ?bool $hasScreenshareVideo = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsErrorCodeInfo $errorCode = null,
+        protected ?\Infobip\Model\CallsErrorCodeInfo $errorCode = null,
         protected ?array $customData = null,
+        #[Assert\Length(max: 128)]
         protected ?string $dialogId = null,
+        protected ?string $sender = null,
+        protected ?string $hangupSource = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallId(): string|null
     {
@@ -245,17 +202,28 @@ class CallLog implements ModelInterface
     /**
      * @return string[]|null
      */
-    public function getApplicationIds(): ?array
+    public function getCallsConfigurationIds(): ?array
     {
-        return $this->applicationIds;
+        return $this->callsConfigurationIds;
     }
 
     /**
-     * @param string[]|null $applicationIds IDs of the applications used during the call.
+     * @param string[]|null $callsConfigurationIds IDs of the calls configurations used during the call.
      */
-    public function setApplicationIds(?array $applicationIds): self
+    public function setCallsConfigurationIds(?array $callsConfigurationIds): self
     {
-        $this->applicationIds = $applicationIds;
+        $this->callsConfigurationIds = $callsConfigurationIds;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 
@@ -345,6 +313,28 @@ class CallLog implements ModelInterface
     public function setDialogId(?string $dialogId): self
     {
         $this->dialogId = $dialogId;
+        return $this;
+    }
+
+    public function getSender(): string|null
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?string $sender): self
+    {
+        $this->sender = $sender;
+        return $this;
+    }
+
+    public function getHangupSource(): mixed
+    {
+        return $this->hangupSource;
+    }
+
+    public function setHangupSource($hangupSource): self
+    {
+        $this->hangupSource = $hangupSource;
         return $this;
     }
 }

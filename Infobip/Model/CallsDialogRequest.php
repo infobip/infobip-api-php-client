@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,59 +17,33 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogRequest implements ModelInterface
+class CallsDialogRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogRequest';
-
-    public const OPENAPI_FORMATS = [
-        'parentCallId' => null,
-        'childCallRequest' => null,
-        'recording' => null,
-        'maxDuration' => 'int32',
-        'propagationOptions' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $parentCallId = null,
+        #[Assert\NotBlank]
+        #[Assert\Length(max: 128)]
+        protected string $parentCallId,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDialogCallRequest $childCallRequest = null,
+        protected ?\Infobip\Model\CallsDialogCallRequest $childCallRequest = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDialogRecordingRequest $recording = null,
+        protected ?\Infobip\Model\CallsDialogRecordingRequest $recording = null,
         protected ?int $maxDuration = 28800,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDialogPropagationOptions $propagationOptions = null,
+        protected ?\Infobip\Model\CallsDialogPropagationOptions $propagationOptions = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getParentCallId(): string|null
+    public function getParentCallId(): string
     {
         return $this->parentCallId;
     }
 
-    public function setParentCallId(?string $parentCallId): self
+    public function setParentCallId(string $parentCallId): self
     {
         $this->parentCallId = $parentCallId;
         return $this;

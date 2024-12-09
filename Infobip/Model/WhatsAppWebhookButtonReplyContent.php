@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppWebhookButtonReplyContent extends WhatsAppWebhookInboundMessage
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookButtonReplyContent';
-
     public const TYPE = 'INTERACTIVE_BUTTON_REPLY';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'title' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 256)]
-    #[Assert\Length(min: 0)]
-
-    protected string $id,
+        #[Assert\Length(max: 256)]
+        #[Assert\Length(min: 0)]
+        protected string $id,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 20)]
-    #[Assert\Length(min: 0)]
-
-    protected string $title,
+        #[Assert\Length(max: 20)]
+        #[Assert\Length(min: 0)]
+        protected string $title,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookContext $context = null,
+        protected ?\Infobip\Model\WhatsAppContext $context = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
+        protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
+        protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
     ) {
-        $modelDiscriminatorValue = 'INTERACTIVE_BUTTON_REPLY';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
@@ -68,17 +50,6 @@ class WhatsAppWebhookButtonReplyContent extends WhatsAppWebhookInboundMessage
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string
     {

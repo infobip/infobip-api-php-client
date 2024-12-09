@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppInteractiveListSectionContent implements ModelInterface
+class WhatsAppInteractiveListSectionContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppInteractiveListSectionContent';
-
-    public const OPENAPI_FORMATS = [
-        'title' => null,
-        'rows' => null
-    ];
-
     /**
      * @param \Infobip\Model\WhatsAppInteractiveRowContent[] $rows
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected array $rows,
+        protected array $rows,
         #[Assert\Length(max: 24)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $title = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $title = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getTitle(): string|null
     {

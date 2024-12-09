@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,63 +18,33 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogResponse implements ModelInterface
+class CallsDialogResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogResponse';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'applicationId' => null,
-        'state' => null,
-        'startTime' => 'date-time',
-        'establishTime' => 'date-time',
-        'endTime' => 'date-time',
-        'parentCall' => null,
-        'childCall' => null
-    ];
-
     /**
      */
     public function __construct(
+        #[Assert\Length(max: 128)]
         protected ?string $id = null,
-        protected ?string $applicationId = null,
-        #[Assert\Choice(['CREATED','ESTABLISHED','FINISHED','FAILED',])]
-
-    protected ?string $state = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $establishTime = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
+        protected ?string $callsConfigurationId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\Call $parentCall = null,
+        protected ?\Infobip\Model\Platform $platform = null,
+        protected ?string $state = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $startTime = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $establishTime = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $endTime = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\Call $childCall = null,
+        protected ?\Infobip\Model\Call $parentCall = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Call $childCall = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {
@@ -89,14 +57,25 @@ class CallsDialogResponse implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getCallsConfigurationId(): string|null
     {
-        return $this->applicationId;
+        return $this->callsConfigurationId;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setCallsConfigurationId(?string $callsConfigurationId): self
     {
-        $this->applicationId = $applicationId;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 

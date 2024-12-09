@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,42 +17,19 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogPlayRequest implements ModelInterface
+class CallsDialogPlayRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogPlayRequest';
-
-    public const OPENAPI_FORMATS = [
-        'loopCount' => 'int32',
-        'content' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?int $loopCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsPlayContent $content = null,
+        protected ?\Infobip\Model\CallsPlayContent $content = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getLoopCount(): int|null
     {

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,62 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsActionCallRequest implements ModelInterface
+class CallsActionCallRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsActionCallRequest';
-
-    public const OPENAPI_FORMATS = [
-        'endpoint' => null,
-        'from' => null,
-        'fromDisplayName' => null,
-        'connectTimeout' => 'int32',
-        'recording' => null,
-        'machineDetection' => null,
-        'maxDuration' => 'int32',
-        'customData' => null
-    ];
-
     /**
      * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
         #[Assert\NotBlank]
-
-    protected string $from,
+        protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\NotBlank]
+        protected string $from,
         protected ?string $fromDisplayName = null,
         protected ?int $connectTimeout = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallRecordingRequest $recording = null,
+        protected ?\Infobip\Model\CallRecordingRequest $recording = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
+        protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
         protected ?int $maxDuration = 28800,
         protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getEndpoint(): \Infobip\Model\CallEndpoint
     {

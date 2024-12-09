@@ -3,8 +3,8 @@
 // phpcs:ignorefile
 
 /**
- *
- * PHP version 8.0
+ * ApiTrait
+ * PHP version 8.3
  *
  * @category Trait
  * @package  Infobip
@@ -30,7 +30,6 @@ namespace Infobip\Api;
 
 use Infobip\SplFileObjectNormalizer;
 use Psr\Http\Message\StreamInterface;
-use RuntimeException;
 use SplFileObject;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -66,24 +65,16 @@ trait ApiTrait
         return $this->objectSerializer->deserialize((string)$response, $type, $responseHeaders);
     }
 
-    private function addParamConstraints(array $paramConstraints, array &$validationConstraints): void
-    {
-        foreach ($paramConstraints as $key => $constraints) {
-            if (!empty($constraints)) {
-                $validationConstraints[$key] = new Assert\All($constraints);
-            }
-        }
-    }
 
     /**
      * @internal
      */
-    private function validateParams(array $allData, array $validationConstraints): void
+    private function validateParams(array $allData, Assert\Collection $validationConstraints): void
     {
-        if (!empty($validationConstraints)) {
+        if (!empty($validationConstraints -> fields)) {
             $dataToValidate = [];
 
-            foreach (\array_keys($validationConstraints) as $constraintKey) {
+            foreach (\array_keys($validationConstraints -> fields) as $constraintKey) {
                 $dataToValidate[$constraintKey] = $allData[$constraintKey];
             }
 

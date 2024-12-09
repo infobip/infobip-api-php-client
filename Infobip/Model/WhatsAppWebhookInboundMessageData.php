@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,57 +18,28 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookInboundMessageData implements ModelInterface
+class WhatsAppWebhookInboundMessageData
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookInboundMessageData';
-
-    public const OPENAPI_FORMATS = [
-        'from' => null,
-        'to' => null,
-        'receivedAt' => 'date-time',
-        'messageId' => null,
-        'price' => null,
-        'message' => null,
-        'contact' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $from = null,
         protected ?string $to = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $receivedAt = null,
+        protected ?\DateTime $receivedAt = null,
         protected ?string $messageId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessagePrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookInboundMessage $message = null,
+        protected ?\Infobip\Model\WhatsAppWebhookInboundMessage $message = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookContactName $contact = null,
+        protected ?\Infobip\Model\WhatsAppWebhookContactName $contact = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFrom(): string|null
     {

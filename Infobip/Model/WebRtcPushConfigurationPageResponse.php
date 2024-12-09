@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,20 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WebRtcPushConfigurationPageResponse implements ModelInterface
+class WebRtcPushConfigurationPageResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WebRtcPushConfigurationPageResponse';
-
-    public const OPENAPI_FORMATS = [
-        'results' => null,
-        'pageInfo' => null
-    ];
-
     /**
      * @param \Infobip\Model\WebRtcPushConfigurationResponse[] $results
      */
     public function __construct(
         protected ?array $results = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WebRtcPageInfo $pageInfo = null,
+        protected ?\Infobip\Model\PageInfo $pageInfo = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
      * @return \Infobip\Model\WebRtcPushConfigurationResponse[]|null
@@ -74,12 +49,12 @@ class WebRtcPushConfigurationPageResponse implements ModelInterface
         return $this;
     }
 
-    public function getPageInfo(): \Infobip\Model\WebRtcPageInfo|null
+    public function getPageInfo(): \Infobip\Model\PageInfo|null
     {
         return $this->pageInfo;
     }
 
-    public function setPageInfo(?\Infobip\Model\WebRtcPageInfo $pageInfo): self
+    public function setPageInfo(?\Infobip\Model\PageInfo $pageInfo): self
     {
         $this->pageInfo = $pageInfo;
         return $this;

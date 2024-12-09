@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,29 +18,10 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailReport implements ModelInterface
+class EmailReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailReport';
-
-    public const OPENAPI_FORMATS = [
-        'applicationId' => null,
-        'entityId' => null,
-        'bulkId' => null,
-        'messageId' => null,
-        'to' => null,
-        'sentAt' => 'date-time',
-        'doneAt' => 'date-time',
-        'messageCount' => 'int32',
-        'price' => null,
-        'status' => null,
-        'error' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -52,35 +31,20 @@ class EmailReport implements ModelInterface
         protected ?string $messageId = null,
         protected ?string $to = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
+        protected ?\DateTime $sentAt = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
+        protected ?\DateTime $doneAt = null,
         protected ?int $messageCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailPrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailStatus $status = null,
+        protected ?\Infobip\Model\MessageStatus $status = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailReportError $error = null,
+        protected ?\Infobip\Model\MessageError $error = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getApplicationId(): string|null
     {
@@ -170,34 +134,34 @@ class EmailReport implements ModelInterface
         return $this;
     }
 
-    public function getPrice(): \Infobip\Model\EmailPrice|null
+    public function getPrice(): \Infobip\Model\MessagePrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?\Infobip\Model\EmailPrice $price): self
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
     {
         $this->price = $price;
         return $this;
     }
 
-    public function getStatus(): \Infobip\Model\EmailStatus|null
+    public function getStatus(): \Infobip\Model\MessageStatus|null
     {
         return $this->status;
     }
 
-    public function setStatus(?\Infobip\Model\EmailStatus $status): self
+    public function setStatus(?\Infobip\Model\MessageStatus $status): self
     {
         $this->status = $status;
         return $this;
     }
 
-    public function getError(): \Infobip\Model\EmailReportError|null
+    public function getError(): \Infobip\Model\MessageError|null
     {
         return $this->error;
     }
 
-    public function setError(?\Infobip\Model\EmailReportError $error): self
+    public function setError(?\Infobip\Model\MessageError $error): self
     {
         $this->error = $error;
         return $this;

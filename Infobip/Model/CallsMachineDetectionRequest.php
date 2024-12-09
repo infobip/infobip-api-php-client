@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,47 +17,40 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsMachineDetectionRequest implements ModelInterface
+class CallsMachineDetectionRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsMachineDetectionRequest';
-
-    public const OPENAPI_FORMATS = [
-        'enabled' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?bool $enabled = null,
+        #[Assert\NotBlank]
+        protected bool $enabled,
+        #[Assert\LessThanOrEqual(60)]
+        protected ?int $messageDetectionTimeout = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getEnabled(): bool|null
+    public function getEnabled(): bool
     {
         return $this->enabled;
     }
 
-    public function setEnabled(?bool $enabled): self
+    public function setEnabled(bool $enabled): self
     {
         $this->enabled = $enabled;
+        return $this;
+    }
+
+    public function getMessageDetectionTimeout(): int|null
+    {
+        return $this->messageDetectionTimeout;
+    }
+
+    public function setMessageDetectionTimeout(?int $messageDetectionTimeout): self
+    {
+        $this->messageDetectionTimeout = $messageDetectionTimeout;
         return $this;
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,34 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsMediaStreamConfigRequest implements ModelInterface
+class CallsMediaStreamConfigRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsMediaStreamConfigRequest';
-
-    public const OPENAPI_FORMATS = [
-        'url' => null,
-        'securityConfig' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $url,
+        #[Assert\Length(max: 128)]
+        #[Assert\Length(min: 0)]
+        protected string $name,
+        #[Assert\NotBlank]
+        protected string $url,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsUrlSecurityConfig $securityConfig = null,
+        protected ?\Infobip\Model\SecurityConfig $securityConfig = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getName(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->name;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setName(string $name): self
     {
-        return self::DISCRIMINATOR;
+        $this->name = $name;
+        return $this;
     }
 
     public function getUrl(): string
@@ -69,12 +58,12 @@ class CallsMediaStreamConfigRequest implements ModelInterface
         return $this;
     }
 
-    public function getSecurityConfig(): \Infobip\Model\CallsUrlSecurityConfig|null
+    public function getSecurityConfig(): \Infobip\Model\SecurityConfig|null
     {
         return $this->securityConfig;
     }
 
-    public function setSecurityConfig(?\Infobip\Model\CallsUrlSecurityConfig $securityConfig): self
+    public function setSecurityConfig(?\Infobip\Model\SecurityConfig $securityConfig): self
     {
         $this->securityConfig = $securityConfig;
         return $this;

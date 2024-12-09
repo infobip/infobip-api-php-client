@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,48 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppFailover implements ModelInterface
+class WhatsAppFailover
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppFailover';
-
-    public const OPENAPI_FORMATS = [
-        'from' => null,
-        'text' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 24)]
-    #[Assert\Length(min: 1)]
-
-    protected string $from,
+        #[Assert\Length(max: 24)]
+        #[Assert\Length(min: 1)]
+        protected string $from,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 4096)]
-    #[Assert\Length(min: 1)]
-
-    protected string $text,
+        #[Assert\Length(max: 4096)]
+        #[Assert\Length(min: 1)]
+        protected string $text,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFrom(): string
     {

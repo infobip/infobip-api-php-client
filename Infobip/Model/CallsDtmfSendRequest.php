@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,39 +17,36 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDtmfSendRequest implements ModelInterface
+class CallsDtmfSendRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDtmfSendRequest';
-
-    public const OPENAPI_FORMATS = [
-        'dtmf' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $dtmf,
+        protected string $dtmf,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->customData;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    /**
+     * @param array<string,string>|null $customData Optional parameter to update a call's custom data.
+     */
+    public function setCustomData(?array $customData): self
     {
-        return self::DISCRIMINATOR;
+        $this->customData = $customData;
+        return $this;
     }
 
     public function getDtmf(): string

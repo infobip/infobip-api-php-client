@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,49 +17,27 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WebRtcAndroidPushNotificationConfig implements ModelInterface
+class WebRtcAndroidPushNotificationConfig
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WebRtcAndroidPushNotificationConfig';
-
-    public const OPENAPI_FORMATS = [
-        'fcmServerKey' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $fcmServerKey,
+        protected string $privateKeyJson,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getPrivateKeyJson(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->privateKeyJson;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setPrivateKeyJson(string $privateKeyJson): self
     {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getFcmServerKey(): string
-    {
-        return $this->fcmServerKey;
-    }
-
-    public function setFcmServerKey(string $fcmServerKey): self
-    {
-        $this->fcmServerKey = $fcmServerKey;
+        $this->privateKeyJson = $privateKeyJson;
         return $this;
     }
 }

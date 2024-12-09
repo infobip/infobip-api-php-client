@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,24 +16,9 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailPaging implements ModelInterface
+class EmailPaging
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailPaging';
-
-    public const OPENAPI_FORMATS = [
-        'page' => 'int32',
-        'size' => 'int32',
-        'totalPages' => 'int32',
-        'totalResults' => 'int32'
-    ];
-
     /**
      */
     public function __construct(
@@ -44,19 +27,9 @@ class EmailPaging implements ModelInterface
         protected ?int $totalPages = null,
         protected ?int $totalResults = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getPage(): int|null
     {

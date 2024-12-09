@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,43 +16,23 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDtmfTermination implements ModelInterface
+class CallsDtmfTermination extends CallsTermination
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDtmfTermination';
-
-    public const OPENAPI_FORMATS = [
-        'terminator' => null,
-        'type' => null
-    ];
+    public const TYPE = 'DTMF';
 
     /**
      */
     public function __construct(
         protected ?string $terminator = null,
-        #[Assert\Choice(['DTMF',])]
-
-    protected ?string $type = null,
     ) {
+        $modelDiscriminatorValue = self::TYPE;
+
+        parent::__construct(
+            type: $modelDiscriminatorValue,
+        );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getTerminator(): string|null
     {
@@ -64,17 +42,6 @@ class CallsDtmfTermination implements ModelInterface
     public function setTerminator(?string $terminator): self
     {
         $this->terminator = $terminator;
-        return $this;
-    }
-
-    public function getType(): mixed
-    {
-        return $this->type;
-    }
-
-    public function setType($type): self
-    {
-        $this->type = $type;
         return $this;
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,48 +16,65 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class MessageError implements ModelInterface
+class MessageError
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'MessageError';
-
-    public const OPENAPI_FORMATS = [
-        'description' => null,
-        'permanent' => null,
-        'name' => null,
-        'id' => 'int32',
-        'groupName' => null,
-        'groupId' => 'int32'
-    ];
-
     /**
      */
     public function __construct(
+        protected ?int $groupId = null,
+        protected ?string $groupName = null,
+        protected ?int $id = null,
+        protected ?string $name = null,
         protected ?string $description = null,
         protected ?bool $permanent = null,
-        protected ?string $name = null,
-        protected ?int $id = null,
-        protected ?string $groupName = null,
-        protected ?int $groupId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getGroupId(): int|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->groupId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setGroupId(?int $groupId): self
     {
-        return self::DISCRIMINATOR;
+        $this->groupId = $groupId;
+        return $this;
+    }
+
+    public function getGroupName(): string|null
+    {
+        return $this->groupName;
+    }
+
+    public function setGroupName(?string $groupName): self
+    {
+        $this->groupName = $groupName;
+        return $this;
+    }
+
+    public function getId(): int|null
+    {
+        return $this->id;
+    }
+
+    public function setId(?int $id): self
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getName(): string|null
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
     }
 
     public function getDescription(): string|null
@@ -81,50 +96,6 @@ class MessageError implements ModelInterface
     public function setPermanent(?bool $permanent): self
     {
         $this->permanent = $permanent;
-        return $this;
-    }
-
-    public function getName(): string|null
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    public function getId(): int|null
-    {
-        return $this->id;
-    }
-
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function getGroupName(): string|null
-    {
-        return $this->groupName;
-    }
-
-    public function setGroupName(?string $groupName): self
-    {
-        $this->groupName = $groupName;
-        return $this;
-    }
-
-    public function getGroupId(): int|null
-    {
-        return $this->groupId;
-    }
-
-    public function setGroupId(?int $groupId): self
-    {
-        $this->groupId = $groupId;
         return $this;
     }
 }

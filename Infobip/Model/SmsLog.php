@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,68 +18,59 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsLog implements ModelInterface
+class SmsLog
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsLog';
-
-    public const OPENAPI_FORMATS = [
-        'bulkId' => null,
-        'doneAt' => 'date-time',
-        'error' => null,
-        'from' => null,
-        'mccMnc' => null,
-        'messageId' => null,
-        'price' => null,
-        'sentAt' => 'date-time',
-        'smsCount' => 'int32',
-        'status' => null,
-        'text' => null,
-        'to' => null
-    ];
-
     /**
      */
     public function __construct(
+        protected ?string $sender = null,
+        protected ?string $destination = null,
         protected ?string $bulkId = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsError $error = null,
-        protected ?string $from = null,
-        protected ?string $mccMnc = null,
         protected ?string $messageId = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsPrice $price = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
-        protected ?int $smsCount = null,
+        protected ?\DateTime $sentAt = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $doneAt = null,
+        protected ?int $messageCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsStatus $status = null,
-        protected ?string $text = null,
-        protected ?string $to = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\SmsMessageStatus $status = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\SmsMessageError $error = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\SmsMessageContent $content = null,
+        protected ?string $campaignReferenceId = null,
+        protected ?string $mccMnc = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getSender(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->sender;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setSender(?string $sender): self
     {
-        return self::DISCRIMINATOR;
+        $this->sender = $sender;
+        return $this;
+    }
+
+    public function getDestination(): string|null
+    {
+        return $this->destination;
+    }
+
+    public function setDestination(?string $destination): self
+    {
+        $this->destination = $destination;
+        return $this;
     }
 
     public function getBulkId(): string|null
@@ -92,50 +81,6 @@ class SmsLog implements ModelInterface
     public function setBulkId(?string $bulkId): self
     {
         $this->bulkId = $bulkId;
-        return $this;
-    }
-
-    public function getDoneAt(): \DateTime|null
-    {
-        return $this->doneAt;
-    }
-
-    public function setDoneAt(?\DateTime $doneAt): self
-    {
-        $this->doneAt = $doneAt;
-        return $this;
-    }
-
-    public function getError(): \Infobip\Model\SmsError|null
-    {
-        return $this->error;
-    }
-
-    public function setError(?\Infobip\Model\SmsError $error): self
-    {
-        $this->error = $error;
-        return $this;
-    }
-
-    public function getFrom(): string|null
-    {
-        return $this->from;
-    }
-
-    public function setFrom(?string $from): self
-    {
-        $this->from = $from;
-        return $this;
-    }
-
-    public function getMccMnc(): string|null
-    {
-        return $this->mccMnc;
-    }
-
-    public function setMccMnc(?string $mccMnc): self
-    {
-        $this->mccMnc = $mccMnc;
         return $this;
     }
 
@@ -150,17 +95,6 @@ class SmsLog implements ModelInterface
         return $this;
     }
 
-    public function getPrice(): \Infobip\Model\SmsPrice|null
-    {
-        return $this->price;
-    }
-
-    public function setPrice(?\Infobip\Model\SmsPrice $price): self
-    {
-        $this->price = $price;
-        return $this;
-    }
-
     public function getSentAt(): \DateTime|null
     {
         return $this->sentAt;
@@ -172,47 +106,102 @@ class SmsLog implements ModelInterface
         return $this;
     }
 
-    public function getSmsCount(): int|null
+    public function getDoneAt(): \DateTime|null
     {
-        return $this->smsCount;
+        return $this->doneAt;
     }
 
-    public function setSmsCount(?int $smsCount): self
+    public function setDoneAt(?\DateTime $doneAt): self
     {
-        $this->smsCount = $smsCount;
+        $this->doneAt = $doneAt;
         return $this;
     }
 
-    public function getStatus(): \Infobip\Model\SmsStatus|null
+    public function getMessageCount(): int|null
+    {
+        return $this->messageCount;
+    }
+
+    public function setMessageCount(?int $messageCount): self
+    {
+        $this->messageCount = $messageCount;
+        return $this;
+    }
+
+    public function getPrice(): \Infobip\Model\MessagePrice|null
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
+    {
+        $this->price = $price;
+        return $this;
+    }
+
+    public function getStatus(): \Infobip\Model\SmsMessageStatus|null
     {
         return $this->status;
     }
 
-    public function setStatus(?\Infobip\Model\SmsStatus $status): self
+    public function setStatus(?\Infobip\Model\SmsMessageStatus $status): self
     {
         $this->status = $status;
         return $this;
     }
 
-    public function getText(): string|null
+    public function getError(): \Infobip\Model\SmsMessageError|null
     {
-        return $this->text;
+        return $this->error;
     }
 
-    public function setText(?string $text): self
+    public function setError(?\Infobip\Model\SmsMessageError $error): self
     {
-        $this->text = $text;
+        $this->error = $error;
         return $this;
     }
 
-    public function getTo(): string|null
+    public function getPlatform(): \Infobip\Model\Platform|null
     {
-        return $this->to;
+        return $this->platform;
     }
 
-    public function setTo(?string $to): self
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
-        $this->to = $to;
+        $this->platform = $platform;
+        return $this;
+    }
+
+    public function getContent(): \Infobip\Model\SmsMessageContent|null
+    {
+        return $this->content;
+    }
+
+    public function setContent(?\Infobip\Model\SmsMessageContent $content): self
+    {
+        $this->content = $content;
+        return $this;
+    }
+
+    public function getCampaignReferenceId(): string|null
+    {
+        return $this->campaignReferenceId;
+    }
+
+    public function setCampaignReferenceId(?string $campaignReferenceId): self
+    {
+        $this->campaignReferenceId = $campaignReferenceId;
+        return $this;
+    }
+
+    public function getMccMnc(): string|null
+    {
+        return $this->mccMnc;
+    }
+
+    public function setMccMnc(?string $mccMnc): self
+    {
+        $this->mccMnc = $mccMnc;
         return $this;
     }
 }

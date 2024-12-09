@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,26 +17,9 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppContactContent implements ModelInterface
+class WhatsAppContactContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppContactContent';
-
-    public const OPENAPI_FORMATS = [
-        'addresses' => null,
-        'birthday' => null,
-        'emails' => null,
-        'name' => null,
-        'org' => null,
-        'phones' => null,
-        'urls' => null
-    ];
-
     /**
      * @param \Infobip\Model\WhatsAppAddressContent[] $addresses
      * @param \Infobip\Model\WhatsAppEmailContent[] $emails
@@ -47,31 +28,19 @@ class WhatsAppContactContent implements ModelInterface
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppNameContent $name,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\WhatsAppNameContent $name,
         protected ?array $addresses = null,
         protected ?string $birthday = null,
         protected ?array $emails = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppOrganizationContent $org = null,
+        protected ?\Infobip\Model\WhatsAppOrganizationContent $org = null,
         protected ?array $phones = null,
         protected ?array $urls = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
      * @return \Infobip\Model\WhatsAppAddressContent[]|null

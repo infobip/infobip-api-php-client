@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,50 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallTransfer implements ModelInterface
+class CallTransfer
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallTransfer';
-
-    public const OPENAPI_FORMATS = [
-        'callTransferMaxDuration' => 'int32',
-        'equals' => null,
-        'if' => null,
-        'transferTo' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $equals,
+        protected string $transferTo,
         #[Assert\NotBlank]
-
-    protected string $if,
-        #[Assert\NotBlank]
-
-    protected string $transferTo,
+        protected string $if,
         protected ?int $callTransferMaxDuration = null,
+        protected ?string $equals = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallTransferMaxDuration(): int|null
     {
@@ -75,25 +45,14 @@ class CallTransfer implements ModelInterface
         return $this;
     }
 
-    public function getEquals(): string
+    public function getEquals(): string|null
     {
         return $this->equals;
     }
 
-    public function setEquals(string $equals): self
+    public function setEquals(?string $equals): self
     {
         $this->equals = $equals;
-        return $this;
-    }
-
-    public function getIf(): string
-    {
-        return $this->if;
-    }
-
-    public function setIf(string $if): self
-    {
-        $this->if = $if;
         return $this;
     }
 
@@ -105,6 +64,17 @@ class CallTransfer implements ModelInterface
     public function setTransferTo(string $transferTo): self
     {
         $this->transferTo = $transferTo;
+        return $this;
+    }
+
+    public function getIf(): string
+    {
+        return $this->if;
+    }
+
+    public function setIf(string $if): self
+    {
+        $this->if = $if;
         return $this;
     }
 }

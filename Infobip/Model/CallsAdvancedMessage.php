@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,58 +18,25 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsAdvancedMessage implements ModelInterface
+class CallsAdvancedMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsAdvancedMessage';
-
-    public const OPENAPI_FORMATS = [
-        'audioFileUrl' => null,
-        'callTimeout' => 'int32',
-        'callTransfers' => null,
-        'callbackData' => null,
-        'deliveryTimeWindow' => null,
-        'destinations' => null,
-        'dtmfTimeout' => 'int32',
-        'from' => null,
-        'language' => null,
-        'machineDetection' => null,
-        'maxDtmf' => 'int32',
-        'notifyContentType' => null,
-        'notifyContentVersion' => 'int32',
-        'notifyUrl' => null,
-        'pause' => 'int32',
-        'record' => null,
-        'repeatDtmf' => null,
-        'retry' => null,
-        'ringTimeout' => 'int32',
-        'sendAt' => 'date-time',
-        'sendingSpeed' => null,
-        'speechRate' => 'double',
-        'text' => null,
-        'validityPeriod' => 'int32',
-        'voice' => null
-    ];
-
     /**
      * @param \Infobip\Model\CallTransfer[] $callTransfers
      * @param \Infobip\Model\CallsDestination[] $destinations
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected array $destinations,
+        protected array $destinations,
         protected ?string $audioFileUrl = null,
         protected ?int $callTimeout = null,
         protected ?array $callTransfers = null,
+        #[Assert\Length(max: 700)]
+        #[Assert\Length(min: 0)]
         protected ?string $callbackData = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDeliveryTimeWindow $deliveryTimeWindow = null,
+        protected ?\Infobip\Model\DeliveryTimeWindow $deliveryTimeWindow = null,
         protected ?int $dtmfTimeout = null,
         protected ?string $from = null,
         protected ?string $language = null,
@@ -81,38 +46,23 @@ class CallsAdvancedMessage implements ModelInterface
         protected ?int $notifyContentVersion = null,
         protected ?string $notifyUrl = null,
         protected ?int $pause = null,
-        protected ?bool $record = null,
         protected ?string $repeatDtmf = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsRetry $retry = null,
+        protected ?\Infobip\Model\CallsRetry $retry = null,
         protected ?int $ringTimeout = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sendAt = null,
+        protected ?\DateTime $sendAt = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsSendingSpeed $sendingSpeed = null,
+        protected ?\Infobip\Model\CallsSendingSpeed $sendingSpeed = null,
         protected ?float $speechRate = null,
         protected ?string $text = null,
         protected ?int $validityPeriod = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsVoice $voice = null,
+        protected ?\Infobip\Model\CallsVoice $voice = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAudioFileUrl(): string|null
     {
@@ -164,12 +114,12 @@ class CallsAdvancedMessage implements ModelInterface
         return $this;
     }
 
-    public function getDeliveryTimeWindow(): \Infobip\Model\CallsDeliveryTimeWindow|null
+    public function getDeliveryTimeWindow(): \Infobip\Model\DeliveryTimeWindow|null
     {
         return $this->deliveryTimeWindow;
     }
 
-    public function setDeliveryTimeWindow(?\Infobip\Model\CallsDeliveryTimeWindow $deliveryTimeWindow): self
+    public function setDeliveryTimeWindow(?\Infobip\Model\DeliveryTimeWindow $deliveryTimeWindow): self
     {
         $this->deliveryTimeWindow = $deliveryTimeWindow;
         return $this;
@@ -184,7 +134,7 @@ class CallsAdvancedMessage implements ModelInterface
     }
 
     /**
-     * @param \Infobip\Model\CallsDestination[] $destinations Message destination addresses. Destination address must be in the E.164 standard format (Example: 41793026727).
+     * @param \Infobip\Model\CallsDestination[] $destinations Message destination addresses. Destination address must be in the E.164 standard format (Example: 41793026727). Maximum number of destination addresses is 20k.
      */
     public function setDestinations(array $destinations): self
     {
@@ -288,17 +238,6 @@ class CallsAdvancedMessage implements ModelInterface
     public function setPause(?int $pause): self
     {
         $this->pause = $pause;
-        return $this;
-    }
-
-    public function getRecord(): bool|null
-    {
-        return $this->record;
-    }
-
-    public function setRecord(?bool $record): self
-    {
-        $this->record = $record;
         return $this;
     }
 

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,41 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallRecordingRequest implements ModelInterface
+class CallRecordingRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallRecordingRequest';
-
-    public const OPENAPI_FORMATS = [
-        'recordingType' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Choice(['AUDIO','AUDIO_AND_VIDEO',])]
-
-    protected string $recordingType,
+        protected string $recordingType,
+        protected ?array $customData = null,
+        #[Assert\Length(max: 214)]
+        #[Assert\Length(min: 1)]
+        #[Assert\Regex('/^[a-zA-Z0-9_\\-]*$/')]
+        protected ?string $filePrefix = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getRecordingType(): mixed
     {
@@ -63,6 +44,34 @@ class CallRecordingRequest implements ModelInterface
     public function setRecordingType($recordingType): self
     {
         $this->recordingType = $recordingType;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData customData
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
+        return $this;
+    }
+
+    public function getFilePrefix(): string|null
+    {
+        return $this->filePrefix;
+    }
+
+    public function setFilePrefix(?string $filePrefix): self
+    {
+        $this->filePrefix = $filePrefix;
         return $this;
     }
 }

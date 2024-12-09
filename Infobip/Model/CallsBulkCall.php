@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,63 +17,47 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsBulkCall implements ModelInterface
+class CallsBulkCall
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsBulkCall';
-
-    public const OPENAPI_FORMATS = [
-        'applicationId' => null,
-        'callId' => null,
-        'externalId' => null,
-        'from' => null,
-        'endpoint' => null,
-        'status' => null,
-        'reason' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $applicationId = null,
+        protected ?string $callsConfigurationId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
+        #[Assert\Length(max: 128)]
         protected ?string $callId = null,
         protected ?string $externalId = null,
         protected ?string $from = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallEndpoint $endpoint = null,
-        #[Assert\Choice(['PENDING','IN_PROGRESS','COMPLETED','FAILED',])]
-
-    protected ?string $status = null,
+        protected ?\Infobip\Model\CallsBulkEndpoint $endpoint = null,
+        protected ?string $status = null,
         protected ?string $reason = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getCallsConfigurationId(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->callsConfigurationId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setCallsConfigurationId(?string $callsConfigurationId): self
     {
-        return self::DISCRIMINATOR;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getPlatform(): \Infobip\Model\Platform|null
     {
-        return $this->applicationId;
+        return $this->platform;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
-        $this->applicationId = $applicationId;
+        $this->platform = $platform;
         return $this;
     }
 
@@ -112,12 +94,12 @@ class CallsBulkCall implements ModelInterface
         return $this;
     }
 
-    public function getEndpoint(): \Infobip\Model\CallEndpoint|null
+    public function getEndpoint(): \Infobip\Model\CallsBulkEndpoint|null
     {
         return $this->endpoint;
     }
 
-    public function setEndpoint(?\Infobip\Model\CallEndpoint $endpoint): self
+    public function setEndpoint(?\Infobip\Model\CallsBulkEndpoint $endpoint): self
     {
         $this->endpoint = $endpoint;
         return $this;

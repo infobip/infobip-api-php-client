@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,63 +18,31 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookDeliveryReport implements ModelInterface
+class WhatsAppWebhookDeliveryReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookDeliveryReport';
-
-    public const OPENAPI_FORMATS = [
-        'bulkId' => null,
-        'price' => null,
-        'status' => null,
-        'error' => null,
-        'messageId' => null,
-        'doneAt' => 'date-time',
-        'messageCount' => 'int32',
-        'sentAt' => 'date-time',
-        'to' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $bulkId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessagePrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageStatus $status = null,
+        protected ?\Infobip\Model\MessageStatus $status = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageError $error = null,
+        protected ?\Infobip\Model\MessageError $error = null,
         protected ?string $messageId = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
+        protected ?\DateTime $doneAt = null,
         protected ?int $messageCount = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
+        protected ?\DateTime $sentAt = null,
         protected ?string $to = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getBulkId(): string|null
     {

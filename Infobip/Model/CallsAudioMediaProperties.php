@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,23 +16,9 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsAudioMediaProperties implements ModelInterface
+class CallsAudioMediaProperties
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsAudioMediaProperties';
-
-    public const OPENAPI_FORMATS = [
-        'muted' => null,
-        'userMuted' => null,
-        'deaf' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -42,19 +26,9 @@ class CallsAudioMediaProperties implements ModelInterface
         protected ?bool $userMuted = null,
         protected ?bool $deaf = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMuted(): bool|null
     {

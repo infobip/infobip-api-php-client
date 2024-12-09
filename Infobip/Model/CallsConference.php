@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,45 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsConference implements ModelInterface
+class CallsConference
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsConference';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'name' => null,
-        'participants' => null,
-        'applicationId' => null
-    ];
-
     /**
      * @param \Infobip\Model\CallsParticipant[] $participants
      */
     public function __construct(
+        #[Assert\Length(max: 128)]
         protected ?string $id = null,
         protected ?string $name = null,
         protected ?array $participants = null,
-        protected ?string $applicationId = null,
+        protected ?string $callsConfigurationId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {
@@ -98,14 +75,25 @@ class CallsConference implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getCallsConfigurationId(): string|null
     {
-        return $this->applicationId;
+        return $this->callsConfigurationId;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setCallsConfigurationId(?string $callsConfigurationId): self
     {
-        $this->applicationId = $applicationId;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 }

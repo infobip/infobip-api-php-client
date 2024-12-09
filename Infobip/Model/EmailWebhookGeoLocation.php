@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,45 +16,18 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailWebhookGeoLocation implements ModelInterface
+class EmailWebhookGeoLocation
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailWebhookGeoLocation';
-
-    public const OPENAPI_FORMATS = [
-        'countryName' => null,
-        'city' => null,
-        'latitude' => null,
-        'longitude' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $countryName = null,
         protected ?string $city = null,
-        protected ?string $latitude = null,
-        protected ?string $longitude = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCountryName(): string|null
     {
@@ -77,28 +48,6 @@ class EmailWebhookGeoLocation implements ModelInterface
     public function setCity(?string $city): self
     {
         $this->city = $city;
-        return $this;
-    }
-
-    public function getLatitude(): string|null
-    {
-        return $this->latitude;
-    }
-
-    public function setLatitude(?string $latitude): self
-    {
-        $this->latitude = $latitude;
-        return $this;
-    }
-
-    public function getLongitude(): string|null
-    {
-        return $this->longitude;
-    }
-
-    public function setLongitude(?string $longitude): self
-    {
-        $this->longitude = $longitude;
         return $this;
     }
 }

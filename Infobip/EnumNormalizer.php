@@ -38,7 +38,7 @@ final class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
      * @inheritdoc
      * @throws InvalidArgumentException
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): string
+    public function normalize(mixed $object, ?string $format = null, array $context = []): string
     {
         if (!$object instanceof EnumInterface) {
             throw new InvalidArgumentException('The object must implement EnumInterface');
@@ -48,9 +48,9 @@ final class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    * @inheritdoc
+    */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof EnumInterface;
     }
@@ -59,7 +59,7 @@ final class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
      * @inheritdoc
      * @throws NotNormalizableValueException
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): EnumInterface
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): EnumInterface
     {
         if (null === $data || (\is_string($data) && '' === trim($data))) {
             throw NotNormalizableValueException::createForUnexpectedDataType(
@@ -75,10 +75,17 @@ final class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    * @inheritdoc
+    */
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return \class_exists($type) && \is_subclass_of($type, EnumInterface::class);
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [
+            EnumInterface::class => true,
+        ];
     }
 }

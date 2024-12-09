@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,62 +18,67 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailLog implements ModelInterface
+class EmailLog
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailLog';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'to' => null,
-        'from' => null,
-        'text' => null,
-        'sentAt' => 'date-time',
-        'doneAt' => 'date-time',
-        'messageCount' => 'int32',
-        'price' => null,
-        'status' => null,
-        'bulkId' => null
-    ];
-
     /**
      */
     public function __construct(
+        protected ?string $applicationId = null,
+        protected ?string $entityId = null,
+        protected ?string $bulkId = null,
         protected ?string $messageId = null,
         protected ?string $to = null,
         protected ?string $from = null,
         protected ?string $text = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
+        protected ?\DateTime $sentAt = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
+        protected ?\DateTime $doneAt = null,
         protected ?int $messageCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailPrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailStatus $status = null,
-        protected ?string $bulkId = null,
+        protected ?\Infobip\Model\MessageStatus $status = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessageError $error = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getApplicationId(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->applicationId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setApplicationId(?string $applicationId): self
     {
-        return self::DISCRIMINATOR;
+        $this->applicationId = $applicationId;
+        return $this;
+    }
+
+    public function getEntityId(): string|null
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
+        return $this;
+    }
+
+    public function getBulkId(): string|null
+    {
+        return $this->bulkId;
+    }
+
+    public function setBulkId(?string $bulkId): self
+    {
+        $this->bulkId = $bulkId;
+        return $this;
     }
 
     public function getMessageId(): string|null
@@ -155,36 +158,36 @@ class EmailLog implements ModelInterface
         return $this;
     }
 
-    public function getPrice(): \Infobip\Model\EmailPrice|null
+    public function getPrice(): \Infobip\Model\MessagePrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?\Infobip\Model\EmailPrice $price): self
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
     {
         $this->price = $price;
         return $this;
     }
 
-    public function getStatus(): \Infobip\Model\EmailStatus|null
+    public function getStatus(): \Infobip\Model\MessageStatus|null
     {
         return $this->status;
     }
 
-    public function setStatus(?\Infobip\Model\EmailStatus $status): self
+    public function setStatus(?\Infobip\Model\MessageStatus $status): self
     {
         $this->status = $status;
         return $this;
     }
 
-    public function getBulkId(): string|null
+    public function getError(): \Infobip\Model\MessageError|null
     {
-        return $this->bulkId;
+        return $this->error;
     }
 
-    public function setBulkId(?string $bulkId): self
+    public function setError(?\Infobip\Model\MessageError $error): self
     {
-        $this->bulkId = $bulkId;
+        $this->error = $error;
         return $this;
     }
 }

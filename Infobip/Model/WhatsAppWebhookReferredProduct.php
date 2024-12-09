@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,44 +17,20 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookReferredProduct implements ModelInterface
+class WhatsAppWebhookReferredProduct
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookReferredProduct';
-
-    public const OPENAPI_FORMATS = [
-        'catalogId' => null,
-        'productRetailerId' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Length(min: 0)]
-
-    protected ?string $catalogId = null,
+        protected ?string $catalogId = null,
         #[Assert\Length(min: 0)]
-
-    protected ?string $productRetailerId = null,
+        protected ?string $productRetailerId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCatalogId(): string|null
     {

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,67 +18,37 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class ViberWebhookReport implements ModelInterface
+class ViberWebhookReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'ViberWebhookReport';
-
-    public const OPENAPI_FORMATS = [
-        'bulkId' => null,
-        'price' => null,
-        'status' => null,
-        'error' => null,
-        'messageId' => null,
-        'doneAt' => 'date-time',
-        'messageCount' => 'int32',
-        'sentAt' => 'date-time',
-        'to' => null,
-        'channel' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $bulkId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessagePrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageStatus $status = null,
+        protected ?\Infobip\Model\MessageStatus $status = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageError $error = null,
+        protected ?\Infobip\Model\ViberMessageError $error = null,
         protected ?string $messageId = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
-        protected ?int $messageCount = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
         protected ?string $to = null,
+        protected ?string $sender = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $sentAt = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $doneAt = null,
+        protected ?int $messageCount = null,
+        protected ?string $mccMnc = null,
+        protected ?string $callbackData = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WebhookOmniChannel $channel = null,
+        protected ?\Infobip\Model\Platform $platform = null,
+        protected ?string $campaignReferenceId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getBulkId(): string|null
     {
@@ -115,12 +83,12 @@ class ViberWebhookReport implements ModelInterface
         return $this;
     }
 
-    public function getError(): \Infobip\Model\MessageError|null
+    public function getError(): \Infobip\Model\ViberMessageError|null
     {
         return $this->error;
     }
 
-    public function setError(?\Infobip\Model\MessageError $error): self
+    public function setError(?\Infobip\Model\ViberMessageError $error): self
     {
         $this->error = $error;
         return $this;
@@ -134,6 +102,39 @@ class ViberWebhookReport implements ModelInterface
     public function setMessageId(?string $messageId): self
     {
         $this->messageId = $messageId;
+        return $this;
+    }
+
+    public function getTo(): string|null
+    {
+        return $this->to;
+    }
+
+    public function setTo(?string $to): self
+    {
+        $this->to = $to;
+        return $this;
+    }
+
+    public function getSender(): string|null
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?string $sender): self
+    {
+        $this->sender = $sender;
+        return $this;
+    }
+
+    public function getSentAt(): \DateTime|null
+    {
+        return $this->sentAt;
+    }
+
+    public function setSentAt(?\DateTime $sentAt): self
+    {
+        $this->sentAt = $sentAt;
         return $this;
     }
 
@@ -159,36 +160,47 @@ class ViberWebhookReport implements ModelInterface
         return $this;
     }
 
-    public function getSentAt(): \DateTime|null
+    public function getMccMnc(): string|null
     {
-        return $this->sentAt;
+        return $this->mccMnc;
     }
 
-    public function setSentAt(?\DateTime $sentAt): self
+    public function setMccMnc(?string $mccMnc): self
     {
-        $this->sentAt = $sentAt;
+        $this->mccMnc = $mccMnc;
         return $this;
     }
 
-    public function getTo(): string|null
+    public function getCallbackData(): string|null
     {
-        return $this->to;
+        return $this->callbackData;
     }
 
-    public function setTo(?string $to): self
+    public function setCallbackData(?string $callbackData): self
     {
-        $this->to = $to;
+        $this->callbackData = $callbackData;
         return $this;
     }
 
-    public function getChannel(): \Infobip\Model\WebhookOmniChannel|null
+    public function getPlatform(): \Infobip\Model\Platform|null
     {
-        return $this->channel;
+        return $this->platform;
     }
 
-    public function setChannel(?\Infobip\Model\WebhookOmniChannel $channel): self
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
-        $this->channel = $channel;
+        $this->platform = $platform;
+        return $this;
+    }
+
+    public function getCampaignReferenceId(): string|null
+    {
+        return $this->campaignReferenceId;
+    }
+
+    public function setCampaignReferenceId(?string $campaignReferenceId): self
+    {
+        $this->campaignReferenceId = $campaignReferenceId;
         return $this;
     }
 }

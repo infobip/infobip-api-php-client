@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,48 +17,25 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailAddDomainRequest implements ModelInterface
+class EmailAddDomainRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailAddDomainRequest';
-
-    public const OPENAPI_FORMATS = [
-        'domainName' => null,
-        'dkimKeyLength' => 'int32',
-        'applicationId' => null,
-        'entityId' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $domainName,
-        #[Assert\Choice([1024,2048,])]
-
-    protected ?string $dkimKeyLength = self::DKIM_KEY_LENGTH_2048,
+        protected string $domainName,
+        #[Assert\NotBlank]
+        #[Assert\GreaterThanOrEqual(1)]
+        protected int $targetedDailyTraffic,
+        protected ?string $dkimKeyLength = self::DKIM_KEY_LENGTH_2048,
         protected ?string $applicationId = null,
         protected ?string $entityId = null,
+        protected ?string $returnPathAddress = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getDomainName(): string
     {
@@ -84,6 +59,17 @@ class EmailAddDomainRequest implements ModelInterface
         return $this;
     }
 
+    public function getTargetedDailyTraffic(): int
+    {
+        return $this->targetedDailyTraffic;
+    }
+
+    public function setTargetedDailyTraffic(int $targetedDailyTraffic): self
+    {
+        $this->targetedDailyTraffic = $targetedDailyTraffic;
+        return $this;
+    }
+
     public function getApplicationId(): string|null
     {
         return $this->applicationId;
@@ -103,6 +89,17 @@ class EmailAddDomainRequest implements ModelInterface
     public function setEntityId(?string $entityId): self
     {
         $this->entityId = $entityId;
+        return $this;
+    }
+
+    public function getReturnPathAddress(): string|null
+    {
+        return $this->returnPathAddress;
+    }
+
+    public function setReturnPathAddress(?string $returnPathAddress): self
+    {
+        $this->returnPathAddress = $returnPathAddress;
         return $this;
     }
 }

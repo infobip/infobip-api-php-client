@@ -1,7 +1,8 @@
 <?php
+
 /**
  * ApiException
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip

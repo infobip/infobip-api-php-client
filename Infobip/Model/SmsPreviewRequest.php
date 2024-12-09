@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,48 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsPreviewRequest implements ModelInterface
+class SmsPreviewRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsPreviewRequest';
-
-    public const OPENAPI_FORMATS = [
-        'text' => null,
-        'languageCode' => null,
-        'transliteration' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $text,
+        protected string $text,
         #[Assert\Regex('/^(TR|ES|PT|AUTODETECT)$/')]
-
-    protected ?string $languageCode = null,
-        #[Assert\Regex('/^(TURKISH|GREEK|CYRILLIC|SERBIAN_CYRILLIC|BULGARIAN_CYRILLIC|CENTRAL_EUROPEAN|BALTIC|NON_UNICODE)$/')]
-
-    protected ?string $transliteration = null,
+        protected ?string $languageCode = null,
+        #[Assert\Regex('/^(TURKISH|GREEK|CYRILLIC|SERBIAN_CYRILLIC|BULGARIAN_CYRILLIC|CENTRAL_EUROPEAN|BALTIC|PORTUGUESE|COLOMBIAN|NON_UNICODE|NONE|ALL)$/')]
+        protected ?string $transliteration = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getText(): string
     {

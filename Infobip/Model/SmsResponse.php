@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,41 +17,20 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsResponse implements ModelInterface
+class SmsResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsResponse';
-
-    public const OPENAPI_FORMATS = [
-        'bulkId' => null,
-        'messages' => null
-    ];
-
     /**
      * @param \Infobip\Model\SmsResponseDetails[] $messages
      */
     public function __construct(
+        #[Assert\NotBlank]
+        protected array $messages,
         protected ?string $bulkId = null,
-        protected ?array $messages = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getBulkId(): string|null
     {
@@ -67,17 +44,17 @@ class SmsResponse implements ModelInterface
     }
 
     /**
-     * @return \Infobip\Model\SmsResponseDetails[]|null
+     * @return \Infobip\Model\SmsResponseDetails[]
      */
-    public function getMessages(): ?array
+    public function getMessages(): array
     {
         return $this->messages;
     }
 
     /**
-     * @param \Infobip\Model\SmsResponseDetails[]|null $messages An array of message objects of a single message or multiple messages sent under one bulk ID.
+     * @param \Infobip\Model\SmsResponseDetails[] $messages An array of message objects of a single message or multiple messages sent under one bulk ID.
      */
-    public function setMessages(?array $messages): self
+    public function setMessages(array $messages): self
     {
         $this->messages = $messages;
         return $this;

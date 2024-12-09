@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,29 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class MmsInboundReport implements ModelInterface
+class MmsInboundReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'MmsInboundReport';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'to' => null,
-        'from' => null,
-        'message' => null,
-        'receivedAt' => null,
-        'mmsCount' => 'int32',
-        'callbackData' => null,
-        'price' => null
-    ];
-
     /**
+     * @param \Infobip\Model\MmsInboundDestination[] $group
      */
     public function __construct(
         protected ?string $messageId = null,
         protected ?string $to = null,
         protected ?string $from = null,
         protected ?string $message = null,
+        protected ?array $group = null,
         protected ?string $receivedAt = null,
         protected ?int $mmsCount = null,
         protected ?string $callbackData = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MmsPrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
+        protected ?string $applicationId = null,
+        protected ?string $entityId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMessageId(): string|null
     {
@@ -112,6 +85,23 @@ class MmsInboundReport implements ModelInterface
         return $this;
     }
 
+    /**
+     * @return \Infobip\Model\MmsInboundDestination[]|null
+     */
+    public function getGroup(): ?array
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param \Infobip\Model\MmsInboundDestination[]|null $group Recipients of group MMS.
+     */
+    public function setGroup(?array $group): self
+    {
+        $this->group = $group;
+        return $this;
+    }
+
     public function getReceivedAt(): string|null
     {
         return $this->receivedAt;
@@ -145,14 +135,36 @@ class MmsInboundReport implements ModelInterface
         return $this;
     }
 
-    public function getPrice(): \Infobip\Model\MmsPrice|null
+    public function getPrice(): \Infobip\Model\MessagePrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?\Infobip\Model\MmsPrice $price): self
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
     {
         $this->price = $price;
+        return $this;
+    }
+
+    public function getApplicationId(): string|null
+    {
+        return $this->applicationId;
+    }
+
+    public function setApplicationId(?string $applicationId): self
+    {
+        $this->applicationId = $applicationId;
+        return $this;
+    }
+
+    public function getEntityId(): string|null
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
         return $this;
     }
 }

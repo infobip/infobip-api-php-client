@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,62 +18,29 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsFile implements ModelInterface
+class CallsFile
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsFile';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'name' => null,
-        'fileFormat' => null,
-        'size' => 'int64',
-        'creationMethod' => null,
-        'creationTime' => 'date-time',
-        'expirationTime' => 'date-time',
-        'duration' => 'int64'
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $name,
+        protected string $name,
         #[Assert\NotBlank]
-    #[Assert\Choice(['MP3','WAV','MP4',])]
-
-    protected string $fileFormat,
+        protected string $fileFormat,
         protected ?string $id = null,
         protected ?int $size = null,
-        #[Assert\Choice(['UPLOADED','SYNTHESIZED','RECORDED',])]
-
-    protected ?string $creationMethod = null,
+        protected ?string $creationMethod = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $creationTime = null,
+        protected ?\DateTime $creationTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $expirationTime = null,
+        protected ?\DateTime $expirationTime = null,
         protected ?int $duration = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {

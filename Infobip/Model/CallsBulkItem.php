@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,74 +17,36 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsBulkItem implements ModelInterface
+class CallsBulkItem
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsBulkItem';
-
-    public const OPENAPI_FORMATS = [
-        'from' => null,
-        'callRequests' => null,
-        'recording' => null,
-        'machineDetection' => null,
-        'maxDuration' => 'int32',
-        'connectTimeout' => 'int32',
-        'callRate' => null,
-        'validityPeriod' => 'int32',
-        'retryOptions' => null,
-        'schedulingOptions' => null,
-        'customData' => null
-    ];
-
     /**
      * @param \Infobip\Model\CallsBulkCallRequest[] $callRequests
      * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $from,
+        protected string $from,
         #[Assert\NotBlank]
-
-    protected array $callRequests,
+        protected array $callRequests,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallRecordingRequest $recording = null,
+        protected ?\Infobip\Model\CallRecordingRequest $recording = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
+        protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
         protected ?int $maxDuration = 28800,
         protected ?int $connectTimeout = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallRate $callRate = null,
+        protected ?\Infobip\Model\CallRate $callRate = null,
         protected ?int $validityPeriod = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsRetryOptions $retryOptions = null,
+        protected ?\Infobip\Model\CallsRetryOptions $retryOptions = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsSchedulingOptions $schedulingOptions = null,
+        protected ?\Infobip\Model\CallsSchedulingOptions $schedulingOptions = null,
         protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFrom(): string
     {

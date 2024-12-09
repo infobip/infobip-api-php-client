@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,40 +16,32 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsVoice implements ModelInterface
+class CallsVoice
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsVoice';
-
-    public const OPENAPI_FORMATS = [
-        'gender' => null,
-        'name' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $gender = null,
         protected ?string $name = null,
+        protected ?string $gender = null,
+        protected ?string $supplier = null,
+        protected ?bool $ssmlSupported = null,
+        protected ?bool $isDefault = null,
+        protected ?bool $isNeural = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getName(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->name;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setName(?string $name): self
     {
-        return self::DISCRIMINATOR;
+        $this->name = $name;
+        return $this;
     }
 
     public function getGender(): string|null
@@ -65,14 +55,47 @@ class CallsVoice implements ModelInterface
         return $this;
     }
 
-    public function getName(): string|null
+    public function getSupplier(): string|null
     {
-        return $this->name;
+        return $this->supplier;
     }
 
-    public function setName(?string $name): self
+    public function setSupplier(?string $supplier): self
     {
-        $this->name = $name;
+        $this->supplier = $supplier;
+        return $this;
+    }
+
+    public function getSsmlSupported(): bool|null
+    {
+        return $this->ssmlSupported;
+    }
+
+    public function setSsmlSupported(?bool $ssmlSupported): self
+    {
+        $this->ssmlSupported = $ssmlSupported;
+        return $this;
+    }
+
+    public function getIsDefault(): bool|null
+    {
+        return $this->isDefault;
+    }
+
+    public function setIsDefault(?bool $isDefault): self
+    {
+        $this->isDefault = $isDefault;
+        return $this;
+    }
+
+    public function getIsNeural(): bool|null
+    {
+        return $this->isNeural;
+    }
+
+    public function setIsNeural(?bool $isNeural): self
+    {
+        $this->isNeural = $isNeural;
         return $this;
     }
 }

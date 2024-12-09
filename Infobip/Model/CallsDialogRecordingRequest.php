@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,45 +17,23 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogRecordingRequest implements ModelInterface
+class CallsDialogRecordingRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogRecordingRequest';
-
-    public const OPENAPI_FORMATS = [
-        'recordingType' => null,
-        'dialogComposition' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Choice(['AUDIO','AUDIO_AND_VIDEO',])]
-
-    protected string $recordingType,
+        protected string $recordingType,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDialogRecordingComposition $dialogComposition = null,
+        protected ?\Infobip\Model\CallsDialogRecordingComposition $dialogComposition = null,
+        protected ?array $customData = null,
+        protected ?string $filePrefix = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getRecordingType(): mixed
     {
@@ -78,6 +54,34 @@ class CallsDialogRecordingRequest implements ModelInterface
     public function setDialogComposition(?\Infobip\Model\CallsDialogRecordingComposition $dialogComposition): self
     {
         $this->dialogComposition = $dialogComposition;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
+        return $this;
+    }
+
+    public function getFilePrefix(): string|null
+    {
+        return $this->filePrefix;
+    }
+
+    public function setFilePrefix(?string $filePrefix): self
+    {
+        $this->filePrefix = $filePrefix;
         return $this;
     }
 }

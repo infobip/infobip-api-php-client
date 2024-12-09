@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -24,10 +22,12 @@ final class CallsParticipantState implements EnumInterface
 {
     public const JOINING = 'JOINING';
     public const JOINED = 'JOINED';
+    public const LEFT = 'LEFT';
 
     public const ALLOWED_VALUES = [
         'JOINING',
         'JOINED',
+        'LEFT',
     ];
 
     private string $value;
@@ -55,6 +55,11 @@ final class CallsParticipantState implements EnumInterface
     public static function JOINED(): CallsParticipantState
     {
         return new self('JOINED');
+    }
+
+    public static function LEFT(): CallsParticipantState
+    {
+        return new self('LEFT');
     }
 
     public function __toString(): string

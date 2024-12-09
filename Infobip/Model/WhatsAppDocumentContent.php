@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,52 +17,26 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppDocumentContent implements ModelInterface
+class WhatsAppDocumentContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppDocumentContent';
-
-    public const OPENAPI_FORMATS = [
-        'mediaUrl' => null,
-        'caption' => null,
-        'filename' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 2048)]
-    #[Assert\Length(min: 1)]
-
-    protected string $mediaUrl,
+        #[Assert\Length(max: 2048)]
+        #[Assert\Length(min: 1)]
+        protected string $mediaUrl,
         #[Assert\Length(max: 3000)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $caption = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $caption = null,
         #[Assert\Length(max: 240)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $filename = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $filename = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMediaUrl(): string
     {

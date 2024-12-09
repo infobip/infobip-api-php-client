@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,25 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsMultiMessage implements ModelInterface
+class CallsMultiMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsMultiMessage';
-
-    public const OPENAPI_FORMATS = [
-        'audioFileUrl' => null,
-        'from' => null,
-        'language' => null,
-        'text' => null,
-        'to' => null,
-        'voice' => null
-    ];
-
     /**
      * @param string[] $to
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected array $to,
+        protected array $to,
         protected ?string $audioFileUrl = null,
         protected ?string $from = null,
         protected ?string $language = null,
         protected ?string $text = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsVoice $voice = null,
+        protected ?\Infobip\Model\CallsVoice $voice = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAudioFileUrl(): string|null
     {
@@ -120,7 +90,7 @@ class CallsMultiMessage implements ModelInterface
     }
 
     /**
-     * @param string[] $to Phone number of the recipient. Phone number must be written in E.164 standard format (Example: 41793026727).
+     * @param string[] $to Phone number of the recipient. Phone number must be written in E.164 standard format (Example: 41793026727). Maximum number of phone numbers listed is 20k.
      */
     public function setTo(array $to): self
     {

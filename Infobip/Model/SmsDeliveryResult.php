@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,43 +16,21 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsDeliveryResult implements ModelInterface
+class SmsDeliveryResult
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsDeliveryResult';
-
-    public const OPENAPI_FORMATS = [
-        'results' => null
-    ];
-
     /**
-     * @param \Infobip\Model\SmsReport[] $results
+     * @param \Infobip\Model\SmsDeliveryReport[] $results
      */
     public function __construct(
         protected ?array $results = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
-     * @return \Infobip\Model\SmsReport[]|null
+     * @return \Infobip\Model\SmsDeliveryReport[]|null
      */
     public function getResults(): ?array
     {
@@ -62,7 +38,7 @@ class SmsDeliveryResult implements ModelInterface
     }
 
     /**
-     * @param \Infobip\Model\SmsReport[]|null $results results
+     * @param \Infobip\Model\SmsDeliveryReport[]|null $results Collection of reports, one per every message.
      */
     public function setResults(?array $results): self
     {

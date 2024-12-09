@@ -4,7 +4,7 @@
 
 /**
  * TfaApi
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -36,7 +36,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\DeprecationChecker;
@@ -88,7 +87,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
      */
     public function createTfaApplication(\Infobip\Model\TfaApplicationRequest $tfaApplicationRequest)
     {
@@ -165,20 +164,15 @@ final class TfaApi
              'tfaApplicationRequest' => $tfaApplicationRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'tfaApplicationRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications';
         $formParams = [];
         $queryParams = [];
@@ -196,8 +190,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaApplicationRequest)
                 : $tfaApplicationRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -263,7 +255,7 @@ final class TfaApi
     /**
      * Create response for operation 'createTfaApplication'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
      */
     private function createTfaApplicationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -293,6 +285,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -327,16 +374,338 @@ final class TfaApi
     }
 
     /**
+     * Operation createTfaEmailMessageTemplate
+     *
+     * Create 2FA Email message template
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest tfaCreateEmailMessageRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaEmailMessage
+     */
+    public function createTfaEmailMessageTemplate(string $appId, \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest)
+    {
+        $request = $this->createTfaEmailMessageTemplateRequest($appId, $tfaCreateEmailMessageRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->createTfaEmailMessageTemplateResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->createTfaEmailMessageTemplateApiException($exception);
+        }
+    }
+
+    /**
+     * Operation createTfaEmailMessageTemplateAsync
+     *
+     * Create 2FA Email message template
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function createTfaEmailMessageTemplateAsync(string $appId, \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest): PromiseInterface
+    {
+        $request = $this->createTfaEmailMessageTemplateRequest($appId, $tfaCreateEmailMessageRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->createTfaEmailMessageTemplateResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->createTfaEmailMessageTemplateApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'createTfaEmailMessageTemplate'
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function createTfaEmailMessageTemplateRequest(string $appId, \Infobip\Model\TfaCreateEmailMessageRequest $tfaCreateEmailMessageRequest): Request
+    {
+        $allData = [
+             'appId' => $appId,
+             'tfaCreateEmailMessageRequest' => $tfaCreateEmailMessageRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'appId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'tfaCreateEmailMessageRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/2fa/2/applications/{appId}/email/messages';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($appId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'appId' . '}',
+                $this->objectSerializer->toPathValue($appId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($tfaCreateEmailMessageRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($tfaCreateEmailMessageRequest)
+                : $tfaCreateEmailMessageRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'createTfaEmailMessageTemplate'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaEmailMessage|null
+     */
+    private function createTfaEmailMessageTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        $responseResult = $this->deserialize($responseBody, '\Infobip\Model\TfaEmailMessage', $responseHeaders);
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'createTfaEmailMessageTemplate'
+     */
+    private function createTfaEmailMessageTemplateApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 400 && $statusCode <= 499) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 500 && $statusCode <= 599) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        $data = $this->objectSerializer->deserialize(
+            $apiException->getResponseBody(),
+            '\Infobip\Model\TfaEmailMessage',
+            $apiException->getResponseHeaders()
+        );
+
+        $apiException->setResponseObject($data);
+
+        return $apiException;
+    }
+
+    /**
      * Operation createTfaMessageTemplate
      *
-     * Create 2FA message template
+     * Create 2FA SMS or Voice message template
      *
      * @param string $appId ID of application for which requested message was created. (required)
      * @param \Infobip\Model\TfaCreateMessageRequest $tfaCreateMessageRequest tfaCreateMessageRequest (required)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
      */
     public function createTfaMessageTemplate(string $appId, \Infobip\Model\TfaCreateMessageRequest $tfaCreateMessageRequest)
     {
@@ -365,7 +734,7 @@ final class TfaApi
     /**
      * Operation createTfaMessageTemplateAsync
      *
-     * Create 2FA message template
+     * Create 2FA SMS or Voice message template
      *
      * @param string $appId ID of application for which requested message was created. (required)
      * @param \Infobip\Model\TfaCreateMessageRequest $tfaCreateMessageRequest (required)
@@ -416,23 +785,18 @@ final class TfaApi
              'tfaCreateMessageRequest' => $tfaCreateMessageRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
                     'tfaCreateMessageRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}/messages';
         $formParams = [];
         $queryParams = [];
@@ -459,8 +823,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaCreateMessageRequest)
                 : $tfaCreateMessageRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -526,7 +888,7 @@ final class TfaApi
     /**
      * Create response for operation 'createTfaMessageTemplate'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
      */
     private function createTfaMessageTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -556,6 +918,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -598,7 +1015,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
      */
     public function getTfaApplication(string $appId)
     {
@@ -675,20 +1092,15 @@ final class TfaApi
              'appId' => $appId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}';
         $formParams = [];
         $queryParams = [];
@@ -706,13 +1118,10 @@ final class TfaApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -778,7 +1187,7 @@ final class TfaApi
     /**
      * Create response for operation 'getTfaApplication'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
      */
     private function getTfaApplicationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -808,6 +1217,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -844,12 +1308,12 @@ final class TfaApi
     /**
      * Operation getTfaApplications
      *
-     * Get 2FA applications
+     * Get all 2FA applications
      *
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse[]
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse[]
      */
     public function getTfaApplications()
     {
@@ -878,7 +1342,7 @@ final class TfaApi
     /**
      * Operation getTfaApplicationsAsync
      *
-     * Get 2FA applications
+     * Get all 2FA applications
      *
      *
      * @throws InvalidArgumentException
@@ -923,17 +1387,12 @@ final class TfaApi
         $allData = [
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                ],
-                $validationConstraints
-            );
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications';
         $formParams = [];
         $queryParams = [];
@@ -942,13 +1401,10 @@ final class TfaApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1014,7 +1470,7 @@ final class TfaApi
     /**
      * Create response for operation 'getTfaApplications'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse[]|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse[]|null
      */
     private function getTfaApplicationsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1044,6 +1500,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1087,7 +1587,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
      */
     public function getTfaMessageTemplate(string $appId, string $msgId)
     {
@@ -1167,23 +1667,18 @@ final class TfaApi
              'msgId' => $msgId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
                     'msgId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}/messages/{msgId}';
         $formParams = [];
         $queryParams = [];
@@ -1210,13 +1705,10 @@ final class TfaApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1282,7 +1774,7 @@ final class TfaApi
     /**
      * Create response for operation 'getTfaMessageTemplate'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
      */
     private function getTfaMessageTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1312,6 +1804,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1348,13 +1884,13 @@ final class TfaApi
     /**
      * Operation getTfaMessageTemplates
      *
-     * Get 2FA message templates
+     * Get all 2FA message templates
      *
      * @param string $appId ID of application for which requested message was created. (required)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage[]
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage[]
      */
     public function getTfaMessageTemplates(string $appId)
     {
@@ -1383,7 +1919,7 @@ final class TfaApi
     /**
      * Operation getTfaMessageTemplatesAsync
      *
-     * Get 2FA message templates
+     * Get all 2FA message templates
      *
      * @param string $appId ID of application for which requested message was created. (required)
      *
@@ -1431,20 +1967,15 @@ final class TfaApi
              'appId' => $appId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}/messages';
         $formParams = [];
         $queryParams = [];
@@ -1462,13 +1993,10 @@ final class TfaApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1534,7 +2062,7 @@ final class TfaApi
     /**
      * Create response for operation 'getTfaMessageTemplates'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage[]|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage[]|null
      */
     private function getTfaMessageTemplatesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1564,6 +2092,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1609,7 +2181,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerificationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerificationResponse
      */
     public function getTfaVerificationStatus(string $msisdn, string $appId, ?bool $verified = null, ?bool $sent = null)
     {
@@ -1695,11 +2267,8 @@ final class TfaApi
              'sent' => $sent,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'msisdn' => [
                         new Assert\NotBlank(),
                     ],
@@ -1710,12 +2279,10 @@ final class TfaApi
                     ],
                     'sent' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}/verifications';
         $formParams = [];
         $queryParams = [];
@@ -1748,13 +2315,10 @@ final class TfaApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1820,7 +2384,7 @@ final class TfaApi
     /**
      * Create response for operation 'getTfaVerificationStatus'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerificationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerificationResponse|null
      */
     private function getTfaVerificationStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1850,6 +2414,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1884,6 +2492,317 @@ final class TfaApi
     }
 
     /**
+     * Operation resend2faPinCodeOverEmail
+     *
+     * Resend 2FA PIN code over Email
+     *
+     * @param string $pinId ID of the pin code that has to be verified. (required)
+     * @param \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest tfaResendPinRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartEmailAuthenticationResponse
+     */
+    public function resend2faPinCodeOverEmail(string $pinId, \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest)
+    {
+        $request = $this->resend2faPinCodeOverEmailRequest($pinId, $tfaResendPinRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->resend2faPinCodeOverEmailResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->resend2faPinCodeOverEmailApiException($exception);
+        }
+    }
+
+    /**
+     * Operation resend2faPinCodeOverEmailAsync
+     *
+     * Resend 2FA PIN code over Email
+     *
+     * @param string $pinId ID of the pin code that has to be verified. (required)
+     * @param \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function resend2faPinCodeOverEmailAsync(string $pinId, \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest): PromiseInterface
+    {
+        $request = $this->resend2faPinCodeOverEmailRequest($pinId, $tfaResendPinRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->resend2faPinCodeOverEmailResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->resend2faPinCodeOverEmailApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'resend2faPinCodeOverEmail'
+     *
+     * @param string $pinId ID of the pin code that has to be verified. (required)
+     * @param \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function resend2faPinCodeOverEmailRequest(string $pinId, \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest): Request
+    {
+        $allData = [
+             'pinId' => $pinId,
+             'tfaResendPinRequest' => $tfaResendPinRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'pinId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'tfaResendPinRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/2fa/2/pin/{pinId}/resend/email';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($pinId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'pinId' . '}',
+                $this->objectSerializer->toPathValue($pinId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($tfaResendPinRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($tfaResendPinRequest)
+                : $tfaResendPinRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'resend2faPinCodeOverEmail'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartEmailAuthenticationResponse|null
+     */
+    private function resend2faPinCodeOverEmailResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        $responseResult = $this->deserialize($responseBody, '\Infobip\Model\TfaStartEmailAuthenticationResponse', $responseHeaders);
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'resend2faPinCodeOverEmail'
+     */
+    private function resend2faPinCodeOverEmailApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 400 && $statusCode <= 499) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 500 && $statusCode <= 599) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        $data = $this->objectSerializer->deserialize(
+            $apiException->getResponseBody(),
+            '\Infobip\Model\TfaStartEmailAuthenticationResponse',
+            $apiException->getResponseHeaders()
+        );
+
+        $apiException->setResponseObject($data);
+
+        return $apiException;
+    }
+
+    /**
      * Operation resendTfaPinCodeOverSms
      *
      * Resend 2FA PIN code over SMS
@@ -1893,7 +2812,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
      */
     public function resendTfaPinCodeOverSms(string $pinId, \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest)
     {
@@ -1973,23 +2892,18 @@ final class TfaApi
              'tfaResendPinRequest' => $tfaResendPinRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'pinId' => [
                         new Assert\NotBlank(),
                     ],
                     'tfaResendPinRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/pin/{pinId}/resend';
         $formParams = [];
         $queryParams = [];
@@ -2016,8 +2930,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaResendPinRequest)
                 : $tfaResendPinRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2083,7 +2995,7 @@ final class TfaApi
     /**
      * Create response for operation 'resendTfaPinCodeOverSms'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
      */
     private function resendTfaPinCodeOverSmsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2113,6 +3025,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -2156,7 +3123,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
      */
     public function resendTfaPinCodeOverVoice(string $pinId, \Infobip\Model\TfaResendPinRequest $tfaResendPinRequest)
     {
@@ -2236,23 +3203,18 @@ final class TfaApi
              'tfaResendPinRequest' => $tfaResendPinRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'pinId' => [
                         new Assert\NotBlank(),
                     ],
                     'tfaResendPinRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/pin/{pinId}/resend/voice';
         $formParams = [];
         $queryParams = [];
@@ -2279,8 +3241,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaResendPinRequest)
                 : $tfaResendPinRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2346,7 +3306,7 @@ final class TfaApi
     /**
      * Create response for operation 'resendTfaPinCodeOverVoice'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
      */
     private function resendTfaPinCodeOverVoiceResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2376,6 +3336,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -2410,16 +3425,300 @@ final class TfaApi
     }
 
     /**
+     * Operation send2faPinCodeOverEmail
+     *
+     * Send 2FA PIN code over Email
+     *
+     * @param \Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest tfaStartEmailAuthenticationRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartEmailAuthenticationResponse
+     */
+    public function send2faPinCodeOverEmail(\Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest)
+    {
+        $request = $this->send2faPinCodeOverEmailRequest($tfaStartEmailAuthenticationRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->send2faPinCodeOverEmailResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->send2faPinCodeOverEmailApiException($exception);
+        }
+    }
+
+    /**
+     * Operation send2faPinCodeOverEmailAsync
+     *
+     * Send 2FA PIN code over Email
+     *
+     * @param \Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function send2faPinCodeOverEmailAsync(\Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest): PromiseInterface
+    {
+        $request = $this->send2faPinCodeOverEmailRequest($tfaStartEmailAuthenticationRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->send2faPinCodeOverEmailResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->send2faPinCodeOverEmailApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'send2faPinCodeOverEmail'
+     *
+     * @param \Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function send2faPinCodeOverEmailRequest(\Infobip\Model\TfaStartEmailAuthenticationRequest $tfaStartEmailAuthenticationRequest): Request
+    {
+        $allData = [
+             'tfaStartEmailAuthenticationRequest' => $tfaStartEmailAuthenticationRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'tfaStartEmailAuthenticationRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/2fa/2/pin/email';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($tfaStartEmailAuthenticationRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($tfaStartEmailAuthenticationRequest)
+                : $tfaStartEmailAuthenticationRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'send2faPinCodeOverEmail'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartEmailAuthenticationResponse|null
+     */
+    private function send2faPinCodeOverEmailResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        $responseResult = $this->deserialize($responseBody, '\Infobip\Model\TfaStartEmailAuthenticationResponse', $responseHeaders);
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'send2faPinCodeOverEmail'
+     */
+    private function send2faPinCodeOverEmailApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 400 && $statusCode <= 499) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 500 && $statusCode <= 599) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        $data = $this->objectSerializer->deserialize(
+            $apiException->getResponseBody(),
+            '\Infobip\Model\TfaStartEmailAuthenticationResponse',
+            $apiException->getResponseHeaders()
+        );
+
+        $apiException->setResponseObject($data);
+
+        return $apiException;
+    }
+
+    /**
      * Operation sendTfaPinCodeOverSms
      *
      * Send 2FA PIN code over SMS
      *
      * @param \Infobip\Model\TfaStartAuthenticationRequest $tfaStartAuthenticationRequest tfaStartAuthenticationRequest (required)
-     * @param null|bool $ncNeeded Indicates if Number Lookup is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
+     * @param null|bool $ncNeeded Indicates if [Number Lookup](https://www.infobip.com/docs/api/connectivity/number-lookup) is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
      */
     public function sendTfaPinCodeOverSms(\Infobip\Model\TfaStartAuthenticationRequest $tfaStartAuthenticationRequest, ?bool $ncNeeded = null)
     {
@@ -2451,7 +3750,7 @@ final class TfaApi
      * Send 2FA PIN code over SMS
      *
      * @param \Infobip\Model\TfaStartAuthenticationRequest $tfaStartAuthenticationRequest (required)
-     * @param null|bool $ncNeeded Indicates if Number Lookup is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
+     * @param null|bool $ncNeeded Indicates if [Number Lookup](https://www.infobip.com/docs/api/connectivity/number-lookup) is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
      *
      * @throws InvalidArgumentException
      */
@@ -2488,7 +3787,7 @@ final class TfaApi
      * Create request for operation 'sendTfaPinCodeOverSms'
      *
      * @param \Infobip\Model\TfaStartAuthenticationRequest $tfaStartAuthenticationRequest (required)
-     * @param null|bool $ncNeeded Indicates if Number Lookup is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
+     * @param null|bool $ncNeeded Indicates if [Number Lookup](https://www.infobip.com/docs/api/connectivity/number-lookup) is needed before sending the 2FA message. If the parameter value is true, Number Lookup will be requested before sending the SMS. If the value is false, the SMS will be sent without requesting Number Lookup. Field&#39;s default value is &#x60;true&#x60;. (optional)
      *
      * @throws InvalidArgumentException
      */
@@ -2499,22 +3798,17 @@ final class TfaApi
              'ncNeeded' => $ncNeeded,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'tfaStartAuthenticationRequest' => [
                         new Assert\NotNull(),
                     ],
                     'ncNeeded' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/pin';
         $formParams = [];
         $queryParams = [];
@@ -2537,8 +3831,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaStartAuthenticationRequest)
                 : $tfaStartAuthenticationRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2604,7 +3896,7 @@ final class TfaApi
     /**
      * Create response for operation 'sendTfaPinCodeOverSms'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
      */
     private function sendTfaPinCodeOverSmsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2634,6 +3926,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -2676,7 +4012,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse
      */
     public function sendTfaPinCodeOverVoice(\Infobip\Model\TfaStartAuthenticationRequest $tfaStartAuthenticationRequest)
     {
@@ -2753,20 +4089,15 @@ final class TfaApi
              'tfaStartAuthenticationRequest' => $tfaStartAuthenticationRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'tfaStartAuthenticationRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/pin/voice';
         $formParams = [];
         $queryParams = [];
@@ -2784,8 +4115,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaStartAuthenticationRequest)
                 : $tfaStartAuthenticationRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2851,7 +4180,7 @@ final class TfaApi
     /**
      * Create response for operation 'sendTfaPinCodeOverVoice'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaStartAuthenticationResponse|null
      */
     private function sendTfaPinCodeOverVoiceResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2881,6 +4210,50 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -2924,7 +4297,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse
      */
     public function updateTfaApplication(string $appId, \Infobip\Model\TfaApplicationRequest $tfaApplicationRequest)
     {
@@ -3004,23 +4377,18 @@ final class TfaApi
              'tfaApplicationRequest' => $tfaApplicationRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
                     'tfaApplicationRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}';
         $formParams = [];
         $queryParams = [];
@@ -3047,8 +4415,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaApplicationRequest)
                 : $tfaApplicationRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3114,7 +4480,7 @@ final class TfaApi
     /**
      * Create response for operation 'updateTfaApplication'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaApplicationResponse|null
      */
     private function updateTfaApplicationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3144,6 +4510,72 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -3178,9 +4610,347 @@ final class TfaApi
     }
 
     /**
+     * Operation updateTfaEmailMessageTemplate
+     *
+     * Update 2FA Email message template
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param string $msgId Requested message ID. (required)
+     * @param \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest tfaUpdateEmailMessageRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaEmailMessage
+     */
+    public function updateTfaEmailMessageTemplate(string $appId, string $msgId, \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest)
+    {
+        $request = $this->updateTfaEmailMessageTemplateRequest($appId, $msgId, $tfaUpdateEmailMessageRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->updateTfaEmailMessageTemplateResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->updateTfaEmailMessageTemplateApiException($exception);
+        }
+    }
+
+    /**
+     * Operation updateTfaEmailMessageTemplateAsync
+     *
+     * Update 2FA Email message template
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param string $msgId Requested message ID. (required)
+     * @param \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateTfaEmailMessageTemplateAsync(string $appId, string $msgId, \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest): PromiseInterface
+    {
+        $request = $this->updateTfaEmailMessageTemplateRequest($appId, $msgId, $tfaUpdateEmailMessageRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->updateTfaEmailMessageTemplateResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->updateTfaEmailMessageTemplateApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateTfaEmailMessageTemplate'
+     *
+     * @param string $appId ID of application for which requested message was created. (required)
+     * @param string $msgId Requested message ID. (required)
+     * @param \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function updateTfaEmailMessageTemplateRequest(string $appId, string $msgId, \Infobip\Model\TfaUpdateEmailMessageRequest $tfaUpdateEmailMessageRequest): Request
+    {
+        $allData = [
+             'appId' => $appId,
+             'msgId' => $msgId,
+             'tfaUpdateEmailMessageRequest' => $tfaUpdateEmailMessageRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'appId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'msgId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'tfaUpdateEmailMessageRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/2fa/2/applications/{appId}/email/messages/{msgId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($appId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'appId' . '}',
+                $this->objectSerializer->toPathValue($appId),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($msgId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'msgId' . '}',
+                $this->objectSerializer->toPathValue($msgId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($tfaUpdateEmailMessageRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($tfaUpdateEmailMessageRequest)
+                : $tfaUpdateEmailMessageRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PUT',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'updateTfaEmailMessageTemplate'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaEmailMessage|null
+     */
+    private function updateTfaEmailMessageTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        $responseResult = $this->deserialize($responseBody, '\Infobip\Model\TfaEmailMessage', $responseHeaders);
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'updateTfaEmailMessageTemplate'
+     */
+    private function updateTfaEmailMessageTemplateApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 400 && $statusCode <= 499) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 500 && $statusCode <= 599) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        $data = $this->objectSerializer->deserialize(
+            $apiException->getResponseBody(),
+            '\Infobip\Model\TfaEmailMessage',
+            $apiException->getResponseHeaders()
+        );
+
+        $apiException->setResponseObject($data);
+
+        return $apiException;
+    }
+
+    /**
      * Operation updateTfaMessageTemplate
      *
-     * Update 2FA message template
+     * Update 2FA SMS or Voice message template
      *
      * @param string $appId ID of application for which requested message was created. (required)
      * @param string $msgId Requested message ID. (required)
@@ -3188,7 +4958,7 @@ final class TfaApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage
      */
     public function updateTfaMessageTemplate(string $appId, string $msgId, \Infobip\Model\TfaUpdateMessageRequest $tfaUpdateMessageRequest)
     {
@@ -3217,7 +4987,7 @@ final class TfaApi
     /**
      * Operation updateTfaMessageTemplateAsync
      *
-     * Update 2FA message template
+     * Update 2FA SMS or Voice message template
      *
      * @param string $appId ID of application for which requested message was created. (required)
      * @param string $msgId Requested message ID. (required)
@@ -3271,11 +5041,8 @@ final class TfaApi
              'tfaUpdateMessageRequest' => $tfaUpdateMessageRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'appId' => [
                         new Assert\NotBlank(),
                     ],
@@ -3285,12 +5052,10 @@ final class TfaApi
                     'tfaUpdateMessageRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/applications/{appId}/messages/{msgId}';
         $formParams = [];
         $queryParams = [];
@@ -3326,8 +5091,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaUpdateMessageRequest)
                 : $tfaUpdateMessageRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3393,7 +5156,7 @@ final class TfaApi
     /**
      * Create response for operation 'updateTfaMessageTemplate'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaMessage|null
      */
     private function updateTfaMessageTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3423,6 +5186,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -3459,14 +5277,14 @@ final class TfaApi
     /**
      * Operation verifyTfaPhoneNumber
      *
-     * Verify phone number
+     * Verify a PIN
      *
      * @param string $pinId ID of the pin code that has to be verified. (required)
      * @param \Infobip\Model\TfaVerifyPinRequest $tfaVerifyPinRequest tfaVerifyPinRequest (required)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerifyPinResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerifyPinResponse
      */
     public function verifyTfaPhoneNumber(string $pinId, \Infobip\Model\TfaVerifyPinRequest $tfaVerifyPinRequest)
     {
@@ -3495,7 +5313,7 @@ final class TfaApi
     /**
      * Operation verifyTfaPhoneNumberAsync
      *
-     * Verify phone number
+     * Verify a PIN
      *
      * @param string $pinId ID of the pin code that has to be verified. (required)
      * @param \Infobip\Model\TfaVerifyPinRequest $tfaVerifyPinRequest (required)
@@ -3546,23 +5364,18 @@ final class TfaApi
              'tfaVerifyPinRequest' => $tfaVerifyPinRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'pinId' => [
                         new Assert\NotBlank(),
                     ],
                     'tfaVerifyPinRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/2fa/2/pin/{pinId}/verify';
         $formParams = [];
         $queryParams = [];
@@ -3589,8 +5402,6 @@ final class TfaApi
                 ? $this->objectSerializer->serialize($tfaVerifyPinRequest)
                 : $tfaVerifyPinRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3656,7 +5467,7 @@ final class TfaApi
     /**
      * Create response for operation 'verifyTfaPhoneNumber'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerifyPinResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\TfaVerifyPinResponse|null
      */
     private function verifyTfaPhoneNumberResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3686,6 +5497,61 @@ final class TfaApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -3718,4 +5584,5 @@ final class TfaApi
 
         return $apiException;
     }
+
 }

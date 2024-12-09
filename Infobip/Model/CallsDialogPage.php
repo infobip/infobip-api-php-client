@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,20 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogPage implements ModelInterface
+class CallsDialogPage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogPage';
-
-    public const OPENAPI_FORMATS = [
-        'results' => null,
-        'paging' => null
-    ];
-
     /**
      * @param \Infobip\Model\CallsDialogResponse[] $results
      */
     public function __construct(
         protected ?array $results = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsPageInfo $paging = null,
+        protected ?\Infobip\Model\PageInfo $paging = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
      * @return \Infobip\Model\CallsDialogResponse[]|null
@@ -74,12 +49,12 @@ class CallsDialogPage implements ModelInterface
         return $this;
     }
 
-    public function getPaging(): \Infobip\Model\CallsPageInfo|null
+    public function getPaging(): \Infobip\Model\PageInfo|null
     {
         return $this->paging;
     }
 
-    public function setPaging(?\Infobip\Model\CallsPageInfo $paging): self
+    public function setPaging(?\Infobip\Model\PageInfo $paging): self
     {
         $this->paging = $paging;
         return $this;

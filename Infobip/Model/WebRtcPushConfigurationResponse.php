@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,95 +16,74 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WebRtcPushConfigurationResponse implements ModelInterface
+class WebRtcPushConfigurationResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WebRtcPushConfigurationResponse';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'applicationId' => null,
-        'ios' => null,
-        'android' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\NotBlank]
-
-    protected string $id,
-        #[Assert\NotBlank]
-
-    protected string $applicationId,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\WebRtcIosPushNotificationConfig $ios = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\WebRtcAndroidPushNotificationConfig $android = null,
+        protected ?string $id = null,
+        protected ?string $applicationId = null,
+        protected ?string $name = null,
+        protected ?bool $androidConfigured = null,
+        protected ?bool $iosConfigured = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getId(): string
+    public function getId(): string|null
     {
         return $this->id;
     }
 
-    public function setId(string $id): self
+    public function setId(?string $id): self
     {
         $this->id = $id;
         return $this;
     }
 
-    public function getApplicationId(): string
+    public function getApplicationId(): string|null
     {
         return $this->applicationId;
     }
 
-    public function setApplicationId(string $applicationId): self
+    public function setApplicationId(?string $applicationId): self
     {
         $this->applicationId = $applicationId;
         return $this;
     }
 
-    public function getIos(): \Infobip\Model\WebRtcIosPushNotificationConfig|null
+    public function getName(): string|null
     {
-        return $this->ios;
+        return $this->name;
     }
 
-    public function setIos(?\Infobip\Model\WebRtcIosPushNotificationConfig $ios): self
+    public function setName(?string $name): self
     {
-        $this->ios = $ios;
+        $this->name = $name;
         return $this;
     }
 
-    public function getAndroid(): \Infobip\Model\WebRtcAndroidPushNotificationConfig|null
+    public function getAndroidConfigured(): bool|null
     {
-        return $this->android;
+        return $this->androidConfigured;
     }
 
-    public function setAndroid(?\Infobip\Model\WebRtcAndroidPushNotificationConfig $android): self
+    public function setAndroidConfigured(?bool $androidConfigured): self
     {
-        $this->android = $android;
+        $this->androidConfigured = $androidConfigured;
+        return $this;
+    }
+
+    public function getIosConfigured(): bool|null
+    {
+        return $this->iosConfigured;
+    }
+
+    public function setIosConfigured(?bool $iosConfigured): self
+    {
+        $this->iosConfigured = $iosConfigured;
         return $this;
     }
 }

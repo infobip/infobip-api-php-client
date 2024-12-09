@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,45 +16,23 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppDocumentHeaderApiData extends WhatsAppHeaderApiData
 {
-    public const DISCRIMINATOR = 'format';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppDocumentHeaderApiData';
-
     public const FORMAT = 'DOCUMENT';
-
-    public const OPENAPI_FORMATS = [
-        'example' => null
-    ];
 
     /**
      */
     public function __construct(
         protected ?string $example = null,
     ) {
-        $modelDiscriminatorValue = 'DOCUMENT';
+        $modelDiscriminatorValue = self::FORMAT;
 
         parent::__construct(
             format: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getExample(): string|null
     {

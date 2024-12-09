@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class CallsFilePlayContent extends CallsPlayContent
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'CallsFilePlayContent';
-
     public const TYPE = 'FILE';
-
-    public const OPENAPI_FORMATS = [
-        'fileId' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $fileId,
+        protected string $fileId,
     ) {
-        $modelDiscriminatorValue = 'FILE';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFileId(): string
     {

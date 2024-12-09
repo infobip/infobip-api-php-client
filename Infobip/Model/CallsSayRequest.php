@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,57 +17,28 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsSayRequest implements ModelInterface
+class CallsSayRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsSayRequest';
-
-    public const OPENAPI_FORMATS = [
-        'text' => null,
-        'language' => null,
-        'speechRate' => 'double',
-        'loopCount' => 'int32',
-        'preferences' => null,
-        'stopOn' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $text,
+        protected string $text,
         #[Assert\NotBlank]
-    #[Assert\Choice(['ar','bn','bg','ca','zh-cn','zh-tw','hr','cs','da','nl','en','en-au','en-gb','en-ca','en-in','en-ie','en-gb-wls','epo','fil-ph','fi','fr','fr-ca','fr-ch','de','de-at','de-ch','el','gu','he','hi','hu','is','id','it','ja','kn','ko','ms','ml','no','pl','pt-pt','pt-br','ro','ru','sk','sl','es','es-gl','es-mx','sv','ta','te','th','tr','uk','vi','wls',])]
-
-    protected string $language,
+        protected string $language,
         protected ?float $speechRate = null,
         protected ?int $loopCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsVoicePreferences $preferences = null,
+        protected ?\Infobip\Model\CallsVoicePreferences $preferences = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDtmfTermination $stopOn = null,
+        protected ?\Infobip\Model\CallsTermination $stopOn = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getText(): string
     {
@@ -126,14 +95,31 @@ class CallsSayRequest implements ModelInterface
         return $this;
     }
 
-    public function getStopOn(): \Infobip\Model\CallsDtmfTermination|null
+    public function getStopOn(): \Infobip\Model\CallsTermination|null
     {
         return $this->stopOn;
     }
 
-    public function setStopOn(?\Infobip\Model\CallsDtmfTermination $stopOn): self
+    public function setStopOn(?\Infobip\Model\CallsTermination $stopOn): self
     {
         $this->stopOn = $stopOn;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Optional parameter to update a call's custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
         return $this;
     }
 }

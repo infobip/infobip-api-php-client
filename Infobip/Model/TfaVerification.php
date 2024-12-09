@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,24 +16,9 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class TfaVerification implements ModelInterface
+class TfaVerification
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'TfaVerification';
-
-    public const OPENAPI_FORMATS = [
-        'msisdn' => null,
-        'sentAt' => 'int64',
-        'verified' => null,
-        'verifiedAt' => 'int64'
-    ];
-
     /**
      */
     public function __construct(
@@ -44,19 +27,9 @@ class TfaVerification implements ModelInterface
         protected ?bool $verified = null,
         protected ?int $verifiedAt = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMsisdn(): string|null
     {

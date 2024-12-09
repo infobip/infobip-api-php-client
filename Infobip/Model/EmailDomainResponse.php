@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,25 +18,10 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailDomainResponse implements ModelInterface
+class EmailDomainResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailDomainResponse';
-
-    public const OPENAPI_FORMATS = [
-        'domainId' => 'int64',
-        'domainName' => null,
-        'active' => null,
-        'tracking' => null,
-        'dnsRecords' => null,
-        'blocked' => null,
-        'createdAt' => 'date-time'
-    ];
-
     /**
      * @param \Infobip\Model\EmailDnsRecordResponse[] $dnsRecords
      */
@@ -47,27 +30,16 @@ class EmailDomainResponse implements ModelInterface
         protected ?string $domainName = null,
         protected ?bool $active = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailTrackingResponse $tracking = null,
+        protected ?\Infobip\Model\EmailTrackingResponse $tracking = null,
         protected ?array $dnsRecords = null,
         protected ?bool $blocked = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $createdAt = null,
+        protected ?\DateTime $createdAt = null,
+        protected ?string $returnPathAddress = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getDomainId(): int|null
     {
@@ -149,6 +121,17 @@ class EmailDomainResponse implements ModelInterface
     public function setCreatedAt(?\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getReturnPathAddress(): string|null
+    {
+        return $this->returnPathAddress;
+    }
+
+    public function setReturnPathAddress(?string $returnPathAddress): self
+    {
+        $this->returnPathAddress = $returnPathAddress;
         return $this;
     }
 }

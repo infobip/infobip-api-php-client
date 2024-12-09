@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppTemplateDocumentHeaderContent extends WhatsAppTemplateHeaderContent
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplateDocumentHeaderContent';
-
     public const TYPE = 'DOCUMENT';
-
-    public const OPENAPI_FORMATS = [
-        'mediaUrl' => null,
-        'filename' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 2048)]
-    #[Assert\Length(min: 1)]
-
-    protected string $mediaUrl,
+        #[Assert\Length(max: 2048)]
+        #[Assert\Length(min: 1)]
+        protected string $mediaUrl,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 240)]
-    #[Assert\Length(min: 1)]
-
-    protected string $filename,
+        #[Assert\Length(max: 240)]
+        #[Assert\Length(min: 1)]
+        protected string $filename,
     ) {
-        $modelDiscriminatorValue = 'DOCUMENT';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMediaUrl(): string
     {

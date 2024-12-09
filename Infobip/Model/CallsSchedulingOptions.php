@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,43 +18,21 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsSchedulingOptions implements ModelInterface
+class CallsSchedulingOptions
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsSchedulingOptions';
-
-    public const OPENAPI_FORMATS = [
-        'startTime' => 'date-time',
-        'callingTimeWindow' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsTimeWindow $callingTimeWindow = null,
+        protected ?\Infobip\Model\DeliveryTimeWindow $callingTimeWindow = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getStartTime(): \DateTime|null
     {
@@ -69,12 +45,12 @@ class CallsSchedulingOptions implements ModelInterface
         return $this;
     }
 
-    public function getCallingTimeWindow(): \Infobip\Model\CallsTimeWindow|null
+    public function getCallingTimeWindow(): \Infobip\Model\DeliveryTimeWindow|null
     {
         return $this->callingTimeWindow;
     }
 
-    public function setCallingTimeWindow(?\Infobip\Model\CallsTimeWindow $callingTimeWindow): self
+    public function setCallingTimeWindow(?\Infobip\Model\DeliveryTimeWindow $callingTimeWindow): self
     {
         $this->callingTimeWindow = $callingTimeWindow;
         return $this;

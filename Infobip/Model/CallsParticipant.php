@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,54 +18,29 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsParticipant implements ModelInterface
+class CallsParticipant
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsParticipant';
-
-    public const OPENAPI_FORMATS = [
-        'callId' => null,
-        'endpoint' => null,
-        'state' => null,
-        'joinTime' => 'date-time',
-        'media' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\Length(max: 128)]
         protected ?string $callId = null,
-        #[Assert\Choice(['JOINING','JOINED',])]
-
-    protected ?string $state = null,
+        protected ?string $state = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $joinTime = null,
+        protected ?\DateTime $joinTime = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $leaveTime = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMediaProperties $media = null,
+        protected ?\Infobip\Model\CallsMediaProperties $media = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallId(): string|null
     {
@@ -110,6 +83,17 @@ class CallsParticipant implements ModelInterface
     public function setJoinTime(?\DateTime $joinTime): self
     {
         $this->joinTime = $joinTime;
+        return $this;
+    }
+
+    public function getLeaveTime(): \DateTime|null
+    {
+        return $this->leaveTime;
+    }
+
+    public function setLeaveTime(?\DateTime $leaveTime): self
+    {
+        $this->leaveTime = $leaveTime;
         return $this;
     }
 
