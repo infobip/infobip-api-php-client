@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,28 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class CallsSipEndpoint extends CallEndpoint
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'CallsSipEndpoint';
-
     public const TYPE = 'SIP';
-
-    public const OPENAPI_FORMATS = [
-        'username' => null,
-        'sipTrunkId' => null,
-        'sipTrunkGroupId' => null,
-        'customHeaders' => null
-    ];
 
     /**
      * @param array<string,string> $customHeaders
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $username,
-        protected ?string $sipTrunkId = null,
-        protected ?string $sipTrunkGroupId = null,
+        protected string $username,
+        #[Assert\NotBlank]
+        protected string $sipTrunkId,
         protected ?array $customHeaders = null,
     ) {
-        $modelDiscriminatorValue = 'SIP';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getUsername(): string
     {
@@ -78,25 +51,14 @@ class CallsSipEndpoint extends CallEndpoint
         return $this;
     }
 
-    public function getSipTrunkId(): string|null
+    public function getSipTrunkId(): string
     {
         return $this->sipTrunkId;
     }
 
-    public function setSipTrunkId(?string $sipTrunkId): self
+    public function setSipTrunkId(string $sipTrunkId): self
     {
         $this->sipTrunkId = $sipTrunkId;
-        return $this;
-    }
-
-    public function getSipTrunkGroupId(): string|null
-    {
-        return $this->sipTrunkGroupId;
-    }
-
-    public function setSipTrunkGroupId(?string $sipTrunkGroupId): self
-    {
-        $this->sipTrunkGroupId = $sipTrunkGroupId;
         return $this;
     }
 
@@ -109,7 +71,7 @@ class CallsSipEndpoint extends CallEndpoint
     }
 
     /**
-     * @param array<string,string>|null $customHeaders Custom headers.
+     * @param array<string,string>|null $customHeaders Custom headers. Only headers starting with `X-Client-` prefix will be propagated.
      */
     public function setCustomHeaders(?array $customHeaders): self
     {

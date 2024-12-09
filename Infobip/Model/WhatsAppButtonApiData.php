@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,55 +16,28 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
 #[DiscriminatorMap(typeProperty: "type", mapping: [
+    "CATALOG" => "\Infobip\Model\WhatsAppCatalogButtonApiData",
+    "COPY_CODE" => "\Infobip\Model\WhatsAppCopyCodeDefaultButtonApiData",
+    "FLOW" => "\Infobip\Model\WhatsAppFlowButtonApiData",
+    "MULTI_PRODUCT" => "\Infobip\Model\WhatsAppMultiProductButtonApiData",
     "PHONE_NUMBER" => "\Infobip\Model\WhatsAppPhoneNumberButtonApiData",
     "QUICK_REPLY" => "\Infobip\Model\WhatsAppQuickReplyButtonApiData",
     "URL" => "\Infobip\Model\WhatsAppUrlButtonApiData",
-    "WhatsAppPhoneNumberButtonApiData" => "\Infobip\Model\WhatsAppPhoneNumberButtonApiData",
-    "WhatsAppQuickReplyButtonApiData" => "\Infobip\Model\WhatsAppQuickReplyButtonApiData",
-    "WhatsAppUrlButtonApiData" => "\Infobip\Model\WhatsAppUrlButtonApiData",
 ])]
-class WhatsAppButtonApiData implements ModelInterface
+
+class WhatsAppButtonApiData
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppButtonApiData';
-
-    public const OPENAPI_FORMATS = [
-        'type' => null,
-        'text' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\NotBlank]
-    #[Assert\Length(max: 200)]
-    #[Assert\Length(min: 0)]
-
-    protected string $text,
-        #[Assert\Choice(['PHONE_NUMBER','URL','QUICK_REPLY',])]
-
-    protected ?string $type = null,
+        protected ?string $type = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getType(): mixed
     {
@@ -76,17 +47,6 @@ class WhatsAppButtonApiData implements ModelInterface
     public function setType($type): self
     {
         $this->type = $type;
-        return $this;
-    }
-
-    public function getText(): string
-    {
-        return $this->text;
-    }
-
-    public function setText(string $text): self
-    {
-        $this->text = $text;
         return $this;
     }
 }

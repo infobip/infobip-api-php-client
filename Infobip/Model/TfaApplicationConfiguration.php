@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,26 +16,9 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class TfaApplicationConfiguration implements ModelInterface
+class TfaApplicationConfiguration
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'TfaApplicationConfiguration';
-
-    public const OPENAPI_FORMATS = [
-        'allowMultiplePinVerifications' => null,
-        'pinAttempts' => 'int32',
-        'pinTimeToLive' => null,
-        'sendPinPerApplicationLimit' => null,
-        'sendPinPerPhoneNumberLimit' => null,
-        'verifyPinLimit' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -48,19 +29,9 @@ class TfaApplicationConfiguration implements ModelInterface
         protected ?string $sendPinPerPhoneNumberLimit = '3/1d',
         protected ?string $verifyPinLimit = '1/3s',
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAllowMultiplePinVerifications(): bool|null
     {

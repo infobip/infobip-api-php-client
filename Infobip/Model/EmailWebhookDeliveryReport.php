@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,67 +18,34 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailWebhookDeliveryReport implements ModelInterface
+class EmailWebhookDeliveryReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailWebhookDeliveryReport';
-
-    public const OPENAPI_FORMATS = [
-        'bulkId' => null,
-        'messageId' => null,
-        'to' => null,
-        'sentAt' => 'date-time',
-        'doneAt' => 'date-time',
-        'smsCount' => 'int32',
-        'callbackData' => null,
-        'price' => null,
-        'status' => null,
-        'error' => null,
-        'browserLink' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $bulkId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessagePrice $price = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessageStatus $status = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessageError $error = null,
         protected ?string $messageId = null,
-        protected ?string $to = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $doneAt = null,
+        protected ?\DateTime $doneAt = null,
         protected ?int $smsCount = null,
-        protected ?string $callbackData = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\EmailWebhookPrice $price = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageStatus $status = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessageError $error = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $sentAt = null,
         protected ?string $browserLink = null,
+        protected ?string $sendingIp = null,
+        protected ?string $callbackData = null,
+        protected ?string $to = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getBulkId(): string|null
     {
@@ -93,78 +58,12 @@ class EmailWebhookDeliveryReport implements ModelInterface
         return $this;
     }
 
-    public function getMessageId(): string|null
-    {
-        return $this->messageId;
-    }
-
-    public function setMessageId(?string $messageId): self
-    {
-        $this->messageId = $messageId;
-        return $this;
-    }
-
-    public function getTo(): string|null
-    {
-        return $this->to;
-    }
-
-    public function setTo(?string $to): self
-    {
-        $this->to = $to;
-        return $this;
-    }
-
-    public function getSentAt(): \DateTime|null
-    {
-        return $this->sentAt;
-    }
-
-    public function setSentAt(?\DateTime $sentAt): self
-    {
-        $this->sentAt = $sentAt;
-        return $this;
-    }
-
-    public function getDoneAt(): \DateTime|null
-    {
-        return $this->doneAt;
-    }
-
-    public function setDoneAt(?\DateTime $doneAt): self
-    {
-        $this->doneAt = $doneAt;
-        return $this;
-    }
-
-    public function getSmsCount(): int|null
-    {
-        return $this->smsCount;
-    }
-
-    public function setSmsCount(?int $smsCount): self
-    {
-        $this->smsCount = $smsCount;
-        return $this;
-    }
-
-    public function getCallbackData(): string|null
-    {
-        return $this->callbackData;
-    }
-
-    public function setCallbackData(?string $callbackData): self
-    {
-        $this->callbackData = $callbackData;
-        return $this;
-    }
-
-    public function getPrice(): \Infobip\Model\EmailWebhookPrice|null
+    public function getPrice(): \Infobip\Model\MessagePrice|null
     {
         return $this->price;
     }
 
-    public function setPrice(?\Infobip\Model\EmailWebhookPrice $price): self
+    public function setPrice(?\Infobip\Model\MessagePrice $price): self
     {
         $this->price = $price;
         return $this;
@@ -192,6 +91,50 @@ class EmailWebhookDeliveryReport implements ModelInterface
         return $this;
     }
 
+    public function getMessageId(): string|null
+    {
+        return $this->messageId;
+    }
+
+    public function setMessageId(?string $messageId): self
+    {
+        $this->messageId = $messageId;
+        return $this;
+    }
+
+    public function getDoneAt(): \DateTime|null
+    {
+        return $this->doneAt;
+    }
+
+    public function setDoneAt(?\DateTime $doneAt): self
+    {
+        $this->doneAt = $doneAt;
+        return $this;
+    }
+
+    public function getSmsCount(): int|null
+    {
+        return $this->smsCount;
+    }
+
+    public function setSmsCount(?int $smsCount): self
+    {
+        $this->smsCount = $smsCount;
+        return $this;
+    }
+
+    public function getSentAt(): \DateTime|null
+    {
+        return $this->sentAt;
+    }
+
+    public function setSentAt(?\DateTime $sentAt): self
+    {
+        $this->sentAt = $sentAt;
+        return $this;
+    }
+
     public function getBrowserLink(): string|null
     {
         return $this->browserLink;
@@ -200,6 +143,39 @@ class EmailWebhookDeliveryReport implements ModelInterface
     public function setBrowserLink(?string $browserLink): self
     {
         $this->browserLink = $browserLink;
+        return $this;
+    }
+
+    public function getSendingIp(): string|null
+    {
+        return $this->sendingIp;
+    }
+
+    public function setSendingIp(?string $sendingIp): self
+    {
+        $this->sendingIp = $sendingIp;
+        return $this;
+    }
+
+    public function getCallbackData(): string|null
+    {
+        return $this->callbackData;
+    }
+
+    public function setCallbackData(?string $callbackData): self
+    {
+        $this->callbackData = $callbackData;
+        return $this;
+    }
+
+    public function getTo(): string|null
+    {
+        return $this->to;
+    }
+
+    public function setTo(?string $to): self
+    {
+        $this->to = $to;
         return $this;
     }
 }

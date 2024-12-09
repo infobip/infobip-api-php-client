@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,23 +17,9 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsPreview implements ModelInterface
+class SmsPreview
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsPreview';
-
-    public const OPENAPI_FORMATS = [
-        'textPreview' => null,
-        'messageCount' => 'int32',
-        'charactersRemaining' => 'int32',
-        'configuration' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -43,22 +27,11 @@ class SmsPreview implements ModelInterface
         protected ?int $messageCount = null,
         protected ?int $charactersRemaining = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsLanguageConfiguration $configuration = null,
+        protected ?\Infobip\Model\SmsLanguageConfiguration $configuration = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getTextPreview(): string|null
     {

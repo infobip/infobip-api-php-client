@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,58 +16,21 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsSingleMessageStatus implements ModelInterface
+class CallsSingleMessageStatus
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsSingleMessageStatus';
-
-    public const OPENAPI_FORMATS = [
-        'description' => null,
-        'groupId' => 'int32',
-        'groupName' => null,
-        'id' => 'int32',
-        'name' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $description = null,
         protected ?int $groupId = null,
         protected ?string $groupName = null,
         protected ?int $id = null,
         protected ?string $name = null,
+        protected ?string $description = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getDescription(): string|null
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
-        return $this;
-    }
 
     public function getGroupId(): int|null
     {
@@ -112,6 +73,17 @@ class CallsSingleMessageStatus implements ModelInterface
     public function setName(?string $name): self
     {
         $this->name = $name;
+        return $this;
+    }
+
+    public function getDescription(): string|null
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
         return $this;
     }
 }

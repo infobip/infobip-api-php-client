@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,32 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsDestination implements ModelInterface
+class SmsDestination
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsDestination';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'to' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 50)]
-    #[Assert\Length(min: 0)]
-
-    protected string $to,
+        #[Assert\Length(max: 64)]
+        #[Assert\Length(min: 0)]
+        protected string $to,
         protected ?string $messageId = null,
+        protected ?int $networkId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getTo(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->to;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setTo(string $to): self
     {
-        return self::DISCRIMINATOR;
+        $this->to = $to;
+        return $this;
     }
 
     public function getMessageId(): string|null
@@ -69,14 +56,14 @@ class SmsDestination implements ModelInterface
         return $this;
     }
 
-    public function getTo(): string
+    public function getNetworkId(): int|null
     {
-        return $this->to;
+        return $this->networkId;
     }
 
-    public function setTo(string $to): self
+    public function setNetworkId(?int $networkId): self
     {
-        $this->to = $to;
+        $this->networkId = $networkId;
         return $this;
     }
 }

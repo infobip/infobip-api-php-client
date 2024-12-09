@@ -4,7 +4,7 @@
 
 /**
  * MmsApi
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -36,7 +36,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\DeprecationChecker;
@@ -84,15 +83,17 @@ final class MmsApi
      *
      * Get inbound MMS messages
      *
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|int $limit Maximum number of delivery reports that will be returned. (optional)
+     * @param null|string $applicationId [Application](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#application) identifier used for filtering. (optional)
+     * @param null|string $entityId [Entity](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#entity) identifier used for filtering. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\MmsInboundReportResponse
+     * @return \Infobip\Model\MmsInboundReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
-    public function getInboundMmsMessages(?int $limit = null)
+    public function getInboundMmsMessages(?int $limit = null, ?string $applicationId = null, ?string $entityId = null)
     {
-        $request = $this->getInboundMmsMessagesRequest($limit);
+        $request = $this->getInboundMmsMessagesRequest($limit, $applicationId, $entityId);
 
         try {
             try {
@@ -119,13 +120,15 @@ final class MmsApi
      *
      * Get inbound MMS messages
      *
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|int $limit Maximum number of delivery reports that will be returned. (optional)
+     * @param null|string $applicationId [Application](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#application) identifier used for filtering. (optional)
+     * @param null|string $entityId [Entity](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#entity) identifier used for filtering. (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function getInboundMmsMessagesAsync(?int $limit = null): PromiseInterface
+    public function getInboundMmsMessagesAsync(?int $limit = null, ?string $applicationId = null, ?string $entityId = null): PromiseInterface
     {
-        $request = $this->getInboundMmsMessagesRequest($limit);
+        $request = $this->getInboundMmsMessagesRequest($limit, $applicationId, $entityId);
 
         return $this
             ->client
@@ -155,29 +158,32 @@ final class MmsApi
     /**
      * Create request for operation 'getInboundMmsMessages'
      *
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|int $limit Maximum number of delivery reports that will be returned. (optional)
+     * @param null|string $applicationId [Application](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#application) identifier used for filtering. (optional)
+     * @param null|string $entityId [Entity](https://www.infobip.com/docs/cpaas-x/application-and-entity-management#entity) identifier used for filtering. (optional)
      *
      * @throws InvalidArgumentException
      */
-    private function getInboundMmsMessagesRequest(?int $limit = null): Request
+    private function getInboundMmsMessagesRequest(?int $limit = null, ?string $applicationId = null, ?string $entityId = null): Request
     {
         $allData = [
              'limit' => $limit,
+             'applicationId' => $applicationId,
+             'entityId' => $entityId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'limit' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                    'applicationId' => [
+                    ],
+                    'entityId' => [
+                    ],
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/mms/1/inbox/reports';
         $formParams = [];
         $queryParams = [];
@@ -189,15 +195,22 @@ final class MmsApi
             $queryParams['limit'] = $limit;
         }
 
+        // query params
+        if ($applicationId !== null) {
+            $queryParams['applicationId'] = $applicationId;
+        }
+
+        // query params
+        if ($entityId !== null) {
+            $queryParams['entityId'] = $entityId;
+        }
+
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -263,7 +276,7 @@ final class MmsApi
     /**
      * Create response for operation 'getInboundMmsMessages'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\MmsInboundReportResponse|null
+     * @return \Infobip\Model\MmsInboundReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getInboundMmsMessagesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -295,6 +308,39 @@ final class MmsApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
@@ -302,19 +348,22 @@ final class MmsApi
     /**
      * Operation getOutboundMmsMessageDeliveryReports
      *
-     * Get outbound MMS message delivery reports
+     * Get MMS delivery reports
      *
-     * @param null|string $bulkId ID of bulk for which a delivery report is requested. (optional)
-     * @param null|string $messageId ID of MMS for which a delivery report is requested. (optional)
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\MmsReportResponse
+     * @return \Infobip\Model\MmsReportResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
      */
-    public function getOutboundMmsMessageDeliveryReports(?string $bulkId = null, ?string $messageId = null, ?int $limit = null)
+    public function getOutboundMmsMessageDeliveryReports(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null)
     {
-        $request = $this->getOutboundMmsMessageDeliveryReportsRequest($bulkId, $messageId, $limit);
+        $request = $this->getOutboundMmsMessageDeliveryReportsRequest($bulkId, $messageId, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         try {
             try {
@@ -339,17 +388,20 @@ final class MmsApi
     /**
      * Operation getOutboundMmsMessageDeliveryReportsAsync
      *
-     * Get outbound MMS message delivery reports
+     * Get MMS delivery reports
      *
-     * @param null|string $bulkId ID of bulk for which a delivery report is requested. (optional)
-     * @param null|string $messageId ID of MMS for which a delivery report is requested. (optional)
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function getOutboundMmsMessageDeliveryReportsAsync(?string $bulkId = null, ?string $messageId = null, ?int $limit = null): PromiseInterface
+    public function getOutboundMmsMessageDeliveryReportsAsync(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null): PromiseInterface
     {
-        $request = $this->getOutboundMmsMessageDeliveryReportsRequest($bulkId, $messageId, $limit);
+        $request = $this->getOutboundMmsMessageDeliveryReportsRequest($bulkId, $messageId, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         return $this
             ->client
@@ -379,38 +431,46 @@ final class MmsApi
     /**
      * Create request for operation 'getOutboundMmsMessageDeliveryReports'
      *
-     * @param null|string $bulkId ID of bulk for which a delivery report is requested. (optional)
-     * @param null|string $messageId ID of MMS for which a delivery report is requested. (optional)
-     * @param null|int $limit Maximal number of delivery reports that will be returned. (optional)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws InvalidArgumentException
      */
-    private function getOutboundMmsMessageDeliveryReportsRequest(?string $bulkId = null, ?string $messageId = null, ?int $limit = null): Request
+    private function getOutboundMmsMessageDeliveryReportsRequest(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null): Request
     {
         $allData = [
              'bulkId' => $bulkId,
              'messageId' => $messageId,
              'limit' => $limit,
+             'entityId' => $entityId,
+             'applicationId' => $applicationId,
+             'campaignReferenceId' => $campaignReferenceId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'bulkId' => [
                     ],
                     'messageId' => [
                     ],
                     'limit' => [
+                        new Assert\LessThanOrEqual(1000),
                     ],
-                ],
-                $validationConstraints
-            );
+                    'entityId' => [
+                    ],
+                    'applicationId' => [
+                    ],
+                    'campaignReferenceId' => [
+                    ],
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
-        $resourcePath = '/mms/1/reports';
+        $resourcePath = '/mms/2/reports';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -431,15 +491,27 @@ final class MmsApi
             $queryParams['limit'] = $limit;
         }
 
+        // query params
+        if ($entityId !== null) {
+            $queryParams['entityId'] = $entityId;
+        }
+
+        // query params
+        if ($applicationId !== null) {
+            $queryParams['applicationId'] = $applicationId;
+        }
+
+        // query params
+        if ($campaignReferenceId !== null) {
+            $queryParams['campaignReferenceId'] = $campaignReferenceId;
+        }
+
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -505,7 +577,7 @@ final class MmsApi
     /**
      * Create response for operation 'getOutboundMmsMessageDeliveryReports'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\MmsReportResponse|null
+     * @return \Infobip\Model\MmsReportResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
      */
     private function getOutboundMmsMessageDeliveryReportsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -537,30 +609,86 @@ final class MmsApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
 
     /**
-     * Operation sendMmsMessage
+     * Operation getOutboundMmsMessageLogs
      *
-     * Send MMS message
+     * Get MMS message logs
      *
-     * @param \Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest mmsAdvancedRequest (required)
+     * @param null|string $mcc Filter logs by mobile country code. (optional)
+     * @param null|string $mnc Filter logs by mobile network code. (optional)
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\MmsSendResult|\Infobip\Model\ApiException|object|object
+     * @return \Infobip\Model\MmsLogsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
      */
-    public function sendMmsMessage(\Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest)
+    public function getOutboundMmsMessageLogs(?string $mcc = null, ?string $mnc = null, ?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null)
     {
-        $request = $this->sendMmsMessageRequest($mmsAdvancedRequest);
+        $request = $this->getOutboundMmsMessageLogsRequest($mcc, $mnc, $sender, $destination, $bulkId, $messageId, $generalStatus, $sentSince, $sentUntil, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         try {
             try {
                 $response = $this->client->send($request);
                 $this->deprecationChecker->check($request, $response);
-                return $this->sendMmsMessageResponse($response, $request->getUri());
+                return $this->getOutboundMmsMessageLogsResponse($response, $request->getUri());
             } catch (GuzzleException $exception) {
                 $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
 
@@ -572,22 +700,34 @@ final class MmsApi
                 );
             }
         } catch (ApiException $exception) {
-            throw $this->sendMmsMessageApiException($exception);
+            throw $this->getOutboundMmsMessageLogsApiException($exception);
         }
     }
 
     /**
-     * Operation sendMmsMessageAsync
+     * Operation getOutboundMmsMessageLogsAsync
      *
-     * Send MMS message
+     * Get MMS message logs
      *
-     * @param \Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest (required)
+     * @param null|string $mcc Filter logs by mobile country code. (optional)
+     * @param null|string $mnc Filter logs by mobile network code. (optional)
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function sendMmsMessageAsync(\Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest): PromiseInterface
+    public function getOutboundMmsMessageLogsAsync(?string $mcc = null, ?string $mnc = null, ?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null): PromiseInterface
     {
-        $request = $this->sendMmsMessageRequest($mmsAdvancedRequest);
+        $request = $this->getOutboundMmsMessageLogsRequest($mcc, $mnc, $sender, $destination, $bulkId, $messageId, $generalStatus, $sentSince, $sentUntil, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         return $this
             ->client
@@ -595,7 +735,7 @@ final class MmsApi
             ->then(
                 function ($response) use ($request) {
                     $this->deprecationChecker->check($request, $response);
-                    return $this->sendMmsMessageResponse($response, $request->getUri());
+                    return $this->getOutboundMmsMessageLogsResponse($response, $request->getUri());
                 },
                 function (GuzzleException $exception) {
                     $statusCode = $exception->getCode();
@@ -609,39 +749,399 @@ final class MmsApi
                         ($response !== null) ? (string)$response->getBody() : null
                     );
 
-                    throw $this->sendMmsMessageApiException($exception);
+                    throw $this->getOutboundMmsMessageLogsApiException($exception);
                 }
             );
     }
 
     /**
-     * Create request for operation 'sendMmsMessage'
+     * Create request for operation 'getOutboundMmsMessageLogs'
      *
-     * @param \Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest (required)
+     * @param null|string $mcc Filter logs by mobile country code. (optional)
+     * @param null|string $mnc Filter logs by mobile network code. (optional)
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
      *
      * @throws InvalidArgumentException
      */
-    private function sendMmsMessageRequest(\Infobip\Model\MmsAdvancedRequest $mmsAdvancedRequest): Request
+    private function getOutboundMmsMessageLogsRequest(?string $mcc = null, ?string $mnc = null, ?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null): Request
     {
         $allData = [
-             'mmsAdvancedRequest' => $mmsAdvancedRequest,
+             'mcc' => $mcc,
+             'mnc' => $mnc,
+             'sender' => $sender,
+             'destination' => $destination,
+             'bulkId' => $bulkId,
+             'messageId' => $messageId,
+             'generalStatus' => $generalStatus,
+             'sentSince' => $sentSince,
+             'sentUntil' => $sentUntil,
+             'limit' => $limit,
+             'entityId' => $entityId,
+             'applicationId' => $applicationId,
+             'campaignReferenceId' => $campaignReferenceId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                    'mmsAdvancedRequest' => [
-                        new Assert\NotNull(),
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'mcc' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                    'mnc' => [
+                    ],
+                    'sender' => [
+                    ],
+                    'destination' => [
+                    ],
+                    'bulkId' => [
+                    ],
+                    'messageId' => [
+                    ],
+                    'generalStatus' => [
+                    ],
+                    'sentSince' => [
+                    ],
+                    'sentUntil' => [
+                    ],
+                    'limit' => [
+                        new Assert\LessThanOrEqual(1000),
+                    ],
+                    'entityId' => [
+                    ],
+                    'applicationId' => [
+                    ],
+                    'campaignReferenceId' => [
+                    ],
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/mms/2/logs';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
 
-        $resourcePath = '/mms/1/advanced';
+        // query params
+        if ($mcc !== null) {
+            $queryParams['mcc'] = $mcc;
+        }
+
+        // query params
+        if ($mnc !== null) {
+            $queryParams['mnc'] = $mnc;
+        }
+
+        // query params
+        if ($sender !== null) {
+            $queryParams['sender'] = $sender;
+        }
+
+        // query params
+        if ($destination !== null) {
+            $queryParams['destination'] = $destination;
+        }
+
+        // query params
+        if ($bulkId !== null) {
+            $queryParams['bulkId'] = $bulkId;
+        }
+
+        // query params
+        if ($messageId !== null) {
+            $queryParams['messageId'] = $messageId;
+        }
+
+        // query params
+        if ($generalStatus !== null) {
+            $queryParams['generalStatus'] = $generalStatus;
+        }
+
+        // query params
+        if ($sentSince !== null) {
+            $queryParams['sentSince'] = $sentSince;
+        }
+
+        // query params
+        if ($sentUntil !== null) {
+            $queryParams['sentUntil'] = $sentUntil;
+        }
+
+        // query params
+        if ($limit !== null) {
+            $queryParams['limit'] = $limit;
+        }
+
+        // query params
+        if ($entityId !== null) {
+            $queryParams['entityId'] = $entityId;
+        }
+
+        // query params
+        if ($applicationId !== null) {
+            $queryParams['applicationId'] = $applicationId;
+        }
+
+        // query params
+        if ($campaignReferenceId !== null) {
+            $queryParams['campaignReferenceId'] = $campaignReferenceId;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getOutboundMmsMessageLogs'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\MmsLogsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getOutboundMmsMessageLogsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\MmsLogsResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getOutboundMmsMessageLogs'
+     */
+    private function getOutboundMmsMessageLogsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendMmsMessages
+     *
+     * Send MMS messages
+     *
+     * @param \Infobip\Model\MmsRequest $mmsRequest mmsRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\MessageResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function sendMmsMessages(\Infobip\Model\MmsRequest $mmsRequest)
+    {
+        $request = $this->sendMmsMessagesRequest($mmsRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendMmsMessagesResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendMmsMessagesApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendMmsMessagesAsync
+     *
+     * Send MMS messages
+     *
+     * @param \Infobip\Model\MmsRequest $mmsRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendMmsMessagesAsync(\Infobip\Model\MmsRequest $mmsRequest): PromiseInterface
+    {
+        $request = $this->sendMmsMessagesRequest($mmsRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendMmsMessagesResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendMmsMessagesApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendMmsMessages'
+     *
+     * @param \Infobip\Model\MmsRequest $mmsRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendMmsMessagesRequest(\Infobip\Model\MmsRequest $mmsRequest): Request
+    {
+        $allData = [
+             'mmsRequest' => $mmsRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'mmsRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/mms/2/messages';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -653,13 +1153,11 @@ final class MmsApi
         ];
 
         // for model (json/xml)
-        if (isset($mmsAdvancedRequest)) {
+        if (isset($mmsRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($mmsAdvancedRequest)
-                : $mmsAdvancedRequest;
+                ? $this->objectSerializer->serialize($mmsRequest)
+                : $mmsRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -723,11 +1221,11 @@ final class MmsApi
     }
 
     /**
-     * Create response for operation 'sendMmsMessage'
+     * Create response for operation 'sendMmsMessages'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\MmsSendResult|\Infobip\Model\ApiException|object|object|null
+     * @return \Infobip\Model\MessageResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
      */
-    private function sendMmsMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    private function sendMmsMessagesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -745,33 +1243,22 @@ final class MmsApi
         $responseResult = null;
 
         if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\MmsSendResult', $responseHeaders);
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\MessageResponse', $responseHeaders);
         }
         return $responseResult;
     }
 
     /**
-     * Adapt given ApiException for operation 'sendMmsMessage'
+     * Adapt given ApiException for operation 'sendMmsMessages'
      */
-    private function sendMmsMessageApiException(ApiException $apiException): ApiException
+    private function sendMmsMessagesApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
         if ($statusCode === 400) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -782,7 +1269,40 @@ final class MmsApi
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -806,7 +1326,7 @@ final class MmsApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|object|\Infobip\Model\MmsUploadBinaryResult|object
+     * @return \Infobip\Model\MmsUploadBinaryResult|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function uploadBinary(string $xContentId, string $xMediaType, \SplFileObject $body, int $xValidityPeriodMinutes = 69120)
     {
@@ -892,11 +1412,8 @@ final class MmsApi
              'xValidityPeriodMinutes' => $xValidityPeriodMinutes,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'xContentId' => [
                         new Assert\NotBlank(),
                     ],
@@ -908,12 +1425,10 @@ final class MmsApi
                     ],
                     'xValidityPeriodMinutes' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/mms/1/content';
         $formParams = [];
         $queryParams = [];
@@ -946,8 +1461,6 @@ final class MmsApi
                 ? $this->objectSerializer->serialize($body)
                 : $body;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1013,7 +1526,7 @@ final class MmsApi
     /**
      * Create response for operation 'uploadBinary'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|object|\Infobip\Model\MmsUploadBinaryResult|object|null
+     * @return \Infobip\Model\MmsUploadBinaryResult|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function uploadBinaryResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1056,10 +1569,10 @@ final class MmsApi
 
             return $apiException;
         }
-        if ($statusCode === 500) {
+        if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiException',
                 $apiException->getResponseHeaders()
             );
 
@@ -1067,10 +1580,21 @@ final class MmsApi
 
             return $apiException;
         }
-        if ($statusCode === 401) {
+        if ($statusCode === 403) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
                 $apiException->getResponseHeaders()
             );
 
@@ -1081,4 +1605,5 @@ final class MmsApi
 
         return $apiException;
     }
+
 }

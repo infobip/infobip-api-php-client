@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,50 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsRetry implements ModelInterface
+class CallsRetry
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsRetry';
-
-    public const OPENAPI_FORMATS = [
-        'maxCount' => 'int32',
-        'maxPeriod' => 'int32',
-        'minPeriod' => 'int32'
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\LessThan(32767)]
-    #[Assert\GreaterThan(-32768)]
-
-    protected int $maxCount,
+        protected int $maxCount,
         #[Assert\NotBlank]
-
-    protected int $maxPeriod,
+        protected int $maxPeriod,
         #[Assert\NotBlank]
-
-    protected int $minPeriod,
+        protected int $minPeriod,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMaxCount(): int
     {

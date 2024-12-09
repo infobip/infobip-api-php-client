@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -25,11 +23,13 @@ final class CallsPlayContentType implements EnumInterface
     public const FILE = 'FILE';
     public const URL = 'URL';
     public const RECORDING = 'RECORDING';
+    public const TEXT = 'TEXT';
 
     public const ALLOWED_VALUES = [
         'FILE',
         'URL',
         'RECORDING',
+        'TEXT',
     ];
 
     private string $value;
@@ -62,6 +62,11 @@ final class CallsPlayContentType implements EnumInterface
     public static function RECORDING(): CallsPlayContentType
     {
         return new self('RECORDING');
+    }
+
+    public static function TEXT(): CallsPlayContentType
+    {
+        return new self('TEXT');
     }
 
     public function __toString(): string

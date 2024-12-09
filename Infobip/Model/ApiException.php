@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,47 +17,25 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class ApiException implements ModelInterface
+class ApiException
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'ApiException';
-
-    public const OPENAPI_FORMATS = [
-        'requestError' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\InfobipApiRequestError $requestError = null,
+        protected ?\Infobip\Model\ApiRequestError $requestError = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getRequestError(): \Infobip\Model\InfobipApiRequestError|null
+    public function getRequestError(): \Infobip\Model\ApiRequestError|null
     {
         return $this->requestError;
     }
 
-    public function setRequestError(?\Infobip\Model\InfobipApiRequestError $requestError): self
+    public function setRequestError(?\Infobip\Model\ApiRequestError $requestError): self
     {
         $this->requestError = $requestError;
         return $this;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,47 +17,26 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class TfaIndiaDltOptions implements ModelInterface
+class TfaIndiaDltOptions
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'TfaIndiaDltOptions';
-
-    public const OPENAPI_FORMATS = [
-        'contentTemplateId' => null,
-        'principalEntityId' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 30)]
-    #[Assert\Length(min: 0)]
-
-    protected string $principalEntityId,
         #[Assert\Length(max: 30)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $contentTemplateId = null,
+        #[Assert\Length(min: 0)]
+        protected string $principalEntityId,
+        #[Assert\Length(max: 30)]
+        #[Assert\Length(min: 0)]
+        protected ?string $contentTemplateId = null,
+        #[Assert\Length(max: 255)]
+        #[Assert\Length(min: 0)]
+        protected ?string $teleMarketerId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getContentTemplateId(): string|null
     {
@@ -80,6 +57,17 @@ class TfaIndiaDltOptions implements ModelInterface
     public function setPrincipalEntityId(string $principalEntityId): self
     {
         $this->principalEntityId = $principalEntityId;
+        return $this;
+    }
+
+    public function getTeleMarketerId(): string|null
+    {
+        return $this->teleMarketerId;
+    }
+
+    public function setTeleMarketerId(?string $teleMarketerId): self
+    {
+        $this->teleMarketerId = $teleMarketerId;
         return $this;
     }
 }

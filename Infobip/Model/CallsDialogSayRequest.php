@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDialogSayRequest implements ModelInterface
+class CallsDialogSayRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDialogSayRequest';
-
-    public const OPENAPI_FORMATS = [
-        'text' => null,
-        'language' => null,
-        'speechRate' => 'double',
-        'loopCount' => 'int32',
-        'preferences' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $text,
+        protected string $text,
         #[Assert\NotBlank]
-    #[Assert\Choice(['ar','bn','bg','ca','zh-cn','zh-tw','hr','cs','da','nl','en','en-au','en-gb','en-ca','en-in','en-ie','en-gb-wls','epo','fil-ph','fi','fr','fr-ca','fr-ch','de','de-at','de-ch','el','gu','he','hi','hu','is','id','it','ja','kn','ko','ms','ml','no','pl','pt-pt','pt-br','ro','ru','sk','sl','es','es-gl','es-mx','sv','ta','te','th','tr','uk','vi','wls',])]
-
-    protected string $language,
+        protected string $language,
         protected ?float $speechRate = null,
         protected ?int $loopCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsVoicePreferences $preferences = null,
+        protected ?\Infobip\Model\CallsVoicePreferences $preferences = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getText(): string
     {

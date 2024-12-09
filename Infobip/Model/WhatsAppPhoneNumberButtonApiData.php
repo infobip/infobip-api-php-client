@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,51 +17,38 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppPhoneNumberButtonApiData extends WhatsAppButtonApiData
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppPhoneNumberButtonApiData';
-
     public const TYPE = 'PHONE_NUMBER';
-
-    public const OPENAPI_FORMATS = [
-        'phoneNumber' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 200)]
-    #[Assert\Length(min: 0)]
-
-    protected string $text,
+        #[Assert\Length(max: 25)]
+        #[Assert\Length(min: 0)]
+        protected string $text,
         #[Assert\NotBlank]
-
-    protected string $phoneNumber,
+        protected string $phoneNumber,
     ) {
-        $modelDiscriminatorValue = 'PHONE_NUMBER';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
-            text: $text,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getText(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->text;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setText(string $text): self
     {
-        return self::DISCRIMINATOR;
+        $this->text = $text;
+        return $this;
     }
 
     public function getPhoneNumber(): string

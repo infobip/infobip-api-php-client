@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,25 +16,11 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookSeenReport implements ModelInterface
+class WhatsAppWebhookSeenReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookSeenReport';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'from' => null,
-        'to' => null,
-        'sentAt' => 'date-time',
-        'seenAt' => 'date-time'
-    ];
-
     /**
      */
     public function __construct(
@@ -44,25 +28,15 @@ class WhatsAppWebhookSeenReport implements ModelInterface
         protected ?string $from = null,
         protected ?string $to = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $sentAt = null,
+        protected ?\DateTime $sentAt = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $seenAt = null,
+        protected ?\DateTime $seenAt = null,
+        protected ?string $applicationId = null,
+        protected ?string $entityId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMessageId(): string|null
     {
@@ -116,6 +90,28 @@ class WhatsAppWebhookSeenReport implements ModelInterface
     public function setSeenAt(?\DateTime $seenAt): self
     {
         $this->seenAt = $seenAt;
+        return $this;
+    }
+
+    public function getApplicationId(): string|null
+    {
+        return $this->applicationId;
+    }
+
+    public function setApplicationId(?string $applicationId): self
+    {
+        $this->applicationId = $applicationId;
+        return $this;
+    }
+
+    public function getEntityId(): string|null
+    {
+        return $this->entityId;
+    }
+
+    public function setEntityId(?string $entityId): self
+    {
+        $this->entityId = $entityId;
         return $this;
     }
 }

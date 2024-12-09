@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,10 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
 #[DiscriminatorMap(typeProperty: "format", mapping: [
@@ -30,41 +24,18 @@ use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
     "LOCATION" => "\Infobip\Model\WhatsAppLocationHeaderApiData",
     "TEXT" => "\Infobip\Model\WhatsAppTextHeaderApiData",
     "VIDEO" => "\Infobip\Model\WhatsAppVideoHeaderApiData",
-    "WhatsAppDocumentHeaderApiData" => "\Infobip\Model\WhatsAppDocumentHeaderApiData",
-    "WhatsAppImageHeaderApiData" => "\Infobip\Model\WhatsAppImageHeaderApiData",
-    "WhatsAppLocationHeaderApiData" => "\Infobip\Model\WhatsAppLocationHeaderApiData",
-    "WhatsAppTextHeaderApiData" => "\Infobip\Model\WhatsAppTextHeaderApiData",
-    "WhatsAppVideoHeaderApiData" => "\Infobip\Model\WhatsAppVideoHeaderApiData",
 ])]
-class WhatsAppHeaderApiData implements ModelInterface
+
+class WhatsAppHeaderApiData
 {
-    public const DISCRIMINATOR = 'format';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppHeaderApiData';
-
-    public const OPENAPI_FORMATS = [
-        'format' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\Choice(['TEXT','IMAGE','VIDEO','DOCUMENT','LOCATION',])]
-
-    protected ?string $format = null,
+        protected ?string $format = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFormat(): mixed
     {

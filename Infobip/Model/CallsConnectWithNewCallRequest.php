@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,23 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsConnectWithNewCallRequest implements ModelInterface
+class CallsConnectWithNewCallRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsConnectWithNewCallRequest';
-
-    public const OPENAPI_FORMATS = [
-        'callRequest' => null,
-        'connectOnEarlyMedia' => null,
-        'conferenceRequest' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsActionCallRequest $callRequest = null,
+        protected ?\Infobip\Model\CallsActionCallRequest $callRequest = null,
         protected ?bool $connectOnEarlyMedia = false,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsActionConferenceRequest $conferenceRequest = null,
+        protected ?\Infobip\Model\RingbackGeneration $ringbackGeneration = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\CallsActionConferenceRequest $conferenceRequest = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallRequest(): \Infobip\Model\CallsActionCallRequest|null
     {
@@ -79,6 +54,17 @@ class CallsConnectWithNewCallRequest implements ModelInterface
     public function setConnectOnEarlyMedia(?bool $connectOnEarlyMedia): self
     {
         $this->connectOnEarlyMedia = $connectOnEarlyMedia;
+        return $this;
+    }
+
+    public function getRingbackGeneration(): \Infobip\Model\RingbackGeneration|null
+    {
+        return $this->ringbackGeneration;
+    }
+
+    public function setRingbackGeneration(?\Infobip\Model\RingbackGeneration $ringbackGeneration): self
+    {
+        $this->ringbackGeneration = $ringbackGeneration;
         return $this;
     }
 

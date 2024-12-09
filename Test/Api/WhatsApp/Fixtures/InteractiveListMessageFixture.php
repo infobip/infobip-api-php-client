@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+$requestVars = [
+    'from' => '447860099299',
+    'to' => '385958000000',
+    'content' => [
+        'body' => [
+            'text' => 'body text',
+        ],
+        'action' => [
+            'title' => 'some title',
+            'sections' => [
+                [
+                    'title' => 'section title',
+                    'rows' => [
+                        [
+                            'id' => '1',
+                            'title' => 'some title',
+                            'description' => 'some description',
+                        ],
+                        [
+                            'id' => '2',
+                            'title' => 'some other title',
+                            'description' => 'some other description',
+                        ]
+                    ]
+                ]
+            ]
+        ],
+        'header' => [
+            'type' => 'TEXT',
+            'text' => 'some header text',
+        ],
+        'footer' => [
+            'text' => 'footer text',
+        ]
+    ],
+    'callbackData' => 'some callback data',
+    'notifyUrl' => 'https://www.example.com/whatsapp',
+];
+
+$responseVars = [
+    'messageId'     => '2250be2d4219-3af1-78856-aabe-1362af1edfd2',
+    'statusName'    => 'PENDING_ENROUTE',
+    'messageCount'  => 1
+];
+
+$givenResponse = <<<JSON
+        {
+            "to": "{$requestVars['to']}",
+            "messageCount": {$responseVars['messageCount']},
+            "messageId": "{$responseVars['messageId']}",
+            "status": {
+                "groupId": 1,
+                "groupName": "PENDING",
+                "id": 7,
+                "name": "{$responseVars['statusName']}"
+            }
+        }
+        JSON;
+
+$expectedRequest = \json_encode($requestVars);
+
+return [$requestVars, $responseVars, $givenResponse, $expectedRequest];

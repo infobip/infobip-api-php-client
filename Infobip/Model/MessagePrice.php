@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,40 +16,28 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class MessagePrice implements ModelInterface
+class MessagePrice
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'MessagePrice';
-
-    public const OPENAPI_FORMATS = [
-        'currency' => null,
-        'pricePerMessage' => 'double'
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $currency = null,
         protected ?float $pricePerMessage = null,
+        protected ?string $currency = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getPricePerMessage(): float|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->pricePerMessage;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setPricePerMessage(?float $pricePerMessage): self
     {
-        return self::DISCRIMINATOR;
+        $this->pricePerMessage = $pricePerMessage;
+        return $this;
     }
 
     public function getCurrency(): string|null
@@ -62,17 +48,6 @@ class MessagePrice implements ModelInterface
     public function setCurrency(?string $currency): self
     {
         $this->currency = $currency;
-        return $this;
-    }
-
-    public function getPricePerMessage(): float|null
-    {
-        return $this->pricePerMessage;
-    }
-
-    public function setPricePerMessage(?float $pricePerMessage): self
-    {
-        $this->pricePerMessage = $pricePerMessage;
         return $this;
     }
 }

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,65 +18,34 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallRecording implements ModelInterface
+class CallRecording
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallRecording';
-
-    public const OPENAPI_FORMATS = [
-        'callId' => null,
-        'endpoint' => null,
-        'direction' => null,
-        'files' => null,
-        'status' => null,
-        'reason' => null,
-        'applicationId' => null,
-        'startTime' => 'date-time',
-        'endTime' => 'date-time'
-    ];
-
     /**
      * @param \Infobip\Model\CallsRecordingFile[] $files
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\Length(max: 128)]
         protected ?string $callId = null,
-        #[Assert\Choice(['INBOUND','OUTBOUND',])]
-
-    protected ?string $direction = null,
+        protected ?string $direction = null,
         protected ?array $files = null,
-        #[Assert\Choice(['SUCCESSFUL','PARTIALLY_FAILED','FAILED',])]
-
-    protected ?string $status = null,
+        protected ?string $status = null,
         protected ?string $reason = null,
-        protected ?string $applicationId = null,
+        protected ?string $callsConfigurationId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
+        protected ?\DateTime $endTime = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallId(): string|null
     {
@@ -152,14 +119,25 @@ class CallRecording implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getCallsConfigurationId(): string|null
     {
-        return $this->applicationId;
+        return $this->callsConfigurationId;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setCallsConfigurationId(?string $callsConfigurationId): self
     {
-        $this->applicationId = $applicationId;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 

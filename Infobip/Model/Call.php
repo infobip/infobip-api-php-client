@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,87 +18,48 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class Call implements ModelInterface
+class Call
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'Call';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'endpoint' => null,
-        'from' => null,
-        'to' => null,
-        'direction' => null,
-        'state' => null,
-        'media' => null,
-        'startTime' => 'date-time',
-        'answerTime' => 'date-time',
-        'endTime' => 'date-time',
-        'parentCallId' => null,
-        'machineDetection' => null,
-        'ringDuration' => 'int32',
-        'applicationId' => null,
-        'conferenceId' => null,
-        'customData' => null,
-        'dialogId' => null
-    ];
-
     /**
      * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallEndpoint $endpoint,
+        #[Assert\Length(max: 128)]
         protected ?string $id = null,
         protected ?string $from = null,
         protected ?string $to = null,
-        #[Assert\Choice(['INBOUND','OUTBOUND',])]
-
-    protected ?string $direction = null,
-        #[Assert\Choice(['CALLING','RINGING','PRE_ESTABLISHED','ESTABLISHED','FINISHED','FAILED','CANCELLED','NO_ANSWER','BUSY',])]
-
-    protected ?string $state = null,
+        protected ?string $direction = null,
+        protected ?string $state = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMediaProperties $media = null,
+        protected ?\Infobip\Model\CallsMediaProperties $media = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $answerTime = null,
+        protected ?\DateTime $answerTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
+        protected ?\DateTime $endTime = null,
+        #[Assert\Length(max: 128)]
         protected ?string $parentCallId = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMachineDetectionProperties $machineDetection = null,
+        protected ?\Infobip\Model\CallsMachineDetectionProperties $machineDetection = null,
         protected ?int $ringDuration = null,
-        protected ?string $applicationId = null,
+        protected ?string $callsConfigurationId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
+        #[Assert\Length(max: 128)]
         protected ?string $conferenceId = null,
         protected ?array $customData = null,
+        #[Assert\Length(max: 128)]
         protected ?string $dialogId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {
@@ -245,14 +204,25 @@ class Call implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getCallsConfigurationId(): string|null
     {
-        return $this->applicationId;
+        return $this->callsConfigurationId;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setCallsConfigurationId(?string $callsConfigurationId): self
     {
-        $this->applicationId = $applicationId;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 

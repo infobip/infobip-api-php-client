@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,43 +16,19 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsMediaStreamConfigResponse implements ModelInterface
+class CallsMediaStreamConfigResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsMediaStreamConfigResponse';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'url' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\NotBlank]
-
-    protected string $url,
         protected ?string $id = null,
+        protected ?string $name = null,
+        protected ?string $url = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string|null
     {
@@ -67,12 +41,23 @@ class CallsMediaStreamConfigResponse implements ModelInterface
         return $this;
     }
 
-    public function getUrl(): string
+    public function getName(): string|null
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getUrl(): string|null
     {
         return $this->url;
     }
 
-    public function setUrl(string $url): self
+    public function setUrl(?string $url): self
     {
         $this->url = $url;
         return $this;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -23,12 +21,14 @@ use InvalidArgumentException;
 final class CallsDialogState implements EnumInterface
 {
     public const CREATED = 'CREATED';
+    public const PRE_ESTABLISHED = 'PRE_ESTABLISHED';
     public const ESTABLISHED = 'ESTABLISHED';
     public const FINISHED = 'FINISHED';
     public const FAILED = 'FAILED';
 
     public const ALLOWED_VALUES = [
         'CREATED',
+        'PRE_ESTABLISHED',
         'ESTABLISHED',
         'FINISHED',
         'FAILED',
@@ -54,6 +54,11 @@ final class CallsDialogState implements EnumInterface
     public static function CREATED(): CallsDialogState
     {
         return new self('CREATED');
+    }
+
+    public static function PRE_ESTABLISHED(): CallsDialogState
+    {
+        return new self('PRE_ESTABLISHED');
     }
 
     public static function ESTABLISHED(): CallsDialogState

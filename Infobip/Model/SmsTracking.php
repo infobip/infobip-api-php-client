@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,87 +16,38 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsTracking implements ModelInterface
+class SmsTracking
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsTracking';
-
-    public const OPENAPI_FORMATS = [
-        'baseUrl' => null,
-        'processKey' => null,
-        'track' => null,
-        'type' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $baseUrl = null,
-        protected ?string $processKey = null,
-        protected ?string $track = null,
-        protected ?string $type = null,
+        protected ?bool $useConversionTracking = null,
+        protected ?string $conversionTrackingName = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getUseConversionTracking(): bool|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->useConversionTracking;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setUseConversionTracking(?bool $useConversionTracking): self
     {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getBaseUrl(): string|null
-    {
-        return $this->baseUrl;
-    }
-
-    public function setBaseUrl(?string $baseUrl): self
-    {
-        $this->baseUrl = $baseUrl;
+        $this->useConversionTracking = $useConversionTracking;
         return $this;
     }
 
-    public function getProcessKey(): string|null
+    public function getConversionTrackingName(): string|null
     {
-        return $this->processKey;
+        return $this->conversionTrackingName;
     }
 
-    public function setProcessKey(?string $processKey): self
+    public function setConversionTrackingName(?string $conversionTrackingName): self
     {
-        $this->processKey = $processKey;
-        return $this;
-    }
-
-    public function getTrack(): string|null
-    {
-        return $this->track;
-    }
-
-    public function setTrack(?string $track): self
-    {
-        $this->track = $track;
-        return $this;
-    }
-
-    public function getType(): string|null
-    {
-        return $this->type;
-    }
-
-    public function setType(?string $type): self
-    {
-        $this->type = $type;
+        $this->conversionTrackingName = $conversionTrackingName;
         return $this;
     }
 }

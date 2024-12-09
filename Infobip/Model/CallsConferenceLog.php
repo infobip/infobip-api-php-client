@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,62 +18,33 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsConferenceLog implements ModelInterface
+class CallsConferenceLog
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsConferenceLog';
-
-    public const OPENAPI_FORMATS = [
-        'conferenceId' => null,
-        'name' => null,
-        'applicationId' => null,
-        'startTime' => 'date-time',
-        'endTime' => 'date-time',
-        'duration' => 'int64',
-        'sessions' => null,
-        'recording' => null,
-        'errorCode' => null
-    ];
-
     /**
      * @param \Infobip\Model\CallsParticipantSession[] $sessions
      */
     public function __construct(
+        #[Assert\Length(max: 128)]
         protected ?string $conferenceId = null,
         protected ?string $name = null,
-        protected ?string $applicationId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $startTime = null,
+        protected ?\DateTime $startTime = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $endTime = null,
+        protected ?\DateTime $endTime = null,
         protected ?int $duration = null,
         protected ?array $sessions = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsConferenceRecordingLog $recording = null,
+        protected ?\Infobip\Model\CallsConferenceRecordingLog $recording = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsErrorCodeInfo $errorCode = null,
+        protected ?\Infobip\Model\CallsErrorCodeInfo $errorCode = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getConferenceId(): string|null
     {
@@ -99,14 +68,14 @@ class CallsConferenceLog implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string|null
+    public function getPlatform(): \Infobip\Model\Platform|null
     {
-        return $this->applicationId;
+        return $this->platform;
     }
 
-    public function setApplicationId(?string $applicationId): self
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
-        $this->applicationId = $applicationId;
+        $this->platform = $platform;
         return $this;
     }
 

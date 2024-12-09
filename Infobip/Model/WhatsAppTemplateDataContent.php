@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,48 +17,27 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppTemplateDataContent implements ModelInterface
+class WhatsAppTemplateDataContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplateDataContent';
-
-    public const OPENAPI_FORMATS = [
-        'body' => null,
-        'header' => null,
-        'buttons' => null
-    ];
-
     /**
      * @param \Infobip\Model\WhatsAppTemplateButtonContent[] $buttons
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppTemplateBodyContent $body,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\WhatsAppTemplateBodyContent $body,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppTemplateHeaderContent $header = null,
+        protected ?\Infobip\Model\WhatsAppTemplateHeaderContent $header = null,
         protected ?array $buttons = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\WhatsAppTemplateCarouselContent $carousel = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\WhatsAppTemplateLimitedTimeOfferContent $limitedTimeOffer = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getBody(): \Infobip\Model\WhatsAppTemplateBodyContent
     {
@@ -93,11 +70,33 @@ class WhatsAppTemplateDataContent implements ModelInterface
     }
 
     /**
-     * @param \Infobip\Model\WhatsAppTemplateButtonContent[]|null $buttons Template buttons. Should be defined in correct order, only if `quick reply` or `dynamic URL` buttons have been registered. It can have up to three `quick reply` buttons or only one `dynamic URL` button.
+     * @param \Infobip\Model\WhatsAppTemplateButtonContent[]|null $buttons Template buttons. Should be defined in the correct order, only if `quick reply`, `dynamic URL`, `copy code` or `flow`  buttons have been registered. It can have up to ten buttons including a maximum of two `dynamic URL` buttons and one `copy code` button. When `flow`, `catalog`, `multi product` or `order details` button is used it needs to be the only button.
      */
     public function setButtons(?array $buttons): self
     {
         $this->buttons = $buttons;
+        return $this;
+    }
+
+    public function getCarousel(): \Infobip\Model\WhatsAppTemplateCarouselContent|null
+    {
+        return $this->carousel;
+    }
+
+    public function setCarousel(?\Infobip\Model\WhatsAppTemplateCarouselContent $carousel): self
+    {
+        $this->carousel = $carousel;
+        return $this;
+    }
+
+    public function getLimitedTimeOffer(): \Infobip\Model\WhatsAppTemplateLimitedTimeOfferContent|null
+    {
+        return $this->limitedTimeOffer;
+    }
+
+    public function setLimitedTimeOffer(?\Infobip\Model\WhatsAppTemplateLimitedTimeOfferContent $limitedTimeOffer): self
+    {
+        $this->limitedTimeOffer = $limitedTimeOffer;
         return $this;
     }
 }

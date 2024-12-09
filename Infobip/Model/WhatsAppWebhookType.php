@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -34,6 +32,7 @@ final class WhatsAppWebhookType implements EnumInterface
     public const BUTTON = 'BUTTON';
     public const INTERACTIVE_BUTTON_REPLY = 'INTERACTIVE_BUTTON_REPLY';
     public const INTERACTIVE_LIST_REPLY = 'INTERACTIVE_LIST_REPLY';
+    public const INTERACTIVE_PAYMENT_CONFIRMATION = 'INTERACTIVE_PAYMENT_CONFIRMATION';
     public const ORDER = 'ORDER';
     public const UNSUPPORTED = 'UNSUPPORTED';
 
@@ -50,6 +49,7 @@ final class WhatsAppWebhookType implements EnumInterface
         'BUTTON',
         'INTERACTIVE_BUTTON_REPLY',
         'INTERACTIVE_LIST_REPLY',
+        'INTERACTIVE_PAYMENT_CONFIRMATION',
         'ORDER',
         'UNSUPPORTED',
     ];
@@ -129,6 +129,11 @@ final class WhatsAppWebhookType implements EnumInterface
     public static function INTERACTIVE_LIST_REPLY(): WhatsAppWebhookType
     {
         return new self('INTERACTIVE_LIST_REPLY');
+    }
+
+    public static function INTERACTIVE_PAYMENT_CONFIRMATION(): WhatsAppWebhookType
+    {
+        return new self('INTERACTIVE_PAYMENT_CONFIRMATION');
     }
 
     public static function ORDER(): WhatsAppWebhookType

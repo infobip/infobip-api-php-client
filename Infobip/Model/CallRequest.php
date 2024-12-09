@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,66 +17,36 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallRequest implements ModelInterface
+class CallRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallRequest';
-
-    public const OPENAPI_FORMATS = [
-        'endpoint' => null,
-        'from' => null,
-        'fromDisplayName' => null,
-        'connectTimeout' => 'int32',
-        'recording' => null,
-        'machineDetection' => null,
-        'maxDuration' => 'int32',
-        'customData' => null,
-        'applicationId' => null
-    ];
-
     /**
      * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallEndpoint $endpoint,
         #[Assert\NotBlank]
-
-    protected string $from,
+        protected \Infobip\Model\CallEndpoint $endpoint,
         #[Assert\NotBlank]
-
-    protected string $applicationId,
+        protected string $from,
+        #[Assert\NotBlank]
+        protected string $callsConfigurationId,
         protected ?string $fromDisplayName = null,
         protected ?int $connectTimeout = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallRecordingRequest $recording = null,
+        protected ?\Infobip\Model\CallRecordingRequest $recording = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
+        protected ?\Infobip\Model\CallsMachineDetectionRequest $machineDetection = null,
         protected ?int $maxDuration = 28800,
         protected ?array $customData = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
+        #[Assert\Length(max: 128)]
+        protected ?string $parentCallId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getEndpoint(): \Infobip\Model\CallEndpoint
     {
@@ -174,14 +142,36 @@ class CallRequest implements ModelInterface
         return $this;
     }
 
-    public function getApplicationId(): string
+    public function getCallsConfigurationId(): string
     {
-        return $this->applicationId;
+        return $this->callsConfigurationId;
     }
 
-    public function setApplicationId(string $applicationId): self
+    public function setCallsConfigurationId(string $callsConfigurationId): self
     {
-        $this->applicationId = $applicationId;
+        $this->callsConfigurationId = $callsConfigurationId;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
+        return $this;
+    }
+
+    public function getParentCallId(): string|null
+    {
+        return $this->parentCallId;
+    }
+
+    public function setParentCallId(?string $parentCallId): self
+    {
+        $this->parentCallId = $parentCallId;
         return $this;
     }
 }

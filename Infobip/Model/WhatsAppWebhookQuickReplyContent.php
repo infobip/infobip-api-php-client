@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,46 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppWebhookQuickReplyContent extends WhatsAppWebhookInboundMessage
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookQuickReplyContent';
-
     public const TYPE = 'BUTTON';
-
-    public const OPENAPI_FORMATS = [
-        'text' => null,
-        'payload' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 20)]
-    #[Assert\Length(min: 0)]
-
-    protected string $text,
+        #[Assert\Length(max: 20)]
+        #[Assert\Length(min: 0)]
+        protected string $text,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 128)]
-    #[Assert\Length(min: 0)]
-
-    protected string $payload,
+        #[Assert\Length(max: 128)]
+        #[Assert\Length(min: 0)]
+        protected string $payload,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookContext $context = null,
+        protected ?\Infobip\Model\WhatsAppContext $context = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
+        protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
+        protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
     ) {
-        $modelDiscriminatorValue = 'BUTTON';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
@@ -68,17 +50,6 @@ class WhatsAppWebhookQuickReplyContent extends WhatsAppWebhookInboundMessage
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getText(): string
     {

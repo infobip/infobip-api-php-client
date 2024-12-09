@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,37 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppWebhookInboundContactMessage extends WhatsAppWebhookInboundMessage
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookInboundContactMessage';
-
     public const TYPE = 'CONTACT';
-
-    public const OPENAPI_FORMATS = [
-        'contacts' => null
-    ];
 
     /**
      * @param \Infobip\Model\WhatsAppWebhookContact[] $contacts
      */
     public function __construct(
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookContext $context = null,
+        protected ?\Infobip\Model\WhatsAppContext $context = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
+        protected ?\Infobip\Model\WhatsAppWebhookIdentity $identity = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
+        protected ?\Infobip\Model\WhatsAppWebhookReferral $referral = null,
         protected ?array $contacts = null,
     ) {
-        $modelDiscriminatorValue = 'CONTACT';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
@@ -59,17 +44,6 @@ class WhatsAppWebhookInboundContactMessage extends WhatsAppWebhookInboundMessage
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
      * @return \Infobip\Model\WhatsAppWebhookContact[]|null

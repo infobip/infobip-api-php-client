@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,36 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppTemplatePublicApiRequest implements ModelInterface
+#[DiscriminatorMap(typeProperty: "category", mapping: [
+    "AUTHENTICATION" => "\Infobip\Model\WhatsAppAuthenticationTemplatePublicApiRequest",
+    "MARKETING" => "\Infobip\Model\WhatsAppDefaultMarketingTemplatePublicApiRequest",
+    "UTILITY" => "\Infobip\Model\WhatsAppDefaultUtilityTemplatePublicApiRequest",
+])]
+
+class WhatsAppTemplatePublicApiRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplatePublicApiRequest';
-
-    public const OPENAPI_FORMATS = [
-        'name' => null,
-        'language' => null,
-        'category' => null,
-        'structure' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $name,
+        protected string $name,
         #[Assert\NotBlank]
-    #[Assert\Choice(['af','sq','ar','az','bn','bg','ca','zh_CN','zh_HK','zh_TW','hr','cs','da','nl','en','en_GB','en_US','et','fil','fi','fr','ka','de','el','gu','ha','he','hi','hu','id','ga','it','ja','kn','kk','rw_RW','ko','ky_KG','lo','lv','lt','mk','ms','ml','mr','nb','fa','pl','pt_BR','pt_PT','pa','ro','ru','sr','sk','sl','es','es_AR','es_ES','es_MX','sw','sv','ta','te','th','tr','uk','ur','uz','vi','zu','unknown',])]
-
-    protected string $language,
+        protected string $language,
         #[Assert\NotBlank]
 
-    protected string $category,
+        protected string $category,
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppTemplateStructureApiData $structure,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\WhatsAppTemplateStructureApiData $structure,
+        protected ?bool $allowCategoryChange = false,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getName(): string
     {
@@ -101,6 +81,17 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface
         return $this;
     }
 
+    public function getAllowCategoryChange(): bool|null
+    {
+        return $this->allowCategoryChange;
+    }
+
+    public function setAllowCategoryChange(?bool $allowCategoryChange): self
+    {
+        $this->allowCategoryChange = $allowCategoryChange;
+        return $this;
+    }
+
     public function getStructure(): \Infobip\Model\WhatsAppTemplateStructureApiData
     {
         return $this->structure;
@@ -109,6 +100,17 @@ class WhatsAppTemplatePublicApiRequest implements ModelInterface
     public function setStructure(\Infobip\Model\WhatsAppTemplateStructureApiData $structure): self
     {
         $this->structure = $structure;
+        return $this;
+    }
+
+    public function getPlatform(): \Infobip\Model\Platform|null
+    {
+        return $this->platform;
+    }
+
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
+    {
+        $this->platform = $platform;
         return $this;
     }
 }

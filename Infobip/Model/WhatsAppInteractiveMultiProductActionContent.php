@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,47 +17,23 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppInteractiveMultiProductActionContent implements ModelInterface
+class WhatsAppInteractiveMultiProductActionContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppInteractiveMultiProductActionContent';
-
-    public const OPENAPI_FORMATS = [
-        'catalogId' => null,
-        'sections' => null
-    ];
-
     /**
      * @param \Infobip\Model\WhatsAppInteractiveMultiProductSectionContent[] $sections
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $catalogId,
+        protected string $catalogId,
         #[Assert\NotBlank]
-    #[Assert\Count(max: 10)]
-    #[Assert\Count(min: 1)]
-
-    protected array $sections,
+        #[Assert\Count(max: 10)]
+        #[Assert\Count(min: 1)]
+        protected array $sections,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCatalogId(): string
     {

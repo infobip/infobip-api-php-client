@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppInteractiveReplyButtonContent extends WhatsAppInteractiveButtonContent
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppInteractiveReplyButtonContent';
-
     public const TYPE = 'REPLY';
-
-    public const OPENAPI_FORMATS = [
-        'id' => null,
-        'title' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 256)]
-    #[Assert\Length(min: 1)]
-
-    protected string $id,
+        #[Assert\Length(max: 256)]
+        #[Assert\Length(min: 1)]
+        protected string $id,
         #[Assert\NotBlank]
-    #[Assert\Length(max: 20)]
-    #[Assert\Length(min: 1)]
-
-    protected string $title,
+        #[Assert\Length(max: 20)]
+        #[Assert\Length(min: 1)]
+        protected string $title,
     ) {
-        $modelDiscriminatorValue = 'REPLY';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getId(): string
     {

@@ -4,7 +4,7 @@
 
 /**
  * WhatsAppApi
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -36,7 +36,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\DeprecationChecker;
@@ -77,6 +76,301 @@ final class WhatsAppApi
         $this->objectSerializer = $objectSerializer ?: new ObjectSerializer();
         $this->logger = $logger ?: new NullLogger();
         $this->deprecationChecker = $deprecationChecker ?: new DeprecationChecker($this->logger);
+    }
+
+    /**
+     * Operation addWhatsappSender
+     *
+     * Add WhatsApp sender
+     *
+     * @param int $businessAccountId WhatsApp Business Account Id. (required)
+     * @param \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest whatsAppPhoneNumberRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSenderRegistrationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function addWhatsappSender(int $businessAccountId, \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest)
+    {
+        $request = $this->addWhatsappSenderRequest($businessAccountId, $whatsAppPhoneNumberRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->addWhatsappSenderResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->addWhatsappSenderApiException($exception);
+        }
+    }
+
+    /**
+     * Operation addWhatsappSenderAsync
+     *
+     * Add WhatsApp sender
+     *
+     * @param int $businessAccountId WhatsApp Business Account Id. (required)
+     * @param \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function addWhatsappSenderAsync(int $businessAccountId, \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest): PromiseInterface
+    {
+        $request = $this->addWhatsappSenderRequest($businessAccountId, $whatsAppPhoneNumberRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->addWhatsappSenderResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->addWhatsappSenderApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'addWhatsappSender'
+     *
+     * @param int $businessAccountId WhatsApp Business Account Id. (required)
+     * @param \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function addWhatsappSenderRequest(int $businessAccountId, \Infobip\Model\WhatsAppPhoneNumberRequest $whatsAppPhoneNumberRequest): Request
+    {
+        $allData = [
+             'businessAccountId' => $businessAccountId,
+             'whatsAppPhoneNumberRequest' => $whatsAppPhoneNumberRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'businessAccountId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'whatsAppPhoneNumberRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/embedded-signup/registrations/business-account/{businessAccountId}/senders';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($businessAccountId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'businessAccountId' . '}',
+                $this->objectSerializer->toPathValue($businessAccountId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppPhoneNumberRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppPhoneNumberRequest)
+                : $whatsAppPhoneNumberRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'addWhatsappSender'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSenderRegistrationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function addWhatsappSenderResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 202) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSenderRegistrationResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'addWhatsappSender'
+     */
+    private function addWhatsappSenderApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
     }
 
     /**
@@ -173,11 +467,8 @@ final class WhatsAppApi
              'whatsAppIdentityConfirmation' => $whatsAppIdentityConfirmation,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
@@ -187,12 +478,10 @@ final class WhatsAppApi
                     'whatsAppIdentityConfirmation' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/{sender}/contacts/{userNumber}/identity';
         $formParams = [];
         $queryParams = [];
@@ -228,8 +517,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppIdentityConfirmation)
                 : $whatsAppIdentityConfirmation;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -324,6 +611,17 @@ final class WhatsAppApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -335,7 +633,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -360,7 +680,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function createWhatsAppTemplate(string $sender, \Infobip\Model\WhatsAppTemplatePublicApiRequest $whatsAppTemplatePublicApiRequest)
     {
@@ -440,23 +760,18 @@ final class WhatsAppApi
              'whatsAppTemplatePublicApiRequest' => $whatsAppTemplatePublicApiRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'whatsAppTemplatePublicApiRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/2/senders/{sender}/templates';
         $formParams = [];
         $queryParams = [];
@@ -483,8 +798,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppTemplatePublicApiRequest)
                 : $whatsAppTemplatePublicApiRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -550,7 +863,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'createWhatsAppTemplate'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function createWhatsAppTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -615,7 +928,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -720,23 +1055,18 @@ final class WhatsAppApi
              'whatsAppUrlDeletionRequest' => $whatsAppUrlDeletionRequest,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'whatsAppUrlDeletionRequest' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/senders/{sender}/media';
         $formParams = [];
         $queryParams = [];
@@ -753,7 +1083,7 @@ final class WhatsAppApi
         }
 
         $headers = [
-
+            'Accept' => 'application/json',
             'Content-Type' => 'application/json',
         ];
 
@@ -763,8 +1093,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppUrlDeletionRequest)
                 : $whatsAppUrlDeletionRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -859,6 +1187,72 @@ final class WhatsAppApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
@@ -953,23 +1347,18 @@ final class WhatsAppApi
              'templateName' => $templateName,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'templateName' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/2/senders/{sender}/templates/{templateName}';
         $formParams = [];
         $queryParams = [];
@@ -996,13 +1385,10 @@ final class WhatsAppApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1130,7 +1516,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -1155,7 +1563,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \SplFileObject
+     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function downloadWhatsAppInboundMedia(string $sender, string $mediaId)
     {
@@ -1235,23 +1643,18 @@ final class WhatsAppApi
              'mediaId' => $mediaId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'mediaId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/senders/{sender}/media/{mediaId}';
         $formParams = [];
         $queryParams = [];
@@ -1278,13 +1681,10 @@ final class WhatsAppApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1350,7 +1750,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'downloadWhatsAppInboundMedia'
      * @throws ApiException on non-2xx response
-     * @return \SplFileObject|null
+     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function downloadWhatsAppInboundMediaResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1382,6 +1782,372 @@ final class WhatsAppApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation editWhatsappTemplate
+     *
+     * Edit WhatsApp Template
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     * @param \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest whatsAppTemplateEditPublicApiRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function editWhatsappTemplate(string $sender, string $id, \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest)
+    {
+        $request = $this->editWhatsappTemplateRequest($sender, $id, $whatsAppTemplateEditPublicApiRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->editWhatsappTemplateResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->editWhatsappTemplateApiException($exception);
+        }
+    }
+
+    /**
+     * Operation editWhatsappTemplateAsync
+     *
+     * Edit WhatsApp Template
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     * @param \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function editWhatsappTemplateAsync(string $sender, string $id, \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest): PromiseInterface
+    {
+        $request = $this->editWhatsappTemplateRequest($sender, $id, $whatsAppTemplateEditPublicApiRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->editWhatsappTemplateResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->editWhatsappTemplateApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'editWhatsappTemplate'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     * @param \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function editWhatsappTemplateRequest(string $sender, string $id, \Infobip\Model\WhatsAppTemplateEditPublicApiRequest $whatsAppTemplateEditPublicApiRequest): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'id' => $id,
+             'whatsAppTemplateEditPublicApiRequest' => $whatsAppTemplateEditPublicApiRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'id' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'whatsAppTemplateEditPublicApiRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/2/senders/{sender}/templates/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'id' . '}',
+                $this->objectSerializer->toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppTemplateEditPublicApiRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppTemplateEditPublicApiRequest)
+                : $whatsAppTemplateEditPublicApiRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PATCH',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'editWhatsappTemplate'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function editWhatsappTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppTemplateApiResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'editWhatsappTemplate'
+     */
+    private function editWhatsappTemplateApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
@@ -1396,7 +2162,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppIdentityInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppIdentityInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getWhatsAppIdentity(string $sender, string $userNumber)
     {
@@ -1476,23 +2242,18 @@ final class WhatsAppApi
              'userNumber' => $userNumber,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'userNumber' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/{sender}/contacts/{userNumber}/identity';
         $formParams = [];
         $queryParams = [];
@@ -1519,13 +2280,10 @@ final class WhatsAppApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1591,7 +2349,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsAppIdentity'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppIdentityInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppIdentityInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getWhatsAppIdentityResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1634,7 +2392,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -1739,23 +2519,18 @@ final class WhatsAppApi
              'mediaId' => $mediaId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'mediaId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/senders/{sender}/media/{mediaId}';
         $formParams = [];
         $queryParams = [];
@@ -1781,14 +2556,11 @@ final class WhatsAppApi
         }
 
         $headers = [
-
-
+            'Accept' => 'application/json',
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -1883,6 +2655,61 @@ final class WhatsAppApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
@@ -1896,7 +2723,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppTemplatesApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppTemplatesApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getWhatsAppTemplates(string $sender)
     {
@@ -1973,20 +2800,15 @@ final class WhatsAppApi
              'sender' => $sender,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/2/senders/{sender}/templates';
         $formParams = [];
         $queryParams = [];
@@ -2004,13 +2826,10 @@ final class WhatsAppApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2076,7 +2895,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsAppTemplates'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppTemplatesApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppTemplatesApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getWhatsAppTemplatesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2130,7 +2949,2063 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappBrazilPaymentStatus
+     *
+     * Get Brazil payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getWhatsappBrazilPaymentStatus(string $sender, string $paymentId)
+    {
+        $request = $this->getWhatsappBrazilPaymentStatusRequest($sender, $paymentId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappBrazilPaymentStatusResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappBrazilPaymentStatusApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappBrazilPaymentStatusAsync
+     *
+     * Get Brazil payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappBrazilPaymentStatusAsync(string $sender, string $paymentId): PromiseInterface
+    {
+        $request = $this->getWhatsappBrazilPaymentStatusRequest($sender, $paymentId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappBrazilPaymentStatusResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappBrazilPaymentStatusApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappBrazilPaymentStatus'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappBrazilPaymentStatusRequest(string $sender, string $paymentId): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'paymentId' => $paymentId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'paymentId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/payments/br/{paymentId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($paymentId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'paymentId' . '}',
+                $this->objectSerializer->toPathValue($paymentId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappBrazilPaymentStatus'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getWhatsappBrazilPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppPayment', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappBrazilPaymentStatus'
+     */
+    private function getWhatsappBrazilPaymentStatusApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappSenderBusinessInfo
+     *
+     * Get business info of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppBusinessInfoResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getWhatsappSenderBusinessInfo(string $sender)
+    {
+        $request = $this->getWhatsappSenderBusinessInfoRequest($sender);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappSenderBusinessInfoResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappSenderBusinessInfoApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappSenderBusinessInfoAsync
+     *
+     * Get business info of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappSenderBusinessInfoAsync(string $sender): PromiseInterface
+    {
+        $request = $this->getWhatsappSenderBusinessInfoRequest($sender);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappSenderBusinessInfoResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappSenderBusinessInfoApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappSenderBusinessInfo'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappSenderBusinessInfoRequest(string $sender): Request
+    {
+        $allData = [
+             'sender' => $sender,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/business-info';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappSenderBusinessInfo'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppBusinessInfoResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getWhatsappSenderBusinessInfoResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppBusinessInfoResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappSenderBusinessInfo'
+     */
+    private function getWhatsappSenderBusinessInfoApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappSenderBusinessLogo
+     *
+     * Download business logo of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \SplFileObject|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getWhatsappSenderBusinessLogo(string $sender)
+    {
+        $request = $this->getWhatsappSenderBusinessLogoRequest($sender);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappSenderBusinessLogoResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappSenderBusinessLogoApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappSenderBusinessLogoAsync
+     *
+     * Download business logo of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappSenderBusinessLogoAsync(string $sender): PromiseInterface
+    {
+        $request = $this->getWhatsappSenderBusinessLogoRequest($sender);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappSenderBusinessLogoResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappSenderBusinessLogoApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappSenderBusinessLogo'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappSenderBusinessLogoRequest(string $sender): Request
+    {
+        $allData = [
+             'sender' => $sender,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/business-info/logo';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappSenderBusinessLogo'
+     * @throws ApiException on non-2xx response
+     * @return \SplFileObject|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getWhatsappSenderBusinessLogoResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\SplFileObject', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappSenderBusinessLogo'
+     */
+    private function getWhatsappSenderBusinessLogoApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappSendersQuality
+     *
+     * Get quality information of WhatsApp senders
+     *
+     * @param string[] $senders List of comma-separated WhatsApp sender numbers. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSenderQualityResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getWhatsappSendersQuality(array $senders)
+    {
+        $request = $this->getWhatsappSendersQualityRequest($senders);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappSendersQualityResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappSendersQualityApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappSendersQualityAsync
+     *
+     * Get quality information of WhatsApp senders
+     *
+     * @param string[] $senders List of comma-separated WhatsApp sender numbers. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappSendersQualityAsync(array $senders): PromiseInterface
+    {
+        $request = $this->getWhatsappSendersQualityRequest($senders);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappSendersQualityResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappSendersQualityApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappSendersQuality'
+     *
+     * @param string[] $senders List of comma-separated WhatsApp sender numbers. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappSendersQualityRequest(array $senders): Request
+    {
+        $allData = [
+             'senders' => $senders,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'senders' => [
+                        new Assert\NotNull(),
+                        new Assert\Count(max: 100),
+                        new Assert\Count(min: 1),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/quality';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // query params
+        if ($senders !== null) {
+            $queryParams['senders'] = $senders;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappSendersQuality'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSenderQualityResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getWhatsappSendersQualityResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSenderQualityResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappSendersQuality'
+     */
+    private function getWhatsappSendersQualityApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappTemplate
+     *
+     * Get WhatsApp Template
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getWhatsappTemplate(string $sender, string $id)
+    {
+        $request = $this->getWhatsappTemplateRequest($sender, $id);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappTemplateResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappTemplateApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappTemplateAsync
+     *
+     * Get WhatsApp Template
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappTemplateAsync(string $sender, string $id): PromiseInterface
+    {
+        $request = $this->getWhatsappTemplateRequest($sender, $id);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappTemplateResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappTemplateApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappTemplate'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $id Template ID. Must be a number. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappTemplateRequest(string $sender, string $id): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'id' => $id,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'id' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/2/senders/{sender}/templates/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'id' . '}',
+                $this->objectSerializer->toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappTemplate'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppTemplateApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getWhatsappTemplateResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppTemplateApiResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappTemplate'
+     */
+    private function getWhatsappTemplateApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappUpiPaymentStatus
+     *
+     * Get India UPI PayU/Razorpay payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getWhatsappUpiPaymentStatus(string $sender, string $paymentId)
+    {
+        $request = $this->getWhatsappUpiPaymentStatusRequest($sender, $paymentId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappUpiPaymentStatusResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappUpiPaymentStatusApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappUpiPaymentStatusAsync
+     *
+     * Get India UPI PayU/Razorpay payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappUpiPaymentStatusAsync(string $sender, string $paymentId): PromiseInterface
+    {
+        $request = $this->getWhatsappUpiPaymentStatusRequest($sender, $paymentId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappUpiPaymentStatusResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappUpiPaymentStatusApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappUpiPaymentStatus'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappUpiPaymentStatusRequest(string $sender, string $paymentId): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'paymentId' => $paymentId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'paymentId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/payments/upi/{paymentId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($paymentId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'paymentId' . '}',
+                $this->objectSerializer->toPathValue($paymentId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappUpiPaymentStatus'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getWhatsappUpiPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppPayment', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappUpiPaymentStatus'
+     */
+    private function getWhatsappUpiPaymentStatusApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getWhatsappUpiPayuPaymentStatus
+     *
+     * Get India UPI PayU payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getWhatsappUpiPayuPaymentStatus(string $sender, string $paymentId)
+    {
+        $request = $this->getWhatsappUpiPayuPaymentStatusRequest($sender, $paymentId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getWhatsappUpiPayuPaymentStatusResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getWhatsappUpiPayuPaymentStatusApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getWhatsappUpiPayuPaymentStatusAsync
+     *
+     * Get India UPI PayU payment status
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getWhatsappUpiPayuPaymentStatusAsync(string $sender, string $paymentId): PromiseInterface
+    {
+        $request = $this->getWhatsappUpiPayuPaymentStatusRequest($sender, $paymentId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getWhatsappUpiPayuPaymentStatusResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getWhatsappUpiPayuPaymentStatusApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getWhatsappUpiPayuPaymentStatus'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param string $paymentId Unique identifier of the payment. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getWhatsappUpiPayuPaymentStatusRequest(string $sender, string $paymentId): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'paymentId' => $paymentId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'paymentId' => [
+                        new Assert\NotBlank(),
+                        new Assert\Length(max: 25),
+                        new Assert\Length(min: 1),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/payments/upi/payu/{paymentId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($paymentId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'paymentId' . '}',
+                $this->objectSerializer->toPathValue($paymentId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getWhatsappUpiPayuPaymentStatus'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getWhatsappUpiPayuPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppPayment', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getWhatsappUpiPayuPaymentStatus'
+     */
+    private function getWhatsappUpiPayuPaymentStatusApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -2235,23 +5110,18 @@ final class WhatsAppApi
              'messageId' => $messageId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'sender' => [
                         new Assert\NotBlank(),
                     ],
                     'messageId' => [
                         new Assert\NotBlank(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/senders/{sender}/message/{messageId}/read';
         $formParams = [];
         $queryParams = [];
@@ -2278,13 +5148,10 @@ final class WhatsAppApi
 
         $headers = [
             'Accept' => 'application/json',
-
         ];
 
         // for model (json/xml)
         if (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2390,6 +5257,353 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation retryWhatsappSenderVerification
+     *
+     * Retry WhatsApp sender verification
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest whatsAppOtpRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function retryWhatsappSenderVerification(string $sender, \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest)
+    {
+        $request = $this->retryWhatsappSenderVerificationRequest($sender, $whatsAppOtpRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->retryWhatsappSenderVerificationResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->retryWhatsappSenderVerificationApiException($exception);
+        }
+    }
+
+    /**
+     * Operation retryWhatsappSenderVerificationAsync
+     *
+     * Retry WhatsApp sender verification
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function retryWhatsappSenderVerificationAsync(string $sender, \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest): PromiseInterface
+    {
+        $request = $this->retryWhatsappSenderVerificationRequest($sender, $whatsAppOtpRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->retryWhatsappSenderVerificationResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->retryWhatsappSenderVerificationApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'retryWhatsappSenderVerification'
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function retryWhatsappSenderVerificationRequest(string $sender, \Infobip\Model\WhatsAppOtpRequest $whatsAppOtpRequest): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'whatsAppOtpRequest' => $whatsAppOtpRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'whatsAppOtpRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/embedded-signup/registrations/senders/{sender}/verification';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppOtpRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppOtpRequest)
+                : $whatsAppOtpRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PUT',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'retryWhatsappSenderVerification'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function retryWhatsappSenderVerificationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'retryWhatsappSenderVerification'
+     */
+    private function retryWhatsappSenderVerificationApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
 
         return $apiException;
     }
@@ -2403,7 +5617,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppAudioMessage(\Infobip\Model\WhatsAppAudioMessage $whatsAppAudioMessage)
     {
@@ -2480,20 +5694,15 @@ final class WhatsAppApi
              'whatsAppAudioMessage' => $whatsAppAudioMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppAudioMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/audio';
         $formParams = [];
         $queryParams = [];
@@ -2511,8 +5720,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppAudioMessage)
                 : $whatsAppAudioMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2578,7 +5785,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppAudioMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppAudioMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2632,7 +5839,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -2656,7 +5885,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppContactMessage(\Infobip\Model\WhatsAppContactsMessage $whatsAppContactsMessage)
     {
@@ -2733,20 +5962,15 @@ final class WhatsAppApi
              'whatsAppContactsMessage' => $whatsAppContactsMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppContactsMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/contact';
         $formParams = [];
         $queryParams = [];
@@ -2764,8 +5988,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppContactsMessage)
                 : $whatsAppContactsMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -2831,7 +6053,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppContactMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppContactMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2885,7 +6107,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -2909,7 +6153,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppDocumentMessage(\Infobip\Model\WhatsAppDocumentMessage $whatsAppDocumentMessage)
     {
@@ -2986,20 +6230,15 @@ final class WhatsAppApi
              'whatsAppDocumentMessage' => $whatsAppDocumentMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppDocumentMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/document';
         $formParams = [];
         $queryParams = [];
@@ -3017,8 +6256,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppDocumentMessage)
                 : $whatsAppDocumentMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3084,7 +6321,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppDocumentMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppDocumentMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3138,7 +6375,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -3162,7 +6421,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppImageMessage(\Infobip\Model\WhatsAppImageMessage $whatsAppImageMessage)
     {
@@ -3239,20 +6498,15 @@ final class WhatsAppApi
              'whatsAppImageMessage' => $whatsAppImageMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppImageMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/image';
         $formParams = [];
         $queryParams = [];
@@ -3270,8 +6524,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppImageMessage)
                 : $whatsAppImageMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3337,7 +6589,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppImageMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppImageMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3391,7 +6643,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -3415,7 +6689,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppInteractiveButtonsMessage(\Infobip\Model\WhatsAppInteractiveButtonsMessage $whatsAppInteractiveButtonsMessage)
     {
@@ -3492,20 +6766,15 @@ final class WhatsAppApi
              'whatsAppInteractiveButtonsMessage' => $whatsAppInteractiveButtonsMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppInteractiveButtonsMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/interactive/buttons';
         $formParams = [];
         $queryParams = [];
@@ -3523,8 +6792,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppInteractiveButtonsMessage)
                 : $whatsAppInteractiveButtonsMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3590,7 +6857,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppInteractiveButtonsMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppInteractiveButtonsMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3644,7 +6911,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -3668,7 +6957,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppInteractiveListMessage(\Infobip\Model\WhatsAppInteractiveListMessage $whatsAppInteractiveListMessage)
     {
@@ -3745,20 +7034,15 @@ final class WhatsAppApi
              'whatsAppInteractiveListMessage' => $whatsAppInteractiveListMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppInteractiveListMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/interactive/list';
         $formParams = [];
         $queryParams = [];
@@ -3776,8 +7060,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppInteractiveListMessage)
                 : $whatsAppInteractiveListMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -3843,7 +7125,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppInteractiveListMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppInteractiveListMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3897,7 +7179,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -3921,7 +7225,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppInteractiveMultiProductMessage(\Infobip\Model\WhatsAppInteractiveMultiProductMessage $whatsAppInteractiveMultiProductMessage)
     {
@@ -3998,20 +7302,15 @@ final class WhatsAppApi
              'whatsAppInteractiveMultiProductMessage' => $whatsAppInteractiveMultiProductMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppInteractiveMultiProductMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/interactive/multi-product';
         $formParams = [];
         $queryParams = [];
@@ -4029,8 +7328,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppInteractiveMultiProductMessage)
                 : $whatsAppInteractiveMultiProductMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -4096,7 +7393,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppInteractiveMultiProductMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppInteractiveMultiProductMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4150,7 +7447,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -4174,7 +7493,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppInteractiveProductMessage(\Infobip\Model\WhatsAppInteractiveProductMessage $whatsAppInteractiveProductMessage)
     {
@@ -4251,20 +7570,15 @@ final class WhatsAppApi
              'whatsAppInteractiveProductMessage' => $whatsAppInteractiveProductMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppInteractiveProductMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/interactive/product';
         $formParams = [];
         $queryParams = [];
@@ -4282,8 +7596,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppInteractiveProductMessage)
                 : $whatsAppInteractiveProductMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -4349,7 +7661,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppInteractiveProductMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppInteractiveProductMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4403,7 +7715,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -4427,7 +7761,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppLocationMessage(\Infobip\Model\WhatsAppLocationMessage $whatsAppLocationMessage)
     {
@@ -4504,20 +7838,15 @@ final class WhatsAppApi
              'whatsAppLocationMessage' => $whatsAppLocationMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppLocationMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/location';
         $formParams = [];
         $queryParams = [];
@@ -4535,8 +7864,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppLocationMessage)
                 : $whatsAppLocationMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -4602,7 +7929,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppLocationMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppLocationMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4656,7 +7983,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -4680,7 +8029,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppStickerMessage(\Infobip\Model\WhatsAppStickerMessage $whatsAppStickerMessage)
     {
@@ -4757,20 +8106,15 @@ final class WhatsAppApi
              'whatsAppStickerMessage' => $whatsAppStickerMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppStickerMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/sticker';
         $formParams = [];
         $queryParams = [];
@@ -4788,8 +8132,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppStickerMessage)
                 : $whatsAppStickerMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -4855,7 +8197,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppStickerMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppStickerMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4909,7 +8251,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -4933,7 +8297,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppBulkMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppBulkMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppTemplateMessage(\Infobip\Model\WhatsAppBulkMessage $whatsAppBulkMessage)
     {
@@ -5010,20 +8374,15 @@ final class WhatsAppApi
              'whatsAppBulkMessage' => $whatsAppBulkMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppBulkMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/template';
         $formParams = [];
         $queryParams = [];
@@ -5041,8 +8400,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppBulkMessage)
                 : $whatsAppBulkMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -5108,7 +8465,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppTemplateMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppBulkMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppBulkMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppTemplateMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -5162,7 +8519,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -5186,7 +8565,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppTextMessage(\Infobip\Model\WhatsAppTextMessage $whatsAppTextMessage)
     {
@@ -5263,20 +8642,15 @@ final class WhatsAppApi
              'whatsAppTextMessage' => $whatsAppTextMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppTextMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/text';
         $formParams = [];
         $queryParams = [];
@@ -5294,8 +8668,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppTextMessage)
                 : $whatsAppTextMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -5361,7 +8733,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppTextMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppTextMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -5415,7 +8787,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -5439,7 +8833,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendWhatsAppVideoMessage(\Infobip\Model\WhatsAppVideoMessage $whatsAppVideoMessage)
     {
@@ -5516,20 +8910,15 @@ final class WhatsAppApi
              'whatsAppVideoMessage' => $whatsAppVideoMessage,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'whatsAppVideoMessage' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/whatsapp/1/message/video';
         $formParams = [];
         $queryParams = [];
@@ -5547,8 +8936,6 @@ final class WhatsAppApi
                 ? $this->objectSerializer->serialize($whatsAppVideoMessage)
                 : $whatsAppVideoMessage;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -5614,7 +9001,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'sendWhatsAppVideoMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendWhatsAppVideoMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -5668,7 +9055,29 @@ final class WhatsAppApi
 
             return $apiException;
         }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -5682,4 +9091,1929 @@ final class WhatsAppApi
 
         return $apiException;
     }
+
+    /**
+     * Operation sendWhatsappInteractiveFlowMessage
+     *
+     * Send WhatsApp interactive flow message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage whatsAppInteractiveFlowMessage (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function sendWhatsappInteractiveFlowMessage(\Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage)
+    {
+        $request = $this->sendWhatsappInteractiveFlowMessageRequest($whatsAppInteractiveFlowMessage);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendWhatsappInteractiveFlowMessageResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendWhatsappInteractiveFlowMessageApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveFlowMessageAsync
+     *
+     * Send WhatsApp interactive flow message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendWhatsappInteractiveFlowMessageAsync(\Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage): PromiseInterface
+    {
+        $request = $this->sendWhatsappInteractiveFlowMessageRequest($whatsAppInteractiveFlowMessage);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendWhatsappInteractiveFlowMessageResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendWhatsappInteractiveFlowMessageApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendWhatsappInteractiveFlowMessage'
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendWhatsappInteractiveFlowMessageRequest(\Infobip\Model\WhatsAppInteractiveFlowMessage $whatsAppInteractiveFlowMessage): Request
+    {
+        $allData = [
+             'whatsAppInteractiveFlowMessage' => $whatsAppInteractiveFlowMessage,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'whatsAppInteractiveFlowMessage' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/message/interactive/flow';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppInteractiveFlowMessage)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppInteractiveFlowMessage)
+                : $whatsAppInteractiveFlowMessage;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'sendWhatsappInteractiveFlowMessage'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function sendWhatsappInteractiveFlowMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSingleMessageInfo', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'sendWhatsappInteractiveFlowMessage'
+     */
+    private function sendWhatsappInteractiveFlowMessageApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveLocationRequestMessage
+     *
+     * Send WhatsApp interactive location request message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage whatsAppInteractiveLocationRequestMessage (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function sendWhatsappInteractiveLocationRequestMessage(\Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage)
+    {
+        $request = $this->sendWhatsappInteractiveLocationRequestMessageRequest($whatsAppInteractiveLocationRequestMessage);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendWhatsappInteractiveLocationRequestMessageResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendWhatsappInteractiveLocationRequestMessageApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveLocationRequestMessageAsync
+     *
+     * Send WhatsApp interactive location request message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendWhatsappInteractiveLocationRequestMessageAsync(\Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage): PromiseInterface
+    {
+        $request = $this->sendWhatsappInteractiveLocationRequestMessageRequest($whatsAppInteractiveLocationRequestMessage);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendWhatsappInteractiveLocationRequestMessageResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendWhatsappInteractiveLocationRequestMessageApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendWhatsappInteractiveLocationRequestMessage'
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendWhatsappInteractiveLocationRequestMessageRequest(\Infobip\Model\WhatsAppInteractiveLocationRequestMessage $whatsAppInteractiveLocationRequestMessage): Request
+    {
+        $allData = [
+             'whatsAppInteractiveLocationRequestMessage' => $whatsAppInteractiveLocationRequestMessage,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'whatsAppInteractiveLocationRequestMessage' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/message/interactive/location-request';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppInteractiveLocationRequestMessage)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppInteractiveLocationRequestMessage)
+                : $whatsAppInteractiveLocationRequestMessage;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'sendWhatsappInteractiveLocationRequestMessage'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function sendWhatsappInteractiveLocationRequestMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSingleMessageInfo', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'sendWhatsappInteractiveLocationRequestMessage'
+     */
+    private function sendWhatsappInteractiveLocationRequestMessageApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveOrderDetailsMessage
+     *
+     * Send WhatsApp interactive order-details message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage whatsAppInteractiveOrderDetailsMessage (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function sendWhatsappInteractiveOrderDetailsMessage(\Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage)
+    {
+        $request = $this->sendWhatsappInteractiveOrderDetailsMessageRequest($whatsAppInteractiveOrderDetailsMessage);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendWhatsappInteractiveOrderDetailsMessageResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendWhatsappInteractiveOrderDetailsMessageApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveOrderDetailsMessageAsync
+     *
+     * Send WhatsApp interactive order-details message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendWhatsappInteractiveOrderDetailsMessageAsync(\Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage): PromiseInterface
+    {
+        $request = $this->sendWhatsappInteractiveOrderDetailsMessageRequest($whatsAppInteractiveOrderDetailsMessage);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendWhatsappInteractiveOrderDetailsMessageResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendWhatsappInteractiveOrderDetailsMessageApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendWhatsappInteractiveOrderDetailsMessage'
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendWhatsappInteractiveOrderDetailsMessageRequest(\Infobip\Model\WhatsAppInteractiveOrderDetailsMessage $whatsAppInteractiveOrderDetailsMessage): Request
+    {
+        $allData = [
+             'whatsAppInteractiveOrderDetailsMessage' => $whatsAppInteractiveOrderDetailsMessage,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'whatsAppInteractiveOrderDetailsMessage' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/message/interactive/order-details';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppInteractiveOrderDetailsMessage)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppInteractiveOrderDetailsMessage)
+                : $whatsAppInteractiveOrderDetailsMessage;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'sendWhatsappInteractiveOrderDetailsMessage'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function sendWhatsappInteractiveOrderDetailsMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSingleMessageInfo', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'sendWhatsappInteractiveOrderDetailsMessage'
+     */
+    private function sendWhatsappInteractiveOrderDetailsMessageApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveOrderStatusMessage
+     *
+     * Send WhatsApp interactive order-status message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage whatsAppInteractiveOrderStatusMessage (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function sendWhatsappInteractiveOrderStatusMessage(\Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage)
+    {
+        $request = $this->sendWhatsappInteractiveOrderStatusMessageRequest($whatsAppInteractiveOrderStatusMessage);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendWhatsappInteractiveOrderStatusMessageResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendWhatsappInteractiveOrderStatusMessageApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveOrderStatusMessageAsync
+     *
+     * Send WhatsApp interactive order-status message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendWhatsappInteractiveOrderStatusMessageAsync(\Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage): PromiseInterface
+    {
+        $request = $this->sendWhatsappInteractiveOrderStatusMessageRequest($whatsAppInteractiveOrderStatusMessage);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendWhatsappInteractiveOrderStatusMessageResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendWhatsappInteractiveOrderStatusMessageApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendWhatsappInteractiveOrderStatusMessage'
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendWhatsappInteractiveOrderStatusMessageRequest(\Infobip\Model\WhatsAppInteractiveOrderStatusMessage $whatsAppInteractiveOrderStatusMessage): Request
+    {
+        $allData = [
+             'whatsAppInteractiveOrderStatusMessage' => $whatsAppInteractiveOrderStatusMessage,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'whatsAppInteractiveOrderStatusMessage' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/message/interactive/order-status';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppInteractiveOrderStatusMessage)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppInteractiveOrderStatusMessage)
+                : $whatsAppInteractiveOrderStatusMessage;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'sendWhatsappInteractiveOrderStatusMessage'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function sendWhatsappInteractiveOrderStatusMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSingleMessageInfo', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'sendWhatsappInteractiveOrderStatusMessage'
+     */
+    private function sendWhatsappInteractiveOrderStatusMessageApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveUrlButtonMessage
+     *
+     * Send WhatsApp interactive url button message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage whatsAppInteractiveUrlButtonMessage (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function sendWhatsappInteractiveUrlButtonMessage(\Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage)
+    {
+        $request = $this->sendWhatsappInteractiveUrlButtonMessageRequest($whatsAppInteractiveUrlButtonMessage);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendWhatsappInteractiveUrlButtonMessageResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendWhatsappInteractiveUrlButtonMessageApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendWhatsappInteractiveUrlButtonMessageAsync
+     *
+     * Send WhatsApp interactive url button message
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendWhatsappInteractiveUrlButtonMessageAsync(\Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage): PromiseInterface
+    {
+        $request = $this->sendWhatsappInteractiveUrlButtonMessageRequest($whatsAppInteractiveUrlButtonMessage);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendWhatsappInteractiveUrlButtonMessageResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendWhatsappInteractiveUrlButtonMessageApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendWhatsappInteractiveUrlButtonMessage'
+     *
+     * @param \Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendWhatsappInteractiveUrlButtonMessageRequest(\Infobip\Model\WhatsAppInteractiveUrlButtonMessage $whatsAppInteractiveUrlButtonMessage): Request
+    {
+        $allData = [
+             'whatsAppInteractiveUrlButtonMessage' => $whatsAppInteractiveUrlButtonMessage,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'whatsAppInteractiveUrlButtonMessage' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/message/interactive/url-button';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppInteractiveUrlButtonMessage)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppInteractiveUrlButtonMessage)
+                : $whatsAppInteractiveUrlButtonMessage;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'sendWhatsappInteractiveUrlButtonMessage'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\WhatsAppSingleMessageInfo|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function sendWhatsappInteractiveUrlButtonMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\WhatsAppSingleMessageInfo', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'sendWhatsappInteractiveUrlButtonMessage'
+     */
+    private function sendWhatsappInteractiveUrlButtonMessageApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation updateWhatsappSenderBusinessInfo
+     *
+     * Update business info of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest whatsAppBusinessInfoRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function updateWhatsappSenderBusinessInfo(string $sender, \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest)
+    {
+        $request = $this->updateWhatsappSenderBusinessInfoRequest($sender, $whatsAppBusinessInfoRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->updateWhatsappSenderBusinessInfoResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->updateWhatsappSenderBusinessInfoApiException($exception);
+        }
+    }
+
+    /**
+     * Operation updateWhatsappSenderBusinessInfoAsync
+     *
+     * Update business info of WhatsApp sender
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateWhatsappSenderBusinessInfoAsync(string $sender, \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest): PromiseInterface
+    {
+        $request = $this->updateWhatsappSenderBusinessInfoRequest($sender, $whatsAppBusinessInfoRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->updateWhatsappSenderBusinessInfoResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->updateWhatsappSenderBusinessInfoApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateWhatsappSenderBusinessInfo'
+     *
+     * @param string $sender Registered WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function updateWhatsappSenderBusinessInfoRequest(string $sender, \Infobip\Model\WhatsAppBusinessInfoRequest $whatsAppBusinessInfoRequest): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'whatsAppBusinessInfoRequest' => $whatsAppBusinessInfoRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'whatsAppBusinessInfoRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/senders/{sender}/business-info';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppBusinessInfoRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppBusinessInfoRequest)
+                : $whatsAppBusinessInfoRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PATCH',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'updateWhatsappSenderBusinessInfo'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function updateWhatsappSenderBusinessInfoResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'updateWhatsappSenderBusinessInfo'
+     */
+    private function updateWhatsappSenderBusinessInfoApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation verifyWhatsappSender
+     *
+     * Verify WhatsApp sender
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest whatsAppVerifyCodeRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function verifyWhatsappSender(string $sender, \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest)
+    {
+        $request = $this->verifyWhatsappSenderRequest($sender, $whatsAppVerifyCodeRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->verifyWhatsappSenderResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->verifyWhatsappSenderApiException($exception);
+        }
+    }
+
+    /**
+     * Operation verifyWhatsappSenderAsync
+     *
+     * Verify WhatsApp sender
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function verifyWhatsappSenderAsync(string $sender, \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest): PromiseInterface
+    {
+        $request = $this->verifyWhatsappSenderRequest($sender, $whatsAppVerifyCodeRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->verifyWhatsappSenderResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->verifyWhatsappSenderApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'verifyWhatsappSender'
+     *
+     * @param string $sender WhatsApp sender number. Must be in international format. (required)
+     * @param \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function verifyWhatsappSenderRequest(string $sender, \Infobip\Model\WhatsAppVerifyCodeRequest $whatsAppVerifyCodeRequest): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'whatsAppVerifyCodeRequest' => $whatsAppVerifyCodeRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'whatsAppVerifyCodeRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/whatsapp/1/embedded-signup/registrations/senders/{sender}/verification';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($sender !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sender' . '}',
+                $this->objectSerializer->toPathValue($sender),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($whatsAppVerifyCodeRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($whatsAppVerifyCodeRequest)
+                : $whatsAppVerifyCodeRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'verifyWhatsappSender'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function verifyWhatsappSenderResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'verifyWhatsappSender'
+     */
+    private function verifyWhatsappSenderApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
 }

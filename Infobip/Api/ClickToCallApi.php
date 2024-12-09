@@ -4,7 +4,7 @@
 
 /**
  * ClickToCallApi
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -36,7 +36,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\DeprecationChecker;
@@ -88,7 +87,7 @@ final class ClickToCallApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\CallsVoiceResponse
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\CallsVoiceResponse
      */
     public function sendClickToCallMessage(\Infobip\Model\CallsClickToCallMessageBody $callsClickToCallMessageBody)
     {
@@ -165,20 +164,15 @@ final class ClickToCallApi
              'callsClickToCallMessageBody' => $callsClickToCallMessageBody,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
+        $validationConstraints = new Assert\Collection(
+            fields : [
                     'callsClickToCallMessageBody' => [
                         new Assert\NotNull(),
                     ],
-                ],
-                $validationConstraints
-            );
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
-
         $resourcePath = '/voice/ctc/1/send';
         $formParams = [];
         $queryParams = [];
@@ -196,8 +190,6 @@ final class ClickToCallApi
                 ? $this->objectSerializer->serialize($callsClickToCallMessageBody)
                 : $callsClickToCallMessageBody;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -263,7 +255,7 @@ final class ClickToCallApi
     /**
      * Create response for operation 'sendClickToCallMessage'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\CallsVoiceResponse|null
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\CallsVoiceResponse|null
      */
     private function sendClickToCallMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -293,6 +285,50 @@ final class ClickToCallApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode >= 400 && $statusCode <= 499) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -325,4 +361,5 @@ final class ClickToCallApi
 
         return $apiException;
     }
+
 }

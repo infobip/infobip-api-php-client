@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,28 +16,9 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class EmailValidationResponse implements ModelInterface
+class EmailValidationResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'EmailValidationResponse';
-
-    public const OPENAPI_FORMATS = [
-        'to' => null,
-        'validMailbox' => null,
-        'validSyntax' => null,
-        'catchAll' => null,
-        'didYouMean' => null,
-        'disposable' => null,
-        'roleBased' => null,
-        'reason' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -51,20 +30,12 @@ class EmailValidationResponse implements ModelInterface
         protected ?bool $disposable = null,
         protected ?bool $roleBased = null,
         protected ?string $reason = null,
+        protected ?string $detailedReasons = null,
+        protected ?string $risk = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getTo(): string|null
     {
@@ -151,6 +122,28 @@ class EmailValidationResponse implements ModelInterface
     public function setReason(?string $reason): self
     {
         $this->reason = $reason;
+        return $this;
+    }
+
+    public function getDetailedReasons(): string|null
+    {
+        return $this->detailedReasons;
+    }
+
+    public function setDetailedReasons(?string $detailedReasons): self
+    {
+        $this->detailedReasons = $detailedReasons;
+        return $this;
+    }
+
+    public function getRisk(): string|null
+    {
+        return $this->risk;
+    }
+
+    public function setRisk(?string $risk): self
+    {
+        $this->risk = $risk;
         return $this;
     }
 }

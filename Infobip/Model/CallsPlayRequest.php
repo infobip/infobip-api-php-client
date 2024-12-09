@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,26 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsPlayRequest implements ModelInterface
+class CallsPlayRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsPlayRequest';
-
-    public const OPENAPI_FORMATS = [
-        'loopCount' => 'int32',
-        'content' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallsPlayContent $content,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallsPlayContent $content,
         protected ?int $loopCount = null,
+        protected ?int $timeout = null,
+        protected ?int $offset = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\CallsTermination $stopOn = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getLoopCount(): int|null
     {
@@ -68,6 +49,28 @@ class CallsPlayRequest implements ModelInterface
         return $this;
     }
 
+    public function getTimeout(): int|null
+    {
+        return $this->timeout;
+    }
+
+    public function setTimeout(?int $timeout): self
+    {
+        $this->timeout = $timeout;
+        return $this;
+    }
+
+    public function getOffset(): int|null
+    {
+        return $this->offset;
+    }
+
+    public function setOffset(?int $offset): self
+    {
+        $this->offset = $offset;
+        return $this;
+    }
+
     public function getContent(): \Infobip\Model\CallsPlayContent
     {
         return $this->content;
@@ -76,6 +79,34 @@ class CallsPlayRequest implements ModelInterface
     public function setContent(\Infobip\Model\CallsPlayContent $content): self
     {
         $this->content = $content;
+        return $this;
+    }
+
+    public function getStopOn(): \Infobip\Model\CallsTermination|null
+    {
+        return $this->stopOn;
+    }
+
+    public function setStopOn(?\Infobip\Model\CallsTermination $stopOn): self
+    {
+        $this->stopOn = $stopOn;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Optional parameter to update a call's custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
         return $this;
     }
 }

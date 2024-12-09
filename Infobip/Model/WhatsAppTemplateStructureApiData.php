@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,119 +16,12 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
+use Infobip\SerializationCandidates;
 
-class WhatsAppTemplateStructureApiData implements ModelInterface
+#[SerializationCandidates([
+    "\Infobip\Model\WhatsAppAuthenticationTemplateStructureApiData",
+    "\Infobip\Model\WhatsAppDefaultTemplateStructureApiData",
+])]
+interface WhatsAppTemplateStructureApiData
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplateStructureApiData';
-
-    public const OPENAPI_FORMATS = [
-        'header' => null,
-        'body' => null,
-        'footer' => null,
-        'buttons' => null,
-        'type' => null
-    ];
-
-    /**
-     * @param \Infobip\Model\WhatsAppButtonApiData[] $buttons
-     */
-    public function __construct(
-        #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\WhatsAppBodyApiData $body,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppHeaderApiData $header = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppFooterApiData $footer = null,
-        #[Assert\Count(max: 3)]
-    #[Assert\Count(min: 1)]
-
-    protected ?array $buttons = null,
-        #[Assert\Choice(['TEXT','MEDIA','UNSUPPORTED',])]
-
-    protected ?string $type = null,
-    ) {
-    }
-
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getHeader(): \Infobip\Model\WhatsAppHeaderApiData|null
-    {
-        return $this->header;
-    }
-
-    public function setHeader(?\Infobip\Model\WhatsAppHeaderApiData $header): self
-    {
-        $this->header = $header;
-        return $this;
-    }
-
-    public function getBody(): \Infobip\Model\WhatsAppBodyApiData
-    {
-        return $this->body;
-    }
-
-    public function setBody(\Infobip\Model\WhatsAppBodyApiData $body): self
-    {
-        $this->body = $body;
-        return $this;
-    }
-
-    public function getFooter(): \Infobip\Model\WhatsAppFooterApiData|null
-    {
-        return $this->footer;
-    }
-
-    public function setFooter(?\Infobip\Model\WhatsAppFooterApiData $footer): self
-    {
-        $this->footer = $footer;
-        return $this;
-    }
-
-    /**
-     * @return \Infobip\Model\WhatsAppButtonApiData[]|null
-     */
-    public function getButtons(): ?array
-    {
-        return $this->buttons;
-    }
-
-    /**
-     * @param \Infobip\Model\WhatsAppButtonApiData[]|null $buttons Template buttons. Can be either up to 3 `quick reply` buttons or up to 2 `call to action` buttons. Call to action buttons must be unique in type.
-     */
-    public function setButtons(?array $buttons): self
-    {
-        $this->buttons = $buttons;
-        return $this;
-    }
-
-    public function getType(): mixed
-    {
-        return $this->type;
-    }
-
-    public function setType($type): self
-    {
-        $this->type = $type;
-        return $this;
-    }
 }

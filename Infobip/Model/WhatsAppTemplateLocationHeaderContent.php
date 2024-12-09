@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppTemplateLocationHeaderContent extends WhatsAppTemplateHeaderContent
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppTemplateLocationHeaderContent';
-
     public const TYPE = 'LOCATION';
-
-    public const OPENAPI_FORMATS = [
-        'latitude' => 'double',
-        'longitude' => 'double'
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\LessThan(90)]
-    #[Assert\GreaterThan(-90)]
-
-    protected float $latitude,
+        #[Assert\LessThanOrEqual(90)]
+        #[Assert\GreaterThanOrEqual(-90)]
+        protected float $latitude,
         #[Assert\NotBlank]
-    #[Assert\LessThan(180)]
-    #[Assert\GreaterThan(-180)]
-
-    protected float $longitude,
+        #[Assert\LessThanOrEqual(180)]
+        #[Assert\GreaterThanOrEqual(-180)]
+        protected float $longitude,
     ) {
-        $modelDiscriminatorValue = 'LOCATION';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getLatitude(): float
     {

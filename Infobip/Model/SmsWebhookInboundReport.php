@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,28 +18,10 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsWebhookInboundReport implements ModelInterface
+class SmsWebhookInboundReport
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsWebhookInboundReport';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'from' => null,
-        'to' => null,
-        'text' => null,
-        'cleanText' => null,
-        'keyword' => null,
-        'receivedAt' => 'date-time',
-        'smsCount' => 'int32',
-        'price' => null,
-        'callbackData' => null
-    ];
-
     /**
      */
     public function __construct(
@@ -52,27 +32,15 @@ class SmsWebhookInboundReport implements ModelInterface
         protected ?string $cleanText = null,
         protected ?string $keyword = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $receivedAt = null,
+        protected ?\DateTime $receivedAt = null,
         protected ?int $smsCount = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\MessagePrice $price = null,
+        protected ?\Infobip\Model\MessagePrice $price = null,
         protected ?string $callbackData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMessageId(): string|null
     {

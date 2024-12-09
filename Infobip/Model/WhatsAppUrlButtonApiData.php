@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,40 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
 {
-    public const DISCRIMINATOR = 'type';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppUrlButtonApiData';
-
     public const TYPE = 'URL';
-
-    public const OPENAPI_FORMATS = [
-        'url' => null,
-        'example' => null
-    ];
 
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\Length(max: 200)]
-    #[Assert\Length(min: 0)]
-
-    protected string $text,
+        #[Assert\Length(max: 25)]
+        #[Assert\Length(min: 0)]
+        protected string $text,
         #[Assert\NotBlank]
-
-    protected string $url,
+        protected string $url,
         protected ?string $example = null,
+        protected ?string $destinationUrl = null,
     ) {
-        $modelDiscriminatorValue = 'URL';
+        $modelDiscriminatorValue = self::TYPE;
 
         parent::__construct(
             type: $modelDiscriminatorValue,
-            text: $text,
         );
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getText(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->text;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setText(string $text): self
     {
-        return self::DISCRIMINATOR;
+        $this->text = $text;
+        return $this;
     }
 
     public function getUrl(): string
@@ -87,6 +72,17 @@ class WhatsAppUrlButtonApiData extends WhatsAppButtonApiData
     public function setExample(?string $example): self
     {
         $this->example = $example;
+        return $this;
+    }
+
+    public function getDestinationUrl(): string|null
+    {
+        return $this->destinationUrl;
+    }
+
+    public function setDestinationUrl(?string $destinationUrl): self
+    {
+        $this->destinationUrl = $destinationUrl;
         return $this;
     }
 }

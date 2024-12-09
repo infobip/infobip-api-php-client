@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,43 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsAddNewCallRequest implements ModelInterface
+class CallsAddNewCallRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsAddNewCallRequest';
-
-    public const OPENAPI_FORMATS = [
-        'callRequest' => null,
-        'connectOnEarlyMedia' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-    #[Assert\NotBlank]
-
-    protected \Infobip\Model\CallsActionCallRequest $callRequest,
+        #[Assert\NotBlank]
+        protected \Infobip\Model\CallsActionCallRequest $callRequest,
         protected ?bool $connectOnEarlyMedia = false,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\RingbackGeneration $ringbackGeneration = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getCallRequest(): \Infobip\Model\CallsActionCallRequest
     {
@@ -76,6 +53,17 @@ class CallsAddNewCallRequest implements ModelInterface
     public function setConnectOnEarlyMedia(?bool $connectOnEarlyMedia): self
     {
         $this->connectOnEarlyMedia = $connectOnEarlyMedia;
+        return $this;
+    }
+
+    public function getRingbackGeneration(): \Infobip\Model\RingbackGeneration|null
+    {
+        return $this->ringbackGeneration;
+    }
+
+    public function setRingbackGeneration(?\Infobip\Model\RingbackGeneration $ringbackGeneration): self
+    {
+        $this->ringbackGeneration = $ringbackGeneration;
         return $this;
     }
 }

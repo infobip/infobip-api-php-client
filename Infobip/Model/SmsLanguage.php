@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,48 +16,50 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsLanguage implements ModelInterface
+class SmsLanguage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsLanguage';
-
-    public const OPENAPI_FORMATS = [
-        'languageCode' => null
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $languageCode = null,
+        protected ?bool $singleShift = false,
+        protected ?bool $lockingShift = false,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getLanguageCode(): string|null
+    public function getLanguageCode(): mixed
     {
         return $this->languageCode;
     }
 
-    public function setLanguageCode(?string $languageCode): self
+    public function setLanguageCode($languageCode): self
     {
         $this->languageCode = $languageCode;
+        return $this;
+    }
+
+    public function getSingleShift(): bool|null
+    {
+        return $this->singleShift;
+    }
+
+    public function setSingleShift(?bool $singleShift): self
+    {
+        $this->singleShift = $singleShift;
+        return $this;
+    }
+
+    public function getLockingShift(): bool|null
+    {
+        return $this->lockingShift;
+    }
+
+    public function setLockingShift(?bool $lockingShift): self
+    {
+        $this->lockingShift = $lockingShift;
         return $this;
     }
 }

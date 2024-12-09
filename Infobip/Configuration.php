@@ -1,7 +1,8 @@
 <?php
+
 /**
  * Configuration
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -55,7 +56,7 @@ final class Configuration
 
     public function getUserAgent(): string
     {
-        return 'infobip-api-client-php/5.0.0/PHP';
+        return 'infobip-api-client-php/6.0.0/PHP';
     }
 
     public function getTempFolderPath(): string

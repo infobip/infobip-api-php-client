@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,49 +17,26 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class SmsLanguageConfiguration implements ModelInterface
+class SmsLanguageConfiguration
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'SmsLanguageConfiguration';
-
-    public const OPENAPI_FORMATS = [
-        'language' => null,
-        'transliteration' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\SmsLanguage $language = null,
+        protected ?\Infobip\Model\SmsPreviewLanguage $language = null,
         protected ?string $transliteration = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getLanguage(): \Infobip\Model\SmsLanguage|null
+    public function getLanguage(): \Infobip\Model\SmsPreviewLanguage|null
     {
         return $this->language;
     }
 
-    public function setLanguage(?\Infobip\Model\SmsLanguage $language): self
+    public function setLanguage(?\Infobip\Model\SmsPreviewLanguage $language): self
     {
         $this->language = $language;
         return $this;

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -40,10 +38,10 @@ final class TfaLanguage implements EnumInterface
     public const HR = 'hr';
     public const SL = 'sl';
     public const RO = 'ro';
-    public const PT_PT = 'pt-pt';
-    public const PT_BR = 'pt-br';
-    public const ZH_CN = 'zh-cn';
-    public const ZH_TW = 'zh-tw';
+    public const PT_PT = 'pt_pt';
+    public const PT_BR = 'pt_br';
+    public const ZH_CN = 'zh_cn';
+    public const ZH_TW = 'zh_tw';
 
     public const ALLOWED_VALUES = [
         'en',
@@ -64,10 +62,10 @@ final class TfaLanguage implements EnumInterface
         'hr',
         'sl',
         'ro',
-        'pt-pt',
-        'pt-br',
-        'zh-cn',
-        'zh-tw',
+        'pt_pt',
+        'pt_br',
+        'zh_cn',
+        'zh_tw',
     ];
 
     private string $value;
@@ -179,22 +177,22 @@ final class TfaLanguage implements EnumInterface
 
     public static function PT_PT(): TfaLanguage
     {
-        return new self('pt-pt');
+        return new self('pt_pt');
     }
 
     public static function PT_BR(): TfaLanguage
     {
-        return new self('pt-br');
+        return new self('pt_br');
     }
 
     public static function ZH_CN(): TfaLanguage
     {
-        return new self('zh-cn');
+        return new self('zh_cn');
     }
 
     public static function ZH_TW(): TfaLanguage
     {
-        return new self('zh-tw');
+        return new self('zh_tw');
     }
 
     public function __toString(): string

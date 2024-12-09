@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,41 +16,19 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsMachineDetectionProperties implements ModelInterface
+class CallsMachineDetectionProperties
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsMachineDetectionProperties';
-
-    public const OPENAPI_FORMATS = [
-        'detectionResult' => null
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
-        #[Assert\Choice(['HUMAN','MACHINE','UNKNOWN',])]
-
-    protected ?string $detectionResult = null,
+        protected ?string $detectionResult = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getDetectionResult(): mixed
     {
@@ -62,6 +38,23 @@ class CallsMachineDetectionProperties implements ModelInterface
     public function setDetectionResult($detectionResult): self
     {
         $this->detectionResult = $detectionResult;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
         return $this;
     }
 }

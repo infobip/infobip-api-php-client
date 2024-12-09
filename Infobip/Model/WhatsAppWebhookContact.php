@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,25 +18,10 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookContact implements ModelInterface
+class WhatsAppWebhookContact
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookContact';
-
-    public const OPENAPI_FORMATS = [
-        'addresses' => null,
-        'birthday' => 'date-time',
-        'emails' => null,
-        'name' => null,
-        'org' => null,
-        'phones' => null,
-        'urls' => null
-    ];
-
     /**
      * @param \Infobip\Model\WhatsAppWebhookAddress[] $addresses
      * @param \Infobip\Model\WhatsAppWebhookEmail[] $emails
@@ -48,31 +31,18 @@ class WhatsAppWebhookContact implements ModelInterface
     public function __construct(
         protected ?array $addresses = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $birthday = null,
+        protected ?\DateTime $birthday = null,
         protected ?array $emails = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookName $name = null,
+        protected ?\Infobip\Model\WhatsAppWebhookName $name = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookOrganization $org = null,
+        protected ?\Infobip\Model\WhatsAppWebhookOrganization $org = null,
         protected ?array $phones = null,
         protected ?array $urls = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     /**
      * @return \Infobip\Model\WhatsAppWebhookAddress[]|null

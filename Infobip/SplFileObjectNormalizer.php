@@ -63,7 +63,7 @@ final class SplFileObjectNormalizer implements
      * @inheritdoc
      * @throws InvalidArgumentException
      */
-    public function normalize(mixed $object, string $format = null, array $context = []): string
+    public function normalize(mixed $object, ?string $format = null, array $context = []): string
     {
         if (!$object instanceof SplFileObject) {
             throw new InvalidArgumentException('The object must be an instance of SplFileObject');
@@ -73,9 +73,9 @@ final class SplFileObjectNormalizer implements
     }
 
     /**
-     * @inheritdoc
-     */
-    public function supportsNormalization(mixed $data, string $format = null): bool
+    * @inheritdoc
+    */
+    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
     {
         return $data instanceof SplFileObject;
     }
@@ -85,7 +85,7 @@ final class SplFileObjectNormalizer implements
      * @param StreamInterface $data
      * @throws NotNormalizableValueException
      */
-    public function denormalize(mixed $data, string $type, string $format = null, array $context = []): SplFileObject
+    public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): SplFileObject
     {
         if (!$data instanceof StreamInterface) {
             throw NotNormalizableValueException::createForUnexpectedDataType(
@@ -125,7 +125,7 @@ final class SplFileObjectNormalizer implements
     /**
      * @inheritdoc
      */
-    public function supportsDenormalization(mixed $data, string $type, string $format = null): bool
+    public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return \in_array($type, self::SUPPORTED_TYPES) && $data instanceof StreamInterface;
     }
@@ -137,5 +137,10 @@ final class SplFileObjectNormalizer implements
         }
 
         return $filename;
+    }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return self::SUPPORTED_TYPES;
     }
 }

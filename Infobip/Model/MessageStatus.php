@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,56 +16,40 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class MessageStatus implements ModelInterface
+class MessageStatus
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'MessageStatus';
-
-    public const OPENAPI_FORMATS = [
-        'groupName' => null,
-        'id' => 'int32',
-        'groupId' => 'int32',
-        'name' => null,
-        'action' => null,
-        'description' => null
-    ];
-
     /**
      */
     public function __construct(
+        protected ?int $groupId = null,
         protected ?string $groupName = null,
         protected ?int $id = null,
-        protected ?int $groupId = null,
         protected ?string $name = null,
-        protected ?string $action = null,
         protected ?string $description = null,
+        protected ?string $action = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getGroupId(): int|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->groupId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setGroupId(?int $groupId): self
     {
-        return self::DISCRIMINATOR;
+        $this->groupId = $groupId;
+        return $this;
     }
 
-    public function getGroupName(): string|null
+    public function getGroupName(): mixed
     {
         return $this->groupName;
     }
 
-    public function setGroupName(?string $groupName): self
+    public function setGroupName($groupName): self
     {
         $this->groupName = $groupName;
         return $this;
@@ -84,17 +66,6 @@ class MessageStatus implements ModelInterface
         return $this;
     }
 
-    public function getGroupId(): int|null
-    {
-        return $this->groupId;
-    }
-
-    public function setGroupId(?int $groupId): self
-    {
-        $this->groupId = $groupId;
-        return $this;
-    }
-
     public function getName(): string|null
     {
         return $this->name;
@@ -106,17 +77,6 @@ class MessageStatus implements ModelInterface
         return $this;
     }
 
-    public function getAction(): string|null
-    {
-        return $this->action;
-    }
-
-    public function setAction(?string $action): self
-    {
-        $this->action = $action;
-        return $this;
-    }
-
     public function getDescription(): string|null
     {
         return $this->description;
@@ -125,6 +85,17 @@ class MessageStatus implements ModelInterface
     public function setDescription(?string $description): self
     {
         $this->description = $description;
+        return $this;
+    }
+
+    public function getAction(): string|null
+    {
+        return $this->action;
+    }
+
+    public function setAction(?string $action): self
+    {
+        $this->action = $action;
         return $this;
     }
 }

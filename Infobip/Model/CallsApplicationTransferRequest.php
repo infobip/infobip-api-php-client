@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,54 +17,43 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsApplicationTransferRequest implements ModelInterface
+class CallsApplicationTransferRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsApplicationTransferRequest';
-
-    public const OPENAPI_FORMATS = [
-        'destinationApplicationId' => null,
-        'timeout' => 'int32',
-        'context' => null
-    ];
-
     /**
-     * @param array<string,string> $context
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $destinationApplicationId,
+        protected string $destinationCallsConfigurationId,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\Platform $platform = null,
         protected ?int $timeout = 30,
-        protected ?array $context = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getDestinationCallsConfigurationId(): string
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->destinationCallsConfigurationId;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setDestinationCallsConfigurationId(string $destinationCallsConfigurationId): self
     {
-        return self::DISCRIMINATOR;
+        $this->destinationCallsConfigurationId = $destinationCallsConfigurationId;
+        return $this;
     }
 
-    public function getDestinationApplicationId(): string
+    public function getPlatform(): \Infobip\Model\Platform|null
     {
-        return $this->destinationApplicationId;
+        return $this->platform;
     }
 
-    public function setDestinationApplicationId(string $destinationApplicationId): self
+    public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
-        $this->destinationApplicationId = $destinationApplicationId;
+        $this->platform = $platform;
         return $this;
     }
 
@@ -84,17 +71,17 @@ class CallsApplicationTransferRequest implements ModelInterface
     /**
      * @return array<string,string>|null
      */
-    public function getContext()
+    public function getCustomData()
     {
-        return $this->context;
+        return $this->customData;
     }
 
     /**
-     * @param array<string,string>|null $context Client defined data to be passed to the destination application.
+     * @param array<string,string>|null $customData Optional parameter to update a call's custom data.
      */
-    public function setContext(?array $context): self
+    public function setCustomData(?array $customData): self
     {
-        $this->context = $context;
+        $this->customData = $customData;
         return $this;
     }
 }

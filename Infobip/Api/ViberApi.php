@@ -4,7 +4,7 @@
 
 /**
  * ViberApi
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -36,7 +36,6 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Utils;
 use Infobip\ApiException;
 use Infobip\Configuration;
 use Infobip\DeprecationChecker;
@@ -80,25 +79,30 @@ final class ViberApi
     }
 
     /**
-     * Operation sendViberFileMessage
+     * Operation getOutboundViberMessageDeliveryReports
      *
-     * Send Viber file message
+     * Get Viber delivery reports
      *
-     * @param \Infobip\Model\ViberFileMessage $viberFileMessage viberFileMessage (required)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object
+     * @return \Infobip\Model\ViberWebhookReportsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
      */
-    public function sendViberFileMessage(\Infobip\Model\ViberFileMessage $viberFileMessage)
+    public function getOutboundViberMessageDeliveryReports(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null)
     {
-        $request = $this->sendViberFileMessageRequest($viberFileMessage);
+        $request = $this->getOutboundViberMessageDeliveryReportsRequest($bulkId, $messageId, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         try {
             try {
                 $response = $this->client->send($request);
                 $this->deprecationChecker->check($request, $response);
-                return $this->sendViberFileMessageResponse($response, $request->getUri());
+                return $this->getOutboundViberMessageDeliveryReportsResponse($response, $request->getUri());
             } catch (GuzzleException $exception) {
                 $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
 
@@ -110,22 +114,27 @@ final class ViberApi
                 );
             }
         } catch (ApiException $exception) {
-            throw $this->sendViberFileMessageApiException($exception);
+            throw $this->getOutboundViberMessageDeliveryReportsApiException($exception);
         }
     }
 
     /**
-     * Operation sendViberFileMessageAsync
+     * Operation getOutboundViberMessageDeliveryReportsAsync
      *
-     * Send Viber file message
+     * Get Viber delivery reports
      *
-     * @param \Infobip\Model\ViberFileMessage $viberFileMessage (required)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function sendViberFileMessageAsync(\Infobip\Model\ViberFileMessage $viberFileMessage): PromiseInterface
+    public function getOutboundViberMessageDeliveryReportsAsync(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null): PromiseInterface
     {
-        $request = $this->sendViberFileMessageRequest($viberFileMessage);
+        $request = $this->getOutboundViberMessageDeliveryReportsRequest($bulkId, $messageId, $limit, $entityId, $applicationId, $campaignReferenceId);
 
         return $this
             ->client
@@ -133,7 +142,7 @@ final class ViberApi
             ->then(
                 function ($response) use ($request) {
                     $this->deprecationChecker->check($request, $response);
-                    return $this->sendViberFileMessageResponse($response, $request->getUri());
+                    return $this->getOutboundViberMessageDeliveryReportsResponse($response, $request->getUri());
                 },
                 function (GuzzleException $exception) {
                     $statusCode = $exception->getCode();
@@ -147,39 +156,692 @@ final class ViberApi
                         ($response !== null) ? (string)$response->getBody() : null
                     );
 
-                    throw $this->sendViberFileMessageApiException($exception);
+                    throw $this->getOutboundViberMessageDeliveryReportsApiException($exception);
                 }
             );
     }
 
     /**
-     * Create request for operation 'sendViberFileMessage'
+     * Create request for operation 'getOutboundViberMessageDeliveryReports'
      *
-     * @param \Infobip\Model\ViberFileMessage $viberFileMessage (required)
+     * @param null|string $bulkId The ID that uniquely identifies the request. Bulk ID will be received only when you send a message to more than one destination address. (optional)
+     * @param null|string $messageId The ID that uniquely identifies the message sent. (optional)
+     * @param int $limit Maximum number of delivery reports to be returned. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access reports for the last 48h (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $campaignReferenceId ID of a campaign that was sent in the message. (optional)
      *
      * @throws InvalidArgumentException
      */
-    private function sendViberFileMessageRequest(\Infobip\Model\ViberFileMessage $viberFileMessage): Request
+    private function getOutboundViberMessageDeliveryReportsRequest(?string $bulkId = null, ?string $messageId = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?string $campaignReferenceId = null): Request
     {
         $allData = [
-             'viberFileMessage' => $viberFileMessage,
+             'bulkId' => $bulkId,
+             'messageId' => $messageId,
+             'limit' => $limit,
+             'entityId' => $entityId,
+             'applicationId' => $applicationId,
+             'campaignReferenceId' => $campaignReferenceId,
         ];
 
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                    'viberFileMessage' => [
-                        new Assert\NotNull(),
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'bulkId' => [
                     ],
-                ],
-                $validationConstraints
-            );
+                    'messageId' => [
+                    ],
+                    'limit' => [
+                        new Assert\LessThanOrEqual(1000),
+                    ],
+                    'entityId' => [
+                    ],
+                    'applicationId' => [
+                    ],
+                    'campaignReferenceId' => [
+                    ],
+                ]
+        );
 
         $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/viber/2/reports';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
 
-        $resourcePath = '/viber/1/message/file';
+        // query params
+        if ($bulkId !== null) {
+            $queryParams['bulkId'] = $bulkId;
+        }
+
+        // query params
+        if ($messageId !== null) {
+            $queryParams['messageId'] = $messageId;
+        }
+
+        // query params
+        if ($limit !== null) {
+            $queryParams['limit'] = $limit;
+        }
+
+        // query params
+        if ($entityId !== null) {
+            $queryParams['entityId'] = $entityId;
+        }
+
+        // query params
+        if ($applicationId !== null) {
+            $queryParams['applicationId'] = $applicationId;
+        }
+
+        // query params
+        if ($campaignReferenceId !== null) {
+            $queryParams['campaignReferenceId'] = $campaignReferenceId;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getOutboundViberMessageDeliveryReports'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ViberWebhookReportsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getOutboundViberMessageDeliveryReportsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberWebhookReportsResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getOutboundViberMessageDeliveryReports'
+     */
+    private function getOutboundViberMessageDeliveryReportsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getOutboundViberMessageLogs
+     *
+     * Get Viber message logs
+     *
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ViberLogsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getOutboundViberMessageLogs(?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null)
+    {
+        $request = $this->getOutboundViberMessageLogsRequest($sender, $destination, $bulkId, $messageId, $generalStatus, $sentSince, $sentUntil, $limit, $entityId, $applicationId, $campaignReferenceId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getOutboundViberMessageLogsResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getOutboundViberMessageLogsApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getOutboundViberMessageLogsAsync
+     *
+     * Get Viber message logs
+     *
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getOutboundViberMessageLogsAsync(?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null): PromiseInterface
+    {
+        $request = $this->getOutboundViberMessageLogsRequest($sender, $destination, $bulkId, $messageId, $generalStatus, $sentSince, $sentUntil, $limit, $entityId, $applicationId, $campaignReferenceId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getOutboundViberMessageLogsResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getOutboundViberMessageLogsApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getOutboundViberMessageLogs'
+     *
+     * @param null|string $sender The sender ID which can be alphanumeric or numeric. (optional)
+     * @param null|string $destination Message destination address. (optional)
+     * @param null|string[] $bulkId Unique ID assigned to the request if messaging multiple recipients or sending multiple messages via a single API request. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|string[] $messageId Unique message ID for which a log is requested. May contain multiple comma-separated values. Maximum length 2048 characters. (optional)
+     * @param null|\Infobip\Model\MessageGeneralStatus $generalStatus (optional)
+     * @param null|\DateTime $sentSince The logs will only include messages sent after this date. Use it together with sentUntil to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param null|\DateTime $sentUntil The logs will only include messages sent before this date. Use it together with sentSince to return a time range or if you want to fetch more than 1000 logs allowed per call. Has the following format: yyyy-MM-dd&#39;T&#39;HH:mm:ss.SSSZ. (optional)
+     * @param int $limit Maximum number of messages to include in logs. If not set, the latest 50 records are returned. Maximum limit value is 1000 and you can only access logs for the last 48h. If you want to fetch more than 1000 logs allowed per call, use sentBefore and sentUntil to retrieve them in pages. (optional, default to 50)
+     * @param null|string $entityId Entity id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string $applicationId Application id used to send the message. For more details, see our [documentation](https://www.infobip.com/docs/cpaas-x/application-and-entity-management). (optional)
+     * @param null|string[] $campaignReferenceId ID of a campaign that was sent in the message. May contain multiple comma-separated values. (optional)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getOutboundViberMessageLogsRequest(?string $sender = null, ?string $destination = null, ?array $bulkId = null, ?array $messageId = null, ?\Infobip\Model\MessageGeneralStatus $generalStatus = null, ?\DateTime $sentSince = null, ?\DateTime $sentUntil = null, int $limit = 50, ?string $entityId = null, ?string $applicationId = null, ?array $campaignReferenceId = null): Request
+    {
+        $allData = [
+             'sender' => $sender,
+             'destination' => $destination,
+             'bulkId' => $bulkId,
+             'messageId' => $messageId,
+             'generalStatus' => $generalStatus,
+             'sentSince' => $sentSince,
+             'sentUntil' => $sentUntil,
+             'limit' => $limit,
+             'entityId' => $entityId,
+             'applicationId' => $applicationId,
+             'campaignReferenceId' => $campaignReferenceId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'sender' => [
+                    ],
+                    'destination' => [
+                    ],
+                    'bulkId' => [
+                    ],
+                    'messageId' => [
+                    ],
+                    'generalStatus' => [
+                    ],
+                    'sentSince' => [
+                    ],
+                    'sentUntil' => [
+                    ],
+                    'limit' => [
+                        new Assert\LessThanOrEqual(1000),
+                    ],
+                    'entityId' => [
+                    ],
+                    'applicationId' => [
+                    ],
+                    'campaignReferenceId' => [
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/viber/2/logs';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // query params
+        if ($sender !== null) {
+            $queryParams['sender'] = $sender;
+        }
+
+        // query params
+        if ($destination !== null) {
+            $queryParams['destination'] = $destination;
+        }
+
+        // query params
+        if ($bulkId !== null) {
+            $queryParams['bulkId'] = $bulkId;
+        }
+
+        // query params
+        if ($messageId !== null) {
+            $queryParams['messageId'] = $messageId;
+        }
+
+        // query params
+        if ($generalStatus !== null) {
+            $queryParams['generalStatus'] = $generalStatus;
+        }
+
+        // query params
+        if ($sentSince !== null) {
+            $queryParams['sentSince'] = $sentSince;
+        }
+
+        // query params
+        if ($sentUntil !== null) {
+            $queryParams['sentUntil'] = $sentUntil;
+        }
+
+        // query params
+        if ($limit !== null) {
+            $queryParams['limit'] = $limit;
+        }
+
+        // query params
+        if ($entityId !== null) {
+            $queryParams['entityId'] = $entityId;
+        }
+
+        // query params
+        if ($applicationId !== null) {
+            $queryParams['applicationId'] = $applicationId;
+        }
+
+        // query params
+        if ($campaignReferenceId !== null) {
+            $queryParams['campaignReferenceId'] = $campaignReferenceId;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getOutboundViberMessageLogs'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ViberLogsResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getOutboundViberMessageLogsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberLogsResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getOutboundViberMessageLogs'
+     */
+    private function getOutboundViberMessageLogsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation sendViberMessages
+     *
+     * Send Viber messages
+     *
+     * @param \Infobip\Model\ViberRequest $viberRequest viberRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\MessageResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function sendViberMessages(\Infobip\Model\ViberRequest $viberRequest)
+    {
+        $request = $this->sendViberMessagesRequest($viberRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->sendViberMessagesResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->sendViberMessagesApiException($exception);
+        }
+    }
+
+    /**
+     * Operation sendViberMessagesAsync
+     *
+     * Send Viber messages
+     *
+     * @param \Infobip\Model\ViberRequest $viberRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function sendViberMessagesAsync(\Infobip\Model\ViberRequest $viberRequest): PromiseInterface
+    {
+        $request = $this->sendViberMessagesRequest($viberRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->sendViberMessagesResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->sendViberMessagesApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'sendViberMessages'
+     *
+     * @param \Infobip\Model\ViberRequest $viberRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function sendViberMessagesRequest(\Infobip\Model\ViberRequest $viberRequest): Request
+    {
+        $allData = [
+             'viberRequest' => $viberRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'viberRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/viber/2/messages';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -191,13 +853,11 @@ final class ViberApi
         ];
 
         // for model (json/xml)
-        if (isset($viberFileMessage)) {
+        if (isset($viberRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($viberFileMessage)
-                : $viberFileMessage;
+                ? $this->objectSerializer->serialize($viberRequest)
+                : $viberRequest;
         } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
                 $headers['Content-Type'] .= '; boundary=' . $boundary;
@@ -261,11 +921,11 @@ final class ViberApi
     }
 
     /**
-     * Create response for operation 'sendViberFileMessage'
+     * Create response for operation 'sendViberMessages'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object|null
+     * @return \Infobip\Model\MessageResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
      */
-    private function sendViberFileMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    private function sendViberMessagesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -283,22 +943,22 @@ final class ViberApi
         $responseResult = null;
 
         if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberSingleMessageInfo', $responseHeaders);
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\MessageResponse', $responseHeaders);
         }
         return $responseResult;
     }
 
     /**
-     * Adapt given ApiException for operation 'sendViberFileMessage'
+     * Adapt given ApiException for operation 'sendViberMessages'
      */
-    private function sendViberFileMessageApiException(ApiException $apiException): ApiException
+    private function sendViberMessagesApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
         if ($statusCode === 400) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -309,7 +969,7 @@ final class ViberApi
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -317,10 +977,10 @@ final class ViberApi
 
             return $apiException;
         }
-        if ($statusCode === 429) {
+        if ($statusCode === 403) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -331,7 +991,7 @@ final class ViberApi
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                'object',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -343,795 +1003,4 @@ final class ViberApi
         return $apiException;
     }
 
-    /**
-     * Operation sendViberImageMessage
-     *
-     * Send Viber image message
-     *
-     * @param \Infobip\Model\ViberImageMessage $viberImageMessage viberImageMessage (required)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws InvalidArgumentException
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object
-     */
-    public function sendViberImageMessage(\Infobip\Model\ViberImageMessage $viberImageMessage)
-    {
-        $request = $this->sendViberImageMessageRequest($viberImageMessage);
-
-        try {
-            try {
-                $response = $this->client->send($request);
-                $this->deprecationChecker->check($request, $response);
-                return $this->sendViberImageMessageResponse($response, $request->getUri());
-            } catch (GuzzleException $exception) {
-                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                throw new ApiException(
-                    "[{$exception->getCode()}] {$exception->getMessage()}",
-                    $exception->getCode(),
-                    $errorResponse?->getHeaders(),
-                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
-                );
-            }
-        } catch (ApiException $exception) {
-            throw $this->sendViberImageMessageApiException($exception);
-        }
-    }
-
-    /**
-     * Operation sendViberImageMessageAsync
-     *
-     * Send Viber image message
-     *
-     * @param \Infobip\Model\ViberImageMessage $viberImageMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    public function sendViberImageMessageAsync(\Infobip\Model\ViberImageMessage $viberImageMessage): PromiseInterface
-    {
-        $request = $this->sendViberImageMessageRequest($viberImageMessage);
-
-        return $this
-            ->client
-            ->sendAsync($request)
-            ->then(
-                function ($response) use ($request) {
-                    $this->deprecationChecker->check($request, $response);
-                    return $this->sendViberImageMessageResponse($response, $request->getUri());
-                },
-                function (GuzzleException $exception) {
-                    $statusCode = $exception->getCode();
-
-                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                    $exception = new ApiException(
-                        "[{$statusCode}] {$exception->getMessage()}",
-                        $statusCode,
-                        $response?->getHeaders(),
-                        ($response !== null) ? (string)$response->getBody() : null
-                    );
-
-                    throw $this->sendViberImageMessageApiException($exception);
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'sendViberImageMessage'
-     *
-     * @param \Infobip\Model\ViberImageMessage $viberImageMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    private function sendViberImageMessageRequest(\Infobip\Model\ViberImageMessage $viberImageMessage): Request
-    {
-        $allData = [
-             'viberImageMessage' => $viberImageMessage,
-        ];
-
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                    'viberImageMessage' => [
-                        new Assert\NotNull(),
-                    ],
-                ],
-                $validationConstraints
-            );
-
-        $this->validateParams($allData, $validationConstraints);
-
-        $resourcePath = '/viber/1/message/image';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ];
-
-        // for model (json/xml)
-        if (isset($viberImageMessage)) {
-            $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($viberImageMessage)
-                : $viberImageMessage;
-        } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
-
-        $apiKey = $this->config->getApiKey();
-
-        if ($apiKey !== null) {
-            $headers[$this->config->getApiKeyHeader()] = $apiKey;
-        }
-
-        $defaultHeaders = [];
-
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = \array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        foreach ($queryParams as $key => $value) {
-            if (\is_array($value)) {
-                continue;
-            }
-
-            $queryParams[$key] = $this->objectSerializer->toString($value);
-        }
-
-        $query = Query::build($queryParams);
-
-        return new Request(
-            'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Create response for operation 'sendViberImageMessage'
-     * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object|null
-     */
-    private function sendViberImageMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
-    {
-        $statusCode = $response->getStatusCode();
-        $responseBody = $response->getBody();
-        $responseHeaders = $response->getHeaders();
-
-        if ($statusCode < 200 || $statusCode > 299) {
-            throw new ApiException(
-                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
-                $statusCode,
-                $responseHeaders,
-                $responseBody
-            );
-        }
-
-        $responseResult = null;
-
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberSingleMessageInfo', $responseHeaders);
-        }
-        return $responseResult;
-    }
-
-    /**
-     * Adapt given ApiException for operation 'sendViberImageMessage'
-     */
-    private function sendViberImageMessageApiException(ApiException $apiException): ApiException
-    {
-        $statusCode = $apiException->getCode();
-
-        if ($statusCode === 400) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 401) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 429) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-
-        return $apiException;
-    }
-
-    /**
-     * Operation sendViberTextMessage
-     *
-     * Send Viber text message(s)
-     *
-     * @param \Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage viberBulkTextMessage (required)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws InvalidArgumentException
-     * @return \Infobip\Model\ViberBulkMessageInfo|\Infobip\Model\ApiException|object|object|object
-     */
-    public function sendViberTextMessage(\Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage)
-    {
-        $request = $this->sendViberTextMessageRequest($viberBulkTextMessage);
-
-        try {
-            try {
-                $response = $this->client->send($request);
-                $this->deprecationChecker->check($request, $response);
-                return $this->sendViberTextMessageResponse($response, $request->getUri());
-            } catch (GuzzleException $exception) {
-                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                throw new ApiException(
-                    "[{$exception->getCode()}] {$exception->getMessage()}",
-                    $exception->getCode(),
-                    $errorResponse?->getHeaders(),
-                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
-                );
-            }
-        } catch (ApiException $exception) {
-            throw $this->sendViberTextMessageApiException($exception);
-        }
-    }
-
-    /**
-     * Operation sendViberTextMessageAsync
-     *
-     * Send Viber text message(s)
-     *
-     * @param \Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    public function sendViberTextMessageAsync(\Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage): PromiseInterface
-    {
-        $request = $this->sendViberTextMessageRequest($viberBulkTextMessage);
-
-        return $this
-            ->client
-            ->sendAsync($request)
-            ->then(
-                function ($response) use ($request) {
-                    $this->deprecationChecker->check($request, $response);
-                    return $this->sendViberTextMessageResponse($response, $request->getUri());
-                },
-                function (GuzzleException $exception) {
-                    $statusCode = $exception->getCode();
-
-                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                    $exception = new ApiException(
-                        "[{$statusCode}] {$exception->getMessage()}",
-                        $statusCode,
-                        $response?->getHeaders(),
-                        ($response !== null) ? (string)$response->getBody() : null
-                    );
-
-                    throw $this->sendViberTextMessageApiException($exception);
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'sendViberTextMessage'
-     *
-     * @param \Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    private function sendViberTextMessageRequest(\Infobip\Model\ViberBulkTextMessage $viberBulkTextMessage): Request
-    {
-        $allData = [
-             'viberBulkTextMessage' => $viberBulkTextMessage,
-        ];
-
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                    'viberBulkTextMessage' => [
-                        new Assert\NotNull(),
-                    ],
-                ],
-                $validationConstraints
-            );
-
-        $this->validateParams($allData, $validationConstraints);
-
-        $resourcePath = '/viber/1/message/text';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ];
-
-        // for model (json/xml)
-        if (isset($viberBulkTextMessage)) {
-            $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($viberBulkTextMessage)
-                : $viberBulkTextMessage;
-        } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
-
-        $apiKey = $this->config->getApiKey();
-
-        if ($apiKey !== null) {
-            $headers[$this->config->getApiKeyHeader()] = $apiKey;
-        }
-
-        $defaultHeaders = [];
-
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = \array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        foreach ($queryParams as $key => $value) {
-            if (\is_array($value)) {
-                continue;
-            }
-
-            $queryParams[$key] = $this->objectSerializer->toString($value);
-        }
-
-        $query = Query::build($queryParams);
-
-        return new Request(
-            'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Create response for operation 'sendViberTextMessage'
-     * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ViberBulkMessageInfo|\Infobip\Model\ApiException|object|object|object|null
-     */
-    private function sendViberTextMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
-    {
-        $statusCode = $response->getStatusCode();
-        $responseBody = $response->getBody();
-        $responseHeaders = $response->getHeaders();
-
-        if ($statusCode < 200 || $statusCode > 299) {
-            throw new ApiException(
-                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
-                $statusCode,
-                $responseHeaders,
-                $responseBody
-            );
-        }
-
-        $responseResult = null;
-
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberBulkMessageInfo', $responseHeaders);
-        }
-        return $responseResult;
-    }
-
-    /**
-     * Adapt given ApiException for operation 'sendViberTextMessage'
-     */
-    private function sendViberTextMessageApiException(ApiException $apiException): ApiException
-    {
-        $statusCode = $apiException->getCode();
-
-        if ($statusCode === 400) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 401) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 429) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-
-        return $apiException;
-    }
-
-    /**
-     * Operation sendViberVideoMessage
-     *
-     * Send Viber video message
-     *
-     * @param \Infobip\Model\ViberVideoMessage $viberVideoMessage viberVideoMessage (required)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws InvalidArgumentException
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object
-     */
-    public function sendViberVideoMessage(\Infobip\Model\ViberVideoMessage $viberVideoMessage)
-    {
-        $request = $this->sendViberVideoMessageRequest($viberVideoMessage);
-
-        try {
-            try {
-                $response = $this->client->send($request);
-                $this->deprecationChecker->check($request, $response);
-                return $this->sendViberVideoMessageResponse($response, $request->getUri());
-            } catch (GuzzleException $exception) {
-                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                throw new ApiException(
-                    "[{$exception->getCode()}] {$exception->getMessage()}",
-                    $exception->getCode(),
-                    $errorResponse?->getHeaders(),
-                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
-                );
-            }
-        } catch (ApiException $exception) {
-            throw $this->sendViberVideoMessageApiException($exception);
-        }
-    }
-
-    /**
-     * Operation sendViberVideoMessageAsync
-     *
-     * Send Viber video message
-     *
-     * @param \Infobip\Model\ViberVideoMessage $viberVideoMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    public function sendViberVideoMessageAsync(\Infobip\Model\ViberVideoMessage $viberVideoMessage): PromiseInterface
-    {
-        $request = $this->sendViberVideoMessageRequest($viberVideoMessage);
-
-        return $this
-            ->client
-            ->sendAsync($request)
-            ->then(
-                function ($response) use ($request) {
-                    $this->deprecationChecker->check($request, $response);
-                    return $this->sendViberVideoMessageResponse($response, $request->getUri());
-                },
-                function (GuzzleException $exception) {
-                    $statusCode = $exception->getCode();
-
-                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                    $exception = new ApiException(
-                        "[{$statusCode}] {$exception->getMessage()}",
-                        $statusCode,
-                        $response?->getHeaders(),
-                        ($response !== null) ? (string)$response->getBody() : null
-                    );
-
-                    throw $this->sendViberVideoMessageApiException($exception);
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'sendViberVideoMessage'
-     *
-     * @param \Infobip\Model\ViberVideoMessage $viberVideoMessage (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    private function sendViberVideoMessageRequest(\Infobip\Model\ViberVideoMessage $viberVideoMessage): Request
-    {
-        $allData = [
-             'viberVideoMessage' => $viberVideoMessage,
-        ];
-
-        $validationConstraints = [];
-
-        $this
-            ->addParamConstraints(
-                [
-                    'viberVideoMessage' => [
-                        new Assert\NotNull(),
-                    ],
-                ],
-                $validationConstraints
-            );
-
-        $this->validateParams($allData, $validationConstraints);
-
-        $resourcePath = '/viber/1/message/video';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-        ];
-
-        // for model (json/xml)
-        if (isset($viberVideoMessage)) {
-            $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($viberVideoMessage)
-                : $viberVideoMessage;
-        } elseif (count($formParams) > 0) {
-            $formParams = \json_decode($this->objectSerializer->serialize($formParams), true);
-
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
-
-        $apiKey = $this->config->getApiKey();
-
-        if ($apiKey !== null) {
-            $headers[$this->config->getApiKeyHeader()] = $apiKey;
-        }
-
-        $defaultHeaders = [];
-
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = \array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        foreach ($queryParams as $key => $value) {
-            if (\is_array($value)) {
-                continue;
-            }
-
-            $queryParams[$key] = $this->objectSerializer->toString($value);
-        }
-
-        $query = Query::build($queryParams);
-
-        return new Request(
-            'POST',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Create response for operation 'sendViberVideoMessage'
-     * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ViberSingleMessageInfo|\Infobip\Model\ApiException|object|object|object|null
-     */
-    private function sendViberVideoMessageResponse(ResponseInterface $response, UriInterface $requestUri): mixed
-    {
-        $statusCode = $response->getStatusCode();
-        $responseBody = $response->getBody();
-        $responseHeaders = $response->getHeaders();
-
-        if ($statusCode < 200 || $statusCode > 299) {
-            throw new ApiException(
-                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
-                $statusCode,
-                $responseHeaders,
-                $responseBody
-            );
-        }
-
-        $responseResult = null;
-
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\ViberSingleMessageInfo', $responseHeaders);
-        }
-        return $responseResult;
-    }
-
-    /**
-     * Adapt given ApiException for operation 'sendViberVideoMessage'
-     */
-    private function sendViberVideoMessageApiException(ApiException $apiException): ApiException
-    {
-        $statusCode = $apiException->getCode();
-
-        if ($statusCode === 400) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 401) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 429) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                'object',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-
-        return $apiException;
-    }
 }

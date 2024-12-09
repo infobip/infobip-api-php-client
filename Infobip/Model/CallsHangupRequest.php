@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -18,41 +16,17 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsHangupRequest implements ModelInterface
+class CallsHangupRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsHangupRequest';
-
-    public const OPENAPI_FORMATS = [
-        'errorCode' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\Choice(['NORMAL_HANGUP','ANSWERED_ELSEWHERE','MACHINE_DETECTED','HUMAN_DETECTED','MAX_DURATION_REACHED','DEVICE_FORBIDDEN','DEVICE_NOT_FOUND','DEVICE_UNAVAILABLE','MEDIA_ERROR','NO_ANSWER','BUSY','CANCELLED','REJECTED','FORBIDDEN','INSUFFICIENT_FUNDS','UNAUTHENTICATED','DESTINATION_NOT_FOUND','DESTINATION_UNAVAILABLE','INVALID_DESTINATION','INVALID_REQUEST','REQUEST_TIMEOUT','NETWORK_ERROR','SERVICE_UNAVAILABLE','UNKNOWN','FEATURE_UNAVAILABLE','CONGESTION','URL_NOT_FOUND','URL_UNREACHABLE','INVALID_RESPONSE',])]
-
-    protected ?string $errorCode = null,
+        protected ?string $errorCode = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getErrorCode(): mixed
     {

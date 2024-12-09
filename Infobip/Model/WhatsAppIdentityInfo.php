@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,48 +18,24 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppIdentityInfo implements ModelInterface
+class WhatsAppIdentityInfo
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppIdentityInfo';
-
-    public const OPENAPI_FORMATS = [
-        'acknowledged' => null,
-        'hash' => null,
-        'createdAt' => 'date-time'
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected bool $acknowledged,
+        protected bool $acknowledged,
         #[Assert\NotBlank]
-
-    protected string $hash,
+        protected string $hash,
         #[Assert\NotBlank]
-    #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected \DateTime $createdAt,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected \DateTime $createdAt,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAcknowledged(): bool
     {

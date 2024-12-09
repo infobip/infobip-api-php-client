@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,44 +17,24 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookReferral implements ModelInterface
+class WhatsAppWebhookReferral
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookReferral';
-
-    public const OPENAPI_FORMATS = [
-        'sourceType' => null,
-        'sourceId' => null,
-        'sourceUrl' => null
-    ];
-
     /**
      */
     public function __construct(
-        #[Assert\Choice(['AD','POST','UNKNOWN',])]
-
-    protected ?string $sourceType = null,
+        protected ?string $sourceType = null,
         protected ?string $sourceId = null,
         protected ?string $sourceUrl = null,
+        protected ?string $headline = null,
+        protected ?string $body = null,
+        protected ?string $ctwaClickId = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\WhatsAppWebhookReferralMedia $referralMedia = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getSourceType(): mixed
     {
@@ -88,6 +66,50 @@ class WhatsAppWebhookReferral implements ModelInterface
     public function setSourceUrl(?string $sourceUrl): self
     {
         $this->sourceUrl = $sourceUrl;
+        return $this;
+    }
+
+    public function getHeadline(): string|null
+    {
+        return $this->headline;
+    }
+
+    public function setHeadline(?string $headline): self
+    {
+        $this->headline = $headline;
+        return $this;
+    }
+
+    public function getBody(): string|null
+    {
+        return $this->body;
+    }
+
+    public function setBody(?string $body): self
+    {
+        $this->body = $body;
+        return $this;
+    }
+
+    public function getCtwaClickId(): string|null
+    {
+        return $this->ctwaClickId;
+    }
+
+    public function setCtwaClickId(?string $ctwaClickId): self
+    {
+        $this->ctwaClickId = $ctwaClickId;
+        return $this;
+    }
+
+    public function getReferralMedia(): \Infobip\Model\WhatsAppWebhookReferralMedia|null
+    {
+        return $this->referralMedia;
+    }
+
+    public function setReferralMedia(?\Infobip\Model\WhatsAppWebhookReferralMedia $referralMedia): self
+    {
+        $this->referralMedia = $referralMedia;
         return $this;
     }
 }

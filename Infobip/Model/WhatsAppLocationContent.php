@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,58 +17,30 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppLocationContent implements ModelInterface
+class WhatsAppLocationContent
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppLocationContent';
-
-    public const OPENAPI_FORMATS = [
-        'latitude' => 'double',
-        'longitude' => 'double',
-        'name' => null,
-        'address' => null
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-    #[Assert\LessThan(90)]
-    #[Assert\GreaterThan(-90)]
-
-    protected float $latitude,
+        #[Assert\LessThanOrEqual(90)]
+        #[Assert\GreaterThanOrEqual(-90)]
+        protected float $latitude,
         #[Assert\NotBlank]
-    #[Assert\LessThan(180)]
-    #[Assert\GreaterThan(-180)]
-
-    protected float $longitude,
+        #[Assert\LessThanOrEqual(180)]
+        #[Assert\GreaterThanOrEqual(-180)]
+        protected float $longitude,
         #[Assert\Length(max: 1000)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $name = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $name = null,
         #[Assert\Length(max: 1000)]
-    #[Assert\Length(min: 0)]
-
-    protected ?string $address = null,
+        #[Assert\Length(min: 0)]
+        protected ?string $address = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getLatitude(): float
     {

@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -20,45 +18,22 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class WhatsAppWebhookSystemEventResponse implements ModelInterface
+class WhatsAppWebhookSystemEventResponse
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'WhatsAppWebhookSystemEventResponse';
-
-    public const OPENAPI_FORMATS = [
-        'from' => null,
-        'content' => null,
-        'createdAt' => 'date-time'
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $from = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\WhatsAppWebhookSystemEvent $content = null,
+        protected ?\Infobip\Model\WhatsAppWebhookSystemEvent $content = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-
-    protected ?\DateTime $createdAt = null,
+        protected ?\DateTime $createdAt = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getFrom(): string|null
     {

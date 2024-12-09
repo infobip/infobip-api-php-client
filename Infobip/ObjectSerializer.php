@@ -1,8 +1,9 @@
 <?php
+
 /**
  * ObjectSerializer
  *
- * PHP version 8.0
+ * PHP version 8.3
  *
  * @category Class
  * @package  Infobip
@@ -25,8 +26,6 @@
 namespace Infobip;
 
 use DateTimeInterface;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Infobip\Model\ModelInterface;
 use InvalidArgumentException;
 use SplFileObject;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -45,6 +44,7 @@ use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 final class ObjectSerializer
 {
@@ -56,9 +56,17 @@ final class ObjectSerializer
     public function __construct(?SerializerInterface $serializer = null)
     {
         if ($serializer === null) {
-            $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader(new AnnotationReader()));
+            $classMetadataFactory = new ClassMetadataFactory(new AttributeLoader());
             $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
-
+            $objectNormalizer = new ObjectNormalizer(
+                $classMetadataFactory,
+                null,
+                null,
+                $extractor,
+                null,
+                null,
+                [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
+            );
             $serializer = new Serializer(
                 [
                     new EnumNormalizer(),
@@ -67,15 +75,9 @@ final class ObjectSerializer
                     new DateTimeNormalizer(
                         [DateTimeNormalizer::FORMAT_KEY => self::DEFAULT_DATE_TIME_FORMAT]
                     ),
-                    new ObjectNormalizer(
-                        $classMetadataFactory,
-                        null,
-                        null,
-                        $extractor,
-                        null,
-                        null,
-                        [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
-                    )
+                    new OneOfInterfaceDenormalizer($objectNormalizer),
+                    $objectNormalizer,
+
                 ],
                 [new JsonEncoder()]
             );
@@ -84,17 +86,13 @@ final class ObjectSerializer
         $this->serializer = $serializer;
 
         $this->validator = Validation::createValidatorBuilder()
-            ->enableAnnotationMapping()
-            ->addDefaultDoctrineAnnotationReader()
+            ->enableAttributeMapping()
             ->getValidator();
     }
 
     public function serialize(mixed $data, string $format = JsonEncoder::FORMAT): string
     {
-        if ($data instanceof ModelInterface) {
-            $this->validate($data);
-        }
-
+        $this->validate($data);
         return $this->serializer->serialize($data, $format);
     }
 
@@ -143,7 +141,7 @@ final class ObjectSerializer
      * Take value and turn it into a string suitable for inclusion in
      * the path, by url-encoding.
      */
-    public function toPathValue(string $value): string
+    public function toPathValue(mixed $value): string
     {
         return \rawurlencode($this->toString($value));
     }
@@ -235,7 +233,7 @@ final class ObjectSerializer
      * @param Constraint[] $constraints
      * @throws InvalidArgumentException
      */
-    public function validate(mixed $data, ?array $constraints = null)
+    public function validate(mixed $data, ?Assert\Collection $constraints = null)
     {
         $result = $this->validator->validate($data, $constraints);
 

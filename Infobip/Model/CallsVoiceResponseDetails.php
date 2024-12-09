@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,29 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsVoiceResponseDetails implements ModelInterface
+class CallsVoiceResponseDetails
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsVoiceResponseDetails';
-
-    public const OPENAPI_FORMATS = [
-        'messageId' => null,
-        'status' => null,
-        'to' => null
-    ];
-
     /**
      */
     public function __construct(
-        protected ?string $messageId = null,
-        #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsSingleMessageStatus $status = null,
         protected ?string $to = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\CallsSingleMessageStatus $status = null,
+        protected ?string $messageId = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
+
+    public function getTo(): string|null
     {
-        return self::OPENAPI_MODEL_NAME;
+        return $this->to;
     }
 
-    #[Ignore]
-    public static function getDiscriminator(): ?string
+    public function setTo(?string $to): self
     {
-        return self::DISCRIMINATOR;
-    }
-
-    public function getMessageId(): string|null
-    {
-        return $this->messageId;
-    }
-
-    public function setMessageId(?string $messageId): self
-    {
-        $this->messageId = $messageId;
+        $this->to = $to;
         return $this;
     }
 
@@ -80,14 +54,14 @@ class CallsVoiceResponseDetails implements ModelInterface
         return $this;
     }
 
-    public function getTo(): string|null
+    public function getMessageId(): string|null
     {
-        return $this->to;
+        return $this->messageId;
     }
 
-    public function setTo(?string $to): self
+    public function setMessageId(?string $messageId): self
     {
-        $this->to = $to;
+        $this->messageId = $messageId;
         return $this;
     }
 }

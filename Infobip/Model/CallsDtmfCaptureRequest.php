@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,48 +17,26 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsDtmfCaptureRequest implements ModelInterface
+class CallsDtmfCaptureRequest
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsDtmfCaptureRequest';
-
-    public const OPENAPI_FORMATS = [
-        'maxLength' => 'int32',
-        'timeout' => 'int32',
-        'terminator' => null,
-        'digitTimeout' => 'int32'
-    ];
-
     /**
+     * @param array<string,string> $customData
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected int $maxLength,
+        protected int $maxLength,
         #[Assert\NotBlank]
-
-    protected int $timeout,
+        protected int $timeout,
         protected ?string $terminator = null,
         protected ?int $digitTimeout = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\CallsPlayContent $playContent = null,
+        protected ?array $customData = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getMaxLength(): int
     {
@@ -103,6 +79,34 @@ class CallsDtmfCaptureRequest implements ModelInterface
     public function setDigitTimeout(?int $digitTimeout): self
     {
         $this->digitTimeout = $digitTimeout;
+        return $this;
+    }
+
+    public function getPlayContent(): \Infobip\Model\CallsPlayContent|null
+    {
+        return $this->playContent;
+    }
+
+    public function setPlayContent(?\Infobip\Model\CallsPlayContent $playContent): self
+    {
+        $this->playContent = $playContent;
+        return $this;
+    }
+
+    /**
+     * @return array<string,string>|null
+     */
+    public function getCustomData()
+    {
+        return $this->customData;
+    }
+
+    /**
+     * @param array<string,string>|null $customData Optional parameter to update a call's custom data.
+     */
+    public function setCustomData(?array $customData): self
+    {
+        $this->customData = $customData;
         return $this;
     }
 }

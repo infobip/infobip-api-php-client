@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,64 +17,31 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class TfaMessage implements ModelInterface
+class TfaMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'TfaMessage';
-
-    public const OPENAPI_FORMATS = [
-        'applicationId' => null,
-        'language' => null,
-        'messageId' => null,
-        'messageText' => null,
-        'pinLength' => 'int32',
-        'pinPlaceholder' => null,
-        'pinType' => null,
-        'regional' => null,
-        'repeatDTMF' => null,
-        'senderId' => null,
-        'speechRate' => 'double'
-    ];
-
     /**
      */
     public function __construct(
         protected ?string $applicationId = null,
-        #[Assert\Choice(['en','es','ca','da','nl','fr','de','it','ja','ko','no','pl','ru','sv','fi','hr','sl','ro','pt-pt','pt-br','zh-cn','zh-tw',])]
-
-    protected ?string $language = null,
+        protected ?int $emailTemplateId = null,
+        protected ?string $from = null,
+        protected ?string $language = null,
         protected ?string $messageId = null,
         protected ?string $messageText = null,
         protected ?int $pinLength = null,
         protected ?string $pinPlaceholder = null,
-        #[Assert\Choice(['NUMERIC','ALPHA','HEX','ALPHANUMERIC',])]
-
-    protected ?string $pinType = null,
+        protected ?string $pinType = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\TfaRegionalOptions $regional = null,
+        protected ?\Infobip\Model\TfaRegionalOptions $regional = null,
         protected ?string $repeatDTMF = null,
         protected ?string $senderId = null,
         protected ?float $speechRate = null,
+        protected ?string $voiceName = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getApplicationId(): string|null
     {
@@ -86,6 +51,28 @@ class TfaMessage implements ModelInterface
     public function setApplicationId(?string $applicationId): self
     {
         $this->applicationId = $applicationId;
+        return $this;
+    }
+
+    public function getEmailTemplateId(): int|null
+    {
+        return $this->emailTemplateId;
+    }
+
+    public function setEmailTemplateId(?int $emailTemplateId): self
+    {
+        $this->emailTemplateId = $emailTemplateId;
+        return $this;
+    }
+
+    public function getFrom(): string|null
+    {
+        return $this->from;
+    }
+
+    public function setFrom(?string $from): self
+    {
+        $this->from = $from;
         return $this;
     }
 
@@ -196,6 +183,17 @@ class TfaMessage implements ModelInterface
     public function setSpeechRate(?float $speechRate): self
     {
         $this->speechRate = $speechRate;
+        return $this;
+    }
+
+    public function getVoiceName(): string|null
+    {
+        return $this->voiceName;
+    }
+
+    public function setVoiceName(?string $voiceName): self
+    {
+        $this->voiceName = $voiceName;
         return $this;
     }
 }

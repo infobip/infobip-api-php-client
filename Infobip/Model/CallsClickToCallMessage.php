@@ -1,7 +1,5 @@
 <?php
 
-// phpcs:ignorefile
-
 declare(strict_types=1);
 
 /**
@@ -19,53 +17,22 @@ declare(strict_types=1);
 namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Serializer\Annotation as Serializer;
-use Symfony\Component\Serializer\Annotation\Ignore;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
-use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 
-class CallsClickToCallMessage implements ModelInterface
+class CallsClickToCallMessage
 {
-    public const DISCRIMINATOR = '';
-    public const OPENAPI_MODEL_NAME = 'CallsClickToCallMessage';
-
-    public const OPENAPI_FORMATS = [
-        'anonymization' => null,
-        'audioFileUrl' => null,
-        'deliveryTimeWindow' => null,
-        'destinationA' => null,
-        'destinationB' => null,
-        'from' => null,
-        'fromB' => null,
-        'language' => null,
-        'machineDetection' => null,
-        'maxDuration' => 'int32',
-        'messageId' => null,
-        'notifyContentType' => null,
-        'notifyContentVersion' => 'int32',
-        'notifyUrl' => null,
-        'record' => null,
-        'retry' => null,
-        'text' => null,
-        'voice' => null,
-        'warningTime' => 'int32'
-    ];
-
     /**
      */
     public function __construct(
         #[Assert\NotBlank]
-
-    protected string $destinationA,
+        protected string $destinationA,
         #[Assert\NotBlank]
-
-    protected string $destinationB,
+        protected string $destinationB,
+        #[Assert\NotBlank]
+        protected string $from,
         protected ?bool $anonymization = null,
         protected ?string $audioFileUrl = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsDeliveryTimeWindow $deliveryTimeWindow = null,
-        protected ?string $from = null,
+        protected ?\Infobip\Model\DeliveryTimeWindow $deliveryTimeWindow = null,
         protected ?string $fromB = null,
         protected ?string $language = null,
         protected ?string $machineDetection = null,
@@ -74,29 +41,16 @@ class CallsClickToCallMessage implements ModelInterface
         protected ?string $notifyContentType = null,
         protected ?int $notifyContentVersion = null,
         protected ?string $notifyUrl = null,
-        protected ?bool $record = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsRetry $retry = null,
+        protected ?\Infobip\Model\CallsRetry $retry = null,
         protected ?string $text = null,
         #[Assert\Valid]
-
-    protected ?\Infobip\Model\CallsVoice $voice = null,
+        protected ?\Infobip\Model\CallsVoice $voice = null,
         protected ?int $warningTime = null,
     ) {
+
     }
 
-    #[Ignore]
-    public function getModelName(): string
-    {
-        return self::OPENAPI_MODEL_NAME;
-    }
-
-    #[Ignore]
-    public static function getDiscriminator(): ?string
-    {
-        return self::DISCRIMINATOR;
-    }
 
     public function getAnonymization(): bool|null
     {
@@ -120,12 +74,12 @@ class CallsClickToCallMessage implements ModelInterface
         return $this;
     }
 
-    public function getDeliveryTimeWindow(): \Infobip\Model\CallsDeliveryTimeWindow|null
+    public function getDeliveryTimeWindow(): \Infobip\Model\DeliveryTimeWindow|null
     {
         return $this->deliveryTimeWindow;
     }
 
-    public function setDeliveryTimeWindow(?\Infobip\Model\CallsDeliveryTimeWindow $deliveryTimeWindow): self
+    public function setDeliveryTimeWindow(?\Infobip\Model\DeliveryTimeWindow $deliveryTimeWindow): self
     {
         $this->deliveryTimeWindow = $deliveryTimeWindow;
         return $this;
@@ -153,12 +107,12 @@ class CallsClickToCallMessage implements ModelInterface
         return $this;
     }
 
-    public function getFrom(): string|null
+    public function getFrom(): string
     {
         return $this->from;
     }
 
-    public function setFrom(?string $from): self
+    public function setFrom(string $from): self
     {
         $this->from = $from;
         return $this;
@@ -249,17 +203,6 @@ class CallsClickToCallMessage implements ModelInterface
     public function setNotifyUrl(?string $notifyUrl): self
     {
         $this->notifyUrl = $notifyUrl;
-        return $this;
-    }
-
-    public function getRecord(): bool|null
-    {
-        return $this->record;
-    }
-
-    public function setRecord(?bool $record): self
-    {
-        $this->record = $record;
         return $this;
     }
 
