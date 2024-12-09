@@ -17,7 +17,7 @@ version required is 7.0.
 * Support for [Infobip Messages API](https://www.infobip.com/docs/api/platform/messages-api).
 * Most recent [Infobip Voice API](https://www.infobip.com/docs/api/channels/voice) feature set.
 * Most recent [Infobip SMS API](https://www.infobip.com/docs/api/channels/sms) feature set.
-* Most recent [Infobip 2FA API](https://www.infobip.com/docs/api/platform/2fa) feature set.x    
+* Most recent [Infobip 2FA API](https://www.infobip.com/docs/api/platform/2fa) feature set.
 * Most recent [Infobip MMS API](https://www.infobip.com/docs/api/channels/mms) feature set.
 * Most recent [Infobip Email API](https://www.infobip.com/docs/api/channels/email) feature set.
 * Most recent [Infobip WhatsApp API](https://www.infobip.com/docs/api/channels/whatsapp) feature set.
@@ -53,11 +53,10 @@ version required is 7.0.
 ### Fixed
 - Sending Email to multiple recipients.
 
-
-## [ [5.1.4](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.4) ] - 2023-06-19
+## [ [5.1.4](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.4) ] - 2023-01-09
 
 ### Changed
-- Updated package version
+- Updated symfony/serializer dependency to ^5.4
 
 ## [ [5.1.3](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.3) ] - 2023-06-19
 
@@ -67,7 +66,7 @@ version required is 7.0.
 ## [ [5.1.2](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.2) ] - 2023-06-09
 
 ### Changed
-- Removed snyk
+- Removed Snyk
 
 ## [ [5.1.1](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.1) ] - 2023-05-19
 
