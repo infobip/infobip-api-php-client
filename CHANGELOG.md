@@ -53,10 +53,10 @@ version required is 7.0.
 ### Fixed
 - Sending Email to multiple recipients.
 
-## [ [5.1.4](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.4) ] - 2023-01-09
+## [ [5.1.4](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.4) ] - 2023-06-19
 
-### Changed
-- Updated symfony/serializer dependency to ^5.4
+### Fixed
+- Update composer.json to match the package version.
 
 ## [ [5.1.3](https://github.com/infobip/infobip-api-php-client/releases/tag/5.1.3) ] - 2023-06-19
 
