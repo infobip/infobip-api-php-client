@@ -5,7 +5,7 @@ All notable changes to the library will be documented in this file.
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
 
-## [ [6.1.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.1.0) ] - 2024-12-09
+## [ [6.1.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.1.0) ] - 2024-12-16
 
 ### Added
 * Support for [Infobip Moments](https://www.infobip.com/docs/api/customer-engagement/moments).
