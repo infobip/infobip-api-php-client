@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class CallRoutingWebRTCCriteria extends CallRoutingCriteria
 {
     public const TYPE = 'WEBRTC';

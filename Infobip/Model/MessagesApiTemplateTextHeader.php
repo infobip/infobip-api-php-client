@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class MessagesApiTemplateTextHeader extends MessagesApiTemplateHeader
 {
     public const TYPE = 'TEXT';

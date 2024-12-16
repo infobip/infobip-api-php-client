@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class MessagesApiWebhookEventAuthenticationResponseContent extends MessagesApiWebhookEventContent
 {
     public const TYPE = 'AUTHENTICATION_RESPONSE';

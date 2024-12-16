@@ -16,8 +16,10 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation as Serializer;
 use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[DiscriminatorMap(typeProperty: "category", mapping: [
     "AUTHENTICATION" => "\Infobip\Model\WhatsAppAuthenticationTemplateApiResponse",
@@ -42,6 +44,10 @@ class WhatsAppTemplateApiResponse
         protected ?string $quality = null,
         #[Assert\Valid]
         protected ?\Infobip\Model\Platform $platform = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $createdAt = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $lastUpdatedAt = null,
     ) {
 
     }
@@ -143,6 +149,28 @@ class WhatsAppTemplateApiResponse
     public function setPlatform(?\Infobip\Model\Platform $platform): self
     {
         $this->platform = $platform;
+        return $this;
+    }
+
+    public function getCreatedAt(): \DateTime|null
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTime $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+    public function getLastUpdatedAt(): \DateTime|null
+    {
+        return $this->lastUpdatedAt;
+    }
+
+    public function setLastUpdatedAt(?\DateTime $lastUpdatedAt): self
+    {
+        $this->lastUpdatedAt = $lastUpdatedAt;
         return $this;
     }
 }

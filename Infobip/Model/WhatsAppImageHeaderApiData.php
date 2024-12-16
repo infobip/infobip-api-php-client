@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class WhatsAppImageHeaderApiData extends WhatsAppHeaderApiData
 {
     public const FORMAT = 'IMAGE';

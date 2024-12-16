@@ -4,6 +4,22 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+
+## [ [6.1.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.1.0) ] - 2024-12-09
+
+### Added
+* Support for [Infobip Moments](https://www.infobip.com/docs/api/customer-engagement/moments).
+
+### Changed
+* Removed no longer supported 50 business-initiated conversations messaging tear limit for WhatsApp senders.
+* Added `createdAt` and `lastUpdatedAt` fields to WhatsApp Template response models.
+* Added new Calls error code type: `MACHINE_DETECTED`.
+* `CallRoutingWebRtcEndpoint` now allows using default `to` value used in inbound call as an identity.
+* Refactored a part of Calls API tests.
+
+### Fixed
+* IVR scenario action scripts types.
+
 ## [ [6.0.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.0.0) ] - 2024-12-09
 
 ⚠️ **IMPORTANT NOTE:** This release contains breaking changes! From this point onward PHP version 8.0 is no longer supported. Minimum PHP version required is 8.3.
@@ -38,7 +54,7 @@ version required is 7.0.
   * Added a content field within `SmsMessage` to define the message content.
     This supports both textual and binary messages, which can be created using [SmsTextContent](Infobip/Model/SmsTextContent.php) or [SmsBinaryContent](Infobip/Model/SmsBinaryContent.php), respectively.
   * Unified request classes by replacing `SmsAdvancedTextualRequest` and `SmsAdvancedBinaryRequest` with the new [SmsRequest](Infobip/Model/SmsRequest.php) class.
-  * Consolidated sending functions: use `sendSmsMessages` instead of the `sendSmsMessage` and `sendBinarySmsMessage` functions. 
+  * Consolidated sending functions: use `sendSmsMessages` instead of the `sendSmsMessage` and `sendBinarySmsMessage` functions.
 * Across all Call models, the `applicationId` field has been removed and replaced with the `platform` field, as encapsulates platform fields and reflects the current state of the endpoint.
   In addition to that, a new required `callsConfigurationId` field has been added.
 * Removed delivery time window configuration classes (`SmsDeliveryTimeWindow`, `MmsDeliveryTimeWindow`, `ViberDeliveryTimeWindow`, `CallRoutingAllowedTimeWindow`, `CallsDeliveryTimeWindow`, `SmsDeliveryTimeWindow`, `CallsTimeWindow`) in favor of a unified class: [DeliveryTimeWindow](Infobip/Model/DeliveryTimeWindow.php)

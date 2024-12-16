@@ -56,7 +56,7 @@ final class Configuration
 
     public function getUserAgent(): string
     {
-        return 'infobip-api-client-php/6.0.0/PHP';
+        return 'infobip-api-client-php/6.1.0/PHP';
     }
 
     public function getTempFolderPath(): string

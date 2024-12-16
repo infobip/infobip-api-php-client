@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class MessagesApiTemplatePhoneNumberButton extends MessagesApiTemplateButton
 {
     public const TYPE = 'PHONE_NUMBER';

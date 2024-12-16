@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Infobip\Test\Api\WhatsApp;
 
+use DateTime;
 use GuzzleHttp\Psr7\Query;
 use Infobip\Api\WhatsAppApi as ManageWhatsAppApi;
 use Infobip\Model\WhatsAppBodyApiData;
@@ -1007,6 +1008,15 @@ class ManageWhatsAppApiTest extends ApiTestBase
             $this->assertEquals(
                 $templateResponse['structure']['type'],
                 $sendResponse->getStructure()->getType()
+            );
+
+            $this->assertEquals(
+                new DateTime($templateResponse['createdAt']),
+                $sendResponse->getCreatedAt()
+            );
+            $this->assertEquals(
+                new DateTime($templateResponse['lastUpdatedAt']),
+                $sendResponse->getLastUpdatedAt()
             );
         }
     }

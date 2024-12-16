@@ -31,6 +31,7 @@ The current version of this library includes this subset of Infobip products:
 * [Email](https://www.infobip.com/docs/api/channels/email)
 * [WhatsApp](https://www.infobip.com/docs/api/channels/whatsapp)
 * [Viber](https://www.infobip.com/docs/api/channels/viber)
+* [Moments](https://www.infobip.com/docs/api/customer-engagement/moments)
 
 ## General Info
 For `infobip-api-php-client` versioning we use [Semantic Versioning][semver] scheme.
@@ -45,7 +46,7 @@ The library requires PHP version >= 8.3.
 To start using the library add it as dependency in your `composer.json` file like shown below.
 ```json
 "require": {
-	"infobip/infobip-api-php-client": "6.0.0"
+	"infobip/infobip-api-php-client": "6.1.0"
 }
 ```
 And simply run `composer install` to download dependencies.
@@ -220,6 +221,12 @@ For send email quick start guide please check [these examples](email.md).
 
 #### WhatsApp
 For WhatsApp quick start guide, view [these examples](whatsapp.md).
+
+#### Messages API
+For Messages API quick start guide, view [these examples](messages-api.md).
+
+#### Moments
+For Moments quick start guide, view [these examples](moments.md).
 
 ## Ask for help
 

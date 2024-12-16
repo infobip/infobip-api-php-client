@@ -21,6 +21,7 @@ use InvalidArgumentException;
 final class CallsErrorCode implements EnumInterface
 {
     public const NORMAL_HANGUP = 'NORMAL_HANGUP';
+    public const MACHINE_DETECTED = 'MACHINE_DETECTED';
     public const NO_ANSWER = 'NO_ANSWER';
     public const BUSY = 'BUSY';
     public const CANCELLED = 'CANCELLED';
@@ -35,6 +36,7 @@ final class CallsErrorCode implements EnumInterface
 
     public const ALLOWED_VALUES = [
         'NORMAL_HANGUP',
+        'MACHINE_DETECTED',
         'NO_ANSWER',
         'BUSY',
         'CANCELLED',
@@ -68,6 +70,11 @@ final class CallsErrorCode implements EnumInterface
     public static function NORMAL_HANGUP(): CallsErrorCode
     {
         return new self('NORMAL_HANGUP');
+    }
+
+    public static function MACHINE_DETECTED(): CallsErrorCode
+    {
+        return new self('MACHINE_DETECTED');
     }
 
     public static function NO_ANSWER(): CallsErrorCode

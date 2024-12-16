@@ -6,10 +6,10 @@ namespace Infobip\Test;
 
 use DateTime;
 use Infobip\ObjectSerializer;
-use PHPUnit\Framework\TestCase;
 use Infobip\Test\Inheritance\ModelChild1;
 use Infobip\Test\Inheritance\ModelChild2;
 use Infobip\Test\Inheritance\ModelSuper;
+use PHPUnit\Framework\TestCase;
 
 class ObjectSerializerTest extends TestCase
 {

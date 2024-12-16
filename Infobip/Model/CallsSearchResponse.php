@@ -84,12 +84,18 @@ class CallsSearchResponse
         return $this;
     }
 
-    public function getScript(): object|null
+    /**
+     * @return \Infobip\Model\CallsScriptOneOf[]|null
+     */
+    public function getScript(): ?array
     {
         return $this->script;
     }
 
-    public function setScript(?object $script): self
+    /**
+     * @param \Infobip\Model\CallsScriptOneOf[]|null $script Array of IVR actions defining scenario. NOTE: Answering Machine Detection, Call Recording and Speech Recognition (used for Capture action) are add-on features. To enable these add-ons, please contact our [sales](https://www.infobip.com/contact) organisation.
+     */
+    public function setScript(?array $script): self
     {
         $this->script = $script;
         return $this;

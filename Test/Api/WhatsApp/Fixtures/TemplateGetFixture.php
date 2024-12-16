@@ -25,7 +25,9 @@ $responseVars = [
                 'body' => ['text' => 'some body text {{1}}'],
                 'footer' => ['text' => 'some footer text'],
                 'type' => WhatsAppTextHeaderApiData::FORMAT
-            ]
+            ],
+            'createdAt' => '2024-01-01T00:00:00.000+0000',
+            'lastUpdatedAt' => '2024-01-01T00:00:00.000+0000'
         ]
     ]
 ];
