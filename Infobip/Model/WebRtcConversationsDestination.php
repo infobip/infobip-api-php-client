@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class WebRtcConversationsDestination extends WebRtcDestination
 {
     public const TYPE = 'CONVERSATIONS';

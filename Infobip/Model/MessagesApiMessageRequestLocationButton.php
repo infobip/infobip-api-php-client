@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class MessagesApiMessageRequestLocationButton extends MessagesApiMessageButton
 {
     public const TYPE = 'REQUEST_LOCATION';

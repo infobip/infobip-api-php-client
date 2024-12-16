@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class WebRtcBrowserDetectedLocalization extends WebRtcLocalization
 {
     public const TYPE = 'BROWSER_DETECTED';

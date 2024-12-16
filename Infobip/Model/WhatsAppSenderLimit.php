@@ -21,7 +21,6 @@ use InvalidArgumentException;
 final class WhatsAppSenderLimit implements EnumInterface
 {
     public const LIMIT_NA = 'LIMIT_NA';
-    public const LIMIT_50 = 'LIMIT_50';
     public const LIMIT_250 = 'LIMIT_250';
     public const LIMIT_1_K = 'LIMIT_1K';
     public const LIMIT_10_K = 'LIMIT_10K';
@@ -30,7 +29,6 @@ final class WhatsAppSenderLimit implements EnumInterface
 
     public const ALLOWED_VALUES = [
         'LIMIT_NA',
-        'LIMIT_50',
         'LIMIT_250',
         'LIMIT_1K',
         'LIMIT_10K',
@@ -58,11 +56,6 @@ final class WhatsAppSenderLimit implements EnumInterface
     public static function LIMIT_NA(): WhatsAppSenderLimit
     {
         return new self('LIMIT_NA');
-    }
-
-    public static function LIMIT_50(): WhatsAppSenderLimit
-    {
-        return new self('LIMIT_50');
     }
 
     public static function LIMIT_250(): WhatsAppSenderLimit

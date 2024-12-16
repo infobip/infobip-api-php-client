@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
+use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class WhatsAppDefaultUtilityTemplateApiResponse extends WhatsAppTemplateApiResponse
@@ -36,6 +38,10 @@ class WhatsAppDefaultUtilityTemplateApiResponse extends WhatsAppTemplateApiRespo
         protected ?string $quality = null,
         #[Assert\Valid]
         protected ?\Infobip\Model\Platform $platform = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $createdAt = null,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected ?\DateTime $lastUpdatedAt = null,
     ) {
         $modelDiscriminatorValue = self::CATEGORY;
 
@@ -49,6 +55,8 @@ class WhatsAppDefaultUtilityTemplateApiResponse extends WhatsAppTemplateApiRespo
             structure: $structure,
             quality: $quality,
             platform: $platform,
+            createdAt: $createdAt,
+            lastUpdatedAt: $lastUpdatedAt,
         );
     }
 

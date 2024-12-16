@@ -27,11 +27,11 @@ namespace Infobip;
 
 use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
+use SplFileObject;
 use Symfony\Component\PropertyInfo\Type;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use SplFileObject;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SplFileObjectNormalizer implements
     NormalizerInterface,

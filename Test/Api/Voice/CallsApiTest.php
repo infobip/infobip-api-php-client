@@ -36,6 +36,7 @@ use Infobip\Model\CallsConferenceLogPage;
 use Infobip\Model\CallsConferencePage;
 use Infobip\Model\CallsConferencePlayRequest;
 use Infobip\Model\CallsConferenceRecording;
+use Infobip\Model\CallsConferenceRecordingLog;
 use Infobip\Model\CallsConferenceRecordingPage;
 use Infobip\Model\CallsConferenceRecordingRequest;
 use Infobip\Model\CallsConferenceRequest;
@@ -74,6 +75,7 @@ use Infobip\Model\CallsMediaStreamConfigRequest;
 use Infobip\Model\CallsMediaStreamConfigResponse;
 use Infobip\Model\CallsOnDemandComposition;
 use Infobip\Model\CallsParticipant;
+use Infobip\Model\CallsParticipantSession;
 use Infobip\Model\CallsPhoneEndpoint;
 use Infobip\Model\CallsPlayRequest;
 use Infobip\Model\CallsPreAnswerRequest;
@@ -2081,7 +2083,7 @@ class CallsApiTest extends ApiTestBase
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
         $expectedPath = str_replace("{callId}", $givenCallId, self::CALL_STOP_RECORDING);
-        
+
         $closures = [
             fn () => $api->callStopRecording($givenCallId),
             fn () => $api->callStopRecordingAsync($givenCallId),
@@ -2090,7 +2092,7 @@ class CallsApiTest extends ApiTestBase
         $expectedResponse = new CallsActionResponse(
             status: "PENDING"
         );
-        
+
         $this->assertPostRequestWithNoBody(
             $closures,
             $expectedPath,
@@ -2378,9 +2380,7 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
@@ -2396,8 +2396,6 @@ class CallsApiTest extends ApiTestBase
                 "page" => $givenPage,
                 "size" => $givenSize
             ]);
-
-        $expectedHttpMethod = "GET";
 
         $closures = [
             fn () => $api->getConferences(
@@ -2420,16 +2418,68 @@ class CallsApiTest extends ApiTestBase
             )
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsConferencePage::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer
+        $expectedResponse = new CallsConferencePage(
+            results: [
+                new CallsConference(
+                    id: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+                    name: "Example conference",
+                    participants: [
+                        new CallsParticipant(
+                            endpoint: new CallsPhoneEndpoint(
+                                phoneNumber: "44790123456"
+                            ),
+                            callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                            state: "JOINED",
+                            joinTime: new DateTime("2021-12-31T23:59:55.100+00:00"),
+                            media: new CallsMediaProperties(
+                                audio: new CallsAudioMediaProperties(
+                                    muted: false,
+                                    deaf: false
+                                ),
+                                video: new CallsVideoMediaProperties(
+                                    camera: false,
+                                    screenShare: false
+                                )
+                            )
+                        ),
+                        new CallsParticipant(
+                            endpoint: new CallsPhoneEndpoint(
+                                phoneNumber: "44790123456"
+                            ),
+                            callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                            state: "JOINING",
+                            media: new CallsMediaProperties(
+                                audio: new CallsAudioMediaProperties(
+                                    muted: false,
+                                    deaf: false
+                                ),
+                                video: new CallsVideoMediaProperties(
+                                    camera: false,
+                                    screenShare: false
+                                )
+                            )
+                        )
+                    ],
+                    callsConfigurationId: "dc5942707c704551a00cd2ea",
+                    platform: new Platform(
+                        applicationId: "61c060db2675060027d8c7a6"
+                    )
+                )
+            ],
+            paging: new PageInfo(
+                page: 0,
+                size: 1,
+                totalPages: 1,
+                totalResults: 1
+            )
         );
 
-
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testCreateConference(): void
@@ -2443,6 +2493,7 @@ class CallsApiTest extends ApiTestBase
               "enabled": true
             }
           },
+          "maxDuration": 28800,
           "callsConfigurationId": "dc5942707c704551a00cd2ea",
           "platform": {
             "applicationId": "61c060db2675060027d8c7a6"
@@ -2501,7 +2552,6 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $client = $this->mockClient(
             [
                 new Response(201, $this->givenRequestHeaders, $givenResponse),
@@ -2511,27 +2561,80 @@ class CallsApiTest extends ApiTestBase
         );
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = self::CREATE_CONFERENCE;
 
-        $expectedHttpMethod = "POST";
-
-        $request = $this->getObjectSerializer()->deserialize($givenRequest, CallsConferenceRequest::class);
+        $request = new CallsConferenceRequest(
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
+            name: "Example conference",
+            recording: new CallsConferenceRecordingRequest(
+                recordingType: "AUDIO",
+                conferenceComposition: new CallsConferenceComposition(
+                    enabled: true
+                )
+            ),
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            )
+        );
 
         $closures = [
             fn () => $api->createConference($request),
             fn () => $api->createConferenceAsync($request),
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsConference::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer,
+        $expectedResponse = new CallsConference(
+            id: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+            name: "Example conference",
+            participants: [
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINED",
+                    joinTime: new DateTime("2021-12-31T23:59:55.100+00:00"),
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                ),
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINING",
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                )
+            ],
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            )
         );
 
+        $this->assertPostRequest(
+            $closures,
+            $expectedPath,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testGetConference(): void
@@ -2589,31 +2692,69 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = str_replace("{conferenceId}", $givenConferenceId, self::GET_CONFERENCE);
-
-        $expectedHttpMethod = "GET";
 
         $closures = [
             fn () => $api->getConference($givenConferenceId),
             fn () => $api->getConferenceAsync($givenConferenceId),
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsConference::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer
+        $expectedResponse = new CallsConference(
+            id: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+            name: "Example conference",
+            participants: [
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINED",
+                    joinTime: new DateTime("2021-12-31T23:59:55.100+00:00"),
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                ),
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINING",
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                )
+            ],
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            )
         );
 
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testUpdateConference(): void
@@ -2634,30 +2775,32 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = str_replace("{conferenceId}", $givenConferenceId, self::UPDATE_CONFERENCE);
 
-        $expectedHttpMethod = "PATCH";
 
-        $request = $this->getObjectSerializer()->deserialize($givenRequest, CallsUpdateRequest::class);
+        $request = new CallsUpdateRequest(
+            muted: false,
+            deaf: true
+        );
 
         $closures = [
             fn () => $api->updateConference($givenConferenceId, $request),
             fn () => $api->updateConferenceAsync($givenConferenceId, $request),
         ];
 
-        $this->assertClosureResponses(
+        $expectedResponse = new CallsActionResponse(
+            status: "PENDING"
+        );
+
+        $this->assertPatchRequest(
             $closures,
-            CallsActionResponse::class,
-            $givenResponse,
             $expectedPath,
-            $expectedHttpMethod,
+            $givenRequest,
+            $expectedResponse,
             $requestHistoryContainer
         );
     }
@@ -2775,9 +2918,7 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
@@ -2794,8 +2935,6 @@ class CallsApiTest extends ApiTestBase
                 "page" => $givenPage,
                 "size" => $givenSize
             ]);
-
-        $expectedHttpMethod = "GET";
 
         $closures = [
             fn () => $api->getConferencesHistory(
@@ -2820,12 +2959,107 @@ class CallsApiTest extends ApiTestBase
             )
         ];
 
-        $this->assertClosureResponses(
+        $expectedResponse = new CallsConferenceLogPage(
+            results: [
+                new CallsConferenceLog(
+                    conferenceId: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+                    name: "Example conference",
+                    platform: new Platform(
+                        applicationId: "61c060db2675060027d8c7a6"
+                    ),
+                    startTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+                    endTime: new DateTime("2021-12-31T23:59:20.100+00:00"),
+                    duration: 110,
+                    sessions: [
+                        new CallsParticipantSession(
+                            callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                            joinTime: new DateTime("2021-12-31T23:58:00.100+00:00"),
+                            leaveTime: new DateTime("2021-12-31T23:59:00.100+00:00")
+                        ),
+                        new CallsParticipantSession(
+                            callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
+                            joinTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+                            leaveTime: new DateTime("2021-12-31T23:59:20.100+00:00")
+                        )
+                    ],
+                    recording: new CallsConferenceRecordingLog(
+                        composedFiles: [
+                            new CallsRecordingFile(
+                                name: "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                                fileFormat: "WAV",
+                                id: "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
+                                size: 67564,
+                                creationTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                                duration: 10,
+                                startTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+                                endTime: new DateTime("2021-12-31T23:59:20.100+00:00"),
+                                location: "HOSTED"
+                            )
+                        ],
+                        callRecordings: [
+                            new CallRecording(
+                                endpoint: new CallsPhoneEndpoint(
+                                    phoneNumber: "44790123456"
+                                ),
+                                callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                                direction: "INBOUND",
+                                files: [
+                                    new CallsRecordingFile(
+                                        name: "d8d84155-3831-43fb-91c9-bb897149a79d_1652725357412.wav",
+                                        fileFormat: "WAV",
+                                        id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                                        size: 67564,
+                                        creationTime: new DateTime("2022-01-01T00:00:00.250+00:00"),
+                                        duration: 10,
+                                        startTime: new DateTime("2021-12-31T23:59:50.100+00:00"),
+                                        endTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                                        location: "HOSTED"
+                                    )
+                                ],
+                                status: "SUCCESSFUL"
+                            ),
+                            new CallRecording(
+                                endpoint: new CallsPhoneEndpoint(
+                                    phoneNumber: "44790123456"
+                                ),
+                                callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
+                                direction: "INBOUND",
+                                files: [
+                                    new CallsRecordingFile(
+                                        name: "d8d84155-3831-43fb-91c9-bb897149a79d_1652725357412.wav",
+                                        fileFormat: "WAV",
+                                        id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                                        size: 67564,
+                                        creationTime: new DateTime("2022-01-01T00:00:00.250+00:00"),
+                                        duration: 10,
+                                        startTime: new DateTime("2021-12-31T23:59:50.100+00:00"),
+                                        endTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                                        location: "HOSTED"
+                                    )
+                                ],
+                                status: "SUCCESSFUL"
+                            )
+                        ],
+                    ),
+                    errorCode: new CallsErrorCodeInfo(
+                        id: 10000,
+                        name: "NORMAL_HANGUP",
+                        description: "The call has ended with hangup initiated by caller, callee or API"
+                    )
+                )
+            ],
+            paging: new PageInfo(
+                page: 0,
+                size: 1,
+                totalPages: 1,
+                totalResults: 1
+            )
+        );
+
+        $this->assertGetRequest(
             $closures,
-            CallsConferenceLogPage::class,
-            $givenResponse,
             $expectedPath,
-            $expectedHttpMethod,
+            $expectedResponse,
             $requestHistoryContainer
         );
     }
@@ -2926,31 +3160,110 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = str_replace("{conferenceId}", $givenConferenceId, self::GET_CONFERENCE_HISTORY);
-
-        $expectedHttpMethod = "GET";
 
         $closures = [
             fn () => $api->getConferenceHistory($givenConferenceId),
             fn () => $api->getConferenceHistoryAsync($givenConferenceId),
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsConferenceLog::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer
+        $expectedResponse = new CallsConferenceLog(
+            conferenceId: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+            name: "Example conference",
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            ),
+            startTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+            endTime: new DateTime("2021-12-31T23:59:20.100+00:00"),
+            duration: 110,
+            sessions: [
+                new CallsParticipantSession(
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    joinTime: new DateTime("2021-12-31T23:58:00.100+00:00"),
+                    leaveTime: new DateTime("2021-12-31T23:59:00.100+00:00")
+                ),
+                new CallsParticipantSession(
+                    callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
+                    joinTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+                    leaveTime: new DateTime("2021-12-31T23:59:20.100+00:00")
+                )
+            ],
+            recording: new CallsConferenceRecordingLog(
+                composedFiles: [
+                    new CallsRecordingFile(
+                        name: "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                        fileFormat: "WAV",
+                        id: "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
+                        size: 67564,
+                        creationTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                        duration: 10,
+                        startTime: new DateTime("2021-12-31T23:57:30.100+00:00"),
+                        endTime: new DateTime("2021-12-31T23:59:20.100+00:00"),
+                        location: "HOSTED"
+                    )
+                ],
+                callRecordings: [
+                    new CallRecording(
+                        endpoint: new CallsPhoneEndpoint(
+                            phoneNumber: "44790123456"
+                        ),
+                        callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                        direction: "INBOUND",
+                        files: [
+                            new CallsRecordingFile(
+                                name: "d8d84155-3831-43fb-91c9-bb897149a79d_1652725357412.wav",
+                                fileFormat: "WAV",
+                                id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                                size: 67564,
+                                creationTime: new DateTime("2022-01-01T00:00:00.250+00:00"),
+                                duration: 10,
+                                startTime: new DateTime("2021-12-31T23:59:50.100+00:00"),
+                                endTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                                location: "HOSTED"
+                            )
+                        ],
+                        status: "SUCCESSFUL"
+                    ),
+                    new CallRecording(
+                        endpoint: new CallsPhoneEndpoint(
+                            phoneNumber: "44790123456"
+                        ),
+                        callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
+                        direction: "INBOUND",
+                        files: [
+                            new CallsRecordingFile(
+                                name: "d8d84155-3831-43fb-91c9-bb897149a79d_1652725357412.wav",
+                                fileFormat: "WAV",
+                                id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                                size: 67564,
+                                creationTime: new DateTime("2022-01-01T00:00:00.250+00:00"),
+                                duration: 10,
+                                startTime: new DateTime("2021-12-31T23:59:50.100+00:00"),
+                                endTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                                location: "HOSTED"
+                            )
+                        ],
+                        status: "SUCCESSFUL"
+                    )
+                ]
+            ),
+            errorCode: new CallsErrorCodeInfo(
+                id: 10000,
+                name: "NORMAL_HANGUP",
+                description: "The call has ended with hangup initiated by caller, callee or API"
+            )
         );
 
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testAddNewConferenceCall(): void
@@ -2964,7 +3277,8 @@ class CallsApiTest extends ApiTestBase
               "type": "PHONE",
               "phoneNumber": "41792036727"
             },
-            "from": "41793026834"
+            "from": "41793026834",
+            "maxDuration": 28800
           },
           "connectOnEarlyMedia": false
         }
@@ -3056,30 +3370,112 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = str_replace("{conferenceId}", $givenConferenceId, self::ADD_NEW_CONFERENCE_CALL);
 
-        $expectedHttpMethod = "POST";
-
-        $request = $this->getObjectSerializer()->deserialize($givenRequest, CallsAddNewCallRequest::class);
+        $request = new CallsAddNewCallRequest(
+            callRequest: new CallsActionCallRequest(
+                endpoint: new CallsPhoneEndpoint(
+                    phoneNumber: "41792036727"
+                ),
+                from: "41793026834"
+            ),
+            connectOnEarlyMedia: false
+        );
 
         $closures = [
             fn () => $api->addNewConferenceCall($givenConferenceId, $request),
             fn () => $api->addNewConferenceCallAsync($givenConferenceId, $request),
         ];
 
-        $this->assertClosureResponses(
+        $expectedResponse = new CallsConferenceAndCall(
+            conference: new CallsConference(
+                id: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+                name: "Example conference",
+                participants: [
+                    new CallsParticipant(
+                        endpoint: new CallsPhoneEndpoint(
+                            phoneNumber: "44790123456"
+                        ),
+                        callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                        state: "JOINED",
+                        joinTime: new DateTime("2021-12-31T23:59:55.100+00:00"),
+                        media: new CallsMediaProperties(
+                            audio: new CallsAudioMediaProperties(
+                                muted: false,
+                                deaf: false
+                            ),
+                            video: new CallsVideoMediaProperties(
+                                camera: false,
+                                screenShare: false
+                            )
+                        )
+                    ),
+                    new CallsParticipant(
+                        endpoint: new CallsPhoneEndpoint(
+                            phoneNumber: "44790123456"
+                        ),
+                        callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                        state: "JOINING",
+                        media: new CallsMediaProperties(
+                            audio: new CallsAudioMediaProperties(
+                                muted: false,
+                                deaf: false
+                            ),
+                            video: new CallsVideoMediaProperties(
+                                camera: false,
+                                screenShare: false
+                            )
+                        )
+                    )
+                ],
+                callsConfigurationId: "dc5942707c704551a00cd2ea",
+                platform: new Platform(
+                    applicationId: "61c060db2675060027d8c7a6"
+                )
+            ),
+            call: new Call(
+                endpoint: new CallsPhoneEndpoint(
+                    phoneNumber: "44790123456"
+                ),
+                id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                from: "44790123456",
+                to: "44790123456",
+                direction: "OUTBOUND",
+                state: "CALLING",
+                media: new CallsMediaProperties(
+                    audio: new CallsAudioMediaProperties(
+                        muted: false,
+                        deaf: false
+                    ),
+                    video: new CallsVideoMediaProperties(
+                        camera: false,
+                        screenShare: false
+                    )
+                ),
+                startTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+                answerTime: new DateTime("2022-01-01T00:00:02.100+00:00"),
+                ringDuration: 2,
+                callsConfigurationId: "dc5942707c704551a00cd2ea",
+                platform: new Platform(
+                    applicationId: "61c060db2675060027d8c7a6"
+                ),
+                conferenceId: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+                customData: [
+                    "key1" => "value1",
+                    "key2" => "value2"
+                ]
+            )
+        );
+
+        $this->assertPostRequest(
             $closures,
-            CallsConferenceAndCall::class,
-            $givenResponse,
             $expectedPath,
-            $expectedHttpMethod,
+            $givenRequest,
+            $expectedResponse,
             $requestHistoryContainer
         );
     }
@@ -3146,16 +3542,11 @@ class CallsApiTest extends ApiTestBase
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-
         $expectedPath = str_replace(array("{conferenceId}", "{callId}"), array($givenConferenceId, $givenCallId), self::ADD_EXISTING_CONFERENCE_CALL);
-
-        $expectedHttpMethod = "PUT";
 
         $request = $this->getObjectSerializer()->deserialize($givenRequest, CallsAddExistingCallRequest::class);
 
@@ -3164,16 +3555,59 @@ class CallsApiTest extends ApiTestBase
             fn () => $api->addExistingConferenceCallAsync($givenConferenceId, $givenCallId, $request),
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsConference::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer
+        $expectedResponse = new CallsConference(
+            id: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+            name: "Example conference",
+            participants: [
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINED",
+                    joinTime: new DateTime("2021-12-31T23:59:55.100+00:00"),
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                ),
+                new CallsParticipant(
+                    endpoint: new CallsPhoneEndpoint(
+                        phoneNumber: "44790123456"
+                    ),
+                    callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
+                    state: "JOINING",
+                    media: new CallsMediaProperties(
+                        audio: new CallsAudioMediaProperties(
+                            muted: false,
+                            deaf: false
+                        ),
+                        video: new CallsVideoMediaProperties(
+                            camera: false,
+                            screenShare: false
+                        )
+                    )
+                )
+            ],
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            )
         );
 
-
+        $this->assertPutRequest(
+            $closures,
+            $expectedPath,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testRemoveConferenceCall(): void
@@ -3212,8 +3646,6 @@ class CallsApiTest extends ApiTestBase
             $expectedHttpMethod,
             $requestHistoryContainer
         );
-
-
     }
 
     public function testUpdateConferenceCall(): void
@@ -7852,66 +8284,5 @@ class CallsApiTest extends ApiTestBase
             $requestHistoryContainer
         );
 
-    }
-
-    private function assertGetRequest(
-        array  $closures,
-        string $expectedPath,
-        object $expectedResponse,
-        array  &$requestHistoryContainer
-    ): void {
-        foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
-
-            $this->assertRequestWithHeaders(
-                'GET',
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-
-            $this->assertEquals($expectedResponse, $response);
-        }
-    }
-
-    private function assertPostRequest(
-        array  $closures,
-        string $expectedPath,
-        string $givenRawRequest,
-        object $expectedResponse,
-        array  &$requestHistoryContainer
-    ): void {
-        foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
-
-            $this->assertRequestWithHeadersAndJsonBody(
-                'POST',
-                $expectedPath,
-                $givenRawRequest,
-                $requestHistoryContainer[$index]
-            );
-
-            $this->assertEquals($expectedResponse, $response);
-        }
-    }
-
-    private function assertPostRequestWithNoBody(
-        array  $closures,
-        string $expectedPath,
-        object $expectedResponse,
-        array  &$requestHistoryContainer
-    ): void {
-        foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
-
-            $this->assertRequestWithHeaders(
-                'POST',
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-
-            $this->assertEquals($expectedResponse, $response);
-        }
     }
 }

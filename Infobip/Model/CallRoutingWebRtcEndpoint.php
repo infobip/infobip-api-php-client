@@ -16,8 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
 class CallRoutingWebRtcEndpoint extends CallRoutingEndpoint
 {
     public const TYPE = 'WEBRTC';
@@ -25,8 +23,7 @@ class CallRoutingWebRtcEndpoint extends CallRoutingEndpoint
     /**
      */
     public function __construct(
-        #[Assert\NotBlank]
-        protected string $identity,
+        protected ?string $identity = null,
     ) {
         $modelDiscriminatorValue = self::TYPE;
 
@@ -36,12 +33,12 @@ class CallRoutingWebRtcEndpoint extends CallRoutingEndpoint
     }
 
 
-    public function getIdentity(): string
+    public function getIdentity(): string|null
     {
         return $this->identity;
     }
 
-    public function setIdentity(string $identity): self
+    public function setIdentity(?string $identity): self
     {
         $this->identity = $identity;
         return $this;

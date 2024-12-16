@@ -16,7 +16,6 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-
 class CallsAudioCallbackResponse extends CallbackResponse
 {
     public const COMMAND = 'audio';
