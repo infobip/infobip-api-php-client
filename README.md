@@ -94,7 +94,7 @@ See below, a simple example of sending a single SMS message to a single recipien
             content: new SmsTextContent(
                 text: 'This is a dummy SMS message sent using infobip-api-php-client.'
             ),
-            sender: 'InfoSMS'
+            sender: 'BankElithad'
         );
 
         $request = new SmsRequest(messages: [$message]);
@@ -208,7 +208,7 @@ Example of webhook implementation:
      */
     $messages = $objectSerializer->deserialize($data, SmsInboundMessageResult::class);
 
-    foreach ($messages->getResults() ?? [] as $message) {
+    for each ($messages->getResults() ?? [] as $message) {
         echo $message-> getFrom() . " - " . $message-> getCleanText() . "\n";
     }
 ```
@@ -217,22 +217,22 @@ Example of webhook implementation:
 For 2FA quick start guide please check [these examples](two-factor-authentication.md).
 
 #### Send email
-For send email quick start guide please check [these examples](email.md).
+For sending email quick start guide please check [these examples](email.md).
 
 #### WhatsApp
-For WhatsApp quick start guide, view [these examples](whatsapp.md).
+For the WhatsApp quick start guide, please take a look at these examples](WhatsApp.md).
 
 #### Messages API
-For Messages API quick start guide, view [these examples](messages-api.md).
+For Messages API quick start guide, please take a look at [these examples](messages-api.md).
 
 #### Moments
-For Moments quick start guide, view [these examples](moments.md).
+For Moments quick start guide, please take a look at [these examples](moments.md).
 
 ## Ask for help
 
 Feel free to open issues on the repository for any issue or feature request. As per pull requests, for details check the `CONTRIBUTING` [file][contributing] related to it - in short, we will not merge any pull requests, this code is auto-generated.
 
-This code is auto generated, and we are unable to merge any pull request from here, but we will review and implement changes directly within our pipeline, as described in the `CONTRIBUTING` [file][contributing].
+This code is auto-generated, and we are unable to merge any pull request from here, but we will review and implement changes directly within our pipeline, as described in the `CONTRIBUTING` [file][contributing].
 
 For anything that requires our imminent attention, contact us @ [support@infobip.com](mailto:support@infobip.com).
 
