@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsForEach implements CallsScriptOneOf
 {
     /**
-     * @param object[] $do
+     * @param CallsScriptOneOf[] $do
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -70,7 +70,7 @@ class CallsForEach implements CallsScriptOneOf
     }
 
     /**
-     * @return object[]
+     * @return CallsScriptOneOf[]
      */
     public function getDo(): array
     {
@@ -78,7 +78,7 @@ class CallsForEach implements CallsScriptOneOf
     }
 
     /**
-     * @param object[] $do Array of actions to execute.
+     * @param CallsScriptOneOf[] $do Array of actions to execute.
      */
     public function setDo(array $do): self
     {

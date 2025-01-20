@@ -24,12 +24,14 @@ final class ViberOutboundContentType implements EnumInterface
     public const IMAGE = 'IMAGE';
     public const VIDEO = 'VIDEO';
     public const FILE = 'FILE';
+    public const OTP_TEMPLATE = 'OTP_TEMPLATE';
 
     public const ALLOWED_VALUES = [
         'TEXT',
         'IMAGE',
         'VIDEO',
         'FILE',
+        'OTP_TEMPLATE',
     ];
 
     private string $value;
@@ -67,6 +69,11 @@ final class ViberOutboundContentType implements EnumInterface
     public static function FILE(): ViberOutboundContentType
     {
         return new self('FILE');
+    }
+
+    public static function OTP_TEMPLATE(): ViberOutboundContentType
+    {
+        return new self('OTP_TEMPLATE');
     }
 
     public function __toString(): string

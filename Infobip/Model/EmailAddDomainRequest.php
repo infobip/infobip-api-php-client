@@ -24,6 +24,8 @@ class EmailAddDomainRequest
      */
     public function __construct(
         #[Assert\NotBlank]
+        #[Assert\Length(max: 100)]
+        #[Assert\Length(min: 0)]
         protected string $domainName,
         #[Assert\NotBlank]
         #[Assert\GreaterThanOrEqual(1)]
@@ -31,6 +33,8 @@ class EmailAddDomainRequest
         protected ?string $dkimKeyLength = self::DKIM_KEY_LENGTH_2048,
         protected ?string $applicationId = null,
         protected ?string $entityId = null,
+        #[Assert\Length(max: 100)]
+        #[Assert\Length(min: 0)]
         protected ?string $returnPathAddress = null,
     ) {
 

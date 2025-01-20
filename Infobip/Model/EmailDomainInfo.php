@@ -41,6 +41,8 @@ class EmailDomainInfo
         protected bool $deleteComplaints,
         #[Assert\NotBlank]
         protected bool $readOverquotas,
+        #[Assert\NotBlank]
+        protected bool $deleteOverquotas,
     ) {
 
     }
@@ -142,6 +144,17 @@ class EmailDomainInfo
     public function setReadOverquotas(bool $readOverquotas): self
     {
         $this->readOverquotas = $readOverquotas;
+        return $this;
+    }
+
+    public function getDeleteOverquotas(): bool
+    {
+        return $this->deleteOverquotas;
+    }
+
+    public function setDeleteOverquotas(bool $deleteOverquotas): self
+    {
+        $this->deleteOverquotas = $deleteOverquotas;
         return $this;
     }
 }

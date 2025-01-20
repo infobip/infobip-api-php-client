@@ -22,7 +22,6 @@ declare(strict_types=1);
  *
  * Do not edit manually. To learn how to raise an issue, see the CONTRIBUTING guide or contact us @ support@infobip.com.
  */
-
 namespace Infobip;
 
 use Infobip\Model\EnumInterface;
@@ -79,7 +78,7 @@ final class EnumNormalizer implements NormalizerInterface, DenormalizerInterface
     */
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
-        return \class_exists($type) && \is_subclass_of($type, EnumInterface::class);
+        return \is_string($data) && \class_exists($type) && \is_subclass_of($type, EnumInterface::class);
     }
 
     public function getSupportedTypes(?string $format): array

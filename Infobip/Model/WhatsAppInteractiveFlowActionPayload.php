@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class WhatsAppInteractiveFlowActionPayload
 {
     /**
-     * @param array<string,object> $data
+     * @param array<string,mixed> $data
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -44,7 +44,7 @@ class WhatsAppInteractiveFlowActionPayload
     }
 
     /**
-     * @return array<string,object>|null
+     * @return array<string,mixed>|null
      */
     public function getData()
     {
@@ -52,7 +52,7 @@ class WhatsAppInteractiveFlowActionPayload
     }
 
     /**
-     * @param array<string,object>|null $data Input data for first screen of the flow. Must be a non-empty object.
+     * @param array<string,mixed>|null $data Input data for first screen of the flow. Must be a non-empty object.
      */
     public function setData(?array $data): self
     {

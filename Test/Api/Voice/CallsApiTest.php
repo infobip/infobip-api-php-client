@@ -40,6 +40,10 @@ use Infobip\Model\CallsConferenceRecordingLog;
 use Infobip\Model\CallsConferenceRecordingPage;
 use Infobip\Model\CallsConferenceRecordingRequest;
 use Infobip\Model\CallsConferenceRequest;
+use Infobip\Model\CallsConfigurationCreateRequest;
+use Infobip\Model\CallsConfigurationPage;
+use Infobip\Model\CallsConfigurationResponse;
+use Infobip\Model\CallsConfigurationUpdateRequest;
 use Infobip\Model\CallsConnectRequest;
 use Infobip\Model\CallsConnectWithNewCallRequest;
 use Infobip\Model\CallsCountryList;
@@ -103,6 +107,7 @@ use Infobip\Model\CallsStopPlayRequest;
 use Infobip\Model\CallState;
 use Infobip\Model\CallsTranscription;
 use Infobip\Model\CallsUpdateRequest;
+use Infobip\Model\CallsUrlPlayContent;
 use Infobip\Model\CallsVideoMediaProperties;
 use Infobip\Model\CallsVoicePreferences;
 use Infobip\Model\CallsWebRtcEndpoint;
@@ -211,6 +216,8 @@ class CallsApiTest extends ApiTestBase
     private const string PAUSE_BULK = "/calls/1/bulks/{bulkId}/pause";
     private const string RESUME_BULK = "/calls/1/bulks/{bulkId}/resume";
     private const string CANCEL_BULK = "/calls/1/bulks/{bulkId}/cancel";
+    private const string CALLS_CONFIGURATIONS = "/calls/1/configurations";
+    private const string CALLS_CONFIGURATION = "/calls/1/configurations/{callsConfigurationId}";
 
 
     public function testGetCalls(): void
@@ -1624,6 +1631,63 @@ class CallsApiTest extends ApiTestBase
         $request = new CallsPlayRequest(
             content: new CallsFilePlayContent(
                 fileId: "218eceba-c044-430d-9f26-8f1a7f0g2d03"
+            ),
+            timeout: 30000,
+            offset: 5000
+        );
+
+        $closures = [
+            fn () => $api->callPlayFile($givenCallId, $request),
+            fn () => $api->callPlayFileAsync($givenCallId, $request),
+        ];
+
+        $expectedResponse = new CallsActionResponse(
+            status: "PENDING"
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            $expectedPath,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testCallPlayFileProvidedByUrl(): void
+    {
+        $givenCallId = "d8d84155-3831-43fb-91c9-bb897149a79d";
+
+        $givenRequest = <<<JSON
+        {
+          "timeout": 30000,
+          "offset": 5000,
+          "content": {
+            "fileUrl": "https://example.com/file.mp3",
+            "type": "URL",
+            "cacheDuration": 1000
+          }
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "status": "PENDING"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $expectedPath = str_replace("{callId}", $givenCallId, self::CALL_PLAY_FILE);
+
+        $request = new CallsPlayRequest(
+            content: new CallsUrlPlayContent(
+                fileUrl: "https://example.com/file.mp3",
+                cacheDuration: 1000
             ),
             timeout: 30000,
             offset: 5000
@@ -8284,5 +8348,225 @@ class CallsApiTest extends ApiTestBase
             $requestHistoryContainer
         );
 
+    }
+
+    public function testGetCallsConfigurations(): void
+    {
+        $givenResponse = <<<JSON
+        {
+          "results": [
+            {
+              "id": "63467c6e2885a5389ba11d80",
+              "name": "Calls configuration"
+            }
+          ],
+          "paging": {
+            "page": 0,
+            "size": 1,
+            "totalPages": 1,
+            "totalResults": 1
+          }
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $expectedPath = self::CALLS_CONFIGURATIONS . "?" . Query::build([
+            "page" => 0,
+            "size" => 1
+        ]);
+
+        $closures = [
+            fn () => $api->getCallsConfigurations(0, 1),
+            fn () => $api->getCallsConfigurationsAsync(0, 1)
+        ];
+
+        $expectedResponse = new CallsConfigurationPage(
+            results: [
+                new CallsConfigurationResponse(
+                    id: "63467c6e2885a5389ba11d80",
+                    name: "Calls configuration"
+                )
+            ],
+            paging: new PageInfo(
+                page: 0,
+                size: 1,
+                totalPages: 1,
+                totalResults: 1
+            )
+        );
+
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testCreateCallsConfiguration(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "id": "63467c6e2885a5389ba11d80",
+          "name": "Calls configuration"
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "id": "63467c6e2885a5389ba11d80",
+          "name": "Calls configuration"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 201);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $request = new CallsConfigurationCreateRequest(
+            id: "63467c6e2885a5389ba11d80",
+            name: "Calls configuration"
+        );
+
+        $closures = [
+            fn () => $api->createCallsConfiguration($request),
+            fn () => $api->createCallsConfigurationAsync($request)
+        ];
+
+        $expectedResponse = new CallsConfigurationResponse(
+            id: "63467c6e2885a5389ba11d80",
+            name: "Calls configuration"
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::CALLS_CONFIGURATIONS,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testGetCallsConfiguration(): void
+    {
+        $givenResponse = <<<JSON
+        {
+          "id": "63467c6e2885a5389ba11d80",
+          "name": "Calls configuration"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $expectedPath = str_replace("{callsConfigurationId}", "63467c6e2885a5389ba11d80", self::CALLS_CONFIGURATION);
+
+        $closures = [
+            fn () => $api->getCallsConfiguration("63467c6e2885a5389ba11d80"),
+            fn () => $api->getCallsConfigurationAsync("63467c6e2885a5389ba11d80")
+        ];
+
+        $expectedResponse = new CallsConfigurationResponse(
+            id: "63467c6e2885a5389ba11d80",
+            name: "Calls configuration"
+        );
+
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testUpdateCallsConfiguration(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "name": "Updated calls configuration"
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "id": "63467c6e2885a5389ba11d80",
+          "name": "Updated calls configuration"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $expectedPath = str_replace("{callsConfigurationId}", "63467c6e2885a5389ba11d80", self::CALLS_CONFIGURATION);
+
+        $request = new CallsConfigurationUpdateRequest(
+            name: "Updated calls configuration"
+        );
+
+        $closures = [
+            fn () => $api->updateCallsConfiguration("63467c6e2885a5389ba11d80", $request),
+            fn () => $api->updateCallsConfigurationAsync("63467c6e2885a5389ba11d80", $request)
+        ];
+
+        $expectedResponse = new CallsConfigurationResponse(
+            id: "63467c6e2885a5389ba11d80",
+            name: "Updated calls configuration"
+        );
+
+        $this->assertPutRequest(
+            $closures,
+            $expectedPath,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testDeleteCallsConfiguration(): void
+    {
+        $givenResponse = <<<JSON
+        {
+          "id": "63467c6e2885a5389ba11d80",
+          "name": "Calls configuration"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $expectedPath = str_replace("{callsConfigurationId}", "63467c6e2885a5389ba11d80", self::CALLS_CONFIGURATION);
+
+        $closures = [
+            fn () => $api->deleteCallsConfiguration("63467c6e2885a5389ba11d80"),
+            fn () => $api->deleteCallsConfigurationAsync("63467c6e2885a5389ba11d80")
+        ];
+
+        $expectedResponse = new CallsConfigurationResponse(
+            id: "63467c6e2885a5389ba11d80",
+            name: "Calls configuration"
+        );
+
+        $this->assertDeleteRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 }

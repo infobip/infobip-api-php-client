@@ -19,7 +19,7 @@ namespace Infobip\Model;
 class CallsGetVoicesResponse
 {
     /**
-     * @param \Infobip\Model\CallsVoice[] $voices
+     * @param \Infobip\Model\CallsSynthesisVoice[] $voices
      */
     public function __construct(
         protected ?array $voices = null,
@@ -29,7 +29,7 @@ class CallsGetVoicesResponse
 
 
     /**
-     * @return \Infobip\Model\CallsVoice[]|null
+     * @return \Infobip\Model\CallsSynthesisVoice[]|null
      */
     public function getVoices(): ?array
     {
@@ -37,7 +37,7 @@ class CallsGetVoicesResponse
     }
 
     /**
-     * @param \Infobip\Model\CallsVoice[]|null $voices Array of voices belonging to the specified language.
+     * @param \Infobip\Model\CallsSynthesisVoice[]|null $voices Array of voices belonging to the specified language.
      */
     public function setVoices(?array $voices): self
     {

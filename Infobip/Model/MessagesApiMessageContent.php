@@ -32,6 +32,8 @@ class MessagesApiMessageContent
         protected ?array $buttons = null,
         #[Assert\Valid]
         protected ?\Infobip\Model\MessagesApiMessageConfirmationBody $confirmationBody = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessagesApiMessageFooter $footer = null,
     ) {
 
     }
@@ -68,7 +70,7 @@ class MessagesApiMessageContent
     }
 
     /**
-     * @param \Infobip\Model\MessagesApiMessageButton[]|null $buttons List of buttons for the message.
+     * @param \Infobip\Model\MessagesApiMessageButton[]|null $buttons List of buttons of the message.
      */
     public function setButtons(?array $buttons): self
     {
@@ -84,6 +86,17 @@ class MessagesApiMessageContent
     public function setConfirmationBody(?\Infobip\Model\MessagesApiMessageConfirmationBody $confirmationBody): self
     {
         $this->confirmationBody = $confirmationBody;
+        return $this;
+    }
+
+    public function getFooter(): \Infobip\Model\MessagesApiMessageFooter|null
+    {
+        return $this->footer;
+    }
+
+    public function setFooter(?\Infobip\Model\MessagesApiMessageFooter $footer): self
+    {
+        $this->footer = $footer;
         return $this;
     }
 }

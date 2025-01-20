@@ -46,7 +46,7 @@ The library requires PHP version >= 8.3.
 To start using the library add it as dependency in your `composer.json` file like shown below.
 ```json
 "require": {
-	"infobip/infobip-api-php-client": "6.1.0"
+	"infobip/infobip-api-php-client": "6.2.0"
 }
 ```
 And simply run `composer install` to download dependencies.

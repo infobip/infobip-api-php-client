@@ -29,6 +29,7 @@ final class CallState implements EnumInterface
     public const CANCELLED = 'CANCELLED';
     public const NO_ANSWER = 'NO_ANSWER';
     public const BUSY = 'BUSY';
+    public const DISCONNECTED = 'DISCONNECTED';
 
     public const ALLOWED_VALUES = [
         'CALLING',
@@ -40,6 +41,7 @@ final class CallState implements EnumInterface
         'CANCELLED',
         'NO_ANSWER',
         'BUSY',
+        'DISCONNECTED',
     ];
 
     private string $value;
@@ -102,6 +104,11 @@ final class CallState implements EnumInterface
     public static function BUSY(): CallState
     {
         return new self('BUSY');
+    }
+
+    public static function DISCONNECTED(): CallState
+    {
+        return new self('DISCONNECTED');
     }
 
     public function __toString(): string

@@ -33,8 +33,7 @@ class CallsUpdateScenarioResponse
         protected ?array $script = null,
         #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
         protected ?\DateTime $updateTime = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
-        protected ?\DateTime $lastUsageDate = null,
+        protected ?string $lastUsageDate = null,
     ) {
 
     }
@@ -112,12 +111,12 @@ class CallsUpdateScenarioResponse
         return $this;
     }
 
-    public function getLastUsageDate(): \DateTime|null
+    public function getLastUsageDate(): string|null
     {
         return $this->lastUsageDate;
     }
 
-    public function setLastUsageDate(?\DateTime $lastUsageDate): self
+    public function setLastUsageDate(?string $lastUsageDate): self
     {
         $this->lastUsageDate = $lastUsageDate;
         return $this;

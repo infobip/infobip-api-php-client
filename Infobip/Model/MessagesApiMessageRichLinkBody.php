@@ -34,6 +34,8 @@ class MessagesApiMessageRichLinkBody extends MessagesApiMessageBody
         protected ?bool $isVideo = false,
         protected ?string $thumbnailUrl = null,
         protected ?string $buttonText = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessagesApiMessageCardOptions $cardOptions = null,
     ) {
         $modelDiscriminatorValue = self::TYPE;
 
@@ -106,6 +108,17 @@ class MessagesApiMessageRichLinkBody extends MessagesApiMessageBody
     public function setButtonText(?string $buttonText): self
     {
         $this->buttonText = $buttonText;
+        return $this;
+    }
+
+    public function getCardOptions(): \Infobip\Model\MessagesApiMessageCardOptions|null
+    {
+        return $this->cardOptions;
+    }
+
+    public function setCardOptions(?\Infobip\Model\MessagesApiMessageCardOptions $cardOptions): self
+    {
+        $this->cardOptions = $cardOptions;
         return $this;
     }
 }

@@ -23,11 +23,13 @@ final class MessagesApiMessageButtonType implements EnumInterface
     public const REPLY = 'REPLY';
     public const OPEN_URL = 'OPEN_URL';
     public const REQUEST_LOCATION = 'REQUEST_LOCATION';
+    public const ADD_CALENDAR_EVENT = 'ADD_CALENDAR_EVENT';
 
     public const ALLOWED_VALUES = [
         'REPLY',
         'OPEN_URL',
         'REQUEST_LOCATION',
+        'ADD_CALENDAR_EVENT',
     ];
 
     private string $value;
@@ -60,6 +62,11 @@ final class MessagesApiMessageButtonType implements EnumInterface
     public static function REQUEST_LOCATION(): MessagesApiMessageButtonType
     {
         return new self('REQUEST_LOCATION');
+    }
+
+    public static function ADD_CALENDAR_EVENT(): MessagesApiMessageButtonType
+    {
+        return new self('ADD_CALENDAR_EVENT');
     }
 
     public function __toString(): string

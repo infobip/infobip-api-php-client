@@ -67,15 +67,16 @@ final class ObjectSerializer
                 null,
                 [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]
             );
+            $enumNormalizer = new EnumNormalizer();
             $serializer = new Serializer(
                 [
-                    new EnumNormalizer(),
+                    $enumNormalizer,
                     new SplFileObjectNormalizer(),
                     new ArrayDenormalizer(),
                     new DateTimeNormalizer(
                         [DateTimeNormalizer::FORMAT_KEY => self::DEFAULT_DATE_TIME_FORMAT]
                     ),
-                    new OneOfInterfaceDenormalizer($objectNormalizer),
+                    new OneOfInterfaceDenormalizer($objectNormalizer, $enumNormalizer),
                     $objectNormalizer,
 
                 ],

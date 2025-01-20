@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[DiscriminatorMap(typeProperty: "type", mapping: [
     "FILE" => "\Infobip\Model\ViberOutboundFileContent",
     "IMAGE" => "\Infobip\Model\ViberOutboundImageContent",
+    "OTP_TEMPLATE" => "\Infobip\Model\ViberOutboundOtpTemplateContent",
     "TEXT" => "\Infobip\Model\ViberOutboundTextContent",
     "VIDEO" => "\Infobip\Model\ViberOutboundVideoContent",
 ])]

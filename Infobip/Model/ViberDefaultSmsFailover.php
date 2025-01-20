@@ -23,8 +23,9 @@ class ViberDefaultSmsFailover
     /**
      */
     public function __construct(
+        #[Assert\NotBlank]
+        protected string $text,
         protected ?string $sender = null,
-        protected ?string $text = null,
         #[Assert\Valid]
         protected ?\Infobip\Model\ValidityPeriod $validityPeriod = null,
         #[Assert\Valid]
@@ -45,12 +46,12 @@ class ViberDefaultSmsFailover
         return $this;
     }
 
-    public function getText(): string|null
+    public function getText(): string
     {
         return $this->text;
     }
 
-    public function setText(?string $text): self
+    public function setText(string $text): self
     {
         $this->text = $text;
         return $this;

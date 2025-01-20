@@ -16,6 +16,8 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
+use Symfony\Component\Serializer\Annotation as Serializer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EmailSuppressionInfo
@@ -30,7 +32,8 @@ class EmailSuppressionInfo
         #[Assert\NotBlank]
         protected string $type,
         #[Assert\NotBlank]
-        protected string $createdDate,
+        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        protected \DateTime $createdDate,
         #[Assert\NotBlank]
         protected string $reason,
     ) {
@@ -71,12 +74,12 @@ class EmailSuppressionInfo
         return $this;
     }
 
-    public function getCreatedDate(): string
+    public function getCreatedDate(): \DateTime
     {
         return $this->createdDate;
     }
 
-    public function setCreatedDate(string $createdDate): self
+    public function setCreatedDate(\DateTime $createdDate): self
     {
         $this->createdDate = $createdDate;
         return $this;

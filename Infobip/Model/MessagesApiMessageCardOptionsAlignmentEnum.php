@@ -18,16 +18,14 @@ namespace Infobip\Model;
 
 use InvalidArgumentException;
 
-final class EmailGetSuppressionType implements EnumInterface
+final class MessagesApiMessageCardOptionsAlignmentEnum implements EnumInterface
 {
-    public const BOUNCE = 'BOUNCE';
-    public const COMPLAINT = 'COMPLAINT';
-    public const OVER_QUOTA = 'OVER_QUOTA';
+    public const LEFT = 'LEFT';
+    public const RIGHT = 'RIGHT';
 
     public const ALLOWED_VALUES = [
-        'BOUNCE',
-        'COMPLAINT',
-        'OVER_QUOTA',
+        'LEFT',
+        'RIGHT',
     ];
 
     private string $value;
@@ -47,19 +45,14 @@ final class EmailGetSuppressionType implements EnumInterface
         $this->value = $value;
     }
 
-    public static function BOUNCE(): EmailGetSuppressionType
+    public static function LEFT(): MessagesApiMessageCardOptionsAlignmentEnum
     {
-        return new self('BOUNCE');
+        return new self('LEFT');
     }
 
-    public static function COMPLAINT(): EmailGetSuppressionType
+    public static function RIGHT(): MessagesApiMessageCardOptionsAlignmentEnum
     {
-        return new self('COMPLAINT');
-    }
-
-    public static function OVER_QUOTA(): EmailGetSuppressionType
-    {
-        return new self('OVER_QUOTA');
+        return new self('RIGHT');
     }
 
     public function __toString(): string

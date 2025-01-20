@@ -19,8 +19,8 @@ namespace Infobip\Model;
 class FlowCommonPushContact
 {
     /**
-     * @param array<string,object> $additionalData
-     * @param array<string,object> $systemData
+     * @param array<string,mixed> $additionalData
+     * @param array<string,mixed> $systemData
      */
     public function __construct(
         protected ?string $applicationId = null,
@@ -55,7 +55,7 @@ class FlowCommonPushContact
     }
 
     /**
-     * @return array<string,object>|null
+     * @return array<string,mixed>|null
      */
     public function getAdditionalData()
     {
@@ -63,7 +63,7 @@ class FlowCommonPushContact
     }
 
     /**
-     * @param array<string,object>|null $additionalData Unique user ID for a person.
+     * @param array<string,mixed>|null $additionalData Unique user ID for a person.
      */
     public function setAdditionalData(?array $additionalData): self
     {
@@ -72,7 +72,7 @@ class FlowCommonPushContact
     }
 
     /**
-     * @return array<string,object>|null
+     * @return array<string,mixed>|null
      */
     public function getSystemData()
     {
@@ -80,7 +80,7 @@ class FlowCommonPushContact
     }
 
     /**
-     * @param array<string,object>|null $systemData System data collected from the user's profile.
+     * @param array<string,mixed>|null $systemData System data collected from the user's profile.
      */
     public function setSystemData(?array $systemData): self
     {

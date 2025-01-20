@@ -30,6 +30,8 @@ class MessagesApiMessageCarouselCardBody
         protected ?string $title = null,
         protected ?bool $isVideo = false,
         protected ?string $thumbnailUrl = null,
+        #[Assert\Valid]
+        protected ?\Infobip\Model\MessagesApiMessageCardOptions $cardOptions = null,
     ) {
 
     }
@@ -87,6 +89,17 @@ class MessagesApiMessageCarouselCardBody
     public function setThumbnailUrl(?string $thumbnailUrl): self
     {
         $this->thumbnailUrl = $thumbnailUrl;
+        return $this;
+    }
+
+    public function getCardOptions(): \Infobip\Model\MessagesApiMessageCardOptions|null
+    {
+        return $this->cardOptions;
+    }
+
+    public function setCardOptions(?\Infobip\Model\MessagesApiMessageCardOptions $cardOptions): self
+    {
+        $this->cardOptions = $cardOptions;
         return $this;
     }
 }

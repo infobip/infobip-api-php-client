@@ -21,8 +21,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsIfThenElse implements CallsScriptOneOf
 {
     /**
-     * @param object[] $then
-     * @param object[] $else
+     * @param CallsScriptOneOf[] $then
+     * @param CallsScriptOneOf[] $else
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -47,7 +47,7 @@ class CallsIfThenElse implements CallsScriptOneOf
     }
 
     /**
-     * @return object[]|null
+     * @return CallsScriptOneOf[]|null
      */
     public function getThen(): ?array
     {
@@ -55,7 +55,7 @@ class CallsIfThenElse implements CallsScriptOneOf
     }
 
     /**
-     * @param object[]|null $then The actions to execute if condition is evaluated to true.
+     * @param CallsScriptOneOf[]|null $then The actions to execute if condition is evaluated to true.
      */
     public function setThen(?array $then): self
     {
@@ -64,7 +64,7 @@ class CallsIfThenElse implements CallsScriptOneOf
     }
 
     /**
-     * @return object[]|null
+     * @return CallsScriptOneOf[]|null
      */
     public function getElse(): ?array
     {
@@ -72,7 +72,7 @@ class CallsIfThenElse implements CallsScriptOneOf
     }
 
     /**
-     * @param object[]|null $else The actions to execute if condition is evaluated to false.
+     * @param CallsScriptOneOf[]|null $else The actions to execute if condition is evaluated to false.
      */
     public function setElse(?array $else): self
     {

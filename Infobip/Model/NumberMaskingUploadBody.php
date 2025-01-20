@@ -19,11 +19,10 @@ namespace Infobip\Model;
 class NumberMaskingUploadBody
 {
     /**
-     * @param string[] $content
      */
     public function __construct(
         protected ?string $url = null,
-        protected ?array $content = null,
+        protected ?string $content = null,
     ) {
 
     }
@@ -40,18 +39,12 @@ class NumberMaskingUploadBody
         return $this;
     }
 
-    /**
-     * @return string[]|null
-     */
-    public function getContent(): ?array
+    public function getContent(): string|null
     {
         return $this->content;
     }
 
-    /**
-     * @param string[]|null $content Encoded (Base64) value of mp3 file can be included instead of the file location URL.
-     */
-    public function setContent(?array $content): self
+    public function setContent(?string $content): self
     {
         $this->content = $content;
         return $this;

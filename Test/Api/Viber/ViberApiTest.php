@@ -16,6 +16,8 @@ use Infobip\Model\ViberLogsResponse;
 use Infobip\Model\ViberMessage;
 use Infobip\Model\ViberMessageError;
 use Infobip\Model\ViberMessageOptions;
+use Infobip\Model\ViberOtpTemplateLanguage;
+use Infobip\Model\ViberOutboundOtpTemplateContent;
 use Infobip\Model\ViberOutboundTextContent;
 use Infobip\Model\ViberRequest;
 use Infobip\Model\ViberToDestination;
@@ -439,4 +441,100 @@ class ViberApiTest extends ApiTestBase
         }
     }
 
+    public function testSendViberOtpTemplateMessage(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "messages": [
+            {
+              "sender": "441134960000",
+              "destinations": [
+                {
+                  "to": "441134960001"
+                }
+              ],
+              "content": {
+                "type": "OTP_TEMPLATE",
+                "id": "my-template-id",
+                "parameters": {
+                  "code": "1234"
+                },
+                "language": "ENGLISH"
+              }
+            }
+          ]
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "bulkId": "some-bulk-id",
+          "messages": [
+            {
+              "messageId": "some-message-id",
+              "status": {
+                "groupId": 1,
+                "groupName": "PENDING",
+                "id": 26,
+                "name": "PENDING_ACCEPTED",
+                "description": "Message sent to next instance"
+              },
+              "destination": "441134960001"
+            }
+          ]
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new ViberApi($this->getConfiguration(), client: $client);
+
+        $request = new ViberRequest(
+            messages: [
+                new ViberMessage(
+                    sender: '441134960000',
+                    destinations: [
+                        new ViberToDestination(to: '441134960001')
+                    ],
+                    content: new ViberOutboundOtpTemplateContent(
+                        id: 'my-template-id',
+                        parameters: ['code' => '1234'],
+                        language: ViberOtpTemplateLanguage::ENGLISH()
+                    )
+                )
+            ]
+        );
+
+        $closures = [
+            fn () => $api->sendViberMessages($request),
+            fn () => $api->sendViberMessagesAsync($request),
+        ];
+
+        $expectedResponse = new MessageResponse(
+            messages: [
+                new MessageResponseDetails(
+                    messageId: "some-message-id",
+                    status: new MessageStatus(
+                        groupId: 1,
+                        groupName: "PENDING",
+                        id: 26,
+                        name: "PENDING_ACCEPTED",
+                        description: "Message sent to next instance"
+                    ),
+                    destination: "441134960001"
+                )
+            ],
+            bulkId: "some-bulk-id"
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::SEND_VIBER_MESSAGES,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
 }

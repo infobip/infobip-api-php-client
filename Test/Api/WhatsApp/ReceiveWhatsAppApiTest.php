@@ -80,22 +80,19 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsAppMediaMetadata(): void
     {
-        $requestHistoryContainer = [];
-
-        $contentLength = '1024';
-
         $responseHeaders = [
-            'Accept' => '*/*',
-            'Content-Length' => $contentLength,
+            'Content-Type' => 'image/jpeg',
+            'Content-Length' => '1204',
         ];
 
         $responses = $this->makeResponses(
             2,
-            '',
+            null,
             200,
             $responseHeaders
         );
 
+        $requestHistoryContainer = [];
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new ReceiveWhatsAppApi(config: $this->getConfiguration(), client: $client);
@@ -120,10 +117,13 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
             fn () => $api->getWhatsAppMediaMetadataAsync($sender, $mediaId),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), null);
+        $expectedResponse = [
+            'Content-Type' => 'image/jpeg',
+            'Content-Length' => '1204',
+        ];
 
-            $this->assertSame(null, $response);
+        foreach ($closures as $index => $closure) {
+            $response = $this->getUnpackedModel($closure());
 
             $this->assertRequestWithHeaders(
                 'HEAD',
@@ -132,11 +132,7 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
                 []
             );
 
-            $actualResponse = $responses[$index];
-
-            foreach ($responseHeaders as $headerName => $headerValue) {
-                $this->assertSame($headerValue, $actualResponse->getHeaderLine($headerName));
-            }
+            $this->assertEquals($expectedResponse, $response);
         }
     }
 

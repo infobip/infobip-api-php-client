@@ -16,28 +16,37 @@ declare(strict_types=1);
 
 namespace Infobip\Model;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-class EmailSimpleApiResponse
+class CallsConfigurationResponse
 {
     /**
      */
     public function __construct(
-        #[Assert\NotBlank]
-        protected string $result,
+        protected ?string $id = null,
+        protected ?string $name = null,
     ) {
 
     }
 
 
-    public function getResult(): string
+    public function getId(): string|null
     {
-        return $this->result;
+        return $this->id;
     }
 
-    public function setResult(string $result): self
+    public function setId(?string $id): self
     {
-        $this->result = $result;
+        $this->id = $id;
+        return $this;
+    }
+
+    public function getName(): string|null
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
         return $this;
     }
 }

@@ -344,7 +344,7 @@ final class NumberMaskingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function createNumberMaskingCredentials(\Infobip\Model\NumberMaskingCredentialsBody $numberMaskingCredentialsBody)
     {
@@ -512,7 +512,7 @@ final class NumberMaskingApi
     /**
      * Create response for operation 'createNumberMaskingCredentials'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function createNumberMaskingCredentialsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -567,6 +567,17 @@ final class NumberMaskingApi
             return $apiException;
         }
         if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 409) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -802,6 +813,17 @@ final class NumberMaskingApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -858,7 +880,7 @@ final class NumberMaskingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return object|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return void
      */
     public function deleteNumberMaskingCredentials()
     {
@@ -1015,7 +1037,7 @@ final class NumberMaskingApi
     /**
      * Create response for operation 'deleteNumberMaskingCredentials'
      * @throws ApiException on non-2xx response
-     * @return object|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return null
      */
     private function deleteNumberMaskingCredentialsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1034,9 +1056,6 @@ final class NumberMaskingApi
 
         $responseResult = null;
 
-        if ($statusCode === 204) {
-            $responseResult = $this->deserialize($responseBody, 'object', $responseHeaders);
-        }
         return $responseResult;
     }
 
@@ -1059,6 +1078,17 @@ final class NumberMaskingApi
             return $apiException;
         }
         if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -1093,7 +1123,7 @@ final class NumberMaskingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\NumberMaskingSetupResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\NumberMaskingSetupResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getNumberMaskingConfiguration(string $key)
     {
@@ -1265,7 +1295,7 @@ final class NumberMaskingApi
     /**
      * Create response for operation 'getNumberMaskingConfiguration'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\NumberMaskingSetupResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\NumberMaskingSetupResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getNumberMaskingConfigurationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1297,6 +1327,17 @@ final class NumberMaskingApi
     {
         $statusCode = $apiException->getCode();
 
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1353,7 +1394,7 @@ final class NumberMaskingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\NumberMaskingSetupResponse[]|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\NumberMaskingSetupResponse[]|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getNumberMaskingConfigurations()
     {
@@ -1510,7 +1551,7 @@ final class NumberMaskingApi
     /**
      * Create response for operation 'getNumberMaskingConfigurations'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\NumberMaskingSetupResponse[]|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\NumberMaskingSetupResponse[]|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getNumberMaskingConfigurationsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1564,6 +1605,17 @@ final class NumberMaskingApi
 
             return $apiException;
         }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1587,7 +1639,7 @@ final class NumberMaskingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getNumberMaskingCredentials()
     {
@@ -1744,7 +1796,7 @@ final class NumberMaskingApi
     /**
      * Create response for operation 'getNumberMaskingCredentials'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\NumberMaskingCredentialsResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getNumberMaskingCredentialsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1788,6 +1840,17 @@ final class NumberMaskingApi
             return $apiException;
         }
         if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
