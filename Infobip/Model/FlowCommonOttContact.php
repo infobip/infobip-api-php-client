@@ -19,7 +19,7 @@ namespace Infobip\Model;
 class FlowCommonOttContact
 {
     /**
-     * @param array<string,object> $systemData
+     * @param array<string,mixed> $systemData
      */
     public function __construct(
         protected ?string $applicationId = null,
@@ -53,7 +53,7 @@ class FlowCommonOttContact
     }
 
     /**
-     * @return array<string,object>|null
+     * @return array<string,mixed>|null
      */
     public function getSystemData()
     {
@@ -61,7 +61,7 @@ class FlowCommonOttContact
     }
 
     /**
-     * @param array<string,object>|null $systemData System data collected from the user's profile.
+     * @param array<string,mixed>|null $systemData System data collected from the user's profile.
      */
     public function setSystemData(?array $systemData): self
     {

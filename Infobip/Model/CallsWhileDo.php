@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsWhileDo implements CallsScriptOneOf
 {
     /**
-     * @param object[] $do
+     * @param CallsScriptOneOf[] $do
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -45,7 +45,7 @@ class CallsWhileDo implements CallsScriptOneOf
     }
 
     /**
-     * @return object[]
+     * @return CallsScriptOneOf[]
      */
     public function getDo(): array
     {
@@ -53,7 +53,7 @@ class CallsWhileDo implements CallsScriptOneOf
     }
 
     /**
-     * @param object[] $do Array of actions to execute if none of the conditions above are met.
+     * @param CallsScriptOneOf[] $do Array of actions to execute if none of the conditions above are met.
      */
     public function setDo(array $do): self
     {

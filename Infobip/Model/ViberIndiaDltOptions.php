@@ -26,6 +26,7 @@ class ViberIndiaDltOptions
         #[Assert\NotBlank]
         protected string $principalEntityId,
         protected ?string $contentTemplateId = null,
+        protected ?string $telemarketerId = null,
     ) {
 
     }
@@ -50,6 +51,17 @@ class ViberIndiaDltOptions
     public function setPrincipalEntityId(string $principalEntityId): self
     {
         $this->principalEntityId = $principalEntityId;
+        return $this;
+    }
+
+    public function getTelemarketerId(): string|null
+    {
+        return $this->telemarketerId;
+    }
+
+    public function setTelemarketerId(?string $telemarketerId): self
+    {
+        $this->telemarketerId = $telemarketerId;
         return $this;
     }
 }

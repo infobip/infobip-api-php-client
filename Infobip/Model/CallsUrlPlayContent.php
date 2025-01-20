@@ -27,6 +27,8 @@ class CallsUrlPlayContent extends CallsPlayContent
     public function __construct(
         #[Assert\NotBlank]
         protected string $fileUrl,
+        #[Assert\LessThanOrEqual(86400)]
+        protected ?int $cacheDuration = null,
     ) {
         $modelDiscriminatorValue = self::TYPE;
 
@@ -44,6 +46,17 @@ class CallsUrlPlayContent extends CallsPlayContent
     public function setFileUrl(string $fileUrl): self
     {
         $this->fileUrl = $fileUrl;
+        return $this;
+    }
+
+    public function getCacheDuration(): int|null
+    {
+        return $this->cacheDuration;
+    }
+
+    public function setCacheDuration(?int $cacheDuration): self
+    {
+        $this->cacheDuration = $cacheDuration;
         return $this;
     }
 }

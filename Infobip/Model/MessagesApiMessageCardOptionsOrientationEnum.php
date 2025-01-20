@@ -18,14 +18,14 @@ namespace Infobip\Model;
 
 use InvalidArgumentException;
 
-final class EmailAddDeleteSuppressionType implements EnumInterface
+final class MessagesApiMessageCardOptionsOrientationEnum implements EnumInterface
 {
-    public const BOUNCE = 'BOUNCE';
-    public const COMPLAINT = 'COMPLAINT';
+    public const HORIZONTAL = 'HORIZONTAL';
+    public const VERTICAL = 'VERTICAL';
 
     public const ALLOWED_VALUES = [
-        'BOUNCE',
-        'COMPLAINT',
+        'HORIZONTAL',
+        'VERTICAL',
     ];
 
     private string $value;
@@ -45,14 +45,14 @@ final class EmailAddDeleteSuppressionType implements EnumInterface
         $this->value = $value;
     }
 
-    public static function BOUNCE(): EmailAddDeleteSuppressionType
+    public static function HORIZONTAL(): MessagesApiMessageCardOptionsOrientationEnum
     {
-        return new self('BOUNCE');
+        return new self('HORIZONTAL');
     }
 
-    public static function COMPLAINT(): EmailAddDeleteSuppressionType
+    public static function VERTICAL(): MessagesApiMessageCardOptionsOrientationEnum
     {
-        return new self('COMPLAINT');
+        return new self('VERTICAL');
     }
 
     public function __toString(): string

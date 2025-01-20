@@ -1220,17 +1220,6 @@ final class WhatsAppApi
 
             return $apiException;
         }
-        if ($statusCode === 404) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
         if ($statusCode === 429) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -1563,7 +1552,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function downloadWhatsAppInboundMedia(string $sender, string $mediaId)
     {
@@ -1750,7 +1739,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'downloadWhatsAppInboundMedia'
      * @throws ApiException on non-2xx response
-     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \SplFileObject|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function downloadWhatsAppInboundMediaResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1794,17 +1783,6 @@ final class WhatsAppApi
             return $apiException;
         }
         if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -2439,7 +2417,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return void
+     * @return array
      */
     public function getWhatsAppMediaMetadata(string $sender, string $mediaId)
     {
@@ -2626,7 +2604,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsAppMediaMetadata'
      * @throws ApiException on non-2xx response
-     * @return null
+     * @return array
      */
     private function getWhatsAppMediaMetadataResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2643,8 +2621,13 @@ final class WhatsAppApi
             );
         }
 
-        $responseResult = null;
-
+        $responseResult = [];
+        if (!empty($responseHeaders['Content-Length'])) {
+            $responseResult['Content-Length'] = $responseHeaders['Content-Length'][0];
+        }
+        if (!empty($responseHeaders['Content-Type'])) {
+            $responseResult['Content-Type'] = $responseHeaders['Content-Type'][0];
+        }
         return $responseResult;
     }
 
@@ -2667,17 +2650,6 @@ final class WhatsAppApi
             return $apiException;
         }
         if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -2996,7 +2968,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getWhatsappBrazilPaymentStatus(string $sender, string $paymentId)
     {
@@ -3183,7 +3155,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsappBrazilPaymentStatus'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getWhatsappBrazilPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -3238,17 +3210,6 @@ final class WhatsAppApi
             return $apiException;
         }
         if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -3375,6 +3336,9 @@ final class WhatsAppApi
             fields : [
                     'sender' => [
                         new Assert\NotBlank(),
+                        new Assert\Length(max: 15),
+                        new Assert\Length(min: 1),
+                        new Assert\Regex('/[0-9]+/'),
                     ],
                 ]
         );
@@ -3658,6 +3622,9 @@ final class WhatsAppApi
             fields : [
                     'sender' => [
                         new Assert\NotBlank(),
+                        new Assert\Length(max: 15),
+                        new Assert\Length(min: 1),
+                        new Assert\Regex('/[0-9]+/'),
                     ],
                 ]
         );
@@ -4430,7 +4397,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getWhatsappUpiPaymentStatus(string $sender, string $paymentId)
     {
@@ -4617,7 +4584,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsappUpiPaymentStatus'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getWhatsappUpiPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4682,17 +4649,6 @@ final class WhatsAppApi
 
             return $apiException;
         }
-        if ($statusCode === 404) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
         if ($statusCode === 429) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
@@ -4729,7 +4685,7 @@ final class WhatsAppApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getWhatsappUpiPayuPaymentStatus(string $sender, string $paymentId)
     {
@@ -4918,7 +4874,7 @@ final class WhatsAppApi
     /**
      * Create response for operation 'getWhatsappUpiPayuPaymentStatus'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\WhatsAppPayment|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getWhatsappUpiPayuPaymentStatusResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -4973,17 +4929,6 @@ final class WhatsAppApi
             return $apiException;
         }
         if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -5410,6 +5355,7 @@ final class WhatsAppApi
             fields : [
                     'sender' => [
                         new Assert\NotBlank(),
+                        new Assert\Regex('/\\d+/'),
                     ],
                     'whatsAppOtpRequest' => [
                         new Assert\NotNull(),
@@ -10526,6 +10472,9 @@ final class WhatsAppApi
             fields : [
                     'sender' => [
                         new Assert\NotBlank(),
+                        new Assert\Length(max: 15),
+                        new Assert\Length(min: 1),
+                        new Assert\Regex('/[0-9]+/'),
                     ],
                     'whatsAppBusinessInfoRequest' => [
                         new Assert\NotNull(),
@@ -10818,6 +10767,7 @@ final class WhatsAppApi
             fields : [
                     'sender' => [
                         new Assert\NotBlank(),
+                        new Assert\Regex('/\\d+/'),
                     ],
                     'whatsAppVerifyCodeRequest' => [
                         new Assert\NotNull(),

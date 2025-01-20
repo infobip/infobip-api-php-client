@@ -23,7 +23,7 @@ class MessagesApiTemplateFlowButton extends MessagesApiTemplateButton
     public const TYPE = 'FLOW';
 
     /**
-     * @param array<string,object> $data
+     * @param array<string,mixed> $data
      */
     public function __construct(
         #[Assert\Length(max: 3000)]
@@ -51,7 +51,7 @@ class MessagesApiTemplateFlowButton extends MessagesApiTemplateButton
     }
 
     /**
-     * @return array<string,object>|null
+     * @return array<string,mixed>|null
      */
     public function getData()
     {
@@ -59,7 +59,7 @@ class MessagesApiTemplateFlowButton extends MessagesApiTemplateButton
     }
 
     /**
-     * @param array<string,object>|null $data Message action payload data. JSON object with the data payload for the first screen
+     * @param array<string,mixed>|null $data Message action payload data. JSON object with the data payload for the first screen
      */
     public function setData(?array $data): self
     {

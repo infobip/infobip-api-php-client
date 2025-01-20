@@ -3,6 +3,7 @@
 namespace Infobip\Test\Api\Voice;
 
 use DateTime;
+use DateTimeZone;
 use Infobip\Api\NumberMaskingApi;
 use Infobip\Model\NumberMaskingCredentialsBody;
 use Infobip\Model\NumberMaskingCredentialsResponse;
@@ -19,103 +20,232 @@ class NumberMaskingApiTest extends ApiTestBase
     private const NUMBER_MASKING_UPLOAD_AUDIO = "/voice/masking/1/upload";
     private const NUMBER_MASKING_CREDENTIALS = "/voice/masking/2/credentials";
 
-    public function testGetVoiceMaskingConfig(): void
+    public function testGetNumberMaskingConfigurationWhenUtcDateIsReturned(): void
     {
-        $givenKey = "string";
-        $givenName = "string";
-        $givenCallbackUrl = "string";
-        $givenStatusUrl = "string";
-        $givenBackupCallbackUrl = "string";
-        $givenBackupStatusUrl = "string";
-        $givenDescription = "string";
-        $givenInsertDateTimeString = "2019-11-09T17:00:00.000+01:00";
-        $givenInsertDateTime = new DateTime($givenInsertDateTimeString);
-        $givenUpdateDateTimeString = "2019-11-09T17:00:00.000+01:00";
-        $givenUpdateDateTime = new DateTime($givenUpdateDateTimeString);
-
         $givenResponse = <<<JSON
-        [{
-          "key": "$givenKey",
-          "name": "$givenName",
-          "callbackUrl": "$givenCallbackUrl",
-          "statusUrl": "$givenStatusUrl",
-          "backupCallbackUrl": "$givenBackupCallbackUrl",
-          "backupStatusUrl": "$givenBackupStatusUrl",
-          "description": "$givenDescription",
-          "insertDateTime": "$givenInsertDateTimeString",
-          "updateDateTime": "$givenUpdateDateTimeString"
-        }]
+        {
+          "key": "givenKey",
+          "name": "givenName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "givenDescription",
+          "insertDateTime": "2025-01-07T15:06:33.68",
+          "updateDateTime": "2025-02-07T15:06:33.68"
+        }
         JSON;
 
         $requestHistoryContainer = [];
-
         $responses = $this->makeResponses(2, $givenResponse, 200);
-
         $client = $this->mockClient($responses, $requestHistoryContainer);
 
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_CONFIGURATIONS;
-        $expectedHttpMethod = "GET";
+
+        $closures = [
+            fn () => $api->getNumberMaskingConfiguration(key: "givenKey"),
+            fn () => $api->getNumberMaskingConfigurationAsync(key: "givenKey"),
+        ];
+
+        $expectedResponse = new NumberMaskingSetupResponse(
+            key: "givenKey",
+            name: "givenName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "givenDescription",
+            insertDateTime: new DateTime("2025-01-07T15:06:33.68", timezone: new DateTimeZone("UTC")),
+            updateDateTime: new DateTime("2025-02-07T15:06:33.68", timezone: new DateTimeZone("UTC"))
+        );
+
+        $this->assertGetRequest(
+            $closures,
+            str_replace("{key}", "givenKey", self::NUMBER_MASKING_CONFIGURATION),
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testGetNumberMaskingConfigurationWhenUtcDateIsReturnedRegardlessOfDefaultTimezone(): void
+    {
+        $initialDefaultTimezone = date_default_timezone_get();
+        $testDefaultTimezone = "Europe/Zagreb";
+
+        $givenResponse = <<<JSON
+        {
+          "key": "givenKey",
+          "name": "givenName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "givenDescription",
+          "insertDateTime": "2025-01-07T15:06:33.68",
+          "updateDateTime": "2025-02-07T15:06:33.68"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
+
+        $closures = [
+            fn () => $api->getNumberMaskingConfiguration(key: "givenKey"),
+            fn () => $api->getNumberMaskingConfigurationAsync(key: "givenKey"),
+        ];
+
+        $expectedResponse = new NumberMaskingSetupResponse(
+            key: "givenKey",
+            name: "givenName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "givenDescription",
+            insertDateTime: new DateTime("2025-01-07T15:06:33.68", timezone: new DateTimeZone("UTC")),
+            updateDateTime: new DateTime("2025-02-07T15:06:33.68", timezone: new DateTimeZone("UTC"))
+        );
+
+        try {
+            date_default_timezone_set($testDefaultTimezone);
+
+            $this->assertGetRequest(
+                $closures,
+                str_replace("{key}", "givenKey", self::NUMBER_MASKING_CONFIGURATION),
+                $expectedResponse,
+                $requestHistoryContainer
+            );
+        } finally {
+            date_default_timezone_set($initialDefaultTimezone);
+        }
+    }
+
+    public function testGetNumberMaskingConfigurationWhenStandardDateIsReturned(): void
+    {
+        $givenResponse = <<<JSON
+        {
+          "key": "givenKey",
+          "name": "givenName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "givenDescription",
+          "insertDateTime": "2025-01-07T15:06:33.68+0100",
+          "updateDateTime": "2025-02-07T15:06:33.68+0100"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
+
+        $closures = [
+            fn () => $api->getNumberMaskingConfiguration(key: "givenKey"),
+            fn () => $api->getNumberMaskingConfigurationAsync(key: "givenKey"),
+        ];
+
+        $expectedResponse = new NumberMaskingSetupResponse(
+            key: "givenKey",
+            name: "givenName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "givenDescription",
+            insertDateTime: new DateTime("2025-01-07T15:06:33.68+0100"),
+            updateDateTime: new DateTime("2025-02-07T15:06:33.68+0100")
+        );
+
+        $this->assertGetRequest(
+            $closures,
+            str_replace("{key}", "givenKey", self::NUMBER_MASKING_CONFIGURATION),
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testGetNumberMaskingConfigurations(): void
+    {
+        $givenResponse = <<<JSON
+        [
+          {
+            "key": "givenKey",
+            "name": "givenName",
+            "callbackUrl": "https://example.com/callback",
+            "statusUrl": "https://example.com/status",
+            "backupCallbackUrl": "https://example.com/backup/callback",
+            "backupStatusUrl": "https://example.com/backup/status",
+            "description": "givenDescription",
+            "insertDateTime": "2025-01-07T15:06:33.68+0100",
+            "updateDateTime": "2025-02-07T15:06:33.68+0100"
+          }
+        ]
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
         $closures = [
             fn () => $api->getNumberMaskingConfigurations(),
-            fn () => $api->getNumberMaskingConfigurationsAsync(),
+            fn () => $api->getNumberMaskingConfigurationsAsync()
         ];
 
-        foreach ($closures as $index => $closure) {
-            /** @var NumberMaskingSetupResponse[] $responseModels */
-            $responseModels = $this->getUnpackedModel($closure(), NumberMaskingSetupResponse::class);
+        $expectedResponse = [
+            new NumberMaskingSetupResponse(
+                key: "givenKey",
+                name: "givenName",
+                callbackUrl: "https://example.com/callback",
+                statusUrl: "https://example.com/status",
+                backupCallbackUrl: "https://example.com/backup/callback",
+                backupStatusUrl: "https://example.com/backup/status",
+                description: "givenDescription",
+                insertDateTime: new DateTime("2025-01-07T15:06:33.68+0100"),
+                updateDateTime: new DateTime("2025-02-07T15:06:33.68+0100")
+            )
+        ];
 
-            $this->assertCount(1, $responseModels);
-            $responseModel = $responseModels[0];
-
-            $expectedResponse = new NumberMaskingSetupResponse(
-                key: $givenKey,
-                name: $givenName,
-                callbackUrl: $givenCallbackUrl,
-                statusUrl: $givenStatusUrl,
-                backupCallbackUrl: $givenBackupCallbackUrl,
-                backupStatusUrl: $givenBackupStatusUrl,
-                description: $givenDescription,
-                insertDateTime: $givenInsertDateTime,
-                updateDateTime: $givenUpdateDateTime
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeaders(
-                $expectedHttpMethod,
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-        }
+        $this->assertGetRequest(
+            $closures,
+            self::NUMBER_MASKING_CONFIGURATIONS,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testCreateNumberMaskingConfiguration(): void
     {
-        $givenKey = "3FC0C9CB4AFAEAC67E8FC6BA3B1E044A";
-        $givenName = "UniqueConfigurationName";
-        $givenCallbackUrl = "http://xyz.com/1/callback";
-        $givenStatusUrl = "http://xyz.com/1/status";
-        $givenInsertDateTime = "2019-11-09T17:00:00.000+01:00";
-        $givenUpdateDateTime = "2019-11-09T17:00:00.000+01:00";
-
         $expectedRequest = <<<JSON
         {
-          "name": "$givenName",
-          "callbackUrl": "$givenCallbackUrl",
-          "statusUrl": "$givenStatusUrl"
+          "name": "givenName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "givenDescription"
         }
         JSON;
 
         $givenResponse = <<<JSON
         {
-          "key": "$givenKey",
-          "name": "$givenName",
-          "callbackUrl": "$givenCallbackUrl",
-          "statusUrl": "$givenStatusUrl",
-          "insertDateTime": "$givenInsertDateTime",
-          "updateDateTime": "$givenUpdateDateTime"
+          "key": "givenKey",
+          "name": "givenName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "givenDescription",
+          "insertDateTime": "2025-01-07T15:06:33.68+0100",
+          "updateDateTime": "2025-01-07T15:06:33.68+0100"
         }
         JSON;
 
@@ -124,50 +254,65 @@ class NumberMaskingApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_CONFIGURATIONS;
-        $expectedHttpMethod = "POST";
-        $request = $this->getObjectSerializer()->deserialize($expectedRequest, NumberMaskingSetupBody::class);
+        $request = new NumberMaskingSetupBody(
+            name: "givenName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "givenDescription"
+        );
 
         $closures = [
             fn () => $api->createNumberMaskingConfiguration($request),
             fn () => $api->createNumberMaskingConfigurationAsync($request),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $responseModel = $this->getUnpackedModel($closure(), NumberMaskingSetupResponse::class);
+        $expectedResponse = new NumberMaskingSetupResponse(
+            key: "givenKey",
+            name: "givenName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "givenDescription",
+            insertDateTime: new DateTime("2025-01-07T15:06:33.68+0100"),
+            updateDateTime: new DateTime("2025-01-07T15:06:33.68+0100")
+        );
 
-            $expectedResponse = new NumberMaskingSetupResponse(
-                key: $givenKey,
-                name: $givenName,
-                callbackUrl: $givenCallbackUrl,
-                statusUrl: $givenStatusUrl,
-                insertDateTime: new DateTime($givenInsertDateTime),
-                updateDateTime: new DateTime($givenUpdateDateTime)
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeadersAndJsonBody(
-                $expectedHttpMethod,
-                $expectedPath,
-                $expectedRequest,
-                $requestHistoryContainer[$index]
-            );
-        }
+        $this->assertPostRequest(
+            $closures,
+            self::NUMBER_MASKING_CONFIGURATIONS,
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
-    public function testUploadAudioFile(): void
+    public function testUpdateNumberMaskingConfiguration(): void
     {
-        $givenUrl = "http://www.winhistory.de/more/winstart/mp3/winxp.mp3";
-        $givenFileId = "cb702ae4-f356-4efd-b2dd-7a667b570af5";
-
         $expectedRequest = <<<JSON
         {
-          "url": "$givenUrl"
+          "name": "newName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "newDescription"
         }
         JSON;
 
         $givenResponse = <<<JSON
         {
-          "fileId": "$givenFileId"
+          "key": "givenKey",
+          "name": "newName",
+          "callbackUrl": "https://example.com/callback",
+          "statusUrl": "https://example.com/status",
+          "backupCallbackUrl": "https://example.com/backup/callback",
+          "backupStatusUrl": "https://example.com/backup/status",
+          "description": "newDescription",
+          "insertDateTime": "2025-01-07T15:06:33.68+0100",
+          "updateDateTime": "2025-01-10T15:06:33.68+0100"
         }
         JSON;
 
@@ -176,40 +321,93 @@ class NumberMaskingApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_UPLOAD_AUDIO;
-        $expectedHttpMethod = "POST";
-        $request = $this->getObjectSerializer()->deserialize($expectedRequest, NumberMaskingUploadBody::class);
+        $request = new NumberMaskingSetupBody(
+            name: "newName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "newDescription"
+        );
+
+        $closures = [
+            fn () => $api->updateNumberMaskingConfiguration(key: "givenKey", numberMaskingSetupBody: $request),
+            fn () => $api->updateNumberMaskingConfigurationAsync(key: "givenKey", numberMaskingSetupBody: $request),
+        ];
+
+        $expectedResponse = new NumberMaskingSetupResponse(
+            key: "givenKey",
+            name: "newName",
+            callbackUrl: "https://example.com/callback",
+            statusUrl: "https://example.com/status",
+            backupCallbackUrl: "https://example.com/backup/callback",
+            backupStatusUrl: "https://example.com/backup/status",
+            description: "newDescription",
+            insertDateTime: new DateTime("2025-01-07T15:06:33.68+0100"),
+            updateDateTime: new DateTime("2025-01-10T15:06:33.68+0100")
+        );
+
+        $this->assertPutRequest(
+            $closures,
+            str_replace("{key}", "givenKey", self::NUMBER_MASKING_CONFIGURATION),
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testUploadAudioFileUsingUrl(): void
+    {
+        $expectedRequest = <<<JSON
+        {
+          "url": "https://example.com/audio.mp3"
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "fileId": "givenFileId"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
+
+        $request = new NumberMaskingUploadBody(
+            url: "https://example.com/audio.mp3"
+        );
 
         $closures = [
             fn () => $api->uploadAudioFiles($request),
             fn () => $api->uploadAudioFilesAsync($request),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $responseModel = $this->getUnpackedModel($closure(), NumberMaskingUploadResponse::class);
+        $expectedResponse = new NumberMaskingUploadResponse(
+            fileId: "givenFileId"
+        );
 
-            $expectedResponse = new NumberMaskingUploadResponse(
-                fileId: $givenFileId
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeadersAndJsonBody(
-                $expectedHttpMethod,
-                $expectedPath,
-                $expectedRequest,
-                $requestHistoryContainer[$index]
-            );
-        }
+        $this->assertPostRequest(
+            $closures,
+            self::NUMBER_MASKING_UPLOAD_AUDIO,
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
-    public function testGetNumberMaskingCredentials(): void
+    public function testUploadAudioFileUsingEncodedContent(): void
     {
-        $givenApiId = "55ddccad2df62a4b615b7e3c472b2ab6";
-        $givenKey = "5da086b6a8e4424993646b8699c333ca";
+        $expectedRequest = <<<JSON
+        {
+          "content": "base64encodedContent"
+        }
+        JSON;
 
         $givenResponse = <<<JSON
         {
-          "apiId": "$givenApiId",
-          "key": "$givenKey"
+          "fileId": "givenFileId"
         }
         JSON;
 
@@ -218,47 +416,73 @@ class NumberMaskingApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_CREDENTIALS;
-        $expectedHttpMethod = "GET";
+        $request = new NumberMaskingUploadBody(
+            content: "base64encodedContent"
+        );
+
+        $closures = [
+            fn () => $api->uploadAudioFiles($request),
+            fn () => $api->uploadAudioFilesAsync($request),
+        ];
+
+        $expectedResponse = new NumberMaskingUploadResponse(
+            fileId: "givenFileId"
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::NUMBER_MASKING_UPLOAD_AUDIO,
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testGetNumberMaskingCredentials(): void
+    {
+        $givenResponse = <<<JSON
+        {
+          "apiId": "givenApiId",
+          "key": "givenKey"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
         $closures = [
             fn () => $api->getNumberMaskingCredentials(),
             fn () => $api->getNumberMaskingCredentialsAsync(),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $responseModel = $this->getUnpackedModel($closure(), NumberMaskingCredentialsResponse::class);
+        $expectedResponse = new NumberMaskingCredentialsResponse(
+            apiId: "givenApiId",
+            key: "givenKey"
+        );
 
-            $expectedResponse = new NumberMaskingCredentialsResponse(
-                apiId: $givenApiId,
-                key: $givenKey
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeaders(
-                $expectedHttpMethod,
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-        }
+        $this->assertGetRequest(
+            $closures,
+            self::NUMBER_MASKING_CREDENTIALS,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testCreateNumberMaskingCredentials(): void
     {
-        $givenApiId = "55ddccad2df62a4b615b7e3c472b2ab6";
-        $givenKey = "5da086b6a8e4424993646b8699c333ca";
-
         $expectedRequest = <<<JSON
         {
-          "apiId": "$givenApiId",
-          "key": "$givenKey"
+          "apiId": "givenApiId",
+          "key": "givenKey"
         }
         JSON;
 
         $givenResponse = <<<JSON
         {
-          "apiId": "$givenApiId",
-          "key": "$givenKey"
+          "apiId": "givenApiId",
+          "key": "givenKey"
         }
         JSON;
 
@@ -267,48 +491,43 @@ class NumberMaskingApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_CREDENTIALS;
-        $expectedHttpMethod = "POST";
-        $request = $this->getObjectSerializer()->deserialize($expectedRequest, NumberMaskingCredentialsBody::class);
+        $request = new NumberMaskingCredentialsBody(
+            apiId: "givenApiId",
+            key: "givenKey"
+        );
 
         $closures = [
             fn () => $api->createNumberMaskingCredentials($request),
             fn () => $api->createNumberMaskingCredentialsAsync($request),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $responseModel = $this->getUnpackedModel($closure(), NumberMaskingCredentialsResponse::class);
+        $expectedResponse = new NumberMaskingCredentialsResponse(
+            apiId: "givenApiId",
+            key: "givenKey"
+        );
 
-            $expectedResponse = new NumberMaskingCredentialsResponse(
-                apiId: $givenApiId,
-                key: $givenKey
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeadersAndJsonBody(
-                $expectedHttpMethod,
-                $expectedPath,
-                $expectedRequest,
-                $requestHistoryContainer[$index]
-            );
-        }
+        $this->assertPostRequest(
+            $closures,
+            self::NUMBER_MASKING_CREDENTIALS,
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testUpdateNumberMaskingCredentials(): void
     {
-        $givenApiId = "55ddccad2df62a4b615b7e3c472b2ab6";
-        $givenKey = "5da086b6a8e4424993646b8699c333ca";
-
         $expectedRequest = <<<JSON
         {
-          "apiId": "$givenApiId",
-          "key": "$givenKey"
+          "apiId": "givenApiId",
+          "key": "givenKey"
         }
         JSON;
 
         $givenResponse = <<<JSON
         {
-          "apiId": "$givenApiId",
-          "key": "$givenKey"
+          "apiId": "givenApiId",
+          "key": "givenKey"
         }
         JSON;
 
@@ -317,28 +536,50 @@ class NumberMaskingApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::NUMBER_MASKING_CREDENTIALS;
-        $expectedHttpMethod = "PUT";
-        $request = $this->getObjectSerializer()->deserialize($expectedRequest, NumberMaskingCredentialsBody::class);
+        $request = new NumberMaskingCredentialsBody(
+            apiId: "givenApiId",
+            key: "givenKey"
+        );
 
         $closures = [
             fn () => $api->updateNumberMaskingCredentials($request),
             fn () => $api->updateNumberMaskingCredentialsAsync($request),
         ];
 
-        foreach ($closures as $index => $closure) {
-            $responseModel = $this->getUnpackedModel($closure(), NumberMaskingCredentialsResponse::class);
+        $expectedResponse = new NumberMaskingCredentialsResponse(
+            apiId: "givenApiId",
+            key: "givenKey"
+        );
 
-            $expectedResponse = new NumberMaskingCredentialsResponse(
-                apiId: $givenApiId,
-                key: $givenKey
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
-            $this->assertRequestWithHeadersAndJsonBody(
-                $expectedHttpMethod,
-                $expectedPath,
-                $expectedRequest,
-                $requestHistoryContainer[$index]
+        $this->assertPutRequest(
+            $closures,
+            self::NUMBER_MASKING_CREDENTIALS,
+            $expectedRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testDeleteNumberMaskingCredentials(): void
+    {
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, "{}", 204);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+        $api = new NumberMaskingApi($this->getConfiguration(), client: $client);
+
+        $closures = [
+            fn () => $api->deleteNumberMaskingCredentials(),
+            fn () => $api->deleteNumberMaskingCredentialsAsync(),
+        ];
+
+        foreach ($closures as $index => $closure) {
+            $this->getUnpackedModel($closure(), null, $requestHistoryContainer);
+
+            $this->assertRequestWithHeaders(
+                'DELETE',
+                self::NUMBER_MASKING_CREDENTIALS,
+                $requestHistoryContainer[$index],
+                ["Accept" => 'application/json',]
             );
         }
     }

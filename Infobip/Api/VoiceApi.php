@@ -382,7 +382,7 @@ final class VoiceApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|string
+     * @return void
      */
     public function deleteAVoiceIvrScenario(string $id)
     {
@@ -554,7 +554,7 @@ final class VoiceApi
     /**
      * Create response for operation 'deleteAVoiceIvrScenario'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|string|null
+     * @return null
      */
     private function deleteAVoiceIvrScenarioResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -573,7 +573,6 @@ final class VoiceApi
 
         $responseResult = null;
 
-        $responseResult = $this->deserialize($responseBody, 'string', $responseHeaders);
         return $responseResult;
     }
 
@@ -650,9 +649,290 @@ final class VoiceApi
 
             return $apiException;
         }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation downloadVoiceIvrRecordedFile
+     *
+     * Download Voice IVR Recorded File.
+     *
+     * @param string $id File ID to download. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\SplFileObject
+     */
+    public function downloadVoiceIvrRecordedFile(string $id)
+    {
+        $request = $this->downloadVoiceIvrRecordedFileRequest($id);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->downloadVoiceIvrRecordedFileResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->downloadVoiceIvrRecordedFileApiException($exception);
+        }
+    }
+
+    /**
+     * Operation downloadVoiceIvrRecordedFileAsync
+     *
+     * Download Voice IVR Recorded File.
+     *
+     * @param string $id File ID to download. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function downloadVoiceIvrRecordedFileAsync(string $id): PromiseInterface
+    {
+        $request = $this->downloadVoiceIvrRecordedFileRequest($id);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->downloadVoiceIvrRecordedFileResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->downloadVoiceIvrRecordedFileApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'downloadVoiceIvrRecordedFile'
+     *
+     * @param string $id File ID to download. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function downloadVoiceIvrRecordedFileRequest(string $id): Request
+    {
+        $allData = [
+             'id' => $id,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'id' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/voice/ivr/1/files/{id}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'id' . '}',
+                $this->objectSerializer->toPathValue($id),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/octet-stream',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'downloadVoiceIvrRecordedFile'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\SplFileObject|null
+     */
+    private function downloadVoiceIvrRecordedFileResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        $responseResult = $this->deserialize($responseBody, '\SplFileObject', $responseHeaders);
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'downloadVoiceIvrRecordedFile'
+     */
+    private function downloadVoiceIvrRecordedFileApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 400 && $statusCode <= 499) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode >= 500 && $statusCode <= 599) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         $data = $this->objectSerializer->deserialize(
             $apiException->getResponseBody(),
-            'string',
+            '\SplFileObject',
             $apiException->getResponseHeaders()
         );
 
@@ -3376,14 +3656,14 @@ final class VoiceApi
      * @param null|int $pageSize Size of the page you want to see. Default is 50. (optional)
      * @param null|string $name The name to search by. (optional)
      * @param null|string $label The label of scenario to search by. (optional)
-     * @param null|\DateTime $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
-     * @param null|\DateTime $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
      * @return \Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\CallsSearchResponse[]
      */
-    public function searchVoiceIvrScenarios(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?\DateTime $lastUsageDateSince = null, ?\DateTime $lastUsageDateUntil = null)
+    public function searchVoiceIvrScenarios(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?string $lastUsageDateSince = null, ?string $lastUsageDateUntil = null)
     {
         $request = $this->searchVoiceIvrScenariosRequest($page, $pageSize, $name, $label, $lastUsageDateSince, $lastUsageDateUntil);
 
@@ -3416,12 +3696,12 @@ final class VoiceApi
      * @param null|int $pageSize Size of the page you want to see. Default is 50. (optional)
      * @param null|string $name The name to search by. (optional)
      * @param null|string $label The label of scenario to search by. (optional)
-     * @param null|\DateTime $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
-     * @param null|\DateTime $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
      *
      * @throws InvalidArgumentException
      */
-    public function searchVoiceIvrScenariosAsync(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?\DateTime $lastUsageDateSince = null, ?\DateTime $lastUsageDateUntil = null): PromiseInterface
+    public function searchVoiceIvrScenariosAsync(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?string $lastUsageDateSince = null, ?string $lastUsageDateUntil = null): PromiseInterface
     {
         $request = $this->searchVoiceIvrScenariosRequest($page, $pageSize, $name, $label, $lastUsageDateSince, $lastUsageDateUntil);
 
@@ -3457,12 +3737,12 @@ final class VoiceApi
      * @param null|int $pageSize Size of the page you want to see. Default is 50. (optional)
      * @param null|string $name The name to search by. (optional)
      * @param null|string $label The label of scenario to search by. (optional)
-     * @param null|\DateTime $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
-     * @param null|\DateTime $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateSince Lower limit of last usage date in &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
+     * @param null|string $lastUsageDateUntil Upper limit of last usage date &#x60;yyyy-MM-dd&#x60; format. Note: For scenarios where &#x60;lastUsageDate&#x60; is &#x60;null&#x60;, filtering matches &#x60;createTime&#x60;. (optional)
      *
      * @throws InvalidArgumentException
      */
-    private function searchVoiceIvrScenariosRequest(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?\DateTime $lastUsageDateSince = null, ?\DateTime $lastUsageDateUntil = null): Request
+    private function searchVoiceIvrScenariosRequest(?int $page = null, ?int $pageSize = null, ?string $name = null, ?string $label = null, ?string $lastUsageDateSince = null, ?string $lastUsageDateUntil = null): Request
     {
         $allData = [
              'page' => $page,

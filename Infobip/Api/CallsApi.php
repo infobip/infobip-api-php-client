@@ -8540,6 +8540,274 @@ final class CallsApi
     }
 
     /**
+     * Operation createCallsConfiguration
+     *
+     * Create calls configuration
+     *
+     * @param \Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest callsConfigurationCreateRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function createCallsConfiguration(\Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest)
+    {
+        $request = $this->createCallsConfigurationRequest($callsConfigurationCreateRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->createCallsConfigurationResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->createCallsConfigurationApiException($exception);
+        }
+    }
+
+    /**
+     * Operation createCallsConfigurationAsync
+     *
+     * Create calls configuration
+     *
+     * @param \Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function createCallsConfigurationAsync(\Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest): PromiseInterface
+    {
+        $request = $this->createCallsConfigurationRequest($callsConfigurationCreateRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->createCallsConfigurationResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->createCallsConfigurationApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'createCallsConfiguration'
+     *
+     * @param \Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function createCallsConfigurationRequest(\Infobip\Model\CallsConfigurationCreateRequest $callsConfigurationCreateRequest): Request
+    {
+        $allData = [
+             'callsConfigurationCreateRequest' => $callsConfigurationCreateRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'callsConfigurationCreateRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/calls/1/configurations';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($callsConfigurationCreateRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($callsConfigurationCreateRequest)
+                : $callsConfigurationCreateRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'createCallsConfiguration'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function createCallsConfigurationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 201) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\CallsConfigurationResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'createCallsConfiguration'
+     */
+    private function createCallsConfigurationApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
      * Operation createConference
      *
      * Create conference
@@ -10433,6 +10701,278 @@ final class CallsApi
      * Adapt given ApiException for operation 'deleteCallRecordings'
      */
     private function deleteCallRecordingsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation deleteCallsConfiguration
+     *
+     * Delete calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function deleteCallsConfiguration(string $callsConfigurationId)
+    {
+        $request = $this->deleteCallsConfigurationRequest($callsConfigurationId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->deleteCallsConfigurationResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->deleteCallsConfigurationApiException($exception);
+        }
+    }
+
+    /**
+     * Operation deleteCallsConfigurationAsync
+     *
+     * Delete calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function deleteCallsConfigurationAsync(string $callsConfigurationId): PromiseInterface
+    {
+        $request = $this->deleteCallsConfigurationRequest($callsConfigurationId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->deleteCallsConfigurationResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->deleteCallsConfigurationApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'deleteCallsConfiguration'
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function deleteCallsConfigurationRequest(string $callsConfigurationId): Request
+    {
+        $allData = [
+             'callsConfigurationId' => $callsConfigurationId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'callsConfigurationId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/calls/1/configurations/{callsConfigurationId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($callsConfigurationId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'callsConfigurationId' . '}',
+                $this->objectSerializer->toPathValue($callsConfigurationId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'DELETE',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'deleteCallsConfiguration'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function deleteCallsConfigurationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\CallsConfigurationResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'deleteCallsConfiguration'
+     */
+    private function deleteCallsConfigurationApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
@@ -15925,6 +16465,559 @@ final class CallsApi
      * Adapt given ApiException for operation 'getCalls'
      */
     private function getCallsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getCallsConfiguration
+     *
+     * Get calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getCallsConfiguration(string $callsConfigurationId)
+    {
+        $request = $this->getCallsConfigurationRequest($callsConfigurationId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getCallsConfigurationResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getCallsConfigurationApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getCallsConfigurationAsync
+     *
+     * Get calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getCallsConfigurationAsync(string $callsConfigurationId): PromiseInterface
+    {
+        $request = $this->getCallsConfigurationRequest($callsConfigurationId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getCallsConfigurationResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getCallsConfigurationApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getCallsConfiguration'
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getCallsConfigurationRequest(string $callsConfigurationId): Request
+    {
+        $allData = [
+             'callsConfigurationId' => $callsConfigurationId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'callsConfigurationId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/calls/1/configurations/{callsConfigurationId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($callsConfigurationId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'callsConfigurationId' . '}',
+                $this->objectSerializer->toPathValue($callsConfigurationId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getCallsConfiguration'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getCallsConfigurationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\CallsConfigurationResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getCallsConfiguration'
+     */
+    private function getCallsConfigurationApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getCallsConfigurations
+     *
+     * Get calls configurations
+     *
+     * @param int $page Results page to retrieve (0..N). (optional, default to 0)
+     * @param int $size Number of records per page. (optional, default to 20)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\CallsConfigurationPage|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function getCallsConfigurations(int $page = 0, int $size = 20)
+    {
+        $request = $this->getCallsConfigurationsRequest($page, $size);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getCallsConfigurationsResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getCallsConfigurationsApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getCallsConfigurationsAsync
+     *
+     * Get calls configurations
+     *
+     * @param int $page Results page to retrieve (0..N). (optional, default to 0)
+     * @param int $size Number of records per page. (optional, default to 20)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getCallsConfigurationsAsync(int $page = 0, int $size = 20): PromiseInterface
+    {
+        $request = $this->getCallsConfigurationsRequest($page, $size);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getCallsConfigurationsResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getCallsConfigurationsApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getCallsConfigurations'
+     *
+     * @param int $page Results page to retrieve (0..N). (optional, default to 0)
+     * @param int $size Number of records per page. (optional, default to 20)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getCallsConfigurationsRequest(int $page = 0, int $size = 20): Request
+    {
+        $allData = [
+             'page' => $page,
+             'size' => $size,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'page' => [
+                        new Assert\GreaterThanOrEqual(0),
+                    ],
+                    'size' => [
+                        new Assert\LessThanOrEqual(100),
+                        new Assert\GreaterThanOrEqual(1),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/calls/1/configurations';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // query params
+        if ($page !== null) {
+            $queryParams['page'] = $page;
+        }
+
+        // query params
+        if ($size !== null) {
+            $queryParams['size'] = $size;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getCallsConfigurations'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\CallsConfigurationPage|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function getCallsConfigurationsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\CallsConfigurationPage', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getCallsConfigurations'
+     */
+    private function getCallsConfigurationsApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
@@ -27305,6 +28398,301 @@ final class CallsApi
      * Adapt given ApiException for operation 'stopMediaStream'
      */
     private function stopMediaStreamApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiException',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation updateCallsConfiguration
+     *
+     * Update calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     * @param \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest callsConfigurationUpdateRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     */
+    public function updateCallsConfiguration(string $callsConfigurationId, \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest)
+    {
+        $request = $this->updateCallsConfigurationRequest($callsConfigurationId, $callsConfigurationUpdateRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->updateCallsConfigurationResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->updateCallsConfigurationApiException($exception);
+        }
+    }
+
+    /**
+     * Operation updateCallsConfigurationAsync
+     *
+     * Update calls configuration
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     * @param \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateCallsConfigurationAsync(string $callsConfigurationId, \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest): PromiseInterface
+    {
+        $request = $this->updateCallsConfigurationRequest($callsConfigurationId, $callsConfigurationUpdateRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->updateCallsConfigurationResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->updateCallsConfigurationApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateCallsConfiguration'
+     *
+     * @param string $callsConfigurationId Calls configuration ID. (required)
+     * @param \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function updateCallsConfigurationRequest(string $callsConfigurationId, \Infobip\Model\CallsConfigurationUpdateRequest $callsConfigurationUpdateRequest): Request
+    {
+        $allData = [
+             'callsConfigurationId' => $callsConfigurationId,
+             'callsConfigurationUpdateRequest' => $callsConfigurationUpdateRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'callsConfigurationId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'callsConfigurationUpdateRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/calls/1/configurations/{callsConfigurationId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($callsConfigurationId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'callsConfigurationId' . '}',
+                $this->objectSerializer->toPathValue($callsConfigurationId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($callsConfigurationUpdateRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($callsConfigurationUpdateRequest)
+                : $callsConfigurationUpdateRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PUT',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'updateCallsConfiguration'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\CallsConfigurationResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     */
+    private function updateCallsConfigurationResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\CallsConfigurationResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'updateCallsConfiguration'
+     */
+    private function updateCallsConfigurationApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 

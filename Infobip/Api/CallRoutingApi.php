@@ -900,7 +900,7 @@ final class CallRoutingApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\CallRoutingRouteResponsePage|\Infobip\Model\ApiError|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\CallRoutingRouteResponsePage|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getCallRoutes(int $page = 0, int $size = 20)
     {
@@ -1080,7 +1080,7 @@ final class CallRoutingApi
     /**
      * Create response for operation 'getCallRoutes'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\CallRoutingRouteResponsePage|\Infobip\Model\ApiError|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\CallRoutingRouteResponsePage|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getCallRoutesResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -1115,7 +1115,7 @@ final class CallRoutingApi
         if ($statusCode === 400) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiError',
+                '\Infobip\Model\ApiException',
                 $apiException->getResponseHeaders()
             );
 

@@ -9,18 +9,38 @@ use Infobip\Model\CallsAdvancedBody;
 use Infobip\Model\CallsBulkRequest;
 use Infobip\Model\CallsBulkResponse;
 use Infobip\Model\CallsBulkStatusResponse;
+use Infobip\Model\CallsCapture;
+use Infobip\Model\CallsCollect;
+use Infobip\Model\CallsCollectOptions;
+use Infobip\Model\CallsDestination;
+use Infobip\Model\CallsDtmfOptions;
+use Infobip\Model\CallsForEach;
 use Infobip\Model\CallsGetVoicesResponse;
+use Infobip\Model\CallsHangup;
+use Infobip\Model\CallsIfThenElse;
+use Infobip\Model\CallsIvrMessage;
+use Infobip\Model\CallsLaunchScenarioRequest;
 use Infobip\Model\CallsMultiBody;
 use Infobip\Model\CallsRecordedAudioFilesResponse;
 use Infobip\Model\CallsRecordedIvrFile;
+use Infobip\Model\CallsRepeatWhile;
+use Infobip\Model\CallsRetry;
+use Infobip\Model\CallsSay;
 use Infobip\Model\CallsSearchResponse;
-use Infobip\Model\CallsSetVariable;
 use Infobip\Model\CallsSingleBody;
+use Infobip\Model\CallsSingleMessageStatus;
+use Infobip\Model\CallsSpeechOptions;
+use Infobip\Model\CallsSynthesisVoice;
 use Infobip\Model\CallsUpdateScenarioRequest;
 use Infobip\Model\CallsUpdateScenarioResponse;
 use Infobip\Model\CallsUpdateStatusRequest;
 use Infobip\Model\CallsVoiceResponse;
+use Infobip\Model\CallsVoiceResponseDetails;
+use Infobip\Model\DeliveryDay;
+use Infobip\Model\DeliveryTime;
+use Infobip\Model\DeliveryTimeWindow;
 use Infobip\Test\Api\ApiTestBase;
+use SplFileObject;
 
 class VoiceApiTest extends ApiTestBase
 {
@@ -36,6 +56,7 @@ class VoiceApiTest extends ApiTestBase
     private const string VOICE_SCENARIOS = "/voice/ivr/1/scenarios";
     private const string VOICE_SCENARIO = "/voice/ivr/1/scenarios/{id}";
     private const string LAUNCH_IVR_SCENARIO = "/voice/ivr/1/messages";
+    private const string IVR_FILES_DOWNLOAD = "/voice/ivr/1/files/{id}";
 
 
     public function testSendSingleVoiceTts(): void
@@ -346,22 +367,6 @@ class VoiceApiTest extends ApiTestBase
               "ssmlSupported": true,
               "isDefault": false,
               "isNeural": false
-            },
-            {
-              "name": "Joanna",
-              "gender": "female",
-              "supplier": "Amazon",
-              "ssmlSupported": true,
-              "isDefault": true,
-              "isNeural": false
-            },
-            {
-              "name": "Joey",
-              "gender": "male",
-              "supplier": "Amazon",
-              "ssmlSupported": true,
-              "isDefault": false,
-              "isNeural": false
             }
           ]
         }
@@ -388,15 +393,33 @@ class VoiceApiTest extends ApiTestBase
             fn () => $api->getVoicesAsync($givenLanguage),
         ];
 
-        $this->assertClosureResponses(
-            $closures,
-            CallsGetVoicesResponse::class,
-            $givenResponse,
-            $expectedPath,
-            $expectedHttpMethod,
-            $requestHistoryContainer
+        $expectedResponse = new CallsGetVoicesResponse(
+            voices: [
+                new CallsSynthesisVoice(
+                    name: "Benjamin",
+                    gender: "male",
+                    supplier: "Microsoft",
+                    ssmlSupported: false,
+                    isDefault: false,
+                    isNeural: false
+                ),
+                new CallsSynthesisVoice(
+                    name: "Ivy",
+                    gender: "female",
+                    supplier: "Amazon",
+                    ssmlSupported: true,
+                    isDefault: false,
+                    isNeural: false
+                )
+            ]
         );
 
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testGetSentBulks(): void
@@ -636,22 +659,13 @@ class VoiceApiTest extends ApiTestBase
         $client = $this->mockClient($responses, $requestHistoryContainer);
         $api = new VoiceApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::IVR_FILES;
-        $expectedHttpMethod = "GET";
-
         $closures = [
             fn () => $api->searchVoiceIvrRecordedFiles(),
             fn () => $api->searchVoiceIvrRecordedFilesAsync(),
         ];
 
-        foreach ($closures as $index => $closure) {
-            /** @var CallsRecordedAudioFilesResponse[] $responseModels */
-            $responseModels = $this->getUnpackedModel($closure(), CallsRecordedAudioFilesResponse::class);
-            $responseModel = $responseModels[0];
-
-            $this->assertCount(1, $responseModels);
-
-            $expectedResponse = new CallsRecordedAudioFilesResponse(
+        $expectedResponse = [
+            new CallsRecordedAudioFilesResponse(
                 files: [
                     new CallsRecordedIvrFile(
                         messageId: $givenMessageId1,
@@ -672,95 +686,624 @@ class VoiceApiTest extends ApiTestBase
                         recordedAt: $givenRecordedAt2DateTime
                     )
                 ]
-            );
-            $this->assertEquals($expectedResponse, $responseModel);
+            )
+        ];
 
-            $this->assertRequestWithHeaders(
-                $expectedHttpMethod,
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-        }
+        $this->assertGetRequest(
+            $closures,
+            self::IVR_FILES,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testGetVoiceIvrScenario(): void
     {
-        $givenId = "E83E787CF2613450157ADA3476171E3F";
-        $givenName = "scenario";
-        $givenDescription = "";
-        $givenCreateTime = "2019-11-09T17:00:00.000+01:00";
-        $givenCreateTimeDateTime = new DateTime("2019-11-09T17:00:00.000+01:00");
         $givenResponse = <<<JSON
-        [{
-          "id": "$givenId",
-          "name": "$givenName",
-          "description": "$givenDescription",
-          "createTime": "$givenCreateTime",
-          "updateTime": null
-        }]
+        {
+          "id": "E83E787CF2613450157ADA3476171E3F",
+          "name": "My scenario",
+          "description": "Some description",
+          "createTime": "2024-11-09T17:00:00.000+0100",
+          "updateTime": "2024-11-10T17:00:00.000+0000",
+          "script": [
+            {
+              "say": "Hello, please press 1 if you wish to subscribe to our newsletter."
+            },
+            {
+              "collectInto": "myCollectedVariable",
+              "options": {
+                "maxInputLength": 1,
+                "timeout": 5
+              }
+            }
+          ],
+          "lastUsageDate": "2025-01-02"
+        }
         JSON;
 
         $requestHistoryContainer = [];
         $responses = $this->makeResponses(2, $givenResponse, 200);
         $client = $this->mockClient($responses, $requestHistoryContainer);
+
         $api = new VoiceApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::VOICE_SCENARIOS;
-        $expectedHttpMethod = "GET";
-
+        $expectedPath = str_replace('{id}', 'E83E787CF2613450157ADA3476171E3F', self::VOICE_SCENARIO);
         $closures = [
-            fn () => $api->searchVoiceIvrScenarios(),
-            fn () => $api->searchVoiceIvrScenariosAsync(),
+            fn () => $api->getAVoiceIvrScenario('E83E787CF2613450157ADA3476171E3F'),
+            fn () => $api->getAVoiceIvrScenarioAsync('E83E787CF2613450157ADA3476171E3F'),
         ];
 
-        foreach ($closures as $index => $closure) {
-            /** @var CallsSearchResponse[] $responseModels */
-            $responseModels = $this->getUnpackedModel($closure(), CallsSearchResponse::class);
+        $expectedResponse = new CallsUpdateScenarioResponse(
+            createTime: new DateTime("2024-11-09T17:00:00.000+01:00"),
+            description: "Some description",
+            id: "E83E787CF2613450157ADA3476171E3F",
+            name: "My scenario",
+            script: [
+                new CallsSay(
+                    say: "Hello, please press 1 if you wish to subscribe to our newsletter."
+                ),
+                new CallsCollect(
+                    collectInto: "myCollectedVariable",
+                    options: new CallsCollectOptions(
+                        maxInputLength: 1,
+                        timeout: 5
+                    )
+                )
+            ],
+            updateTime: new DateTime("2024-11-10T17:00:00.000+00:00"),
+            lastUsageDate: "2025-01-02"
+        );
 
-            $this->assertCount(1, $responseModels);
-            $responseModel = $responseModels[0];
-
-            $expectedResponse = new CallsSearchResponse(
-                createTime: $givenCreateTimeDateTime,
-                description: $givenDescription,
-                id: $givenId,
-                name: $givenName,
-                updateTime: null
-            );
-
-            $this->assertEquals($responseModel, $expectedResponse);
-
-            $this->assertRequestWithHeaders(
-                $expectedHttpMethod,
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-        }
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     public function testCreateVoiceIvrScenario(): void
     {
-        $givenId = "E83E787CF2613450157ADA3476171E3F";
-        $givenName = "scenario";
-        $givenDescription = "";
-        $givenCreateTime = "2019-11-09T17:00:00.000+01:00";
-        $givenCreateTimeDateTime = new DateTime("2019-11-09T17:00:00.000+01:00");
-        $givenVariable = "variableName";
-        $givenVariableValue = "hello_world";
+        $givenRequest = <<<JSON
+        {
+          "name": "Capture speech or digit",
+          "description": "Capture speech or digit",
+          "script": [
+            {
+              "say": "Say discount or press 1 to get discount. Say exit or press 0 to exit."
+            },
+            {
+              "capture": "myVar",
+              "timeout": 5,
+              "speechOptions": {
+                "language": "en-US",
+                "maxSilence": 2,
+                "keyPhrases": [
+                  "discount",
+                  "exit"
+                ]
+              },
+              "dtmfOptions": {
+                "maxInputLength": 1
+              }
+            },
+            {
+              "if": "\${myVar == 'discount' || myVar == '1'}",
+              "then": [
+                {
+                  "say": "You will get discount"
+                }
+              ],
+              "else": [
+                {
+                  "if": "\${myVar == 'exit' || myVar == '0'}",
+                  "then": [
+                    {
+                      "say": "Goodbye"
+                    }
+                  ],
+                  "else": [
+                    {
+                      "say": "I did not understand"
+                    }
+                  ]
+                }
+              ]
+            },
+            "hangup"
+          ]
+        }       
+        JSON;
 
         $givenResponse = <<<JSON
         {
-          "id": "$givenId",
-          "name": "$givenName",
-          "description": "$givenDescription",
-          "createTime": "$givenCreateTime",
-          "updateTime": null,
+          "id": "E83E787CF2613450157ADA3476171E3F",
+          "name": "Capture speech or digit",
+          "description": "Capture speech or digit",
           "script": [
             {
-              "setVariable": "$givenVariable",
-              "value": "$givenVariableValue"
+              "say": "Say discount or press 1 to get discount. Say exit or press 0 to exit."
+            },
+            {
+              "capture": "myVar",
+              "timeout": 5,
+              "speechOptions": {
+                "language": "en-US",
+                "maxSilence": 2,
+                "keyPhrases": [
+                  "discount",
+                  "exit"
+                ]
+              },
+              "dtmfOptions": {
+                "maxInputLength": 1
+              }
+            },
+            {
+              "if": "\${myVar == 'discount' || myVar == '1'}",
+              "then": [
+                {
+                  "say": "You will get discount"
+                }
+              ],
+              "else": [
+                {
+                  "if": "\${myVar == 'exit' || myVar == '0'}",
+                  "then": [
+                    {
+                      "say": "Goodbye"
+                    }
+                  ],
+                  "else": [
+                    {
+                      "say": "I did not understand"
+                    }
+                  ]
+                }
+              ]
+            },
+            "hangup"
+          ],
+          "createTime": "2024-11-09T17:00:00.000+01:00"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $request = new CallsUpdateScenarioRequest(
+            name: "Capture speech or digit",
+            script: [
+                new CallsSay(
+                    say: "Say discount or press 1 to get discount. Say exit or press 0 to exit."
+                ),
+                new CallsCapture(
+                    capture: "myVar",
+                    timeout: 5,
+                    speechOptions: new CallsSpeechOptions(
+                        language: "en-US",
+                        keyPhrases: ["discount", "exit"],
+                        maxSilence: 2
+                    ),
+                    dtmfOptions: new CallsDtmfOptions(
+                        maxInputLength: 1
+                    )
+                ),
+                new CallsIfThenElse(
+                    if: '${myVar == \'discount\' || myVar == \'1\'}',
+                    then: [
+                        new CallsSay(
+                            say: "You will get discount"
+                        )
+                    ],
+                    else: [
+                        new CallsIfThenElse(
+                            if: '${myVar == \'exit\' || myVar == \'0\'}',
+                            then: [
+                                new CallsSay(
+                                    say: "Goodbye"
+                                )
+                            ],
+                            else: [
+                                new CallsSay(
+                                    say: "I did not understand"
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                CallsHangup::HANGUP
+            ],
+            description: "Capture speech or digit"
+        );
+
+        $closures = [
+            fn () => $api->createAVoiceIvrScenario($request),
+            fn () => $api->createAVoiceIvrScenarioAsync($request),
+        ];
+
+        $expectedResponse = new CallsUpdateScenarioResponse(
+            createTime: new DateTime("2024-11-09T17:00:00.000+01:00"),
+            description: "Capture speech or digit",
+            id: "E83E787CF2613450157ADA3476171E3F",
+            name: "Capture speech or digit",
+            script: [
+                new CallsSay(
+                    say: "Say discount or press 1 to get discount. Say exit or press 0 to exit."
+                ),
+                new CallsCapture(
+                    capture: "myVar",
+                    timeout: 5,
+                    speechOptions: new CallsSpeechOptions(
+                        language: "en-US",
+                        keyPhrases: ["discount", "exit"],
+                        maxSilence: 2
+                    ),
+                    dtmfOptions: new CallsDtmfOptions(
+                        maxInputLength: 1
+                    )
+                ),
+                new CallsIfThenElse(
+                    if: '${myVar == \'discount\' || myVar == \'1\'}',
+                    then: [
+                        new CallsSay(
+                            say: "You will get discount"
+                        )
+                    ],
+                    else: [
+                        new CallsIfThenElse(
+                            if: '${myVar == \'exit\' || myVar == \'0\'}',
+                            then: [
+                                new CallsSay(
+                                    say: "Goodbye"
+                                )
+                            ],
+                            else: [
+                                new CallsSay(
+                                    say: "I did not understand"
+                                )
+                            ]
+                        )
+                    ]
+                ),
+                CallsHangup::HANGUP
+            ]
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::VOICE_SCENARIOS,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testSearchVoiceIvrScenarios(): void
+    {
+        $givenResponse = <<<JSON
+        [
+            {
+              "id": "E83E787CF2613450157ADA3476171E3F",
+              "name": "My scenario",
+              "description": "Some description",
+              "createTime": "2024-11-09T17:00:00.000+0100",
+              "updateTime": "2024-11-10T17:00:00.000+0000",
+              "script": [
+                {
+                  "say": "Hello, please press 1 if you wish to subscribe to our newsletter."
+                },
+                {
+                  "collectInto": "myCollectedVariable",
+                  "options": {
+                    "maxInputLength": 1,
+                    "timeout": 5
+                  }
+                }
+              ],
+              "lastUsageDate": "2025-01-02"
+            },
+            {
+              "id": "0157ADA3476171E3E83E787CF261345F",
+              "name": "My another scenario",
+              "description": "Another description",
+              "createTime": "2024-10-09T17:00:00.000+0100",
+              "updateTime": "2024-10-10T17:00:00.000+00:00",
+              "script": [
+                {
+                  "repeat": [
+                    {
+                      "say": "For exit you must press one.",
+                      "actionId": 100
+                    },
+                    {
+                      "collectInto": "myVariable"
+                    }
+                  ],
+                  "while": "\${myVariable} != 1"
+                }
+              ],
+              "lastUsageDate": "2025-01-03"
+            }
+        ]
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $expectedPath = self::VOICE_SCENARIOS . '?' . Query::build([
+                'page' => 1,
+                'pageSize' => 2,
+                'label' => 'myLabel',
+                'lastUsageDateSince' => '2025-01-01',
+                'lastUsageDateUntil' => '2025-01-04'
+            ]);
+
+        $closures = [
+            fn () => $api->searchVoiceIvrScenarios(
+                page: 1,
+                pageSize: 2,
+                label: "myLabel",
+                lastUsageDateSince: "2025-01-01",
+                lastUsageDateUntil: "2025-01-04"
+            ),
+            fn () => $api->searchVoiceIvrScenarios(
+                page: 1,
+                pageSize: 2,
+                label: "myLabel",
+                lastUsageDateSince: "2025-01-01",
+                lastUsageDateUntil: "2025-01-04"
+            )
+        ];
+
+        $expectedResponse = [
+            new CallsSearchResponse(
+                createTime: new DateTime("2024-11-09T17:00:00.000+01:00"),
+                description: "Some description",
+                id: "E83E787CF2613450157ADA3476171E3F",
+                name: "My scenario",
+                script: [
+                    new CallsSay(
+                        say: "Hello, please press 1 if you wish to subscribe to our newsletter."
+                    ),
+                    new CallsCollect(
+                        collectInto: "myCollectedVariable",
+                        options: new CallsCollectOptions(
+                            maxInputLength: 1,
+                            timeout: 5
+                        )
+                    )
+                ],
+                updateTime: new DateTime("2024-11-10T17:00:00.000+00:00"),
+                lastUsageDate: "2025-01-02"
+            ),
+            new CallsSearchResponse(
+                createTime: new DateTime("2024-10-09T17:00:00.000+01:00"),
+                description: "Another description",
+                id: "0157ADA3476171E3E83E787CF261345F",
+                name: "My another scenario",
+                script: [
+                    new CallsRepeatWhile(
+                        repeat: [
+                            new CallsSay(
+                                say: "For exit you must press one.",
+                                actionId: 100
+                            ),
+                            new CallsCollect(
+                                collectInto: "myVariable"
+                            )
+                        ],
+                        while: '${myVariable} != 1'
+                    )
+                ],
+                updateTime: new DateTime("2024-10-10T17:00:00.000+00:00"),
+                lastUsageDate: "2025-01-03"
+            )
+        ];
+
+        $this->assertGetRequest(
+            $closures,
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testUpdateVoiceIvrScenario(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "name": "For-Each",
+          "description": "Use For-each to perform any action for each of provided values.",
+          "script": [
+            {
+              "forEach": "city",
+              "in": "New York,Los Angeles,Boston",
+              "do": [
+                {
+                  "say": "Hello from \${city}"
+                }
+              ]
+            }
+          ]
+        }      
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "id": "E83E787CF2613450157ADA3476171E3F",
+          "name": "For-Each",
+          "description": "Use For-each to perform any action for each of provided values.",
+          "script": [
+            {
+              "forEach": "city",
+              "in": "New York,Los Angeles,Boston",
+              "do": [
+                {
+                  "say": "Hello from \${city}"
+                }
+              ]
+            }
+          ],
+          "createTime": "2024-11-09T17:00:00.000+0100",
+          "updateTime": "2024-11-09T17:10:00.000+0100"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $request = new CallsUpdateScenarioRequest(
+            name: "For-Each",
+            script: [
+                new CallsForEach(
+                    forEach: "city",
+                    in: "New York,Los Angeles,Boston",
+                    do: [
+                        new CallsSay(
+                            say: "Hello from \${city}"
+                        )
+                    ]
+                )
+            ],
+            description: "Use For-each to perform any action for each of provided values."
+        );
+
+        $closures = [
+            fn () => $api->updateVoiceIvrScenario('E83E787CF2613450157ADA3476171E3F', $request),
+            fn () => $api->updateVoiceIvrScenario('E83E787CF2613450157ADA3476171E3F', $request),
+        ];
+
+        $expectedResponse = new CallsUpdateScenarioResponse(
+            createTime: new DateTime("2024-11-09T17:00:00.000+0100"),
+            description: "Use For-each to perform any action for each of provided values.",
+            id: "E83E787CF2613450157ADA3476171E3F",
+            name: "For-Each",
+            script: [
+                new CallsForEach(
+                    forEach: "city",
+                    in: "New York,Los Angeles,Boston",
+                    do: [
+                        new CallsSay(
+                            say: "Hello from \${city}"
+                        )
+                    ]
+                )
+            ],
+            updateTime: new DateTime("2024-11-09T17:10:00.000+0100")
+        );
+
+        $this->assertPutRequest(
+            $closures,
+            str_replace('{id}', 'E83E787CF2613450157ADA3476171E3F', self::VOICE_SCENARIO),
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function deleteVoiceIvrScenario(): void
+    {
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, "{}", 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $closures = [
+            fn () => $api->deleteAVoiceIvrScenario('E83E787CF2613450157ADA3476171E3F'),
+            fn () => $api->deleteAVoiceIvrScenarioAsync('E83E787CF2613450157ADA3476171E3F'),
+        ];
+
+        $this->assertNoContentDeleteRequest(
+            $closures,
+            str_replace('{id}', 'E83E787CF2613450157ADA3476171E3F', self::VOICE_SCENARIO),
+            $requestHistoryContainer
+        );
+    }
+
+    public function testLaunchIvrScenario()
+    {
+        $givenRequest = <<<JSON
+        {
+          "bulkId": "BULK-ID-123-xyz",
+          "messages": [
+            {
+              "scenarioId": "6298AA7707903A4ED680B436929681AD",
+              "from": "41793026700",
+              "destinations": [
+                {
+                  "to": "41793026727"
+                },
+                {
+                  "to": "41793026731"
+                }
+              ],
+              "notifyUrl": "https://www.example.com/voice/advanced",
+              "notifyContentType": "application/json",
+              "callbackData": "DLR callback data",
+              "validityPeriod": 720,
+              "sendAt": "2023-10-03T12:21:00.632+00:00",
+              "retry": {
+                "minPeriod": 1,
+                "maxPeriod": 5,
+                "maxCount": 5
+              },
+              "record": false,
+              "deliveryTimeWindow": {
+                "from": {
+                  "hour": 6,
+                  "minute": 0
+                },
+                "to": {
+                  "hour": 15,
+                  "minute": 30
+                },
+                "days": [
+                  "MONDAY",
+                  "THURSDAY"
+                ]
+              }
+            }
+          ]
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "bulkId": "5028e2d42f19-42f1-4656-351e-a42c191e5fd2",
+          "messages": [
+            {
+              "to": "41793026727",
+              "status": {
+                "groupId": 1,
+                "groupName": "PENDING",
+                "id": 26,
+                "name": "PENDING_ACCEPTED",
+                "description": "Message accepted, pending for delivery."
+              },
+              "messageId": "4242f196ba50-a356-2f91-831c4aa55f351ed2"
+            },
+            {
+              "to": "41793026731",
+              "status": {
+                "groupId": 1,
+                "groupName": "PENDING",
+                "id": 26,
+                "name": "PENDING_ACCEPTED",
+                "description": "Message accepted, pending for delivery."
+              },
+              "messageId": "5f35f896ba50-a356-43a4-91cd81b85f8c689"
             }
           ]
         }
@@ -769,53 +1312,115 @@ class VoiceApiTest extends ApiTestBase
         $requestHistoryContainer = [];
         $responses = $this->makeResponses(2, $givenResponse, 200);
         $client = $this->mockClient($responses, $requestHistoryContainer);
+
         $api = new VoiceApi($this->getConfiguration(), client: $client);
 
-        $expectedPath = self::VOICE_SCENARIOS;
-        $expectedHttpMethod = "POST";
-
-        $request = new CallsUpdateScenarioRequest(
-            name: $givenName,
-            script: [
-                new CallsSetVariable(
-                    setVariable: $givenVariable,
-                    value: $givenVariableValue
+        $request = new CallsLaunchScenarioRequest(
+            messages: [
+                new CallsIvrMessage(
+                    scenarioId: "6298AA7707903A4ED680B436929681AD",
+                    destinations: [
+                        new CallsDestination(to: "41793026727"),
+                        new CallsDestination(to: "41793026731")
+                    ],
+                    from: "41793026700",
+                    notifyUrl: "https://www.example.com/voice/advanced",
+                    notifyContentType: "application/json",
+                    callbackData: "DLR callback data",
+                    validityPeriod: 720,
+                    sendAt: new DateTime("2023-10-03T12:21:00.632+00:00"),
+                    retry: new CallsRetry(
+                        maxCount: 5,
+                        maxPeriod: 5,
+                        minPeriod: 1
+                    ),
+                    record: false,
+                    deliveryTimeWindow: new DeliveryTimeWindow(
+                        days: [
+                            DeliveryDay::MONDAY(),
+                            DeliveryDay::THURSDAY()
+                        ],
+                        from: new DeliveryTime(hour: 6, minute: 0),
+                        to: new DeliveryTime(hour: 15, minute: 30)
+                    )
                 )
             ],
-            description: $givenDescription
+            bulkId: "BULK-ID-123-xyz"
         );
 
         $closures = [
-            fn () => $api->createAVoiceIvrScenario($request),
-            fn () => $api->createAVoiceIvrScenarioAsync($request),
+            fn () => $api->sendVoiceMessagesWithAnIvrScenario($request),
+            fn () => $api->sendVoiceMessagesWithAnIvrScenarioAsync($request),
         ];
 
+        $expectedResponse = new CallsVoiceResponse(
+            bulkId: "5028e2d42f19-42f1-4656-351e-a42c191e5fd2",
+            messages: [
+                new CallsVoiceResponseDetails(
+                    to: "41793026727",
+                    status: new CallsSingleMessageStatus(
+                        groupId: 1,
+                        groupName: "PENDING",
+                        id: 26,
+                        name: "PENDING_ACCEPTED",
+                        description: "Message accepted, pending for delivery."
+                    ),
+                    messageId: "4242f196ba50-a356-2f91-831c4aa55f351ed2"
+                ),
+                new CallsVoiceResponseDetails(
+                    to: "41793026731",
+                    status: new CallsSingleMessageStatus(
+                        groupId: 1,
+                        groupName: "PENDING",
+                        id: 26,
+                        name: "PENDING_ACCEPTED",
+                        description: "Message accepted, pending for delivery."
+                    ),
+                    messageId: "5f35f896ba50-a356-43a4-91cd81b85f8c689"
+                )
+            ]
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::LAUNCH_IVR_SCENARIO,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testDownloadVoiceIvrRecordedFile()
+    {
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, "file content", 200, [
+            'Content-Type' => 'audio/vnd.wave'
+        ]);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $closures = [
+            fn () => $api->downloadVoiceIvrRecordedFile("file-id-123"),
+            fn () => $api->downloadVoiceIvrRecordedFileAsync("file-id-123"),
+        ];
+
+        $expectedPath = str_replace('{id}', 'file-id-123', self::IVR_FILES_DOWNLOAD);
+
         foreach ($closures as $index => $closure) {
-            /** @var CallsUpdateScenarioResponse $responseModel */
-            $responseModel = $this->getUnpackedModel($closure(), CallsUpdateScenarioResponse::class);
-
-            $expectedResponse = new CallsUpdateScenarioResponse(
-                createTime: $givenCreateTimeDateTime,
-                description: $givenDescription,
-                id: $givenId,
-                name: $givenName,
-                script: [
-                    new CallsSetVariable(
-                        setVariable: $givenVariable,
-                        value: $givenVariableValue
-                    )
-                ],
-                updateTime: null
-            );
-
-            $this->assertEquals($expectedResponse, $responseModel);
+            $response = $this->getUnpackedModel($closure());
 
             $this->assertRequestWithHeaders(
-                $expectedHttpMethod,
+                'GET',
                 $expectedPath,
                 $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
+                [
+                    'Accept' => 'application/octet-stream'
+                ]
             );
+
+            $this->assertInstanceOf(SplFileObject::class, $response);
+            $this->assertEquals('file content', $response->fread($response->getSize()));
         }
     }
 }

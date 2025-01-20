@@ -6,13 +6,27 @@ namespace Infobip\Test\Api;
 
 use DateTime;
 use Infobip\ObjectSerializer;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
-class DateSerializationTest extends ApiTestBase
+class DateSerializationTest extends TestCase
 {
     private const int EXPECTED_TIMESTAMP = 2071051722;
-    private const string EXPECTED_DATE = '2035/08/18';
-    private const string EXPECTED_DATE_FORMAT = 'Y/m/d';
+    private const string EXPECTED_DATE = '2035-08-18T12:08:42.777Z';
+    private const string TEST_TIMEZONE = 'UTC';
+
+    private static string $initialDefaultTimezone;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$initialDefaultTimezone = date_default_timezone_get();
+        date_default_timezone_set(self::TEST_TIMEZONE);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        date_default_timezone_set(self::$initialDefaultTimezone);
+    }
 
     /**
      * @dataProvider dateFormatsSource
@@ -22,40 +36,39 @@ class DateSerializationTest extends ApiTestBase
     {
         // given
         $objectSerializer = new ObjectSerializer();
-        $dateTimeJson = $this->getDateStringJson($givenDateString);
-        $deserializedDateTimeJson = json_decode($dateTimeJson);
 
         // when
-        $dateTime = $objectSerializer->denormalize($deserializedDateTimeJson->date, '\DateTime');
+        $dateTime = $objectSerializer->denormalize($givenDateString, '\DateTime');
 
         // then
-        self::assertEquals(self::EXPECTED_DATE, date_format($dateTime, self::EXPECTED_DATE_FORMAT));
+        self::assertEquals(new DateTime(self::EXPECTED_DATE), $dateTime);
         self::assertEquals(self::EXPECTED_TIMESTAMP, $dateTime->getTimestamp());
     }
 
     public static function dateFormatsSource(): array
     {
         return [
+            ['2035-08-18T12:08:42.777Z'],
             ['2035-08-18T12:08:42.777+00:00'],
+            ['2035-08-18T12:08:42.777+0000'],
             ['2035-08-18T13:08:42.777+01:00'],
+            ['2035-08-18T13:08:42.777+0100'],
             ['2035-08-18T11:08:42.777-01:00'],
+            ['2035-08-18T11:08:42.777-0100'],
             ['2035-08-18T17:08:42.777+05:00'],
+            ['2035-08-18T17:08:42.777+0500'],
             ['2035-08-18T07:08:42.777-05:00'],
+            ['2035-08-18T07:08:42.777-0500'],
             ['2035-08-18T13:38:42.777+01:30'],
+            ['2035-08-18T13:38:42.777+0130'],
             ['2035-08-18T10:38:42.777-01:30'],
+            ['2035-08-18T10:38:42.777-0130'],
             ['2035-08-18T17:38:42.777+05:30'],
+            ['2035-08-18T17:38:42.777+0530'],
             ['2035-08-18T06:38:42.777-05:30'],
-            ['2035-08-18T06:38:42.777-0530']
+            ['2035-08-18T06:38:42.777-0530'],
+            ['2035-08-18T12:08:42.777'],
         ];
-    }
-
-    private function getDateStringJson(string $dateString): string
-    {
-        return <<<JSON
-        {
-            "date":"$dateString"
-        }
-        JSON;
     }
 
     /**
@@ -74,10 +87,8 @@ class DateSerializationTest extends ApiTestBase
             'date' => $givenDate,
         ]);
 
-        $unserializedDateTime = \json_decode($serializedDateTime);
-
         // then
-        self::assertEquals($expectedDateString, $unserializedDateTime->date);
+        self::assertEquals("{\"date\":\"$expectedDateString\"}", $serializedDateTime);
     }
 
     public static function jsonDateSerializationSource(): array
@@ -88,27 +99,13 @@ class DateSerializationTest extends ApiTestBase
             ],
             [
                 new DateTime("2020-04-26T17:24:10.000+01:00"), "2020-04-26T17:24:10.000+01:00"
+            ],
+            [
+                new DateTime("2020-04-26T17:24:10.000+0100"), "2020-04-26T17:24:10.000+01:00"
+            ],
+            [
+                new DateTime("2020-04-26T17:24:10.000"), "2020-04-26T17:24:10.000+00:00"
             ]
         ];
-    }
-
-    public function testSupportedDateTimeFormats(): void
-    {
-        // given
-        $objectSerializer = new ObjectSerializer();
-        $givenDate1 = new DateTime("2020-04-26T17:24:10.000+0530");
-        $givenDate2 = new DateTime("2020-04-26T17:24:10.000+05:30");
-
-        // when
-        $serializedDateTime1 = $objectSerializer->serialize(['date' => $givenDate1]);
-        $serializedDateTime2 = $objectSerializer->serialize(['date' => $givenDate2]);
-
-        $unserializedDateTime1 = \json_decode($serializedDateTime1)->date;
-        $unserializedDateTime2 = \json_decode($serializedDateTime2)->date;
-
-        // then
-        self::assertEquals($unserializedDateTime1, $unserializedDateTime2);
-        self::assertEquals($givenDate1, $givenDate2);
-        self::assertEquals($givenDate1->getTimestamp(), $givenDate2->getTimestamp());
     }
 }

@@ -31,9 +31,9 @@ class NumberMaskingSetupResponse
         protected ?string $backupCallbackUrl = null,
         protected ?string $backupStatusUrl = null,
         protected ?string $description = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        #[Serializer\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
         protected ?\DateTime $insertDateTime = null,
-        #[Serializer\Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d\TH:i:s.vP'])]
+        #[Serializer\Context([DateTimeNormalizer::TIMEZONE_KEY => 'UTC'])]
         protected ?\DateTime $updateDateTime = null,
     ) {
 

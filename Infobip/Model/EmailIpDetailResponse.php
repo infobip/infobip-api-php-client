@@ -18,39 +18,60 @@ namespace Infobip\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-class EmailDomainIpRequest
+class EmailIpDetailResponse
 {
     /**
+     * @param \Infobip\Model\EmailIpPoolResponse[] $pools
      */
     public function __construct(
         #[Assert\NotBlank]
-        protected string $domainName,
+        protected string $id,
         #[Assert\NotBlank]
-        protected string $ipAddress,
+        protected string $ip,
+        #[Assert\NotBlank]
+        #[Assert\Count(min: 0)]
+        protected array $pools,
     ) {
 
     }
 
 
-    public function getDomainName(): string
+    public function getId(): string
     {
-        return $this->domainName;
+        return $this->id;
     }
 
-    public function setDomainName(string $domainName): self
+    public function setId(string $id): self
     {
-        $this->domainName = $domainName;
+        $this->id = $id;
         return $this;
     }
 
-    public function getIpAddress(): string
+    public function getIp(): string
     {
-        return $this->ipAddress;
+        return $this->ip;
     }
 
-    public function setIpAddress(string $ipAddress): self
+    public function setIp(string $ip): self
     {
-        $this->ipAddress = $ipAddress;
+        $this->ip = $ip;
+        return $this;
+    }
+
+    /**
+     * @return \Infobip\Model\EmailIpPoolResponse[]
+     */
+    public function getPools(): array
+    {
+        return $this->pools;
+    }
+
+    /**
+     * @param \Infobip\Model\EmailIpPoolResponse[] $pools pools
+     */
+    public function setPools(array $pools): self
+    {
+        $this->pools = $pools;
         return $this;
     }
 }

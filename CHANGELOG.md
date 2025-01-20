@@ -4,6 +4,44 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+## [ [6.2.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.2.0) ] - 2025-01-20
+
+⚠️ **IMPORTANT NOTE:** This release contains breaking changes!
+
+### Added
+* Support for [Calls Configuration](https://www.infobip.com/docs/api/channels/voice/calls/calls-configurations).
+* Additional validation for WhatsApp `sender` parameters.
+* Support for Email IP Management instead of set of deprecated Email IP endpoints.
+  Check [Email API documentation](https://www.infobip.com/docs/api/channels/email) for additional details (**BREAKING**).
+* Footer support for Messages API Message. For additional details check [Messages API documentation](https://www.infobip.com/docs/api/platform/messages-api/sending-message/send-messages-api-message).
+* Add calendar event button support for Messages API Message. For additional details check [Messages API documentation](https://www.infobip.com/docs/api/platform/messages-api/sending-message/send-messages-api-message).
+* Card options for Carousel and Rich Link body types in Messages API Message. For additional details check [Messages API documentation](https://www.infobip.com/docs/api/platform/messages-api/sending-message/send-messages-api-message).
+* Support for OTP templates for Viber messages. For additional details check [Viber API documentation](https://www.infobip.com/docs/api/channels/viber/viber-business-messages/send-viber-messages).
+* Support for `telemarketerId` in India DLT options when sending failover SMS messages through Viber API.
+* Support for cache duration when playing audio files by providing the URL to the audio file in Calls API.
+* New Call state: `DISCONNECTED`.
+* Support for downloading Voice IVR recorded files. Check the [Voice API documentation](https://www.infobip.com/docs/api/channels/voice/interactive-voice-response/search-voice-ivr-recorded-file) for additional details.
+
+### Changed
+* Email Suppression type enum models are now consolidated. Use `EmailSuppressionType` and `EmailAddSuppressionType` instead of `EmailAddDeleteSuppressionType` and `Infobip/Model/EmailGetSuppressionType` (**BREAKING**).
+* Don't allow empty text when sending failover SMS messages through Viber API.
+* Explicitly allow enum denormalization only for string types.
+* Extend `OneOfInterfaceNormalizer` with enum support.
+* Adjusted Call Voice models, so both `CallsVoice` and `CallsSynthesisVoice` are used in the correct context (**BREAKING**).
+* Adjusted Call Language models, so both `CallsLanguage` and `CallTranscriptionLanguages` are used in the correct context (**BREAKING**).
+
+### Fixed
+* [Issue #67](https://github.com/infobip/infobip-api-php-client/issues/67): Fetching WhatsApp media metadata methods now return an array that contains header values provided by the API.
+  Check the [API Documentation](https://github.com/infobip/infobip-api-php-client/issues/67) and the [ReceiveWhatsAppApiTest](https://github.com/infobip/infobip-api-php-client/blob/master/Test/Api/WhatsApp/ReceiveWhatsAppApiTest.php#L81) for additional details.
+* `EmailSuppressionInfo` model to correctly specify `DateTime` type for `createdDate` field.
+* Invalid type hints for map-like properties.
+* Number Masking:
+  * DELETE requests and error processing
+  * Content schema when uploading audio files
+  * UTC date-time deserialization in setup response model.
+* Interactive Voice Response:
+  * `lastUsageDate` filed processing (`yyyy-MM-dd` format)
+  * Adjusted models in script processing
 
 ## [ [6.1.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.1.0) ] - 2024-12-16
 

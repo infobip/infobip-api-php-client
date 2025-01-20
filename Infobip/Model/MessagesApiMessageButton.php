@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[DiscriminatorMap(typeProperty: "type", mapping: [
+    "ADD_CALENDAR_EVENT" => "\Infobip\Model\MessagesApiMessageAddCalendarEventButton",
     "OPEN_URL" => "\Infobip\Model\MessagesApiMessageOpenUrlButton",
     "REPLY" => "\Infobip\Model\MessagesApiMessageReplyButton",
     "REQUEST_LOCATION" => "\Infobip\Model\MessagesApiMessageRequestLocationButton",

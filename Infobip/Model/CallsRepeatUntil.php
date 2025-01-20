@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsRepeatUntil implements CallsScriptOneOf
 {
     /**
-     * @param object[] $repeat
+     * @param CallsScriptOneOf[] $repeat
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -34,7 +34,7 @@ class CallsRepeatUntil implements CallsScriptOneOf
 
 
     /**
-     * @return object[]
+     * @return CallsScriptOneOf[]
      */
     public function getRepeat(): array
     {
@@ -42,7 +42,7 @@ class CallsRepeatUntil implements CallsScriptOneOf
     }
 
     /**
-     * @param object[] $repeat Array of actions to execute.
+     * @param CallsScriptOneOf[] $repeat Array of actions to execute.
      */
     public function setRepeat(array $repeat): self
     {

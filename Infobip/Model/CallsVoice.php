@@ -21,27 +21,12 @@ class CallsVoice
     /**
      */
     public function __construct(
-        protected ?string $name = null,
         protected ?string $gender = null,
-        protected ?string $supplier = null,
-        protected ?bool $ssmlSupported = null,
-        protected ?bool $isDefault = null,
-        protected ?bool $isNeural = null,
+        protected ?string $name = null,
     ) {
 
     }
 
-
-    public function getName(): string|null
-    {
-        return $this->name;
-    }
-
-    public function setName(?string $name): self
-    {
-        $this->name = $name;
-        return $this;
-    }
 
     public function getGender(): string|null
     {
@@ -54,47 +39,14 @@ class CallsVoice
         return $this;
     }
 
-    public function getSupplier(): string|null
+    public function getName(): string|null
     {
-        return $this->supplier;
+        return $this->name;
     }
 
-    public function setSupplier(?string $supplier): self
+    public function setName(?string $name): self
     {
-        $this->supplier = $supplier;
-        return $this;
-    }
-
-    public function getSsmlSupported(): bool|null
-    {
-        return $this->ssmlSupported;
-    }
-
-    public function setSsmlSupported(?bool $ssmlSupported): self
-    {
-        $this->ssmlSupported = $ssmlSupported;
-        return $this;
-    }
-
-    public function getIsDefault(): bool|null
-    {
-        return $this->isDefault;
-    }
-
-    public function setIsDefault(?bool $isDefault): self
-    {
-        $this->isDefault = $isDefault;
-        return $this;
-    }
-
-    public function getIsNeural(): bool|null
-    {
-        return $this->isNeural;
-    }
-
-    public function setIsNeural(?bool $isNeural): self
-    {
-        $this->isNeural = $isNeural;
+        $this->name = $name;
         return $this;
     }
 }

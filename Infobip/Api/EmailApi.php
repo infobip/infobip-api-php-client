@@ -624,25 +624,26 @@ final class EmailApi
     }
 
     /**
-     * Operation assignIpToDomain
+     * Operation assignIpToPool
      *
-     * Assign dedicated ip address to the provided domain for the account id
+     * Assign IP to pool
      *
-     * @param \Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest emailDomainIpRequest (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest emailIpPoolAssignIpRequest (required)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\EmailSimpleApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return void
      */
-    public function assignIpToDomain(\Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest)
+    public function assignIpToPool(string $poolId, \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest)
     {
-        $request = $this->assignIpToDomainRequest($emailDomainIpRequest);
+        $request = $this->assignIpToPoolRequest($poolId, $emailIpPoolAssignIpRequest);
 
         try {
             try {
                 $response = $this->client->send($request);
                 $this->deprecationChecker->check($request, $response);
-                return $this->assignIpToDomainResponse($response, $request->getUri());
+                return $this->assignIpToPoolResponse($response, $request->getUri());
             } catch (GuzzleException $exception) {
                 $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
 
@@ -654,22 +655,23 @@ final class EmailApi
                 );
             }
         } catch (ApiException $exception) {
-            throw $this->assignIpToDomainApiException($exception);
+            throw $this->assignIpToPoolApiException($exception);
         }
     }
 
     /**
-     * Operation assignIpToDomainAsync
+     * Operation assignIpToPoolAsync
      *
-     * Assign dedicated ip address to the provided domain for the account id
+     * Assign IP to pool
      *
-     * @param \Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest (required)
      *
      * @throws InvalidArgumentException
      */
-    public function assignIpToDomainAsync(\Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest): PromiseInterface
+    public function assignIpToPoolAsync(string $poolId, \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest): PromiseInterface
     {
-        $request = $this->assignIpToDomainRequest($emailDomainIpRequest);
+        $request = $this->assignIpToPoolRequest($poolId, $emailIpPoolAssignIpRequest);
 
         return $this
             ->client
@@ -677,7 +679,7 @@ final class EmailApi
             ->then(
                 function ($response) use ($request) {
                     $this->deprecationChecker->check($request, $response);
-                    return $this->assignIpToDomainResponse($response, $request->getUri());
+                    return $this->assignIpToPoolResponse($response, $request->getUri());
                 },
                 function (GuzzleException $exception) {
                     $statusCode = $exception->getCode();
@@ -691,38 +693,52 @@ final class EmailApi
                         ($response !== null) ? (string)$response->getBody() : null
                     );
 
-                    throw $this->assignIpToDomainApiException($exception);
+                    throw $this->assignIpToPoolApiException($exception);
                 }
             );
     }
 
     /**
-     * Create request for operation 'assignIpToDomain'
+     * Create request for operation 'assignIpToPool'
      *
-     * @param \Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest (required)
      *
      * @throws InvalidArgumentException
      */
-    private function assignIpToDomainRequest(\Infobip\Model\EmailDomainIpRequest $emailDomainIpRequest): Request
+    private function assignIpToPoolRequest(string $poolId, \Infobip\Model\EmailIpPoolAssignIpRequest $emailIpPoolAssignIpRequest): Request
     {
         $allData = [
-             'emailDomainIpRequest' => $emailDomainIpRequest,
+             'poolId' => $poolId,
+             'emailIpPoolAssignIpRequest' => $emailIpPoolAssignIpRequest,
         ];
 
         $validationConstraints = new Assert\Collection(
             fields : [
-                    'emailDomainIpRequest' => [
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'emailIpPoolAssignIpRequest' => [
                         new Assert\NotNull(),
                     ],
                 ]
         );
 
         $this->validateParams($allData, $validationConstraints);
-        $resourcePath = '/email/1/domain-ips';
+        $resourcePath = '/email/1/ip-management/pools/{poolId}/ips';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
 
         $headers = [
             'Accept' => 'application/json',
@@ -730,10 +746,10 @@ final class EmailApi
         ];
 
         // for model (json/xml)
-        if (isset($emailDomainIpRequest)) {
+        if (isset($emailIpPoolAssignIpRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
-                ? $this->objectSerializer->serialize($emailDomainIpRequest)
-                : $emailDomainIpRequest;
+                ? $this->objectSerializer->serialize($emailIpPoolAssignIpRequest)
+                : $emailIpPoolAssignIpRequest;
         } elseif (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
@@ -798,11 +814,11 @@ final class EmailApi
     }
 
     /**
-     * Create response for operation 'assignIpToDomain'
+     * Create response for operation 'assignIpToPool'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\EmailSimpleApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return null
      */
-    private function assignIpToDomainResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    private function assignIpToPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -819,23 +835,20 @@ final class EmailApi
 
         $responseResult = null;
 
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailSimpleApiResponse', $responseHeaders);
-        }
         return $responseResult;
     }
 
     /**
-     * Adapt given ApiException for operation 'assignIpToDomain'
+     * Adapt given ApiException for operation 'assignIpToPool'
      */
-    private function assignIpToDomainApiException(ApiException $apiException): ApiException
+    private function assignIpToPoolApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
         if ($statusCode === 400) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -846,7 +859,7 @@ final class EmailApi
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -857,7 +870,18 @@ final class EmailApi
         if ($statusCode === 403) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -868,7 +892,7 @@ final class EmailApi
         if ($statusCode === 429) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -879,7 +903,568 @@ final class EmailApi
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation assignPoolToDomain
+     *
+     * Assign IP pool to domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest emailDomainIpPoolAssignRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function assignPoolToDomain(int $domainId, \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest)
+    {
+        $request = $this->assignPoolToDomainRequest($domainId, $emailDomainIpPoolAssignRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->assignPoolToDomainResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->assignPoolToDomainApiException($exception);
+        }
+    }
+
+    /**
+     * Operation assignPoolToDomainAsync
+     *
+     * Assign IP pool to domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function assignPoolToDomainAsync(int $domainId, \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest): PromiseInterface
+    {
+        $request = $this->assignPoolToDomainRequest($domainId, $emailDomainIpPoolAssignRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->assignPoolToDomainResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->assignPoolToDomainApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'assignPoolToDomain'
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function assignPoolToDomainRequest(int $domainId, \Infobip\Model\EmailDomainIpPoolAssignRequest $emailDomainIpPoolAssignRequest): Request
+    {
+        $allData = [
+             'domainId' => $domainId,
+             'emailDomainIpPoolAssignRequest' => $emailDomainIpPoolAssignRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'domainId' => [
+                        new Assert\NotBlank(),
+                        new Assert\GreaterThanOrEqual(1),
+                    ],
+                    'emailDomainIpPoolAssignRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/domains/{domainId}/pools';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($domainId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'domainId' . '}',
+                $this->objectSerializer->toPathValue($domainId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($emailDomainIpPoolAssignRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($emailDomainIpPoolAssignRequest)
+                : $emailDomainIpPoolAssignRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'assignPoolToDomain'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function assignPoolToDomainResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'assignPoolToDomain'
+     */
+    private function assignPoolToDomainApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation createIpPool
+     *
+     * Create IP pool
+     *
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest emailIpPoolCreateRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpPoolResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function createIpPool(\Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest)
+    {
+        $request = $this->createIpPoolRequest($emailIpPoolCreateRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->createIpPoolResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->createIpPoolApiException($exception);
+        }
+    }
+
+    /**
+     * Operation createIpPoolAsync
+     *
+     * Create IP pool
+     *
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function createIpPoolAsync(\Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest): PromiseInterface
+    {
+        $request = $this->createIpPoolRequest($emailIpPoolCreateRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->createIpPoolResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->createIpPoolApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'createIpPool'
+     *
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function createIpPoolRequest(\Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest): Request
+    {
+        $allData = [
+             'emailIpPoolCreateRequest' => $emailIpPoolCreateRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'emailIpPoolCreateRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/pools';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($emailIpPoolCreateRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($emailIpPoolCreateRequest)
+                : $emailIpPoolCreateRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'createIpPool'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpPoolResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function createIpPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 201) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpPoolResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'createIpPool'
+     */
+    private function createIpPoolApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -1172,6 +1757,275 @@ final class EmailApi
     }
 
     /**
+     * Operation deleteIpPool
+     *
+     * Delete IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function deleteIpPool(string $poolId)
+    {
+        $request = $this->deleteIpPoolRequest($poolId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->deleteIpPoolResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->deleteIpPoolApiException($exception);
+        }
+    }
+
+    /**
+     * Operation deleteIpPoolAsync
+     *
+     * Delete IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function deleteIpPoolAsync(string $poolId): PromiseInterface
+    {
+        $request = $this->deleteIpPoolRequest($poolId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->deleteIpPoolResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->deleteIpPoolApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'deleteIpPool'
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function deleteIpPoolRequest(string $poolId): Request
+    {
+        $allData = [
+             'poolId' => $poolId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/pools/{poolId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'DELETE',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'deleteIpPool'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function deleteIpPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'deleteIpPool'
+     */
+    private function deleteIpPoolApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
      * Operation deleteSuppressions
      *
      * Delete suppressions
@@ -1425,263 +2279,6 @@ final class EmailApi
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiError',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-
-        return $apiException;
-    }
-
-    /**
-     * Operation getAllDomainIps
-     *
-     * List all dedicated ips for domain and for provided account id
-     *
-     * @param string $domainName Name of the domain. (required)
-     *
-     * @throws ApiException on non-2xx response
-     * @throws InvalidArgumentException
-     * @return \Infobip\Model\EmailDomainIpResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
-     */
-    public function getAllDomainIps(string $domainName)
-    {
-        $request = $this->getAllDomainIpsRequest($domainName);
-
-        try {
-            try {
-                $response = $this->client->send($request);
-                $this->deprecationChecker->check($request, $response);
-                return $this->getAllDomainIpsResponse($response, $request->getUri());
-            } catch (GuzzleException $exception) {
-                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                throw new ApiException(
-                    "[{$exception->getCode()}] {$exception->getMessage()}",
-                    $exception->getCode(),
-                    $errorResponse?->getHeaders(),
-                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
-                );
-            }
-        } catch (ApiException $exception) {
-            throw $this->getAllDomainIpsApiException($exception);
-        }
-    }
-
-    /**
-     * Operation getAllDomainIpsAsync
-     *
-     * List all dedicated ips for domain and for provided account id
-     *
-     * @param string $domainName Name of the domain. (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    public function getAllDomainIpsAsync(string $domainName): PromiseInterface
-    {
-        $request = $this->getAllDomainIpsRequest($domainName);
-
-        return $this
-            ->client
-            ->sendAsync($request)
-            ->then(
-                function ($response) use ($request) {
-                    $this->deprecationChecker->check($request, $response);
-                    return $this->getAllDomainIpsResponse($response, $request->getUri());
-                },
-                function (GuzzleException $exception) {
-                    $statusCode = $exception->getCode();
-
-                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
-
-                    $exception = new ApiException(
-                        "[{$statusCode}] {$exception->getMessage()}",
-                        $statusCode,
-                        $response?->getHeaders(),
-                        ($response !== null) ? (string)$response->getBody() : null
-                    );
-
-                    throw $this->getAllDomainIpsApiException($exception);
-                }
-            );
-    }
-
-    /**
-     * Create request for operation 'getAllDomainIps'
-     *
-     * @param string $domainName Name of the domain. (required)
-     *
-     * @throws InvalidArgumentException
-     */
-    private function getAllDomainIpsRequest(string $domainName): Request
-    {
-        $allData = [
-             'domainName' => $domainName,
-        ];
-
-        $validationConstraints = new Assert\Collection(
-            fields : [
-                    'domainName' => [
-                        new Assert\NotBlank(),
-                    ],
-                ]
-        );
-
-        $this->validateParams($allData, $validationConstraints);
-        $resourcePath = '/email/1/domain-ips';
-        $formParams = [];
-        $queryParams = [];
-        $headerParams = [];
-        $httpBody = '';
-
-        // query params
-        if ($domainName !== null) {
-            $queryParams['domainName'] = $domainName;
-        }
-
-        $headers = [
-            'Accept' => 'application/json',
-        ];
-
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
-
-        $apiKey = $this->config->getApiKey();
-
-        if ($apiKey !== null) {
-            $headers[$this->config->getApiKeyHeader()] = $apiKey;
-        }
-
-        $defaultHeaders = [];
-
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
-        }
-
-        $headers = \array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        foreach ($queryParams as $key => $value) {
-            if (\is_array($value)) {
-                continue;
-            }
-
-            $queryParams[$key] = $this->objectSerializer->toString($value);
-        }
-
-        $query = Query::build($queryParams);
-
-        return new Request(
-            'GET',
-            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
-            $headers,
-            $httpBody
-        );
-    }
-
-    /**
-     * Create response for operation 'getAllDomainIps'
-     * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\EmailDomainIpResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
-     */
-    private function getAllDomainIpsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
-    {
-        $statusCode = $response->getStatusCode();
-        $responseBody = $response->getBody();
-        $responseHeaders = $response->getHeaders();
-
-        if ($statusCode < 200 || $statusCode > 299) {
-            throw new ApiException(
-                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
-                $statusCode,
-                $responseHeaders,
-                $responseBody
-            );
-        }
-
-        $responseResult = null;
-
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailDomainIpResponse', $responseHeaders);
-        }
-        return $responseResult;
-    }
-
-    /**
-     * Adapt given ApiException for operation 'getAllDomainIps'
-     */
-    private function getAllDomainIpsApiException(ApiException $apiException): ApiException
-    {
-        $statusCode = $apiException->getCode();
-
-        if ($statusCode === 401) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 429) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
                 $apiException->getResponseHeaders()
             );
 
@@ -1977,12 +2574,12 @@ final class EmailApi
     /**
      * Operation getAllIps
      *
-     * List all dedicated ips for provided account id
+     * Get IPs
      *
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\EmailDomainIpResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\EmailIpResponse[]|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
      */
     public function getAllIps()
     {
@@ -2011,7 +2608,7 @@ final class EmailApi
     /**
      * Operation getAllIpsAsync
      *
-     * List all dedicated ips for provided account id
+     * Get IPs
      *
      *
      * @throws InvalidArgumentException
@@ -2062,7 +2659,7 @@ final class EmailApi
         );
 
         $this->validateParams($allData, $validationConstraints);
-        $resourcePath = '/email/1/ips';
+        $resourcePath = '/email/1/ip-management/ips';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
@@ -2139,7 +2736,7 @@ final class EmailApi
     /**
      * Create response for operation 'getAllIps'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\EmailDomainIpResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\EmailIpResponse[]|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
      */
     private function getAllIpsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -2159,7 +2756,7 @@ final class EmailApi
         $responseResult = null;
 
         if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailDomainIpResponse', $responseHeaders);
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpResponse[]', $responseHeaders);
         }
         return $responseResult;
     }
@@ -2171,21 +2768,10 @@ final class EmailApi
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode === 400) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -2196,7 +2782,7 @@ final class EmailApi
         if ($statusCode === 403) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -2207,7 +2793,7 @@ final class EmailApi
         if ($statusCode === 429) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -2218,7 +2804,7 @@ final class EmailApi
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -3462,6 +4048,1092 @@ final class EmailApi
     }
 
     /**
+     * Operation getIpDetails
+     *
+     * Get IP
+     *
+     * @param string $ipId Dedicated IP identifier. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpDetailResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getIpDetails(string $ipId)
+    {
+        $request = $this->getIpDetailsRequest($ipId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getIpDetailsResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getIpDetailsApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getIpDetailsAsync
+     *
+     * Get IP
+     *
+     * @param string $ipId Dedicated IP identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getIpDetailsAsync(string $ipId): PromiseInterface
+    {
+        $request = $this->getIpDetailsRequest($ipId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getIpDetailsResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getIpDetailsApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getIpDetails'
+     *
+     * @param string $ipId Dedicated IP identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getIpDetailsRequest(string $ipId): Request
+    {
+        $allData = [
+             'ipId' => $ipId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'ipId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/ips/{ipId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($ipId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'ipId' . '}',
+                $this->objectSerializer->toPathValue($ipId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getIpDetails'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpDetailResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getIpDetailsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpDetailResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getIpDetails'
+     */
+    private function getIpDetailsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getIpDomain
+     *
+     * Get domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpDomainResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getIpDomain(int $domainId)
+    {
+        $request = $this->getIpDomainRequest($domainId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getIpDomainResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getIpDomainApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getIpDomainAsync
+     *
+     * Get domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getIpDomainAsync(int $domainId): PromiseInterface
+    {
+        $request = $this->getIpDomainRequest($domainId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getIpDomainResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getIpDomainApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getIpDomain'
+     *
+     * @param int $domainId Domain identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getIpDomainRequest(int $domainId): Request
+    {
+        $allData = [
+             'domainId' => $domainId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'domainId' => [
+                        new Assert\NotBlank(),
+                        new Assert\GreaterThanOrEqual(1),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/domains/{domainId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($domainId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'domainId' . '}',
+                $this->objectSerializer->toPathValue($domainId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getIpDomain'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpDomainResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getIpDomainResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpDomainResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getIpDomain'
+     */
+    private function getIpDomainApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getIpPool
+     *
+     * Get IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpPoolDetailResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getIpPool(string $poolId)
+    {
+        $request = $this->getIpPoolRequest($poolId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getIpPoolResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getIpPoolApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getIpPoolAsync
+     *
+     * Get IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getIpPoolAsync(string $poolId): PromiseInterface
+    {
+        $request = $this->getIpPoolRequest($poolId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getIpPoolResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getIpPoolApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getIpPool'
+     *
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getIpPoolRequest(string $poolId): Request
+    {
+        $allData = [
+             'poolId' => $poolId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/pools/{poolId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getIpPool'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpPoolDetailResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getIpPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpPoolDetailResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getIpPool'
+     */
+    private function getIpPoolApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation getIpPools
+     *
+     * Get IP pools
+     *
+     * @param null|string $name IP pool name. (optional)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpPoolResponse[]|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function getIpPools(?string $name = null)
+    {
+        $request = $this->getIpPoolsRequest($name);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->getIpPoolsResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->getIpPoolsApiException($exception);
+        }
+    }
+
+    /**
+     * Operation getIpPoolsAsync
+     *
+     * Get IP pools
+     *
+     * @param null|string $name IP pool name. (optional)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function getIpPoolsAsync(?string $name = null): PromiseInterface
+    {
+        $request = $this->getIpPoolsRequest($name);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->getIpPoolsResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->getIpPoolsApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getIpPools'
+     *
+     * @param null|string $name IP pool name. (optional)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function getIpPoolsRequest(?string $name = null): Request
+    {
+        $allData = [
+             'name' => $name,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'name' => [
+                        new Assert\Length(max: 100),
+                        new Assert\Length(min: 1),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/pools';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // query params
+        if ($name !== null) {
+            $queryParams['name'] = $name;
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'getIpPools'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpPoolResponse[]|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function getIpPoolsResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpPoolResponse[]', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'getIpPools'
+     */
+    private function getIpPoolsApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
      * Operation getScheduledEmailStatuses
      *
      * Get sent email bulks status
@@ -3981,7 +5653,7 @@ final class EmailApi
      * Get suppressions
      *
      * @param string $domainName Name of the requested domain. (required)
-     * @param \Infobip\Model\EmailGetSuppressionType $type Type of suppression. (required)
+     * @param \Infobip\Model\EmailSuppressionType $type Type of suppression. (required)
      * @param null|string $emailAddress Email address that is suppressed. (optional)
      * @param null|string $recipientDomain Recipient domain that is suppressed. (optional)
      * @param null|\DateTime $createdDateFrom Start date for searching suppressions. (optional)
@@ -3993,7 +5665,7 @@ final class EmailApi
      * @throws InvalidArgumentException
      * @return \Infobip\Model\EmailSuppressionInfoPageResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
      */
-    public function getSuppressions(string $domainName, \Infobip\Model\EmailGetSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100)
+    public function getSuppressions(string $domainName, \Infobip\Model\EmailSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100)
     {
         $request = $this->getSuppressionsRequest($domainName, $type, $emailAddress, $recipientDomain, $createdDateFrom, $createdDateTo, $page, $size);
 
@@ -4023,7 +5695,7 @@ final class EmailApi
      * Get suppressions
      *
      * @param string $domainName Name of the requested domain. (required)
-     * @param \Infobip\Model\EmailGetSuppressionType $type Type of suppression. (required)
+     * @param \Infobip\Model\EmailSuppressionType $type Type of suppression. (required)
      * @param null|string $emailAddress Email address that is suppressed. (optional)
      * @param null|string $recipientDomain Recipient domain that is suppressed. (optional)
      * @param null|\DateTime $createdDateFrom Start date for searching suppressions. (optional)
@@ -4033,7 +5705,7 @@ final class EmailApi
      *
      * @throws InvalidArgumentException
      */
-    public function getSuppressionsAsync(string $domainName, \Infobip\Model\EmailGetSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100): PromiseInterface
+    public function getSuppressionsAsync(string $domainName, \Infobip\Model\EmailSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100): PromiseInterface
     {
         $request = $this->getSuppressionsRequest($domainName, $type, $emailAddress, $recipientDomain, $createdDateFrom, $createdDateTo, $page, $size);
 
@@ -4066,7 +5738,7 @@ final class EmailApi
      * Create request for operation 'getSuppressions'
      *
      * @param string $domainName Name of the requested domain. (required)
-     * @param \Infobip\Model\EmailGetSuppressionType $type Type of suppression. (required)
+     * @param \Infobip\Model\EmailSuppressionType $type Type of suppression. (required)
      * @param null|string $emailAddress Email address that is suppressed. (optional)
      * @param null|string $recipientDomain Recipient domain that is suppressed. (optional)
      * @param null|\DateTime $createdDateFrom Start date for searching suppressions. (optional)
@@ -4076,7 +5748,7 @@ final class EmailApi
      *
      * @throws InvalidArgumentException
      */
-    private function getSuppressionsRequest(string $domainName, \Infobip\Model\EmailGetSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100): Request
+    private function getSuppressionsRequest(string $domainName, \Infobip\Model\EmailSuppressionType $type, ?string $emailAddress = null, ?string $recipientDomain = null, ?\DateTime $createdDateFrom = null, ?\DateTime $createdDateTo = null, int $page = 0, int $size = 100): Request
     {
         $allData = [
              'domainName' => $domainName,
@@ -4325,26 +5997,26 @@ final class EmailApi
     }
 
     /**
-     * Operation removeIpFromDomain
+     * Operation removeIpFromPool
      *
-     * Remove dedicated ip address from the provided domain
+     * Unassign IP from pool
      *
-     * @param string $domainName Name of the domain. (required)
-     * @param string $ipAddress Dedicated ip address. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param string $ipId Dedicated IP identifier. (required)
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\EmailSimpleApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return void
      */
-    public function removeIpFromDomain(string $domainName, string $ipAddress)
+    public function removeIpFromPool(string $poolId, string $ipId)
     {
-        $request = $this->removeIpFromDomainRequest($domainName, $ipAddress);
+        $request = $this->removeIpFromPoolRequest($poolId, $ipId);
 
         try {
             try {
                 $response = $this->client->send($request);
                 $this->deprecationChecker->check($request, $response);
-                return $this->removeIpFromDomainResponse($response, $request->getUri());
+                return $this->removeIpFromPoolResponse($response, $request->getUri());
             } catch (GuzzleException $exception) {
                 $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
 
@@ -4356,23 +6028,23 @@ final class EmailApi
                 );
             }
         } catch (ApiException $exception) {
-            throw $this->removeIpFromDomainApiException($exception);
+            throw $this->removeIpFromPoolApiException($exception);
         }
     }
 
     /**
-     * Operation removeIpFromDomainAsync
+     * Operation removeIpFromPoolAsync
      *
-     * Remove dedicated ip address from the provided domain
+     * Unassign IP from pool
      *
-     * @param string $domainName Name of the domain. (required)
-     * @param string $ipAddress Dedicated ip address. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param string $ipId Dedicated IP identifier. (required)
      *
      * @throws InvalidArgumentException
      */
-    public function removeIpFromDomainAsync(string $domainName, string $ipAddress): PromiseInterface
+    public function removeIpFromPoolAsync(string $poolId, string $ipId): PromiseInterface
     {
-        $request = $this->removeIpFromDomainRequest($domainName, $ipAddress);
+        $request = $this->removeIpFromPoolRequest($poolId, $ipId);
 
         return $this
             ->client
@@ -4380,7 +6052,7 @@ final class EmailApi
             ->then(
                 function ($response) use ($request) {
                     $this->deprecationChecker->check($request, $response);
-                    return $this->removeIpFromDomainResponse($response, $request->getUri());
+                    return $this->removeIpFromPoolResponse($response, $request->getUri());
                 },
                 function (GuzzleException $exception) {
                     $statusCode = $exception->getCode();
@@ -4394,52 +6066,60 @@ final class EmailApi
                         ($response !== null) ? (string)$response->getBody() : null
                     );
 
-                    throw $this->removeIpFromDomainApiException($exception);
+                    throw $this->removeIpFromPoolApiException($exception);
                 }
             );
     }
 
     /**
-     * Create request for operation 'removeIpFromDomain'
+     * Create request for operation 'removeIpFromPool'
      *
-     * @param string $domainName Name of the domain. (required)
-     * @param string $ipAddress Dedicated ip address. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param string $ipId Dedicated IP identifier. (required)
      *
      * @throws InvalidArgumentException
      */
-    private function removeIpFromDomainRequest(string $domainName, string $ipAddress): Request
+    private function removeIpFromPoolRequest(string $poolId, string $ipId): Request
     {
         $allData = [
-             'domainName' => $domainName,
-             'ipAddress' => $ipAddress,
+             'poolId' => $poolId,
+             'ipId' => $ipId,
         ];
 
         $validationConstraints = new Assert\Collection(
             fields : [
-                    'domainName' => [
+                    'poolId' => [
                         new Assert\NotBlank(),
                     ],
-                    'ipAddress' => [
+                    'ipId' => [
                         new Assert\NotBlank(),
                     ],
                 ]
         );
 
         $this->validateParams($allData, $validationConstraints);
-        $resourcePath = '/email/1/domain-ips';
+        $resourcePath = '/email/1/ip-management/pools/{poolId}/ips/{ipId}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
 
-        // query params
-        if ($domainName !== null) {
-            $queryParams['domainName'] = $domainName;
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
         }
 
-        // query params
-        if ($ipAddress !== null) {
-            $queryParams['ipAddress'] = $ipAddress;
+        // path params
+        if ($ipId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'ipId' . '}',
+                $this->objectSerializer->toPathValue($ipId),
+                $resourcePath
+            );
         }
 
         $headers = [
@@ -4511,11 +6191,11 @@ final class EmailApi
     }
 
     /**
-     * Create response for operation 'removeIpFromDomain'
+     * Create response for operation 'removeIpFromPool'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\EmailSimpleApiResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return null
      */
-    private function removeIpFromDomainResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    private function removeIpFromPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
         $statusCode = $response->getStatusCode();
         $responseBody = $response->getBody();
@@ -4532,34 +6212,20 @@ final class EmailApi
 
         $responseResult = null;
 
-        if ($statusCode === 200) {
-            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailSimpleApiResponse', $responseHeaders);
-        }
         return $responseResult;
     }
 
     /**
-     * Adapt given ApiException for operation 'removeIpFromDomain'
+     * Adapt given ApiException for operation 'removeIpFromPool'
      */
-    private function removeIpFromDomainApiException(ApiException $apiException): ApiException
+    private function removeIpFromPoolApiException(ApiException $apiException): ApiException
     {
         $statusCode = $apiException->getCode();
 
-        if ($statusCode === 400) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
         if ($statusCode === 401) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -4570,7 +6236,18 @@ final class EmailApi
         if ($statusCode === 403) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -4581,7 +6258,7 @@ final class EmailApi
         if ($statusCode === 429) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -4592,7 +6269,293 @@ final class EmailApi
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation removeIpPoolFromDomain
+     *
+     * Unassign IP pool from domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function removeIpPoolFromDomain(int $domainId, string $poolId)
+    {
+        $request = $this->removeIpPoolFromDomainRequest($domainId, $poolId);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->removeIpPoolFromDomainResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->removeIpPoolFromDomainApiException($exception);
+        }
+    }
+
+    /**
+     * Operation removeIpPoolFromDomainAsync
+     *
+     * Unassign IP pool from domain
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function removeIpPoolFromDomainAsync(int $domainId, string $poolId): PromiseInterface
+    {
+        $request = $this->removeIpPoolFromDomainRequest($domainId, $poolId);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->removeIpPoolFromDomainResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->removeIpPoolFromDomainApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'removeIpPoolFromDomain'
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function removeIpPoolFromDomainRequest(int $domainId, string $poolId): Request
+    {
+        $allData = [
+             'domainId' => $domainId,
+             'poolId' => $poolId,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'domainId' => [
+                        new Assert\NotBlank(),
+                        new Assert\GreaterThanOrEqual(1),
+                    ],
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/domains/{domainId}/pools/{poolId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($domainId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'domainId' . '}',
+                $this->objectSerializer->toPathValue($domainId),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'DELETE',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'removeIpPoolFromDomain'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function removeIpPoolFromDomainResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'removeIpPoolFromDomain'
+     */
+    private function removeIpPoolFromDomainApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 
@@ -4925,7 +6888,7 @@ final class EmailApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\EmailSendResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\EmailSendResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function sendEmail(array $to, ?string $from = null, ?array $cc = null, ?array $bcc = null, ?string $subject = null, ?string $text = null, ?string $html = null, ?string $ampHtml = null, ?int $templateId = null, ?array $attachment = null, ?array $inlineImage = null, ?bool $intermediateReport = null, ?string $notifyUrl = null, ?string $notifyContentType = null, ?string $callbackData = null, bool $track = true, ?bool $trackClicks = null, ?bool $trackOpens = null, ?string $trackingUrl = null, ?string $bulkId = null, ?string $messageId = null, ?string $campaignReferenceId = null, ?string $replyTo = null, ?string $defaultPlaceholders = null, bool $preserveRecipients = false, ?\DateTime $sendAt = null, ?string $landingPagePlaceholders = null, ?string $landingPageId = null, string $templateLanguageVersion = '1', ?string $clientPriority = null, ?string $applicationId = null, ?string $entityId = null, ?string $headers = null)
     {
@@ -5434,7 +7397,7 @@ final class EmailApi
     /**
      * Create response for operation 'sendEmail'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\EmailSendResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\EmailSendResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function sendEmailResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -5499,7 +7462,7 @@ final class EmailApi
 
             return $apiException;
         }
-        if ($statusCode === 429) {
+        if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',
@@ -5510,10 +7473,603 @@ final class EmailApi
 
             return $apiException;
         }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation updateDomainPoolPriority
+     *
+     * Update IP pool sending priority
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest emailDomainIpPoolUpdateRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return void
+     */
+    public function updateDomainPoolPriority(int $domainId, string $poolId, \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest)
+    {
+        $request = $this->updateDomainPoolPriorityRequest($domainId, $poolId, $emailDomainIpPoolUpdateRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->updateDomainPoolPriorityResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->updateDomainPoolPriorityApiException($exception);
+        }
+    }
+
+    /**
+     * Operation updateDomainPoolPriorityAsync
+     *
+     * Update IP pool sending priority
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateDomainPoolPriorityAsync(int $domainId, string $poolId, \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest): PromiseInterface
+    {
+        $request = $this->updateDomainPoolPriorityRequest($domainId, $poolId, $emailDomainIpPoolUpdateRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->updateDomainPoolPriorityResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->updateDomainPoolPriorityApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateDomainPoolPriority'
+     *
+     * @param int $domainId Domain identifier. (required)
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function updateDomainPoolPriorityRequest(int $domainId, string $poolId, \Infobip\Model\EmailDomainIpPoolUpdateRequest $emailDomainIpPoolUpdateRequest): Request
+    {
+        $allData = [
+             'domainId' => $domainId,
+             'poolId' => $poolId,
+             'emailDomainIpPoolUpdateRequest' => $emailDomainIpPoolUpdateRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'domainId' => [
+                        new Assert\NotBlank(),
+                        new Assert\GreaterThanOrEqual(1),
+                    ],
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'emailDomainIpPoolUpdateRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/domains/{domainId}/pools/{poolId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($domainId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'domainId' . '}',
+                $this->objectSerializer->toPathValue($domainId),
+                $resourcePath
+            );
+        }
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($emailDomainIpPoolUpdateRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($emailDomainIpPoolUpdateRequest)
+                : $emailDomainIpPoolUpdateRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PUT',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'updateDomainPoolPriority'
+     * @throws ApiException on non-2xx response
+     * @return null
+     */
+    private function updateDomainPoolPriorityResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'updateDomainPoolPriority'
+     */
+    private function updateDomainPoolPriorityApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
         if ($statusCode === 500) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+
+        return $apiException;
+    }
+
+    /**
+     * Operation updateIpPool
+     *
+     * Update IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest emailIpPoolCreateRequest (required)
+     *
+     * @throws ApiException on non-2xx response
+     * @throws InvalidArgumentException
+     * @return \Infobip\Model\EmailIpPoolResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError
+     */
+    public function updateIpPool(string $poolId, \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest)
+    {
+        $request = $this->updateIpPoolRequest($poolId, $emailIpPoolCreateRequest);
+
+        try {
+            try {
+                $response = $this->client->send($request);
+                $this->deprecationChecker->check($request, $response);
+                return $this->updateIpPoolResponse($response, $request->getUri());
+            } catch (GuzzleException $exception) {
+                $errorResponse = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                throw new ApiException(
+                    "[{$exception->getCode()}] {$exception->getMessage()}",
+                    $exception->getCode(),
+                    $errorResponse?->getHeaders(),
+                    ($errorResponse !== null) ? (string)$errorResponse->getBody() : null
+                );
+            }
+        } catch (ApiException $exception) {
+            throw $this->updateIpPoolApiException($exception);
+        }
+    }
+
+    /**
+     * Operation updateIpPoolAsync
+     *
+     * Update IP pool
+     *
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    public function updateIpPoolAsync(string $poolId, \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest): PromiseInterface
+    {
+        $request = $this->updateIpPoolRequest($poolId, $emailIpPoolCreateRequest);
+
+        return $this
+            ->client
+            ->sendAsync($request)
+            ->then(
+                function ($response) use ($request) {
+                    $this->deprecationChecker->check($request, $response);
+                    return $this->updateIpPoolResponse($response, $request->getUri());
+                },
+                function (GuzzleException $exception) {
+                    $statusCode = $exception->getCode();
+
+                    $response = ($exception instanceof RequestException) ? $exception->getResponse() : null;
+
+                    $exception = new ApiException(
+                        "[{$statusCode}] {$exception->getMessage()}",
+                        $statusCode,
+                        $response?->getHeaders(),
+                        ($response !== null) ? (string)$response->getBody() : null
+                    );
+
+                    throw $this->updateIpPoolApiException($exception);
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'updateIpPool'
+     *
+     * @param string $poolId IP pool identifier. (required)
+     * @param \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest (required)
+     *
+     * @throws InvalidArgumentException
+     */
+    private function updateIpPoolRequest(string $poolId, \Infobip\Model\EmailIpPoolCreateRequest $emailIpPoolCreateRequest): Request
+    {
+        $allData = [
+             'poolId' => $poolId,
+             'emailIpPoolCreateRequest' => $emailIpPoolCreateRequest,
+        ];
+
+        $validationConstraints = new Assert\Collection(
+            fields : [
+                    'poolId' => [
+                        new Assert\NotBlank(),
+                    ],
+                    'emailIpPoolCreateRequest' => [
+                        new Assert\NotNull(),
+                    ],
+                ]
+        );
+
+        $this->validateParams($allData, $validationConstraints);
+        $resourcePath = '/email/1/ip-management/pools/{poolId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+
+        // path params
+        if ($poolId !== null) {
+            $resourcePath = str_replace(
+                '{' . 'poolId' . '}',
+                $this->objectSerializer->toPathValue($poolId),
+                $resourcePath
+            );
+        }
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+        ];
+
+        // for model (json/xml)
+        if (isset($emailIpPoolCreateRequest)) {
+            $httpBody = ($headers['Content-Type'] === 'application/json')
+                ? $this->objectSerializer->serialize($emailIpPoolCreateRequest)
+                : $emailIpPoolCreateRequest;
+        } elseif (count($formParams) > 0) {
+            if ($headers['Content-Type'] === 'multipart/form-data') {
+                $boundary = '----' . hash('sha256', uniqid('', true));
+                $headers['Content-Type'] .= '; boundary=' . $boundary;
+                $multipartContents = [];
+
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
+
+                    foreach ($formParamValueItems as $formParamValueItem) {
+                        $multipartContents[] = [
+                            'name' => $formParamName,
+                            'contents' => $formParamValueItem
+                        ];
+                    }
+                }
+
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents, $boundary);
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = $this->objectSerializer->serialize($formParams);
+            } else {
+                // for HTTP post (form)
+                $httpBody = Query::build($formParams);
+            }
+        }
+
+        $apiKey = $this->config->getApiKey();
+
+        if ($apiKey !== null) {
+            $headers[$this->config->getApiKeyHeader()] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = \array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        foreach ($queryParams as $key => $value) {
+            if (\is_array($value)) {
+                continue;
+            }
+
+            $queryParams[$key] = $this->objectSerializer->toString($value);
+        }
+
+        $query = Query::build($queryParams);
+
+        return new Request(
+            'PUT',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Create response for operation 'updateIpPool'
+     * @throws ApiException on non-2xx response
+     * @return \Infobip\Model\EmailIpPoolResponse|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|\Infobip\Model\ApiError|null
+     */
+    private function updateIpPoolResponse(ResponseInterface $response, UriInterface $requestUri): mixed
+    {
+        $statusCode = $response->getStatusCode();
+        $responseBody = $response->getBody();
+        $responseHeaders = $response->getHeaders();
+
+        if ($statusCode < 200 || $statusCode > 299) {
+            throw new ApiException(
+                sprintf('[%d] API Error (%s)', $statusCode, $requestUri),
+                $statusCode,
+                $responseHeaders,
+                $responseBody
+            );
+        }
+
+        $responseResult = null;
+
+        if ($statusCode === 200) {
+            $responseResult = $this->deserialize($responseBody, '\Infobip\Model\EmailIpPoolResponse', $responseHeaders);
+        }
+        return $responseResult;
+    }
+
+    /**
+     * Adapt given ApiException for operation 'updateIpPool'
+     */
+    private function updateIpPoolApiException(ApiException $apiException): ApiException
+    {
+        $statusCode = $apiException->getCode();
+
+        if ($statusCode === 400) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 401) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 403) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 404) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 429) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
+                $apiException->getResponseHeaders()
+            );
+
+            $apiException->setResponseObject($data);
+
+            return $apiException;
+        }
+        if ($statusCode === 500) {
+            $data = $this->objectSerializer->deserialize(
+                $apiException->getResponseBody(),
+                '\Infobip\Model\ApiError',
                 $apiException->getResponseHeaders()
             );
 

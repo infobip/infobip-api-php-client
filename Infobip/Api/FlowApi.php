@@ -339,7 +339,7 @@ final class FlowApi
         if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
-                '\Infobip\Model\FlowExceptionResponse',
+                '\Infobip\Model\ApiException',
                 $apiException->getResponseHeaders()
             );
 
@@ -383,7 +383,7 @@ final class FlowApi
      *
      * @throws ApiException on non-2xx response
      * @throws InvalidArgumentException
-     * @return \Infobip\Model\FlowParticipantsReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
+     * @return \Infobip\Model\FlowParticipantsReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException
      */
     public function getFlowParticipantsAddedReport(int $campaignId, string $operationId)
     {
@@ -566,7 +566,7 @@ final class FlowApi
     /**
      * Create response for operation 'getFlowParticipantsAddedReport'
      * @throws ApiException on non-2xx response
-     * @return \Infobip\Model\FlowParticipantsReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
+     * @return \Infobip\Model\FlowParticipantsReportResponse|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|\Infobip\Model\ApiException|null
      */
     private function getFlowParticipantsAddedReportResponse(ResponseInterface $response, UriInterface $requestUri): mixed
     {
@@ -610,17 +610,6 @@ final class FlowApi
             return $apiException;
         }
         if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 404) {
             $data = $this->objectSerializer->deserialize(
                 $apiException->getResponseBody(),
                 '\Infobip\Model\ApiException',

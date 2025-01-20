@@ -21,7 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsCaseObject
 {
     /**
-     * @param object[] $default
+     * @param CallsScriptOneOf[] $default
      */
     public function __construct(
         #[Assert\NotBlank]
@@ -32,7 +32,7 @@ class CallsCaseObject
 
 
     /**
-     * @return object[]
+     * @return CallsScriptOneOf[]
      */
     public function getDefault(): array
     {
@@ -40,7 +40,7 @@ class CallsCaseObject
     }
 
     /**
-     * @param object[] $default Array of actions to execute if none of the conditions above are met.
+     * @param CallsScriptOneOf[] $default Array of actions to execute if none of the conditions above are met.
      */
     public function setDefault(array $default): self
     {

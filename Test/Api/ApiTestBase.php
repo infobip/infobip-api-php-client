@@ -24,7 +24,7 @@ abstract class ApiTestBase extends TestCase
     private const string API_KEY_PREFIX = "App";
     private const string API_KEY = "testApiKey";
     private const string HOST = "http://localhost:8080";
-    private const string EXPECTED_USER_AGENT = 'infobip-api-client-php/6.1.0/PHP';
+    private const string EXPECTED_USER_AGENT = 'infobip-api-client-php/6.2.0/PHP';
 
     protected array $givenRequestHeaders = [
         'Content-Type'  => 'application/json;charset=UTF-8',
@@ -181,9 +181,6 @@ abstract class ApiTestBase extends TestCase
         $this->assertContains('testRequestId', $httpInfo['x-request-id']);
     }
 
-    /**
-     * @param mixed $inputResponse
-     */
     protected function getUnpackedModel(
         mixed   $inputResponse,
         ?string $expectedInstanceType = null,
@@ -319,28 +316,23 @@ abstract class ApiTestBase extends TestCase
     protected function assertGetRequest(
         array  $closures,
         string $expectedPath,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer
     ): void {
-        foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
-
-            $this->assertRequestWithHeaders(
-                'GET',
-                $expectedPath,
-                $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
-            );
-
-            $this->assertEquals($expectedResponse, $response);
-        }
+        $this->assertRequestWithoutBody(
+            $closures,
+            'GET',
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
     }
 
     protected function assertPostRequest(
         array  $closures,
         string $expectedPath,
         string $givenRawRequest,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer
     ): void {
         $this->assertRequestWithBody(
@@ -357,7 +349,7 @@ abstract class ApiTestBase extends TestCase
         array  $closures,
         string $expectedPath,
         string $givenRawRequest,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer,
         array $additionalHeaders
     ): void {
@@ -376,7 +368,7 @@ abstract class ApiTestBase extends TestCase
         array  $closures,
         string $expectedPath,
         string $givenRawRequest,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer
     ): void {
         $this->assertRequestWithBody(
@@ -393,7 +385,7 @@ abstract class ApiTestBase extends TestCase
         array  $closures,
         string $expectedPath,
         string $givenRawRequest,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer
     ): void {
         $this->assertRequestWithBody(
@@ -406,17 +398,18 @@ abstract class ApiTestBase extends TestCase
         );
     }
 
-    protected function assertRequestWithBody(
+    private function assertRequestWithBody(
         array  $closures,
         string $expectedMethod,
         string $expectedPath,
         string $givenRawRequest,
-        object $expectedResponse,
+        mixed $expectedResponse,
         array  &$requestHistoryContainer,
         array  $additionalHeaders = []
     ): void {
         foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
+            $expectedInstanceType = ($expectedResponse == null || is_array($expectedResponse)) ? null : $expectedResponse::class;
+            $response = $this->getUnpackedModel($closure(), $expectedInstanceType, $requestHistoryContainer);
 
             $expectedHeaders = array_merge(
                 $additionalHeaders,
@@ -435,24 +428,112 @@ abstract class ApiTestBase extends TestCase
         }
     }
 
-    protected function assertPostRequestWithNoBody(
+    private function assertRequestWithoutBody(
         array  $closures,
+        string $expectedMethod,
         string $expectedPath,
-        object $expectedResponse,
-        array  &$requestHistoryContainer
+        mixed $expectedResponse,
+        array  &$requestHistoryContainer,
+        array  $additionalHeaders = []
     ): void {
         foreach ($closures as $index => $closure) {
-            $response = $this->getUnpackedModel($closure(), $expectedResponse::class, $requestHistoryContainer);
+            $expectedInstanceType = ($expectedResponse == null || is_array($expectedResponse)) ? null : $expectedResponse::class;
+            $response = $this->getUnpackedModel($closure(), $expectedInstanceType, $requestHistoryContainer);
+
+            $expectedHeaders = array_merge(
+                $additionalHeaders,
+                ['Accept' => 'application/json']
+            );
 
             $this->assertRequestWithHeaders(
-                'POST',
+                $expectedMethod,
                 $expectedPath,
                 $requestHistoryContainer[$index],
-                ['Accept' => 'application/json']
+                $expectedHeaders
             );
 
             $this->assertEquals($expectedResponse, $response);
         }
     }
 
+    protected function assertPostRequestWithNoBody(
+        array  $closures,
+        string $expectedPath,
+        mixed $expectedResponse,
+        array  &$requestHistoryContainer
+    ): void {
+        $this->assertRequestWithoutBody(
+            $closures,
+            'POST',
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    protected function assertDeleteRequest(
+        array $closures,
+        string $expectedPath,
+        mixed $expectedResponse,
+        array &$requestHistoryContainer
+    ): void {
+        $this->assertRequestWithoutBody(
+            $closures,
+            'DELETE',
+            $expectedPath,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    protected function assertDeleteRequestWithBody(
+        array  $closures,
+        string $expectedPath,
+        string $givenRawRequest,
+        mixed $expectedResponse,
+        array  &$requestHistoryContainer
+    ): void {
+        $this->assertRequestWithBody(
+            $closures,
+            'DELETE',
+            $expectedPath,
+            $givenRawRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    protected function assertNoContentDeleteRequest(
+        array $closures,
+        string $expectedPath,
+        array &$requestHistoryContainer
+    ): void {
+        foreach ($closures as $index => $closure) {
+            $this->getUnpackedModel($closure(), null, $requestHistoryContainer);
+
+            $this->assertRequestWithHeaders(
+                'DELETE',
+                $expectedPath,
+                $requestHistoryContainer[$index],
+                ["Accept" => 'application/json',]
+            );
+        }
+    }
+
+    protected function assertNoContentPostRequest(
+        array $closures,
+        string $expectedPath,
+        array &$requestHistoryContainer
+    ): void {
+        foreach ($closures as $index => $closure) {
+            $this->getUnpackedModel($closure(), null, $requestHistoryContainer);
+
+            $this->assertRequestWithHeaders(
+                'POST',
+                $expectedPath,
+                $requestHistoryContainer[$index],
+                ["Accept" => 'application/json',]
+            );
+        }
+    }
 }
