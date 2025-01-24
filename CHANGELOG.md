@@ -21,7 +21,7 @@ The format of the file is based on [Keep a Changelog](http://keepachangelog.com/
 * Form parameter processing code is refactored and removed from the API methods where it is not needed.
 
 ### Removed
-* A no-longer required `DISCONNECTED` call state.
+* A no longer required `DISCONNECTED` call state.
 
 ## [ [6.2.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.2.0) ] - 2025-01-20
 
