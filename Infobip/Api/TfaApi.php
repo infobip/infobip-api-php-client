@@ -11,7 +11,6 @@
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-
 declare(strict_types=1);
 
 /**
@@ -33,7 +32,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
 use Infobip\ApiException;
@@ -174,7 +172,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -184,36 +181,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaApplicationRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaApplicationRequest)
                 : $tfaApplicationRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -476,7 +447,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/email/messages';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -495,36 +465,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaCreateEmailMessageRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaCreateEmailMessageRequest)
                 : $tfaCreateEmailMessageRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -798,7 +742,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/messages';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -817,36 +760,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaCreateMessageRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaCreateMessageRequest)
                 : $tfaCreateMessageRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -1102,7 +1019,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1120,33 +1036,6 @@ final class TfaApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1394,7 +1283,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1403,33 +1291,6 @@ final class TfaApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1680,7 +1541,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/messages/{msgId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1707,33 +1567,6 @@ final class TfaApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1977,7 +1810,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/messages';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1995,33 +1827,6 @@ final class TfaApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2284,7 +2089,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/verifications';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2317,33 +2121,6 @@ final class TfaApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2594,7 +2371,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/{pinId}/resend/email';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2613,36 +2389,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaResendPinRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaResendPinRequest)
                 : $tfaResendPinRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -2905,7 +2655,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/{pinId}/resend';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2924,36 +2673,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaResendPinRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaResendPinRequest)
                 : $tfaResendPinRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -3216,7 +2939,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/{pinId}/resend/voice';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3235,36 +2957,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaResendPinRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaResendPinRequest)
                 : $tfaResendPinRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -3520,7 +3216,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/email';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3530,36 +3225,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaStartEmailAuthenticationRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaStartEmailAuthenticationRequest)
                 : $tfaStartEmailAuthenticationRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -3810,7 +3479,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3825,36 +3493,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaStartAuthenticationRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaStartAuthenticationRequest)
                 : $tfaStartAuthenticationRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -4099,7 +3741,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/voice';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4109,36 +3750,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaStartAuthenticationRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaStartAuthenticationRequest)
                 : $tfaStartAuthenticationRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -4390,7 +4005,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4409,36 +4023,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaApplicationRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaApplicationRequest)
                 : $tfaApplicationRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -4719,7 +4307,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/email/messages/{msgId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4747,36 +4334,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaUpdateEmailMessageRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaUpdateEmailMessageRequest)
                 : $tfaUpdateEmailMessageRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -5057,7 +4618,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/applications/{appId}/messages/{msgId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5085,36 +4645,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaUpdateMessageRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaUpdateMessageRequest)
                 : $tfaUpdateMessageRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -5377,7 +4911,6 @@ final class TfaApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/2fa/2/pin/{pinId}/verify';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5396,36 +4929,10 @@ final class TfaApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($tfaVerifyPinRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($tfaVerifyPinRequest)
                 : $tfaVerifyPinRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();

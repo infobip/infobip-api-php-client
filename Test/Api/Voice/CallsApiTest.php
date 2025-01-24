@@ -67,6 +67,7 @@ use Infobip\Model\CallsDtmfTermination;
 use Infobip\Model\CallsErrorCodeInfo;
 use Infobip\Model\CallsExtendedSipTrunkStatusResponse;
 use Infobip\Model\CallsFile;
+use Infobip\Model\CallsFileFormat;
 use Infobip\Model\CallsFilePage;
 use Infobip\Model\CallsFilePlayContent;
 use Infobip\Model\CallsHangupRequest;
@@ -490,7 +491,139 @@ class CallsApiTest extends ApiTestBase
             endpoint: new CallsWebRtcEndpoint(
                 identity: "Bob"
             ),
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
             from: "Alice",
+            fromDisplayName: "Alice in Wonderland",
+            connectTimeout: 30,
+            recording: new CallRecordingRequest(
+                recordingType: "AUDIO_AND_VIDEO"
+            ),
+            maxDuration: 300,
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            )
+        );
+
+        $closures = [
+            fn () => $api->createCall($request),
+            fn () => $api->createCallAsync($request),
+        ];
+
+        $expectedResponse = new Call(
+            endpoint: new CallsWebRtcEndpoint(
+                identity: "Bob"
+            ),
+            id: "d8d84155-3831-43fb-91c9-bb897149a79d",
+            from: "Alice",
+            to: "Bob",
+            direction: "OUTBOUND",
+            state: "CALLING",
+            media: new CallsMediaProperties(
+                audio: new CallsAudioMediaProperties(
+                    muted: false,
+                    deaf: false
+                ),
+                video: new CallsVideoMediaProperties(
+                    camera: false,
+                    screenShare: false
+                )
+            ),
+            startTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
+            answerTime: new DateTime("2022-01-01T00:00:02.100+00:00"),
+            ringDuration: 2,
+            callsConfigurationId: "dc5942707c704551a00cd2ea",
+            platform: new Platform(
+                applicationId: "61c060db2675060027d8c7a6"
+            ),
+            conferenceId: "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+            customData: [
+                "key1" => "value1",
+                "key2" => "value2"
+            ]
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::CREATE_CALL,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
+    public function testCreateCallWithoutSpecifyingFromField(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "endpoint": {
+            "type": "WEBRTC",
+            "identity": "Bob"
+          },
+          "fromDisplayName": "Alice in Wonderland",
+          "connectTimeout": 30,
+          "recording": {
+            "recordingType": "AUDIO_AND_VIDEO"
+          },
+          "maxDuration": 300,
+          "callsConfigurationId": "dc5942707c704551a00cd2ea",
+          "platform": {
+            "applicationId": "61c060db2675060027d8c7a6"
+          }
+        }
+        JSON;
+
+        $givenResponse = <<< JSON
+        {
+          "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
+          "endpoint": {
+            "type": "WEBRTC",
+            "identity": "Bob"
+          },
+          "from": "Alice",
+          "to": "Bob",
+          "direction": "OUTBOUND",
+          "state": "CALLING",
+          "media": {
+            "audio": {
+              "muted": false,
+              "deaf": false
+            },
+            "video": {
+              "camera": false,
+              "screenShare": false
+            }
+          },
+          "startTime": "2022-01-01T00:00:00.100+00:00",
+          "answerTime": "2022-01-01T00:00:02.100+00:00",
+          "ringDuration": 2,
+          "callsConfigurationId": "dc5942707c704551a00cd2ea",
+          "platform": {
+            "applicationId": "61c060db2675060027d8c7a6"
+          },
+          "conferenceId": "034e622a-cc7e-456d-8a10-0ba43b11aa5e",
+          "customData": {
+            "key1": "value1",
+            "key2": "value2"
+          }
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+
+        $client = $this->mockClient(
+            [
+                new Response(201, $this->givenRequestHeaders, $givenResponse),
+                new Response(201, $this->givenRequestHeaders, $givenResponse),
+            ],
+            $requestHistoryContainer
+        );
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $request = new CallRequest(
+            endpoint: new CallsWebRtcEndpoint(
+                identity: "Bob"
+            ),
             callsConfigurationId: "dc5942707c704551a00cd2ea",
             fromDisplayName: "Alice in Wonderland",
             connectTimeout: 30,
@@ -6409,54 +6542,72 @@ class CallsApiTest extends ApiTestBase
 
     }
 
-    //    public function testUploadCallsAudioFile(): void
-    //    {
-    //        $givenFile = "binary file";
-    //
-    //        $givenResponse = <<<JSON
-    //        {
-    //          "id": "218eceba-c044-430d-9f26-8f1a7f0g2d03",
-    //          "name": "Example file",
-    //          "fileFormat": "WAV",
-    //          "size": 292190,
-    //          "creationMethod": "RECORDED",
-    //          "creationTime": "2024-09-20T14:04:15Z",
-    //          "expirationTime": "2024-09-20T14:04:15Z",
-    //          "duration": 3
-    //        }
-    //        JSON;
-    //
-    //        $requestHistoryContainer = [];
-    //
-    //        $client = $this->mockClient(
-    //            [
-    //                new Response(201, $this->givenRequestHeaders, $givenResponse),
-    //                new Response(201, $this->givenRequestHeaders, $givenResponse),
-    //            ],
-    //            $requestHistoryContainer
-    //        );
-    //
-    //        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
-    //
-    //        $expectedPath = self::UPLOAD_CALLS_AUDIO_FILE;
-    //
-    //        $expectedHttpMethod = "POST";
-    //
-    //        $closures = [
-    //            fn() => $api->uploadCallsAudioFile($givenFile),
-    //            fn() => $api->uploadCallsAudioFileAsync($givenFile),
-    //        ];
-    //
-    //        $this->assertClosureResponses(
-    //            $closures,
-    //            CallsFile::class,
-    //            $givenResponse,
-    //            $expectedPath,
-    //            $expectedHttpMethod,
-    //            $requestHistoryContainer
-    //        );
-    //
-    //    }
+    public function testUploadCallsAudioFile(): void
+    {
+        $givenResponse = <<<JSON
+            {
+              "id": "218eceba-c044-430d-9f26-8f1a7f0g2d03",
+              "name": "Example file",
+              "fileFormat": "WAV",
+              "size": 292190,
+              "creationMethod": "RECORDED",
+              "creationTime": "2024-09-20T14:04:15.000Z",
+              "expirationTime": "2024-09-20T14:04:15.000Z",
+              "duration": 3
+            }
+            JSON;
+
+        $requestHistoryContainer = [];
+
+        $client = $this->mockClient(
+            [
+                new Response(200, $this->givenRequestHeaders, $givenResponse),
+                new Response(200, $this->givenRequestHeaders, $givenResponse),
+            ],
+            $requestHistoryContainer
+        );
+
+        $api = new CallsApi(config: $this->getConfiguration(), client: $client);
+
+        $givenFileContent = "some file content";
+        $tempFile = tmpfile();
+        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
+        file_put_contents($tempFilePath, $givenFileContent);
+        $fileRequest = new \SplFileObject($tempFilePath);
+
+        $closures = [
+            fn () => $api->uploadCallsAudioFile($fileRequest),
+            fn () => $api->uploadCallsAudioFileAsync($fileRequest),
+        ];
+
+        foreach ($closures as $index => $closure) {
+            $responseModel = $this->getUnpackedModel($closure());
+
+            $expectedResponse = new CallsFile(
+                name: "Example file",
+                fileFormat: CallsFileFormat::WAV,
+                id: "218eceba-c044-430d-9f26-8f1a7f0g2d03",
+                size: 292190,
+                creationMethod: "RECORDED",
+                creationTime: new DateTime("2024-09-20T14:04:15.000Z"),
+                expirationTime: new DateTime("2024-09-20T14:04:15.000Z"),
+                duration: 3
+            );
+
+            $this->assertEquals($expectedResponse, $responseModel);
+
+            $expectedBodyParts = [
+                'file' => 'some file content'
+            ];
+
+            $this->assertMultipartFormRequestWithHeadersAndParts(
+                'POST',
+                self::UPLOAD_CALLS_AUDIO_FILE,
+                $expectedBodyParts,
+                $requestHistoryContainer[$index]
+            );
+        }
+    }
 
     public function testGetCallsFile(): void
     {

@@ -26,9 +26,8 @@ class CallsBulkItem
      */
     public function __construct(
         #[Assert\NotBlank]
-        protected string $from,
-        #[Assert\NotBlank]
         protected array $callRequests,
+        protected ?string $from = null,
         #[Assert\Valid]
         protected ?\Infobip\Model\CallRecordingRequest $recording = null,
         #[Assert\Valid]
@@ -48,12 +47,12 @@ class CallsBulkItem
     }
 
 
-    public function getFrom(): string
+    public function getFrom(): string|null
     {
         return $this->from;
     }
 
-    public function setFrom(string $from): self
+    public function setFrom(?string $from): self
     {
         $this->from = $from;
         return $this;

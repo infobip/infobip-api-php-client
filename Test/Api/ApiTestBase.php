@@ -24,10 +24,10 @@ abstract class ApiTestBase extends TestCase
     private const string API_KEY_PREFIX = "App";
     private const string API_KEY = "testApiKey";
     private const string HOST = "http://localhost:8080";
-    private const string EXPECTED_USER_AGENT = 'infobip-api-client-php/6.2.0/PHP';
+    private const string EXPECTED_USER_AGENT = 'infobip-api-client-php/6.2.1/PHP';
 
     protected array $givenRequestHeaders = [
-        'Content-Type'  => 'application/json;charset=UTF-8',
+        'content-type'  => 'application/json;charset=UTF-8',
         'server'        => 'API',
         'x-request-id'  => 'testRequestId',
     ];
@@ -159,7 +159,7 @@ abstract class ApiTestBase extends TestCase
             $actualRequest->getHeaderLine('User-Agent')
         );
 
-        $partPatternTemplate = '/Content-Disposition: form-data; name="%s"\r\nContent-Length: \d+\r\n\r\n%s/';
+        $partPatternTemplate = '/Content-Disposition: form-data; name="%s"(; filename="[^"]+")?\r\n?Content-Length: \d+(\r\nContent-Type: application\/octet-stream)?\r\n\r\n%s/';
         $multipartBody = (string) $actualRequest->getBody();
         foreach ($parts as $field => $value) {
             $arrayValue = is_array($value) ? $value : [$value];
@@ -172,11 +172,11 @@ abstract class ApiTestBase extends TestCase
 
     protected function assertHttpInfoResponse(array $httpInfo): void
     {
-        $this->assertArrayHasKey('Content-Type', $httpInfo);
+        $this->assertArrayHasKey('content-type', $httpInfo);
         $this->assertArrayHasKey('server', $httpInfo);
         $this->assertArrayHasKey('x-request-id', $httpInfo);
 
-        $this->assertContains('application/json;charset=UTF-8', $httpInfo['Content-Type']);
+        $this->assertContains('application/json;charset=UTF-8', $httpInfo['content-type']);
         $this->assertContains('API', $httpInfo['server']);
         $this->assertContains('testRequestId', $httpInfo['x-request-id']);
     }

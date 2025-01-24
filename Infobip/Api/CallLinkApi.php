@@ -11,7 +11,6 @@
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-
 declare(strict_types=1);
 
 /**
@@ -175,7 +174,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/links';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -185,36 +183,10 @@ final class CallLinkApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($webRtcCallLinkRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($webRtcCallLinkRequest)
                 : $webRtcCallLinkRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -443,7 +415,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -453,36 +424,10 @@ final class CallLinkApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($webRtcCallLinkConfigRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($webRtcCallLinkConfigRequest)
                 : $webRtcCallLinkConfigRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -711,7 +656,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/subdomains';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -721,36 +665,10 @@ final class CallLinkApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($webRtcSubdomainRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($webRtcSubdomainRequest)
                 : $webRtcSubdomainRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -990,7 +908,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/links/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1008,33 +925,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1262,7 +1152,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1280,33 +1169,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1534,7 +1396,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/images/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1552,33 +1413,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1806,7 +1640,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/subdomains/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1824,33 +1657,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2078,7 +1884,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/links/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2096,33 +1901,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2369,7 +2147,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/links';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2388,33 +2165,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2642,7 +2392,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2660,33 +2409,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2922,7 +2644,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2941,33 +2662,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3195,7 +2889,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/images/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3213,33 +2906,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3475,7 +3141,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/images';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3494,33 +3159,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3741,7 +3379,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/subdomains';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3750,33 +3387,6 @@ final class CallLinkApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -4011,7 +3621,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4030,36 +3639,10 @@ final class CallLinkApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($webRtcCallLinkConfigRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($webRtcCallLinkConfigRequest)
                 : $webRtcCallLinkConfigRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -4306,7 +3889,6 @@ final class CallLinkApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/call-link/1/configs/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4325,36 +3907,10 @@ final class CallLinkApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($webRtcCallLinkConfigRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($webRtcCallLinkConfigRequest)
                 : $webRtcCallLinkConfigRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -4632,7 +4188,6 @@ final class CallLinkApi
             'Content-Type' => 'multipart/form-data',
         ];
 
-        // for model (json/xml)
         if (count($formParams) > 0) {
             if ($headers['Content-Type'] === 'multipart/form-data') {
                 $boundary = '----' . hash('sha256', uniqid('', true));
@@ -4650,12 +4205,10 @@ final class CallLinkApi
                     }
                 }
 
-                // for HTTP post (form)
                 $httpBody = new MultipartStream($multipartContents, $boundary);
             } elseif ($headers['Content-Type'] === 'application/json') {
                 $httpBody = $this->objectSerializer->serialize($formParams);
             } else {
-                // for HTTP post (form)
                 $httpBody = Query::build($formParams);
             }
         }

@@ -11,7 +11,6 @@
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-
 declare(strict_types=1);
 
 /**
@@ -33,7 +32,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
 use Infobip\ApiException;
@@ -181,7 +179,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/embedded-signup/registrations/business-account/{businessAccountId}/senders';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -200,36 +197,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppPhoneNumberRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppPhoneNumberRequest)
                 : $whatsAppPhoneNumberRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -483,7 +454,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/{sender}/contacts/{userNumber}/identity';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -511,36 +481,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppIdentityConfirmation)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppIdentityConfirmation)
                 : $whatsAppIdentityConfirmation;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -773,7 +717,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/2/senders/{sender}/templates';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -792,36 +735,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppTemplatePublicApiRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppTemplatePublicApiRequest)
                 : $whatsAppTemplatePublicApiRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -1068,7 +985,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/media';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1087,36 +1003,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppUrlDeletionRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppUrlDeletionRequest)
                 : $whatsAppUrlDeletionRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -1349,7 +1239,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/2/senders/{sender}/templates/{templateName}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1376,33 +1265,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1645,7 +1507,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/media/{mediaId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1672,33 +1533,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1929,7 +1763,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/2/senders/{sender}/templates/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1957,36 +1790,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppTemplateEditPublicApiRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppTemplateEditPublicApiRequest)
                 : $whatsAppTemplateEditPublicApiRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -2233,7 +2040,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/{sender}/contacts/{userNumber}/identity';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2260,33 +2066,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2510,7 +2289,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/media/{mediaId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2537,33 +2315,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -2622,11 +2373,11 @@ final class WhatsAppApi
         }
 
         $responseResult = [];
-        if (!empty($responseHeaders['Content-Length'])) {
-            $responseResult['Content-Length'] = $responseHeaders['Content-Length'][0];
+        if (!empty($responseHeaders['content-length'])) {
+            $responseResult['Content-Length'] = $responseHeaders['content-length'][0];
         }
-        if (!empty($responseHeaders['Content-Type'])) {
-            $responseResult['Content-Type'] = $responseHeaders['Content-Type'][0];
+        if (!empty($responseHeaders['content-type'])) {
+            $responseResult['Content-Type'] = $responseHeaders['content-type'][0];
         }
         return $responseResult;
     }
@@ -2636,53 +2387,6 @@ final class WhatsAppApi
      */
     private function getWhatsAppMediaMetadataApiException(ApiException $apiException): ApiException
     {
-        $statusCode = $apiException->getCode();
-
-        if ($statusCode === 401) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 403) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 429) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-        if ($statusCode === 500) {
-            $data = $this->objectSerializer->deserialize(
-                $apiException->getResponseBody(),
-                '\Infobip\Model\ApiException',
-                $apiException->getResponseHeaders()
-            );
-
-            $apiException->setResponseObject($data);
-
-            return $apiException;
-        }
-
         return $apiException;
     }
 
@@ -2782,7 +2486,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/2/senders/{sender}/templates';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2800,33 +2503,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3061,7 +2737,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/payments/br/{paymentId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3088,33 +2763,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3345,7 +2993,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/business-info';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3363,33 +3010,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3631,7 +3251,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/business-info/logo';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3649,33 +3268,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -3916,7 +3508,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/quality';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -3930,33 +3521,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -4191,7 +3755,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/2/senders/{sender}/templates/{id}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4218,33 +3781,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -4490,7 +4026,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/payments/upi/{paymentId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4517,33 +4052,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -4780,7 +4288,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/payments/upi/payu/{paymentId}';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -4807,33 +4314,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -5068,7 +4548,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/message/{messageId}/read';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5095,33 +4574,6 @@ final class WhatsAppApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -5365,7 +4817,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/embedded-signup/registrations/senders/{sender}/verification';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5384,36 +4835,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppOtpRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppOtpRequest)
                 : $whatsAppOtpRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -5650,7 +5075,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/audio';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5660,36 +5084,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppAudioMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppAudioMessage)
                 : $whatsAppAudioMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -5918,7 +5316,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/contact';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -5928,36 +5325,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppContactsMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppContactsMessage)
                 : $whatsAppContactsMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -6186,7 +5557,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/document';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -6196,36 +5566,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppDocumentMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppDocumentMessage)
                 : $whatsAppDocumentMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -6454,7 +5798,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/image';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -6464,36 +5807,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppImageMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppImageMessage)
                 : $whatsAppImageMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -6722,7 +6039,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/buttons';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -6732,36 +6048,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveButtonsMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveButtonsMessage)
                 : $whatsAppInteractiveButtonsMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -6990,7 +6280,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/list';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -7000,36 +6289,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveListMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveListMessage)
                 : $whatsAppInteractiveListMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -7258,7 +6521,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/multi-product';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -7268,36 +6530,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveMultiProductMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveMultiProductMessage)
                 : $whatsAppInteractiveMultiProductMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -7526,7 +6762,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/product';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -7536,36 +6771,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveProductMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveProductMessage)
                 : $whatsAppInteractiveProductMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -7794,7 +7003,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/location';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -7804,36 +7012,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppLocationMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppLocationMessage)
                 : $whatsAppLocationMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -8062,7 +7244,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/sticker';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -8072,36 +7253,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppStickerMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppStickerMessage)
                 : $whatsAppStickerMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -8330,7 +7485,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/template';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -8340,36 +7494,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppBulkMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppBulkMessage)
                 : $whatsAppBulkMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -8598,7 +7726,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/text';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -8608,36 +7735,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppTextMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppTextMessage)
                 : $whatsAppTextMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -8866,7 +7967,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/video';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -8876,36 +7976,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppVideoMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppVideoMessage)
                 : $whatsAppVideoMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -9134,7 +8208,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/flow';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -9144,36 +8217,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveFlowMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveFlowMessage)
                 : $whatsAppInteractiveFlowMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -9402,7 +8449,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/location-request';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -9412,36 +8458,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveLocationRequestMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveLocationRequestMessage)
                 : $whatsAppInteractiveLocationRequestMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -9670,7 +8690,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/order-details';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -9680,36 +8699,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveOrderDetailsMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveOrderDetailsMessage)
                 : $whatsAppInteractiveOrderDetailsMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -9938,7 +8931,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/order-status';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -9948,36 +8940,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveOrderStatusMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveOrderStatusMessage)
                 : $whatsAppInteractiveOrderStatusMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -10206,7 +9172,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/message/interactive/url-button';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -10216,36 +9181,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppInteractiveUrlButtonMessage)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppInteractiveUrlButtonMessage)
                 : $whatsAppInteractiveUrlButtonMessage;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -10484,7 +9423,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/senders/{sender}/business-info';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -10503,36 +9441,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppBusinessInfoRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppBusinessInfoRequest)
                 : $whatsAppBusinessInfoRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -10777,7 +9689,6 @@ final class WhatsAppApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/whatsapp/1/embedded-signup/registrations/senders/{sender}/verification';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -10796,36 +9707,10 @@ final class WhatsAppApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($whatsAppVerifyCodeRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($whatsAppVerifyCodeRequest)
                 : $whatsAppVerifyCodeRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();

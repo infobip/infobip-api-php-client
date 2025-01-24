@@ -81,8 +81,8 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
     public function testGetWhatsAppMediaMetadata(): void
     {
         $responseHeaders = [
-            'Content-Type' => 'image/jpeg',
-            'Content-Length' => '1204',
+            'content-type' => 'image/jpeg',
+            'content-length' => '1204',
         ];
 
         $responses = $this->makeResponses(
