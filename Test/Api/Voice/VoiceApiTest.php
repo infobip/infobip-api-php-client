@@ -9,6 +9,8 @@ use Infobip\Model\CallsAdvancedBody;
 use Infobip\Model\CallsBulkRequest;
 use Infobip\Model\CallsBulkResponse;
 use Infobip\Model\CallsBulkStatusResponse;
+use Infobip\Model\CallsCallApi;
+use Infobip\Model\CallsCallApiOptions;
 use Infobip\Model\CallsCapture;
 use Infobip\Model\CallsCollect;
 use Infobip\Model\CallsCollectOptions;
@@ -17,6 +19,7 @@ use Infobip\Model\CallsDtmfOptions;
 use Infobip\Model\CallsForEach;
 use Infobip\Model\CallsGetVoicesResponse;
 use Infobip\Model\CallsHangup;
+use Infobip\Model\CallsHttpMethod;
 use Infobip\Model\CallsIfThenElse;
 use Infobip\Model\CallsIvrMessage;
 use Infobip\Model\CallsLaunchScenarioRequest;
@@ -982,6 +985,105 @@ class VoiceApiTest extends ApiTestBase
             $requestHistoryContainer
         );
     }
+
+    public function testCreateCallApiVoiceIvrScenario(): void
+    {
+        $givenRequest = <<<JSON
+        {
+          "name": "Call API",
+          "description": "Perform a POST request to provided URL with headers and payload.",
+          "script": [
+            {
+              "request": "https://example.com/api/calls",
+              "options": {
+                "method": "POST",
+                "headers": {
+                  "content-type": "application/json"
+                },
+                "body": "\${to} finished the IVR."
+              }
+            }
+          ]
+        }
+        JSON;
+
+        $givenResponse = <<<JSON
+        {
+          "id": "E83E787CF2613450157ADA3476171E3F",
+          "name": "Call API",
+          "description": "Perform a POST request to provided URL with headers and payload.",
+          "script": [
+            {
+              "request": "https://example.com/api/calls",
+              "options": {
+                "method": "POST",
+                "headers": {
+                  "content-type": "application/json"
+                },
+                "body": "\${to} finished the IVR."
+              }
+            }
+          ],
+          "createTime": "2024-11-09T17:00:00.000+01:00"
+        }
+        JSON;
+
+        $requestHistoryContainer = [];
+        $responses = $this->makeResponses(2, $givenResponse, 200);
+        $client = $this->mockClient($responses, $requestHistoryContainer);
+
+        $api = new VoiceApi($this->getConfiguration(), client: $client);
+
+        $request = new CallsUpdateScenarioRequest(
+            name: "Call API",
+            script: [
+                new CallsCallApi(
+                    request: "https://example.com/api/calls",
+                    options: new CallsCallApiOptions(
+                        method: CallsHttpMethod::POST,
+                        headers: [
+                            "content-type" => "application/json"
+                        ],
+                        body: '${to} finished the IVR.'
+                    )
+                )
+            ],
+            description: "Perform a POST request to provided URL with headers and payload."
+        );
+
+        $closures = [
+            fn () => $api->createAVoiceIvrScenario($request),
+            fn () => $api->createAVoiceIvrScenarioAsync($request),
+        ];
+
+        $expectedResponse = new CallsUpdateScenarioResponse(
+            createTime: new DateTime("2024-11-09T17:00:00.000+01:00"),
+            description: "Perform a POST request to provided URL with headers and payload.",
+            id: "E83E787CF2613450157ADA3476171E3F",
+            name: "Call API",
+            script: [
+                new CallsCallApi(
+                    request: "https://example.com/api/calls",
+                    options: new CallsCallApiOptions(
+                        method: CallsHttpMethod::POST,
+                        headers: [
+                            "content-type" => "application/json"
+                        ],
+                        body: '${to} finished the IVR.'
+                    )
+                )
+            ]
+        );
+
+        $this->assertPostRequest(
+            $closures,
+            self::VOICE_SCENARIOS,
+            $givenRequest,
+            $expectedResponse,
+            $requestHistoryContainer
+        );
+    }
+
 
     public function testSearchVoiceIvrScenarios(): void
     {

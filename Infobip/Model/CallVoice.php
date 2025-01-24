@@ -145,6 +145,9 @@ final class CallVoice implements EnumInterface
     public const MAI__BETA = 'Mai (beta)';
     public const TUAN__BETA = 'Tuan (beta)';
     public const GWYNETH = 'Gwyneth';
+    public const AARYA = 'Aarya';
+    public const ARJUN = 'Arjun';
+    public const REVATI = 'Revati';
     public const HAMED__NEURAL = 'Hamed (neural)';
     public const SALMA__NEURAL = 'Salma (neural)';
     public const SHAKIR__NEURAL = 'Shakir (neural)';
@@ -434,6 +437,8 @@ final class CallVoice implements EnumInterface
     public const JAMAL__NEURAL = 'Jamal (neural)';
     public const UZMA__NEURAL = 'Uzma (neural)';
     public const ASAD__NEURAL = 'Asad (neural)';
+    public const AAROHI__NEURAL = 'Aarohi (neural)';
+    public const MANOHAR__NEURAL = 'Manohar (neural)';
 
     public const ALLOWED_VALUES = [
         'Zeina',
@@ -561,6 +566,9 @@ final class CallVoice implements EnumInterface
         'Mai (beta)',
         'Tuan (beta)',
         'Gwyneth',
+        'Aarya',
+        'Arjun',
+        'Revati',
         'Hamed (neural)',
         'Salma (neural)',
         'Shakir (neural)',
@@ -850,6 +858,8 @@ final class CallVoice implements EnumInterface
         'Jamal (neural)',
         'Uzma (neural)',
         'Asad (neural)',
+        'Aarohi (neural)',
+        'Manohar (neural)',
     ];
 
     private string $value;
@@ -1492,6 +1502,21 @@ final class CallVoice implements EnumInterface
     public static function GWYNETH(): CallVoice
     {
         return new self('Gwyneth');
+    }
+
+    public static function AARYA(): CallVoice
+    {
+        return new self('Aarya');
+    }
+
+    public static function ARJUN(): CallVoice
+    {
+        return new self('Arjun');
+    }
+
+    public static function REVATI(): CallVoice
+    {
+        return new self('Revati');
     }
 
     public static function HAMED__NEURAL(): CallVoice
@@ -2937,6 +2962,16 @@ final class CallVoice implements EnumInterface
     public static function ASAD__NEURAL(): CallVoice
     {
         return new self('Asad (neural)');
+    }
+
+    public static function AAROHI__NEURAL(): CallVoice
+    {
+        return new self('Aarohi (neural)');
+    }
+
+    public static function MANOHAR__NEURAL(): CallVoice
+    {
+        return new self('Manohar (neural)');
     }
 
     public function __toString(): string

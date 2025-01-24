@@ -27,8 +27,7 @@ class CallsActionCallRequest
         #[Assert\Valid]
         #[Assert\NotBlank]
         protected \Infobip\Model\CallEndpoint $endpoint,
-        #[Assert\NotBlank]
-        protected string $from,
+        protected ?string $from = null,
         protected ?string $fromDisplayName = null,
         protected ?int $connectTimeout = null,
         #[Assert\Valid]
@@ -53,12 +52,12 @@ class CallsActionCallRequest
         return $this;
     }
 
-    public function getFrom(): string
+    public function getFrom(): string|null
     {
         return $this->from;
     }
 
-    public function setFrom(string $from): self
+    public function setFrom(?string $from): self
     {
         $this->from = $from;
         return $this;

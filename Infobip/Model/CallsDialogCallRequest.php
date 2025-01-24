@@ -24,10 +24,9 @@ class CallsDialogCallRequest
      * @param array<string,string> $customData
      */
     public function __construct(
-        #[Assert\NotBlank]
-        protected string $from,
         #[Assert\Valid]
         protected ?\Infobip\Model\CallEndpoint $endpoint = null,
+        protected ?string $from = null,
         protected ?string $fromDisplayName = null,
         protected ?int $connectTimeout = null,
         #[Assert\Valid]
@@ -49,12 +48,12 @@ class CallsDialogCallRequest
         return $this;
     }
 
-    public function getFrom(): string
+    public function getFrom(): string|null
     {
         return $this->from;
     }
 
-    public function setFrom(string $from): self
+    public function setFrom(?string $from): self
     {
         $this->from = $from;
         return $this;

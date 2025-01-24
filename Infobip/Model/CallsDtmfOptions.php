@@ -21,11 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsDtmfOptions
 {
     /**
+     * @param array<string,mixed> $mappedValues
      */
     public function __construct(
         #[Assert\LessThanOrEqual(255)]
         protected ?int $maxInputLength = null,
-        protected ?object $mappedValues = null,
+        protected ?array $mappedValues = null,
     ) {
 
     }
@@ -42,12 +43,18 @@ class CallsDtmfOptions
         return $this;
     }
 
-    public function getMappedValues(): object|null
+    /**
+     * @return array<string,mixed>|null
+     */
+    public function getMappedValues()
     {
         return $this->mappedValues;
     }
 
-    public function setMappedValues(?object $mappedValues): self
+    /**
+     * @param array<string,mixed>|null $mappedValues Map of expected collected DTMF values with some real meaning. (Example: if you have multilingual IVR, and option for users to press 1 to enter "English" menu, you can define {"1":"English"}, so the reporting and analysis will be easier). When this option is defined additional variable is present in the scenario. If you set your capture action variable name to myVar, then you will get additional variable myVar_Meaning containing the mapped value for a collected DTMF.
+     */
+    public function setMappedValues(?array $mappedValues): self
     {
         $this->mappedValues = $mappedValues;
         return $this;

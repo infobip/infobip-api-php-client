@@ -21,11 +21,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 class CallsCallApiOptions
 {
     /**
+     * @param array<string,mixed> $headers
      */
     public function __construct(
         #[Assert\NotBlank]
         protected string $method,
-        protected ?object $headers = null,
+        protected ?array $headers = null,
         protected ?string $body = null,
         protected ?bool $collectResponse = null,
     ) {
@@ -44,12 +45,18 @@ class CallsCallApiOptions
         return $this;
     }
 
-    public function getHeaders(): object|null
+    /**
+     * @return array<string,mixed>|null
+     */
+    public function getHeaders()
     {
         return $this->headers;
     }
 
-    public function setHeaders(?object $headers): self
+    /**
+     * @param array<string,mixed>|null $headers HTTP headers
+     */
+    public function setHeaders(?array $headers): self
     {
         $this->headers = $headers;
         return $this;

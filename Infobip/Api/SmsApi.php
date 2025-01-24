@@ -11,7 +11,6 @@
  * @author   Infobip Support
  * @link     https://www.infobip.com
  */
-
 declare(strict_types=1);
 
 /**
@@ -33,7 +32,6 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\Psr7\Request;
 use Infobip\ApiException;
@@ -191,7 +189,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/inbox/reports';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -220,33 +217,6 @@ final class SmsApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -509,7 +479,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/3/reports';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -548,33 +517,6 @@ final class SmsApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -852,7 +794,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/3/logs';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -926,33 +867,6 @@ final class SmsApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1169,7 +1083,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/bulks';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1183,33 +1096,6 @@ final class SmsApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1442,7 +1328,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/bulks/status';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1456,33 +1341,6 @@ final class SmsApi
             'Accept' => 'application/json',
         ];
 
-        // for model (json/xml)
-        if (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
-        }
 
         $apiKey = $this->config->getApiKey();
 
@@ -1710,7 +1568,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/preview';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1720,36 +1577,10 @@ final class SmsApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($smsPreviewRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($smsPreviewRequest)
                 : $smsPreviewRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -1974,7 +1805,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/bulks';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -1989,36 +1819,10 @@ final class SmsApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($smsBulkRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($smsBulkRequest)
                 : $smsBulkRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -2263,7 +2067,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/3/messages';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2273,36 +2076,10 @@ final class SmsApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($smsRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($smsRequest)
                 : $smsRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();
@@ -2527,7 +2304,6 @@ final class SmsApi
 
         $this->validateParams($allData, $validationConstraints);
         $resourcePath = '/sms/1/bulks/status';
-        $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
@@ -2542,36 +2318,10 @@ final class SmsApi
             'Content-Type' => 'application/json',
         ];
 
-        // for model (json/xml)
         if (isset($smsUpdateStatusRequest)) {
             $httpBody = ($headers['Content-Type'] === 'application/json')
                 ? $this->objectSerializer->serialize($smsUpdateStatusRequest)
                 : $smsUpdateStatusRequest;
-        } elseif (count($formParams) > 0) {
-            if ($headers['Content-Type'] === 'multipart/form-data') {
-                $boundary = '----' . hash('sha256', uniqid('', true));
-                $headers['Content-Type'] .= '; boundary=' . $boundary;
-                $multipartContents = [];
-
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $formParamValueItems = (\is_array($formParamValue)) ? $formParamValue : [$formParamValue];
-
-                    foreach ($formParamValueItems as $formParamValueItem) {
-                        $multipartContents[] = [
-                            'name' => $formParamName,
-                            'contents' => $formParamValueItem
-                        ];
-                    }
-                }
-
-                // for HTTP post (form)
-                $httpBody = new MultipartStream($multipartContents, $boundary);
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = $this->objectSerializer->serialize($formParams);
-            } else {
-                // for HTTP post (form)
-                $httpBody = Query::build($formParams);
-            }
         }
 
         $apiKey = $this->config->getApiKey();

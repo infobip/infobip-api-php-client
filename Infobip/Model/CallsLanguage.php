@@ -80,6 +80,7 @@ final class CallsLanguage implements EnumInterface
     public const WLS = 'wls';
     public const AR_MA = 'ar-ma';
     public const UR_PK = 'ur-pk';
+    public const MR_IN = 'mr-in';
 
     public const ALLOWED_VALUES = [
         'ar',
@@ -142,6 +143,7 @@ final class CallsLanguage implements EnumInterface
         'wls',
         'ar-ma',
         'ur-pk',
+        'mr-in',
     ];
 
     private string $value;
@@ -459,6 +461,11 @@ final class CallsLanguage implements EnumInterface
     public static function UR_PK(): CallsLanguage
     {
         return new self('ur-pk');
+    }
+
+    public static function MR_IN(): CallsLanguage
+    {
+        return new self('mr-in');
     }
 
     public function __toString(): string

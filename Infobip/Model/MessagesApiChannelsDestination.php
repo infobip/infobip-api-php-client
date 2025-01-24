@@ -26,10 +26,22 @@ class MessagesApiChannelsDestination implements MessagesApiMessageDestination
     public function __construct(
         #[Assert\NotBlank]
         protected array $byChannel,
+        protected ?string $messageId = null,
     ) {
 
     }
 
+
+    public function getMessageId(): string|null
+    {
+        return $this->messageId;
+    }
+
+    public function setMessageId(?string $messageId): self
+    {
+        $this->messageId = $messageId;
+        return $this;
+    }
 
     /**
      * @return \Infobip\Model\MessagesApiChannelDestination[]

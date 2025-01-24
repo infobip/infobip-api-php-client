@@ -4,6 +4,25 @@ All notable changes to the library will be documented in this file.
 
 The format of the file is based on [Keep a Changelog](http://keepachangelog.com/) and this library adheres to [Semantic Versioning](http://semver.org/) as mentioned in the [README.md][readme] file.
 
+## [ [6.2.1](https://github.com/infobip/infobip-api-php-client/releases/tag/6.2.0) ] - 2025-01-24
+
+### Added
+* An option to define the `messageId` for all channels in Messages API failover flow.
+* New voices and languages for Calls API.
+
+### Fixed
+
+* Serialization of `CallsDtmfOptions`, `CallsCollectOptions` and `CallsCallApiOptions` in IVR scenario scripts.
+* [Issue #67](https://github.com/infobip/infobip-api-php-client/issues/67): Fetching WhatsApp media metadata methods now return an array that contains header values provided by the API.
+  This version provides an additional fix that fully resolves the issue.
+
+### Changed
+* Field `from` is no longer required when creating outbound calls.
+* Form parameter processing code is refactored and removed from the API methods where it is not needed.
+
+### Removed
+* A no-longer required `DISCONNECTED` call state.
+
 ## [ [6.2.0](https://github.com/infobip/infobip-api-php-client/releases/tag/6.2.0) ] - 2025-01-20
 
 ⚠️ **IMPORTANT NOTE:** This release contains breaking changes!
