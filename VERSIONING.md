@@ -77,7 +77,7 @@ This ensures the SDK remains reliable and accurate for production usage.
 
 ### 4.1 Minimum PHP Version Changes
 
-Increasing the **minimum supported PHP version** (e.g., PHP 8.0 → PHP 8.3) is always treated as a **MAJOR** version change. Such a change breaks compilation and runtime compatibility for existing users and therefore constitutes a breaking API change.
+Increasing the **minimum supported PHP version** (e.g., PHP 8.0 → PHP 8.3) is always treated as a **MAJOR** version change. Such a change may break compilation and runtime compatibility for existing users and therefore constitutes a breaking API change.
 
 ### 4.2 Dependency Upgrade Policy
 
