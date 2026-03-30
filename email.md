@@ -30,7 +30,7 @@ IMPORTANT NOTE:
 Keep in mind following restrictions while using trial account
 
 - you can only send messages to verified email addresses
-- you can only use your emails address with Infobip test domain in following form `YourUserName@selfserviceib.com`
+- you can only use your email address with the Infobip test domain in the following form: `YourUserName@selfserve.worlds-connected.co`
 
 ```php
     $response = $sendEmailApi->sendEmail(
