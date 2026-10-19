@@ -37,10 +37,10 @@ class ViberApiTest extends ApiTestBase
         {
           "messages": [
             {
-              "sender": "441134960000",
+              "sender": "44xxxxxxxx46",
               "destinations": [
                 {
-                  "to": "441134960001"
+                  "to": "44xxxxxxxx47"
                 }
               ],
               "content": {
@@ -49,7 +49,7 @@ class ViberApiTest extends ApiTestBase
               },
               "options": {
                 "smsFailover": {
-                  "sender": "441134960000",
+                  "sender": "44xxxxxxxx46",
                   "text": "Some failover text"
                 },
                 "label": "TRANSACTIONAL",
@@ -75,7 +75,7 @@ class ViberApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "441134960001"
+              "destination": "44xxxxxxxx47"
             }
           ]
         }
@@ -88,16 +88,16 @@ class ViberApiTest extends ApiTestBase
         $request = new ViberRequest(
             messages: [
                 new ViberMessage(
-                    sender: '441134960000',
+                    sender: '44xxxxxxxx46',
                     destinations: [
-                        new ViberToDestination(to: '441134960001')
+                        new ViberToDestination(to: '44xxxxxxxx47')
                     ],
                     content: new ViberOutboundTextContent(
                         text: 'Some text'
                     ),
                     options: new ViberMessageOptions(
                         smsFailover: new ViberDefaultSmsFailover(
-                            sender: '441134960000',
+                            sender: '44xxxxxxxx46',
                             text: 'Some failover text'
                         ),
                         label: 'TRANSACTIONAL',
@@ -137,7 +137,7 @@ class ViberApiTest extends ApiTestBase
                             name: "PENDING_ACCEPTED",
                             description: "Message sent to next instance"
                         ),
-                        destination: "441134960001"
+                        destination: "44xxxxxxxx47"
                     )
                 ],
                 bulkId: "a28dd97c-2222-4fcf-99f1-0b557ed381da"
@@ -447,10 +447,10 @@ class ViberApiTest extends ApiTestBase
         {
           "messages": [
             {
-              "sender": "441134960000",
+              "sender": "44xxxxxxxx46",
               "destinations": [
                 {
-                  "to": "441134960001"
+                  "to": "44xxxxxxxx47"
                 }
               ],
               "content": {
@@ -479,7 +479,7 @@ class ViberApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "441134960001"
+              "destination": "44xxxxxxxx47"
             }
           ]
         }
@@ -494,9 +494,9 @@ class ViberApiTest extends ApiTestBase
         $request = new ViberRequest(
             messages: [
                 new ViberMessage(
-                    sender: '441134960000',
+                    sender: '44xxxxxxxx46',
                     destinations: [
-                        new ViberToDestination(to: '441134960001')
+                        new ViberToDestination(to: '44xxxxxxxx47')
                     ],
                     content: new ViberOutboundOtpTemplateContent(
                         id: 'my-template-id',
@@ -523,7 +523,7 @@ class ViberApiTest extends ApiTestBase
                         name: "PENDING_ACCEPTED",
                         description: "Message sent to next instance"
                     ),
-                    destination: "441134960001"
+                    destination: "44xxxxxxxx47"
                 )
             ],
             bulkId: "some-bulk-id"

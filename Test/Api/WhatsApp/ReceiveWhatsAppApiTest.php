@@ -33,7 +33,7 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
 
         $api = new ReceiveWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
         $mediaId = 'someMediaId';
 
         $expectedPath = str_replace(
@@ -97,7 +97,7 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
 
         $api = new ReceiveWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
         $mediaId = 'someMediaId';
 
         $expectedPath = str_replace(
@@ -150,7 +150,7 @@ class ReceiveWhatsAppApiTest extends ApiTestBase
 
         $api = new ReceiveWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
         $messageId = 'someMessageId';
 
         $expectedPath = str_replace(

@@ -32,7 +32,7 @@ class CallRoutingApiTest extends ApiTestBase
               "destinations": [
                 {
                   "value": {
-                    "username": "41793026834",
+                    "username": "41xxxxxxx30",
                     "sipTrunkId": "string",
                     "customHeaders": {
                       "string": "string"
@@ -60,7 +60,7 @@ class CallRoutingApiTest extends ApiTestBase
               "destinations": [
                 {
                   "value": {
-                    "phoneNumber": "41793026834",
+                    "phoneNumber": "41xxxxxxx30",
                     "type": "PHONE"
                   },
                   "connectTimeout": 30,
@@ -132,7 +132,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "60d345fd3a799ec",
                 "customHeaders": {
                   "Header-Name": "header value"
@@ -163,7 +163,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "string",
                 "customHeaders": {
                   "string": "string"
@@ -229,7 +229,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "string",
                 "customHeaders": {
                   "string": "string"
@@ -290,7 +290,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "60d345fd3a799ec",
                 "customHeaders": {
                   "Header-Name": "header value"
@@ -321,7 +321,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "string",
                 "customHeaders": {
                   "string": "string"
@@ -386,7 +386,7 @@ class CallRoutingApiTest extends ApiTestBase
           "destinations": [
             {
               "value": {
-                "username": "41793026834",
+                "username": "41xxxxxxx30",
                 "sipTrunkId": "string",
                 "customHeaders": {
                   "string": "string"

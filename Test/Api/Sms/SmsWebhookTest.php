@@ -17,8 +17,8 @@ class SmsWebhookTest extends ApiTestBase
           "results": [
             {
               "messageId": "817790313235066447",
-              "from": "385916242493",
-              "to": "385921004026",
+              "from": "44xxxxxxxx41",
+              "to": "44xxxxxxxx43",
               "text": "QUIZ Correct answer is Paris",
               "cleanText": "Correct answer is Paris",
               "keyword": "QUIZ",
@@ -76,7 +76,7 @@ class SmsWebhookTest extends ApiTestBase
                 "permanent": false
               },
               "messageId": "MESSAGE-ID-123-xyz",
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "sender": "InfoSMS",
               "sentAt": "2019-11-09T16:00:00.000+01:00",
               "doneAt": "2019-11-09T16:00:00.000+01:00",
@@ -108,7 +108,7 @@ class SmsWebhookTest extends ApiTestBase
                 "permanent": false
               },
               "messageId": "12db39c3-7822-4e72-a3ec-c87442c0ffc5",
-              "to": "41793026834",
+              "to": "41xxxxxxx30",
               "sender": "InfoSMS",
               "sentAt": "2019-11-09T17:00:00.000+01:00",
               "doneAt": "2019-11-09T17:00:00.000+01:00",

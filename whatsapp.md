@@ -27,13 +27,13 @@ Now, you can create an instance of `WhatsAppApi` that allows you to send WhatsAp
 
 Before sending WhatsApp messages, you need to activate your sender and connect to our test domain.
 
-Just add **447860099299** Infobip sender to your WhatsApp contacts and send a message containing your Infobip account username.
-
-Alternatively, visit our [docs page][whatsapp-docs-page] to scan a QR code that activates your test sender for you.
+Follow the [WhatsApp sender setup guide][whatsapp-docs-page] to activate a test sender, or scan the QR code provided there. Use the sender value from that setup in place of `<YOUR_WHATSAPP_SENDER>` in the examples below.
 
 You are now ready to send your first message !
 
 **IMPORTANT**: Keep in mind that for testing purposes you can only send messages to registered numbers.
+
+Before executing the examples, replace `<YOUR_WHATSAPP_SENDER>` with the sender value from setup and `<YOUR_WHATSAPP_NUMBER>` with a number registered to your account.
 
 ### Send your first message
 
@@ -49,8 +49,8 @@ but you can change it to a few others that are predefined in the template.
 
 ```php
     $message = new WhatsAppMessage(
-        from: '447860099299',
-        to: '<PUT YOUR NUMBER>',
+        from: '<YOUR_WHATSAPP_SENDER>',
+        to: '<YOUR_WHATSAPP_NUMBER>',
         content: new WhatsAppTemplateContent(
             templateName: 'welcome_multiple_languages',
             templateData: new WhatsAppTemplateDataContent(
@@ -119,8 +119,8 @@ The rest is the same as in the previous example. We are again using the `$whatsA
     $bulkMessage = new WhatsAppBulkMessage(
         messages: [
             new WhatsAppMessage(
-                from: '447860099299',
-                to: '<PUT YOUR NUMBER>',
+                from: '<YOUR_WHATSAPP_SENDER>',
+                to: '<YOUR_WHATSAPP_NUMBER>',
                 content: $templateContent
             )
         ]
@@ -143,8 +143,8 @@ And so, to send a freestyle message, you have to initiate a WhatsApp conversatio
 
 ```php
     $textMessage = new WhatsAppTextMessage(
-        from: '447860099299',
-        to: '<PUT YOUR NUMBER>',
+        from: '<YOUR_WHATSAPP_SENDER>',
+        to: '<YOUR_WHATSAPP_NUMBER>',
         content: new WhatsAppTextContent(
             text: 'This is my first WhatsApp message sent using Infobip API client library'
         )

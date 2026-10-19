@@ -821,8 +821,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "body": {
@@ -843,7 +843,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -890,8 +890,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "action": {
@@ -919,7 +919,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -966,8 +966,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "header": {
@@ -1007,7 +1007,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -1054,8 +1054,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "body": {
@@ -1148,7 +1148,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -1195,8 +1195,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "action": {
@@ -1228,7 +1228,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -1275,8 +1275,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "body": {
@@ -1319,7 +1319,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {
@@ -1366,8 +1366,8 @@ class SendWhatsAppApiTest extends ApiTestBase
     {
         $givenRequest = <<<JSON
         {
-          "from": "441134960000",
-          "to": "441134960001",
+          "from": "44xxxxxxxx46",
+          "to": "44xxxxxxxx47",
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "content": {
             "body": {
@@ -1399,7 +1399,7 @@ class SendWhatsAppApiTest extends ApiTestBase
 
         $givenResponse = <<<JSON
         {
-          "to": "441134960001",
+          "to": "44xxxxxxxx47",
           "messageCount": 1,
           "messageId": "a28dd97c-1ffb-4fcf-99f1-0b557ed381da",
           "status": {

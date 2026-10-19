@@ -16,8 +16,8 @@ $requestVars = [
     'messages' => [
         // text header
         [
-            'from' => '447860099299',
-            'to' => '385958000000',
+            'from' => '44xxxxxxxx65',
+            'to' => '44xxxxxxxx44',
             'content' => [
                 'templateName' => 'some template name',
                 'templateData' => [
@@ -46,14 +46,14 @@ $requestVars = [
             'callbackData' => 'some callback data',
             'notifyUrl' => 'https://www.example.com/whatsapp',
             'smsFailover' => [
-                'from' => '447860099299',
+                'from' => '44xxxxxxxx65',
                 'text' => 'Some text',
             ]
         ],
         // document header
         [
-            'from' => '447860099299',
-            'to' => '385958000000',
+            'from' => '44xxxxxxxx65',
+            'to' => '44xxxxxxxx44',
             'content' => [
                 'templateName' => 'some template name',
                 'templateData' => [
@@ -83,14 +83,14 @@ $requestVars = [
             'callbackData' => 'some callback data',
             'notifyUrl' => 'https://www.example.com/whatsapp',
             'smsFailover' => [
-                'from' => '447860099299',
+                'from' => '44xxxxxxxx65',
                 'text' => 'Some text',
             ]
         ],
         // image header
         [
-            'from' => '447860099299',
-            'to' => '385958000000',
+            'from' => '44xxxxxxxx65',
+            'to' => '44xxxxxxxx44',
             'content' => [
                 'templateName' => 'some template name',
                 'templateData' => [
@@ -119,14 +119,14 @@ $requestVars = [
             'callbackData' => 'some callback data',
             'notifyUrl' => 'https://www.example.com/whatsapp',
             'smsFailover' => [
-                'from' => '447860099299',
+                'from' => '44xxxxxxxx65',
                 'text' => 'Some text',
             ]
         ],
         // video header
         [
-            'from' => '447860099299',
-            'to' => '385958000000',
+            'from' => '44xxxxxxxx65',
+            'to' => '44xxxxxxxx44',
             'content' => [
                 'templateName' => 'some template name',
                 'templateData' => [
@@ -155,14 +155,14 @@ $requestVars = [
             'callbackData' => 'some callback data',
             'notifyUrl' => 'https://www.example.com/whatsapp',
             'smsFailover' => [
-                'from' => '447860099299',
+                'from' => '44xxxxxxxx65',
                 'text' => 'Some text',
             ]
         ],
         // location header
         [
-            'from' => '447860099299',
-            'to' => '385958000000',
+            'from' => '44xxxxxxxx65',
+            'to' => '44xxxxxxxx44',
             'content' => [
                 'templateName' => 'some template name',
                 'templateData' => [
@@ -192,7 +192,7 @@ $requestVars = [
             'callbackData' => 'some callback data',
             'notifyUrl' => 'https://www.example.com/whatsapp',
             'smsFailover' => [
-                'from' => '447860099299',
+                'from' => '44xxxxxxxx65',
                 'text' => 'Some text',
             ]
         ]

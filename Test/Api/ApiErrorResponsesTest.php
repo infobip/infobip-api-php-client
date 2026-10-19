@@ -39,7 +39,7 @@ class ApiErrorResponsesTest extends ApiTestBase
               "sender": "InfoSMS",
               "destinations": [
                 {
-                  "to": "41793026727"
+                  "to": "41xxxxxxx25"
                 }
               ],
               "content": {

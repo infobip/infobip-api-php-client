@@ -19,7 +19,7 @@ class EmailWebhookTest extends ApiTestBase
         {
             "notificationType": "OPENED",
             "domain": "mydomain.com",
-            "recipient": "john.doe@somedomain.com",
+            "recipient": "john.doe@example.com",
             "sendDateTime": 1599542877689,
             "messageId": "14b734recsf69n8zkao5",
             "bulkId": "ikzzmbhu6223bxkhmyrj",
@@ -83,7 +83,7 @@ JSON;
                     "sentAt": "2020-09-08T05:27:57.628+00:00",
                     "browserLink": "http://tracking.domain.com/render/content?id=9A31C6F61DBAE9664D74C7A5A5A01F92283F581D11EA80A28C12E83BC83D449BC4A9F32F1AE3C3E",
                     "callbackData": "something you want back",
-                    "to": "john.doe@gmail.com"
+                    "to": "john.doe@example.com"
                 }
             ]
         }

@@ -58,7 +58,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
                 "permanent": false
               },
               "messageId": "MESSAGE-ID-123-xyz",
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "sender": "InfoSMS",
               "sentAt": "2019-11-09T16:00:00.000+01:00",
               "doneAt": "2019-11-09T16:00:00.000+01:00",
@@ -90,7 +90,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
                 "permanent": false
               },
               "messageId": "MSG-1234",
-              "to": "41793026834",
+              "to": "41xxxxxxx30",
               "sender": "InfoSMS",
               "sentAt": "2019-11-09T17:00:00.000+01:00",
               "doneAt": "2019-11-09T17:00:00.000+01:00",
@@ -169,7 +169,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
                     permanent: false
                 ),
                 messageId: "MESSAGE-ID-123-xyz",
-                to: "41793026727",
+                to: "41xxxxxxx25",
                 sender: "InfoSMS",
                 sentAt: new DateTime("2019-11-09T16:00:00.000+0100"),
                 doneAt: new DateTime("2019-11-09T16:00:00.000+0100"),
@@ -201,7 +201,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
                     permanent: false
                 ),
                 messageId: "MSG-1234",
-                to: "41793026834",
+                to: "41xxxxxxx30",
                 sender: "InfoSMS",
                 sentAt: new DateTime("2019-11-09T17:00:00.000+0100"),
                 doneAt: new DateTime("2019-11-09T17:00:00.000+0100"),
@@ -242,7 +242,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
           "results": [
             {
               "sender": "InfoSMS",
-              "destination": "41793026727",
+              "destination": "41xxxxxxx25",
               "bulkId": "BULK-ID-123-xyz",
               "messageId": "MESSAGE-ID-123-xyz",
               "sentAt": "2020-11-09T16:00:00.000+01:00",
@@ -279,7 +279,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
             },
             {
               "sender": "InfoSMS",
-              "destination": "41793026834",
+              "destination": "41xxxxxxx30",
               "bulkId": "BULK-ID-123-xyz",
               "messageId": "MESSAGE-ID-124-xyz",
               "sentAt": "2020-11-09T17:00:00.000+01:00",
@@ -365,7 +365,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
             $this->assertCount(2, $responseModel->getResults());
             $expectedFirstSmsReport = new SmsLog(
                 sender: "InfoSMS",
-                destination: "41793026727",
+                destination: "41xxxxxxx25",
                 bulkId: "BULK-ID-123-xyz",
                 messageId: "MESSAGE-ID-123-xyz",
                 sentAt: new DateTime("2020-11-09T16:00:00.000+0100"),
@@ -402,7 +402,7 @@ class SmsLogsAndStatusReportsApiTest extends ApiTestBase
             );
             $expectedSecondSmsReport = new SmsLog(
                 sender: "InfoSMS",
-                destination: "41793026834",
+                destination: "41xxxxxxx30",
                 bulkId: "BULK-ID-123-xyz",
                 messageId: "MESSAGE-ID-124-xyz",
                 sentAt: new DateTime("2020-11-09T17:00:00.000+0100"),

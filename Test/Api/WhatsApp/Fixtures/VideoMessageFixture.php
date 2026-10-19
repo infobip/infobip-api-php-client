@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $requestVars = [
-    'from' => '447860099299',
-    'to' => '385958000000',
+    'from' => '44xxxxxxxx65',
+    'to' => '44xxxxxxxx44',
     'content' => [
         'mediaUrl' => 'https://file-examples-com.github.io/uploads/2017/04/file_example_MP4_480_1_5MG.mp4',
         'caption' => 'video'

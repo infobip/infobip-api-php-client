@@ -28,7 +28,7 @@ $requestVars = [
             [
                 'type' => WhatsAppPhoneNumberButtonApiData::TYPE,
                 'text' => 'some text',
-                'phoneNumber' => '385958000000',
+                'phoneNumber' => '44xxxxxxxx44',
             ],
             [
                 'type' => WhatsAppUrlButtonApiData::TYPE,

@@ -8,8 +8,8 @@ use Infobip\Model\WhatsAppPhoneType;
 use Infobip\Model\WhatsAppUrlType;
 
 $requestVars = [
-    'from' => '447860099299',
-    'to' => '385958000000',
+    'from' => '44xxxxxxxx65',
+    'to' => '44xxxxxxxx44',
     'content' => [
         'contacts' => [
             [
@@ -56,24 +56,24 @@ $requestVars = [
                 ],
                 'phones' => [
                     [
-                        'phone' => '+441134960019',
+                        'phone' => '+44xxxxxxxx57',
                         'type' => WhatsAppPhoneType::WORK,
-                        'waId' => '441134960019',
+                        'waId' => '44xxxxxxxx57',
                     ],
                     [
-                        'phone' => '+441134960018',
+                        'phone' => '+44xxxxxxxx56',
                         'type' => WhatsAppPhoneType::HOME,
-                        'waId' => '441134960018',
+                        'waId' => '44xxxxxxxx56',
                     ],
                     [
-                        'phone' => '+441134960017',
+                        'phone' => '+44xxxxxxxx55',
                         'type' => WhatsAppPhoneType::CELL,
-                        'waId' => '441134960017',
+                        'waId' => '44xxxxxxxx55',
                     ],
                     [
-                        'phone' => '+441134960016',
+                        'phone' => '+44xxxxxxxx54',
                         'type' => WhatsAppPhoneType::MAIN,
-                        'waId' => '441134960016',
+                        'waId' => '44xxxxxxxx54',
                     ]
                 ],
                 'urls' => [

@@ -36,7 +36,7 @@ class MessagesApiTest extends ApiTestBase
           "messages": [
             {
               "channel": "SMS",
-              "sender": "447491163443",
+              "sender": "44xxxxxxxx59",
               "destinations": [
                 {
                   "to": "myDestination"
@@ -81,7 +81,7 @@ class MessagesApiTest extends ApiTestBase
             messages: [
                 new MessagesApiMessage(
                     channel: 'SMS',
-                    sender: '447491163443',
+                    sender: '44xxxxxxxx59',
                     destinations: [
                         new MessagesApiToDestination(to: 'myDestination')
                     ],

@@ -36,28 +36,28 @@ class SendMmsApiTest extends ApiTestBase
         {
           "messages": [
             {
-              "sender": "441134960000",
+              "sender": "44xxxxxxxx46",
               "destinations": [
                 {
                   "group": [
                     {
-                      "to": "441134960001"
+                      "to": "44xxxxxxxx47"
                     },
                     {
-                      "to": "441134960002"
+                      "to": "44xxxxxxxx48"
                     }
                   ]
                 },
                 {
-                    "to": "441134960003"
+                    "to": "44xxxxxxxx49"
                 },
                 {
                 "group": [
                     {
-                      "to": "441134960004"
+                      "to": "44xxxxxxxx50"
                     },
                     {
-                      "to": "441134960005"
+                      "to": "44xxxxxxxx51"
                     }
                   ]
                 }
@@ -89,7 +89,7 @@ class SendMmsApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "441134960001"
+              "destination": "44xxxxxxxx47"
             }
           ]
         }
@@ -148,7 +148,7 @@ class SendMmsApiTest extends ApiTestBase
                 "description": "Message delivered to handset"
               },
               "messageId": "MESSAGE-ID-123-xyz",
-              "sender": "441134960000",
+              "sender": "44xxxxxxxx46",
               "sentAt": "2024-09-09T06:23:37.808+00:00",
               "doneAt": "2024-09-09T06:23:37.808+00:00",
               "messageCount": 3
@@ -214,8 +214,8 @@ class SendMmsApiTest extends ApiTestBase
             {
               "title": "Message title",
               "mccMnc": "22801",
-              "sender": "441134960000",
-              "destination": "441134960001",
+              "sender": "44xxxxxxxx46",
+              "destination": "44xxxxxxxx47",
               "bulkId": "3746923784",
               "messageId": "43u2ih-6453jbh-897kfs90u2nj",
               "sentAt" : "2024-09-09T06:23:39.099+00:00",
@@ -308,8 +308,8 @@ class SendMmsApiTest extends ApiTestBase
                         new MmsLog(
                             title: "Message title",
                             mccMnc: "22801",
-                            sender: "441134960000",
-                            destination: "441134960001",
+                            sender: "44xxxxxxxx46",
+                            destination: "44xxxxxxxx47",
                             bulkId: "3746923784",
                             messageId: "43u2ih-6453jbh-897kfs90u2nj",
                             sentAt: new DateTime("2024-09-09T06:23:39.099+00:00"),
@@ -410,8 +410,8 @@ class SendMmsApiTest extends ApiTestBase
             "results": [
                 {
                 "messageId": "817790313235066447",
-                "to": "25256",
-                "from": "41793026727",
+                "to": "xxx70",
+                "from": "41xxxxxxx25",
                 "message": "{\"mms_parts\":[{\"origin\":\"text\",\"contentType\":\"text/plain; charset=utf-8\",\"contentId\":\"content0\",\"value\":\"Sample text\"}],\"userAgent\":\"motogstylus5g\",\"priority\":null,\"subject\":null}",
                 "receivedAt": "2016-10-06T09:28:39.220+0000",
                 "mmsCount": 1,

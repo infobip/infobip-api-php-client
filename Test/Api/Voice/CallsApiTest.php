@@ -226,8 +226,8 @@ class CallsApiTest extends ApiTestBase
         $givenType = CallEndpointType::PHONE();
         $givenCallsConfigurationId = "dc5942707c704551a00cd2ea";
         $givenApplicationId = "61c060db2675060027d8c7a6";
-        $givenFrom = "44790123456";
-        $givenTo = "44790987654";
+        $givenFrom = "44xxxxxxx32";
+        $givenTo = "44xxxxxxx33";
         $givenDirection = CallDirection::OUTBOUND();
         $givenStatus = CallState::FINISHED();
         $givenStartTimeAfter = new DateTime("2022-05-01T14:25:45.125+00:00");
@@ -243,11 +243,11 @@ class CallsApiTest extends ApiTestBase
             {
               "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
-                "phoneNumber": "41792030000",
+                "phoneNumber": "41xxxxxxx15",
                 "type": "PHONE"
               },
-              "from": "44790123456",
-              "to": "44790987654",
+              "from": "44xxxxxxx32",
+              "to": "44xxxxxxx33",
               "direction": "INBOUND",
               "state": "CALLING",
               "media": {
@@ -358,11 +358,11 @@ class CallsApiTest extends ApiTestBase
             results: [
                 new Call(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "41792030000"
+                        phoneNumber: "41xxxxxxx15"
                     ),
                     id: "d8d84155-3831-43fb-91c9-bb897149a79d",
-                    from: "44790123456",
-                    to: "44790987654",
+                    from: "44xxxxxxx32",
+                    to: "44xxxxxxx33",
                     direction: "INBOUND",
                     state: "CALLING",
                     media: new CallsMediaProperties(
@@ -692,10 +692,10 @@ class CallsApiTest extends ApiTestBase
           "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
           "endpoint": {
             "type": "PHONE",
-            "phoneNumber": "44790123456"
+            "phoneNumber": "44xxxxxxx32"
           },
-          "from": "44790123456",
-          "to": "44790123456",
+          "from": "44xxxxxxx32",
+          "to": "44xxxxxxx32",
           "direction": "OUTBOUND",
           "state": "CALLING",
           "media": {
@@ -738,11 +738,11 @@ class CallsApiTest extends ApiTestBase
 
         $expectedResponse = new Call(
             endpoint: new CallsPhoneEndpoint(
-                phoneNumber: "44790123456"
+                phoneNumber: "44xxxxxxx32"
             ),
             id: "d8d84155-3831-43fb-91c9-bb897149a79d",
-            from: "44790123456",
-            to: "44790123456",
+            from: "44xxxxxxx32",
+            to: "44xxxxxxx32",
             direction: "OUTBOUND",
             state: "CALLING",
             media: new CallsMediaProperties(
@@ -782,8 +782,8 @@ class CallsApiTest extends ApiTestBase
         $givenType = CallEndpointType::PHONE();
         $givenCallsConfigurationId = "dc5942707c704551a00cd2ea";
         $givenApplicationId = "61c060db2675060027d8c7a6";
-        $givenFrom = "44790123456";
-        $givenTo = "44790987654";
+        $givenFrom = "44xxxxxxx32";
+        $givenTo = "44xxxxxxx33";
         $givenDirection = CallDirection::OUTBOUND();
         $givenStatus = CallState::FINISHED();
         $givenStartTimeAfter = new DateTime("2022-05-01T14:25:45.125+00:00");
@@ -800,11 +800,11 @@ class CallsApiTest extends ApiTestBase
             {
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
-                "phoneNumber": "41792030000",
+                "phoneNumber": "41xxxxxxx15",
                 "type": "PHONE"
               },
-              "from": "44790123456",
-              "to": "44790987654",
+              "from": "44xxxxxxx32",
+              "to": "44xxxxxxx33",
               "direction": "INBOUND",
               "state": "CALLING",
               "startTime": "2024-09-19T09:40:41.000+00:00",
@@ -921,11 +921,11 @@ class CallsApiTest extends ApiTestBase
             results: [
                 new CallLog(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "41792030000"
+                        phoneNumber: "41xxxxxxx15"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
-                    from: "44790123456",
-                    to: "44790987654",
+                    from: "44xxxxxxx32",
+                    to: "44xxxxxxx33",
                     direction: "INBOUND",
                     state: "CALLING",
                     startTime: new DateTime("2024-09-19T09:40:41.000+00:00"),
@@ -988,10 +988,10 @@ class CallsApiTest extends ApiTestBase
           "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
           "endpoint": {
             "type": "PHONE",
-            "phoneNumber": "44790123456"
+            "phoneNumber": "44xxxxxxx32"
           },
-          "from": "44790123456",
-          "to": "44790123456",
+          "from": "44xxxxxxx32",
+          "to": "44xxxxxxx32",
           "direction": "OUTBOUND",
           "state": "FINISHED",
           "startTime": "2022-01-01T00:00:00.100+00:00",
@@ -1038,11 +1038,11 @@ class CallsApiTest extends ApiTestBase
 
         $expectedResponse = new CallLog(
             endpoint: new CallsPhoneEndpoint(
-                phoneNumber: "44790123456"
+                phoneNumber: "44xxxxxxx32"
             ),
             callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
-            from: "44790123456",
-            to: "44790123456",
+            from: "44xxxxxxx32",
+            to: "44xxxxxxx32",
             direction: "OUTBOUND",
             state: "FINISHED",
             startTime: new DateTime("2022-01-01T00:00:00.100+00:00"),
@@ -1110,7 +1110,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINED",
               "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -1129,7 +1129,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINING",
               "media": {
@@ -1186,7 +1186,7 @@ class CallsApiTest extends ApiTestBase
             participants: [
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINED",
@@ -1204,7 +1204,7 @@ class CallsApiTest extends ApiTestBase
                 ),
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINING",
@@ -1244,9 +1244,9 @@ class CallsApiTest extends ApiTestBase
           "callRequest": {
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "41792036727"
+              "phoneNumber": "41xxxxxxx17"
             },
-            "from": "41793026834",
+            "from": "41xxxxxxx30",
             "maxDuration": 300
           },
           "connectOnEarlyMedia": false,
@@ -1273,7 +1273,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "state": "JOINED",
                 "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -1292,7 +1292,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "state": "JOINING",
                 "media": {
@@ -1316,10 +1316,10 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
-            "from": "44790123456",
-            "to": "44790123456",
+            "from": "44xxxxxxx32",
+            "to": "44xxxxxxx32",
             "direction": "OUTBOUND",
             "state": "CALLING",
             "media": {
@@ -1359,9 +1359,9 @@ class CallsApiTest extends ApiTestBase
         $request = new CallsConnectWithNewCallRequest(
             callRequest: new CallsActionCallRequest(
                 endpoint: new CallsPhoneEndpoint(
-                    phoneNumber: "41792036727"
+                    phoneNumber: "41xxxxxxx17"
                 ),
-                from: "41793026834",
+                from: "41xxxxxxx30",
                 maxDuration: 300
             ),
             connectOnEarlyMedia: false,
@@ -1389,7 +1389,7 @@ class CallsApiTest extends ApiTestBase
                 participants: [
                     new CallsParticipant(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                         state: "JOINED",
@@ -1407,7 +1407,7 @@ class CallsApiTest extends ApiTestBase
                     ),
                     new CallsParticipant(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                         state: "JOINING",
@@ -1430,11 +1430,11 @@ class CallsApiTest extends ApiTestBase
             ),
             call: new Call(
                 endpoint: new CallsPhoneEndpoint(
-                    phoneNumber: "44790123456"
+                    phoneNumber: "44xxxxxxx32"
                 ),
                 id: "d8d84155-3831-43fb-91c9-bb897149a79d",
-                from: "44790123456",
-                to: "44790123456",
+                from: "44xxxxxxx32",
+                to: "44xxxxxxx32",
                 direction: "OUTBOUND",
                 state: "CALLING",
                 media: new CallsMediaProperties(
@@ -1642,10 +1642,10 @@ class CallsApiTest extends ApiTestBase
           "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
           "endpoint": {
             "type": "PHONE",
-            "phoneNumber": "44790123456"
+            "phoneNumber": "44xxxxxxx32"
           },
-          "from": "44790123456",
-          "to": "44790123456",
+          "from": "44xxxxxxx32",
+          "to": "44xxxxxxx32",
           "direction": "OUTBOUND",
           "state": "CALLING",
           "media": {
@@ -1692,11 +1692,11 @@ class CallsApiTest extends ApiTestBase
 
         $expectedResponse = new Call(
             endpoint: new CallsPhoneEndpoint(
-                phoneNumber: "44790123456"
+                phoneNumber: "44xxxxxxx32"
             ),
             id: "d8d84155-3831-43fb-91c9-bb897149a79d",
-            from: "44790123456",
-            to: "44790123456",
+            from: "44xxxxxxx32",
+            to: "44xxxxxxx32",
             direction: "OUTBOUND",
             state: "CALLING",
             media: new CallsMediaProperties(
@@ -2527,7 +2527,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "state": "JOINED",
                   "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -2546,7 +2546,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "state": "JOINING",
                   "media": {
@@ -2623,7 +2623,7 @@ class CallsApiTest extends ApiTestBase
                     participants: [
                         new CallsParticipant(
                             endpoint: new CallsPhoneEndpoint(
-                                phoneNumber: "44790123456"
+                                phoneNumber: "44xxxxxxx32"
                             ),
                             callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                             state: "JOINED",
@@ -2641,7 +2641,7 @@ class CallsApiTest extends ApiTestBase
                         ),
                         new CallsParticipant(
                             endpoint: new CallsPhoneEndpoint(
-                                phoneNumber: "44790123456"
+                                phoneNumber: "44xxxxxxx32"
                             ),
                             callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                             state: "JOINING",
@@ -2707,7 +2707,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINED",
               "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -2726,7 +2726,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINING",
               "media": {
@@ -2785,7 +2785,7 @@ class CallsApiTest extends ApiTestBase
             participants: [
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINED",
@@ -2803,7 +2803,7 @@ class CallsApiTest extends ApiTestBase
                 ),
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINING",
@@ -2847,7 +2847,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINED",
               "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -2866,7 +2866,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINING",
               "media": {
@@ -2906,7 +2906,7 @@ class CallsApiTest extends ApiTestBase
             participants: [
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINED",
@@ -2924,7 +2924,7 @@ class CallsApiTest extends ApiTestBase
                 ),
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINING",
@@ -3041,7 +3041,7 @@ class CallsApiTest extends ApiTestBase
                 "composedFiles": [
                   {
                     "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-                    "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                    "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                     "fileFormat": "WAV",
                     "size": 67564,
                     "creationTime": "2022-01-01T00:00:00.100+00:00",
@@ -3056,7 +3056,7 @@ class CallsApiTest extends ApiTestBase
                     "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                     "endpoint": {
                       "type": "PHONE",
-                      "phoneNumber": "44790123456"
+                      "phoneNumber": "44xxxxxxx32"
                     },
                     "direction": "INBOUND",
                     "files": [
@@ -3078,7 +3078,7 @@ class CallsApiTest extends ApiTestBase
                     "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                     "endpoint": {
                       "type": "PHONE",
-                      "phoneNumber": "44790123456"
+                      "phoneNumber": "44xxxxxxx32"
                     },
                     "direction": "INBOUND",
                     "files": [
@@ -3182,7 +3182,7 @@ class CallsApiTest extends ApiTestBase
                     recording: new CallsConferenceRecordingLog(
                         composedFiles: [
                             new CallsRecordingFile(
-                                name: "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                                name: "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                                 fileFormat: "WAV",
                                 id: "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
                                 size: 67564,
@@ -3196,7 +3196,7 @@ class CallsApiTest extends ApiTestBase
                         callRecordings: [
                             new CallRecording(
                                 endpoint: new CallsPhoneEndpoint(
-                                    phoneNumber: "44790123456"
+                                    phoneNumber: "44xxxxxxx32"
                                 ),
                                 callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                                 direction: "INBOUND",
@@ -3217,7 +3217,7 @@ class CallsApiTest extends ApiTestBase
                             ),
                             new CallRecording(
                                 endpoint: new CallsPhoneEndpoint(
-                                    phoneNumber: "44790123456"
+                                    phoneNumber: "44xxxxxxx32"
                                 ),
                                 callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                                 direction: "INBOUND",
@@ -3285,7 +3285,7 @@ class CallsApiTest extends ApiTestBase
                         "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                         "direction": "INBOUND",
                         "endpoint": {
-                            "phoneNumber": "44790123456",
+                            "phoneNumber": "44xxxxxxx32",
                             "type": "PHONE"
                         },
                         "files": [
@@ -3307,7 +3307,7 @@ class CallsApiTest extends ApiTestBase
                         "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                         "direction": "INBOUND",
                         "endpoint": {
-                            "phoneNumber": "44790123456",
+                            "phoneNumber": "44xxxxxxx32",
                             "type": "PHONE"
                         },
                         "files": [
@@ -3334,7 +3334,7 @@ class CallsApiTest extends ApiTestBase
                         "fileFormat": "WAV",
                         "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
                         "location": "HOSTED",
-                        "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                        "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                         "size": 67564,
                         "startTime": "2021-12-31T23:57:30.100+00:00"
                     }
@@ -3392,7 +3392,7 @@ class CallsApiTest extends ApiTestBase
             recording: new CallsConferenceRecordingLog(
                 composedFiles: [
                     new CallsRecordingFile(
-                        name: "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                        name: "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                         fileFormat: "WAV",
                         id: "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
                         size: 67564,
@@ -3406,7 +3406,7 @@ class CallsApiTest extends ApiTestBase
                 callRecordings: [
                     new CallRecording(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                         direction: "INBOUND",
@@ -3427,7 +3427,7 @@ class CallsApiTest extends ApiTestBase
                     ),
                     new CallRecording(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                         direction: "INBOUND",
@@ -3472,9 +3472,9 @@ class CallsApiTest extends ApiTestBase
           "callRequest": {
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "41792036727"
+              "phoneNumber": "41xxxxxxx17"
             },
-            "from": "41793026834",
+            "from": "41xxxxxxx30",
             "maxDuration": 28800
           },
           "connectOnEarlyMedia": false
@@ -3491,7 +3491,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "state": "JOINED",
                 "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -3510,7 +3510,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "state": "JOINING",
                 "media": {
@@ -3534,10 +3534,10 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
-            "from": "44790123456",
-            "to": "44790123456",
+            "from": "44xxxxxxx32",
+            "to": "44xxxxxxx32",
             "direction": "OUTBOUND",
             "state": "CALLING",
             "media": {
@@ -3576,9 +3576,9 @@ class CallsApiTest extends ApiTestBase
         $request = new CallsAddNewCallRequest(
             callRequest: new CallsActionCallRequest(
                 endpoint: new CallsPhoneEndpoint(
-                    phoneNumber: "41792036727"
+                    phoneNumber: "41xxxxxxx17"
                 ),
-                from: "41793026834"
+                from: "41xxxxxxx30"
             ),
             connectOnEarlyMedia: false
         );
@@ -3595,7 +3595,7 @@ class CallsApiTest extends ApiTestBase
                 participants: [
                     new CallsParticipant(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                         state: "JOINED",
@@ -3613,7 +3613,7 @@ class CallsApiTest extends ApiTestBase
                     ),
                     new CallsParticipant(
                         endpoint: new CallsPhoneEndpoint(
-                            phoneNumber: "44790123456"
+                            phoneNumber: "44xxxxxxx32"
                         ),
                         callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                         state: "JOINING",
@@ -3636,11 +3636,11 @@ class CallsApiTest extends ApiTestBase
             ),
             call: new Call(
                 endpoint: new CallsPhoneEndpoint(
-                    phoneNumber: "44790123456"
+                    phoneNumber: "44xxxxxxx32"
                 ),
                 id: "d8d84155-3831-43fb-91c9-bb897149a79d",
-                from: "44790123456",
-                to: "44790123456",
+                from: "44xxxxxxx32",
+                to: "44xxxxxxx32",
                 direction: "OUTBOUND",
                 state: "CALLING",
                 media: new CallsMediaProperties(
@@ -3697,7 +3697,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINED",
               "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -3716,7 +3716,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINING",
               "media": {
@@ -3758,7 +3758,7 @@ class CallsApiTest extends ApiTestBase
             participants: [
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINED",
@@ -3776,7 +3776,7 @@ class CallsApiTest extends ApiTestBase
                 ),
                 new CallsParticipant(
                     endpoint: new CallsPhoneEndpoint(
-                        phoneNumber: "44790123456"
+                        phoneNumber: "44xxxxxxx32"
                     ),
                     callId: "d8d84155-3831-43fb-91c9-bb897149a79d",
                     state: "JOINING",
@@ -3905,7 +3905,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINED",
               "joinTime": "2021-12-31T23:59:55.100+00:00",
@@ -3924,7 +3924,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "state": "JOINING",
               "media": {
@@ -4275,7 +4275,7 @@ class CallsApiTest extends ApiTestBase
                 "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "direction": "INBOUND",
                 "state": "ESTABLISHED",
@@ -4302,7 +4302,7 @@ class CallsApiTest extends ApiTestBase
                 "id": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790987654"
+                  "phoneNumber": "44xxxxxxx33"
                 },
                 "direction": "OUTBOUND",
                 "state": "ESTABLISHED",
@@ -4402,9 +4402,9 @@ class CallsApiTest extends ApiTestBase
           "childCallRequest": {
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790987654"
+              "phoneNumber": "44xxxxxxx33"
             },
-            "from": "44790123456",
+            "from": "44xxxxxxx32",
             "connectTimeout": 60,
             "machineDetection": {
               "enabled": true
@@ -4441,7 +4441,7 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
             "direction": "INBOUND",
             "state": "ESTABLISHED",
@@ -4468,7 +4468,7 @@ class CallsApiTest extends ApiTestBase
             "id": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790987654"
+              "phoneNumber": "44xxxxxxx33"
             },
             "direction": "OUTBOUND",
             "state": "ESTABLISHED",
@@ -4569,7 +4569,7 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
             "direction": "INBOUND",
             "state": "ESTABLISHED",
@@ -4596,7 +4596,7 @@ class CallsApiTest extends ApiTestBase
             "id": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790987654"
+              "phoneNumber": "44xxxxxxx33"
             },
             "direction": "OUTBOUND",
             "state": "ESTABLISHED",
@@ -4675,7 +4675,7 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
             "direction": "INBOUND",
             "state": "ESTABLISHED",
@@ -4702,7 +4702,7 @@ class CallsApiTest extends ApiTestBase
             "id": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790987654"
+              "phoneNumber": "44xxxxxxx33"
             },
             "direction": "OUTBOUND",
             "state": "ESTABLISHED",
@@ -4787,7 +4787,7 @@ class CallsApiTest extends ApiTestBase
                 "composedFiles": [
                   {
                     "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-                    "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                    "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                     "fileFormat": "WAV",
                     "size": 67564,
                     "creationTime": "2022-01-01T00:00:00.100+00:00",
@@ -4803,7 +4803,7 @@ class CallsApiTest extends ApiTestBase
                     "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                     "endpoint": {
                       "type": "PHONE",
-                      "phoneNumber": "44790123456"
+                      "phoneNumber": "44xxxxxxx32"
                     },
                     "direction": "INBOUND",
                     "files": [
@@ -4825,7 +4825,7 @@ class CallsApiTest extends ApiTestBase
                     "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                     "endpoint": {
                       "type": "PHONE",
-                      "phoneNumber": "44790123456"
+                      "phoneNumber": "44xxxxxxx32"
                     },
                     "direction": "INBOUND",
                     "files": [
@@ -4942,7 +4942,7 @@ class CallsApiTest extends ApiTestBase
             "composedFiles": [
               {
                 "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-                "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                 "fileFormat": "WAV",
                 "size": 67564,
                 "creationTime": "2022-01-01T00:00:00.100+00:00",
@@ -4958,7 +4958,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "direction": "INBOUND",
                 "files": [
@@ -4980,7 +4980,7 @@ class CallsApiTest extends ApiTestBase
                 "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                 "endpoint": {
                   "type": "PHONE",
-                  "phoneNumber": "44790123456"
+                  "phoneNumber": "44xxxxxxx32"
                 },
                 "direction": "INBOUND",
                 "files": [
@@ -5054,7 +5054,7 @@ class CallsApiTest extends ApiTestBase
             "id": "d8d84155-3831-43fb-91c9-bb897149a79d",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790123456"
+              "phoneNumber": "44xxxxxxx32"
             },
             "direction": "INBOUND",
             "state": "ESTABLISHED",
@@ -5081,7 +5081,7 @@ class CallsApiTest extends ApiTestBase
             "id": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
             "endpoint": {
               "type": "PHONE",
-              "phoneNumber": "44790987654"
+              "phoneNumber": "44xxxxxxx33"
             },
             "direction": "OUTBOUND",
             "state": "ESTABLISHED",
@@ -6704,7 +6704,7 @@ class CallsApiTest extends ApiTestBase
         $givenCallId = "64d214c5-70b7-4ea6-b2a6-8334d1f34fb4";
         $givenCallsConfigurationId = "dc5942707c704551a00cd2ea";
         $givenApplicationId = "61c060db2675060027d8c7a6";
-        $givenEndpointIdentifier = "44790123456";
+        $givenEndpointIdentifier = "44xxxxxxx32";
         $givenStartTimeAfter = new DateTime("2022-05-01T14:25:45.134+00:00");
         $givenEndTimeBefore = new DateTime("2022-05-01T14:35:45.154+00:00");
         $givenDirection = CallDirection::OUTBOUND();
@@ -6720,7 +6720,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -6742,7 +6742,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -6848,7 +6848,7 @@ class CallsApiTest extends ApiTestBase
           "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
           "endpoint": {
             "type": "PHONE",
-            "phoneNumber": "44790123456"
+            "phoneNumber": "44xxxxxxx32"
           },
           "direction": "INBOUND",
           "files": [
@@ -6910,7 +6910,7 @@ class CallsApiTest extends ApiTestBase
           "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
           "endpoint": {
             "type": "PHONE",
-            "phoneNumber": "44790123456"
+            "phoneNumber": "44xxxxxxx32"
           },
           "direction": "INBOUND",
           "files": [
@@ -6970,7 +6970,7 @@ class CallsApiTest extends ApiTestBase
         $givenConferenceName = "Conference";
         $givenCallId = "64d214c5-70b7-4ea6-b2a6-8334d1f34fb4";
         $givenCallEndpointType = CallEndpointType::WEBRTC();
-        $givenCallEndpointIdentifier = "44790123456";
+        $givenCallEndpointIdentifier = "44xxxxxxx32";
         $givenStartTimeAfter = new DateTime("2022-05-01T14:25:45.134+00:00");
         $givenEndTimeBefore = new DateTime("2022-05-01T14:35:45.154+00:00");
         $givenComposition = true;
@@ -6990,7 +6990,7 @@ class CallsApiTest extends ApiTestBase
               "composedFiles": [
                 {
                   "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-                  "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                  "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                   "fileFormat": "WAV",
                   "size": 67564,
                   "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7006,7 +7006,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "direction": "INBOUND",
                   "files": [
@@ -7028,7 +7028,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "direction": "INBOUND",
                   "files": [
@@ -7145,7 +7145,7 @@ class CallsApiTest extends ApiTestBase
           "composedFiles": [
             {
               "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
               "fileFormat": "WAV",
               "size": 67564,
               "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7161,7 +7161,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7183,7 +7183,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7252,7 +7252,7 @@ class CallsApiTest extends ApiTestBase
           "composedFiles": [
             {
               "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
               "fileFormat": "WAV",
               "size": 67564,
               "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7268,7 +7268,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7290,7 +7290,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7410,7 +7410,7 @@ class CallsApiTest extends ApiTestBase
         $givenApplicationId = "61c060db2675060027d8c7a6";
         $givenCallId = "64d214c5-70b7-4ea6-b2a6-8334d1f34fb4";
         $givenCallEndpointType = CallEndpointType::PHONE();
-        $givenCallEndpointIdentifier = "44790123456";
+        $givenCallEndpointIdentifier = "44xxxxxxx32";
         $givenStartTimeAfter = new DateTime("2022-05-01T14:25:45.134+00:00");
         $givenEndTimeBefore = new DateTime("2022-05-01T14:35:45.154+00:00");
         $givenComposition = true;
@@ -7429,7 +7429,7 @@ class CallsApiTest extends ApiTestBase
               "composedFiles": [
                 {
                   "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-                  "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+                  "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
                   "fileFormat": "WAV",
                   "size": 67564,
                   "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7444,7 +7444,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "direction": "INBOUND",
                   "files": [
@@ -7466,7 +7466,7 @@ class CallsApiTest extends ApiTestBase
                   "callId": "64d214c5-70b7-4ea6-b2a6-8334d1f34fb4",
                   "endpoint": {
                     "type": "PHONE",
-                    "phoneNumber": "44790123456"
+                    "phoneNumber": "44xxxxxxx32"
                   },
                   "direction": "INBOUND",
                   "files": [
@@ -7580,7 +7580,7 @@ class CallsApiTest extends ApiTestBase
           "composedFiles": [
             {
               "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
               "fileFormat": "WAV",
               "size": 67564,
               "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7595,7 +7595,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7617,7 +7617,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7685,7 +7685,7 @@ class CallsApiTest extends ApiTestBase
           "composedFiles": [
             {
               "id": "b72cde3c-7d9c-4a5c-8e48-5a947244c013",
-              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41792030001_1652725357412_recording.wav",
+              "name": "d8d84155-3831-43fb-91c9-bb897149a79d_41xxxxxxx76_1652725357412_recording.wav",
               "fileFormat": "WAV",
               "size": 67564,
               "creationTime": "2022-01-01T00:00:00.250+00:00",
@@ -7700,7 +7700,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "d8d84155-3831-43fb-91c9-bb897149a79d",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -7722,7 +7722,7 @@ class CallsApiTest extends ApiTestBase
               "callId": "3ad8805e-d401-424e-9b03-e02a2016a5e2",
               "endpoint": {
                 "type": "PHONE",
-                "phoneNumber": "44790123456"
+                "phoneNumber": "44xxxxxxx32"
               },
               "direction": "INBOUND",
               "files": [
@@ -8142,26 +8142,26 @@ class CallsApiTest extends ApiTestBase
           },
           "items": [
             {
-              "from": "41793026834",
+              "from": "41xxxxxxx30",
               "callRequests": [
                 {
                   "externalId": "your-external-id-1",
                   "endpoint": {
-                    "phoneNumber": "41792036727",
+                    "phoneNumber": "41xxxxxxx17",
                     "type": "PHONE"
                   }
                 },
                 {
                   "externalId": "your-external-id-2",
                   "endpoint": {
-                    "phoneNumber": "41792036728",
+                    "phoneNumber": "41xxxxxxx18",
                     "type": "PHONE"
                   }
                 },
                 {
                   "externalId": "your-external-id-3",
                   "endpoint": {
-                    "phoneNumber": "41792036729",
+                    "phoneNumber": "41xxxxxxx19",
                     "type": "PHONE"
                   }
                 }
@@ -8220,9 +8220,9 @@ class CallsApiTest extends ApiTestBase
               },
               "callId": "266f8375-33d3-482f-a258-51e86b5ae9ac",
               "externalId": "your-external-id-1",
-              "from": "41793026834",
+              "from": "41xxxxxxx30",
               "endpoint": {
-                "phoneNumber": "41792036727",
+                "phoneNumber": "41xxxxxxx17",
                 "type": "PHONE"
               },
               "status": "PENDING"
@@ -8234,9 +8234,9 @@ class CallsApiTest extends ApiTestBase
               },
               "callId": "366f8375-33d3-482f-a258-51e86b5ae9ad",
               "externalId": "your-external-id-2",
-              "from": "41793026834",
+              "from": "41xxxxxxx30",
               "endpoint": {
-                "phoneNumber": "41792036728",
+                "phoneNumber": "41xxxxxxx18",
                 "type": "PHONE"
               },
               "status": "PENDING"
@@ -8248,9 +8248,9 @@ class CallsApiTest extends ApiTestBase
               },
               "callId": "466f8375-33d3-482f-a258-51e86b5ae9ae",
               "externalId": "your-external-id-3",
-              "from": "41793026834",
+              "from": "41xxxxxxx30",
               "endpoint": {
-                "phoneNumber": "41792036729",
+                "phoneNumber": "41xxxxxxx19",
                 "type": "PHONE"
               },
               "status": "PENDING"

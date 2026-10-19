@@ -88,7 +88,7 @@ See below, a simple example of sending a single SMS message to a single recipien
         $message = new SmsMessage(
             destinations: [
                 new SmsDestination(
-                    to: '41793026727'
+                    to: '41xxxxxxx25'
                 )
             ],
             content: new SmsTextContent(

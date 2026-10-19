@@ -16,8 +16,8 @@ class MessagesApiWebhookSerializationTest extends ApiTestBase
           "results": [
             {
               "channel": "SMS",
-              "sender": "48123234567",
-              "destination": "48123098765",
+              "sender": "48xxxxxxx35",
+              "destination": "48xxxxxxx34",
               "content": [
                 {
                   "text": "Text message 123",
@@ -59,7 +59,7 @@ class MessagesApiWebhookSerializationTest extends ApiTestBase
               "event": "DELIVERY",
               "channel": "WHATSAPP",
               "sender": "senderNumber",
-              "destination": "41793026727",
+              "destination": "41xxxxxxx25",
               "sentAt": "2024-02-06T14:18:29.797+0000",
               "doneAt": "2024-02-06T17:18:29.797+0000",
               "bulkId": "1688025180464000013",
@@ -112,7 +112,7 @@ class MessagesApiWebhookSerializationTest extends ApiTestBase
               "event": "SEEN",
               "channel": "WHATSAPP",
               "sender": "senderNumber",
-              "destination": "41793026727",
+              "destination": "41xxxxxxx25",
               "sentAt": "2024-02-06T14:18:29.797+00:00",
               "seenAt": "2024-02-06T14:28:29.797+00:00",
               "bulkId": "1688025180464000013",

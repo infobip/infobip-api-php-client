@@ -16,7 +16,7 @@ class ValidationEmailTest extends ApiTestBase
     public function testValidateEmailAddresses(): void
     {
         $methodParams = [
-            'givenTo' => "john.smith@somedomain.com",
+            'givenTo' => "john.smith@example.com",
             'expectedValidMailbox' => true,
             'expectedValidSyntax' => true,
             'expectedCatchAll' => false,

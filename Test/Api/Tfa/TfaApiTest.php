@@ -192,7 +192,7 @@ class TfaApiTest extends ApiTestBase
     # Send 2FA PIN code over SMS
     private $givenSendPinOverSmsPlaceholder = "John";
     private $givenSendPinOverSmsFrom = "Sender 1";
-    private $givenSendPinOverSmsTo = "41793026727";
+    private $givenSendPinOverSmsTo = "41xxxxxxx25";
     private $givenSendPinOverSmsMessageId = "7654321";
     private $givenSendPinOverSmsPinId = "9C817C6F8AF3D48F9FE553282AFA2B67";
     private $givenSendPinOverSmsNcStatus = "NC_DESTINATION_REACHABLE";
@@ -202,7 +202,7 @@ class TfaApiTest extends ApiTestBase
 
     # Resend 2FA PIN code over SMS
     private $givenResendPinOverSmsPlaceholder = "John";
-    private $givenResendPinOverSmsTo = "41793026727";
+    private $givenResendPinOverSmsTo = "41xxxxxxx25";
     private $givenResendPinOverSmsPinId = "9C817C6F8AF3D48F9FE553282AFA2B67";
     private $givenResendPinOverSmsNcStatus = "NC_DESTINATION_REACHABLE";
     private $givenResendPinOverSmsSmsStatus = "MESSAGE_SENT";
@@ -211,7 +211,7 @@ class TfaApiTest extends ApiTestBase
     # Send 2FA PIN code over voice
     private $givenSendPinOverVoicePlaceholder = "John";
     private $givenSendPinOverVoiceFrom = "Sender 1";
-    private $givenSendPinOverVoiceTo = "41793026727";
+    private $givenSendPinOverVoiceTo = "41xxxxxxx25";
     private $givenSendPinOverVoiceMessageId = "7654321";
     private $givenSendPinOverVoicePinId = "9C817C6F8AF3D48F9FE553282AFA2B67";
     private $givenSendPinOverVoiceCallStatus = "PENDING_ACCEPTED";
@@ -220,7 +220,7 @@ class TfaApiTest extends ApiTestBase
 
     # Resend 2FA PIN code over voice
     private $givenResendPinOverVoicePlaceholder = "John";
-    private $givenResendPinOverVoiceTo = "41793026727";
+    private $givenResendPinOverVoiceTo = "41xxxxxxx25";
     private $givenResendPinOverVoicePinId = "9C817C6F8AF3D48F9FE553282AFA2B67";
     private $givenResendPinOverVoiceCallStatus = "PENDING_ACCEPTED";
     # /Resend 2FA PIN code over voice
@@ -244,19 +244,19 @@ class TfaApiTest extends ApiTestBase
 
     # Verify phone number
     private $givenVerifyPhoneNumberPin = "1598";
-    private $givenVerifyPhoneNumberMsisdn = "41793026727";
+    private $givenVerifyPhoneNumberMsisdn = "41xxxxxxx25";
     private $givenVerifyPhoneNumberVerified = true;
     private $givenVerifyPhoneNumberPinId = "9C817C6F8AF3D48F9FE553282AFA2B67";
     private $givenVerifyPhoneNumberAttemptsRemaining = 0;
     # /Verify phone number
 
     # Get TFA verification status
-    private $givenGetVerificationStatusMsisdn1 = "41793026727";
+    private $givenGetVerificationStatusMsisdn1 = "41xxxxxxx25";
     private $givenGetVerificationStatusVerified1 = true;
     private $givenGetVerificationStatusVerifiedAt1 = 1418364366;
     private $givenGetVerificationStatusSentAt1 = 1418364246;
 
-    private $givenGetVerificationStatusMsisdn2 = "41793026746";
+    private $givenGetVerificationStatusMsisdn2 = "41xxxxxxx27";
     private $givenGetVerificationStatusVerified2 = false;
     private $givenGetVerificationStatusVerifiedAt2 = 1418364226;
     private $givenGetVerificationStatusSentAt2 = 1418333246;
@@ -1342,7 +1342,7 @@ class TfaApiTest extends ApiTestBase
         $getVerificationStatusVerifiedJson2 = var_export($this->givenGetVerificationStatusVerified2, true);
 
         $givenAppId = "16A8B5FE2BCD6CA716A2D780CB3F3390";
-        $givenMsisdn = "385717284759547";
+        $givenMsisdn = "44xxxxxxxxxxx67";
         $givenVerified = "false";
         $givenSent = "true";
 

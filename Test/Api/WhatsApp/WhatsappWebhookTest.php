@@ -22,8 +22,8 @@ class WhatsappWebhookTest extends ApiTestBase
             "results":
             [
                 {
-                    "from": "385919998888",
-                    "to": "41793026731",
+                    "from": "44xxxxxxxx42",
+                    "to": "41xxxxxxx26",
                     "receivedAt": "2019-07-19T11:23:26.998+00:00",
                     "messageId": "ABEGOFl3VCQoAhBalbc6rTQT6mgS29EmGZ7a",
                     "message": {
@@ -62,9 +62,9 @@ class WhatsappWebhookTest extends ApiTestBase
     {
         $givenResponse = <<<JSON
         {
-          "from": "41793026731",
+          "from": "41xxxxxxx26",
           "content": {
-            "from": "447860064555",
+            "from": "44xxxxxxxx64",
             "type": "payment",
             "referenceId": "72123248136",
             "paymentId": "fd3e847h2",
@@ -132,7 +132,7 @@ class WhatsappWebhookTest extends ApiTestBase
               "doneAt": "2019-04-09T16:01:56.494-03:00",
               "messageCount": 1,
               "sentAt": "2019-04-09T16:00:58.647-03:00",
-              "to": "41793026731"
+              "to": "41xxxxxxx26"
             }
           ]
         }
@@ -158,8 +158,8 @@ class WhatsappWebhookTest extends ApiTestBase
           "results": [
             {
               "messageId": "1215f543ab19-345f-adbd-12ad31451ed25f35",
-              "from": "385919998888",
-              "to": "41793026731",
+              "from": "44xxxxxxxx42",
+              "to": "41xxxxxxx26",
               "sentAt": "2018-12-12T11:21:57.793+00:00",
               "seenAt": "2018-12-12T11:21:58.251+00:00",
               "applicationId": "example-application-id",
@@ -186,12 +186,12 @@ class WhatsappWebhookTest extends ApiTestBase
     {
         $givenResponse = <<<JSON
         {
-          "from": "41793026731",
+          "from": "41xxxxxxx26",
           "content": {
             "description": "Security code changed.",
             "hash": "eU2Fdi4EMUw=",
             "type": "user_identity_changed",
-            "userNumber": "385919998888"
+            "userNumber": "44xxxxxxxx42"
           },
           "createdAt": "2022-01-18T23:23:09.206+00:00"
         }

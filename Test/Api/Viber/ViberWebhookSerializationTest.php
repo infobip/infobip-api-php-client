@@ -19,7 +19,7 @@ class ViberWebhookSerializationTest extends ApiTestBase
         // given
         $givenResponse = <<<JSON
         {
-            "sender": "385912345678",
+            "sender": "44xxxxxxxx40",
             "to": "givenClient",
             "integrationType": "VIBER",
             "receivedAt": "2020-04-01T11:02:43.594+00:00",
@@ -60,7 +60,7 @@ class ViberWebhookSerializationTest extends ApiTestBase
         // given
         $givenResponse = <<<JSON
         {
-            "sender": "385912345678",
+            "sender": "44xxxxxxxx40",
             "to": "givenClient",
             "integrationType": "VIBER",
             "receivedAt": "2020-04-01T11:02:43.594+00:00",
@@ -124,8 +124,8 @@ JSON;
                 "permanent": false
               },
               "messageId": "2250be2d4219-3af1-78856-aabe-1362af1edfd2",
-              "to": "441134960001",
-              "sender": "441134960000",
+              "to": "44xxxxxxxx47",
+              "sender": "44xxxxxxxx46",
               "sentAt": "2023-02-01T23:00:00.000+00:00",
               "doneAt": "2023-02-03T00:01:01.000+00:00",
               "messageCount": 1,
@@ -161,8 +161,8 @@ JSON;
           "results": [
             {
               "messageId": "1215f543ab19-345f-adbd-12ad31451ed25f35",
-              "from": "385919998888",
-              "to": "41793026731",
+              "from": "44xxxxxxxx42",
+              "to": "41xxxxxxx26",
               "sentAt": "2023-04-05T11:21:57.793+00:00",
               "seenAt": "2023-04-05T11:22:10.251+00:00",
               "applicationId": "example-application-id",

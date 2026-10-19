@@ -17,8 +17,8 @@ class SmsInboundApiTest extends ApiTestBase
     public function testGetInboundSmsMessages(): void
     {
         $givenMessageId = "817790313235066447";
-        $givenFrom = "385916242493";
-        $givenTo = "385921004026";
+        $givenFrom = "44xxxxxxxx41";
+        $givenTo = "44xxxxxxxx43";
         $givenText = "QUIZ Correct answer is Paris";
         $givenCleanText = "Correct answer is Paris";
         $givenKeyword = "QUIZ";
@@ -93,8 +93,8 @@ class SmsInboundApiTest extends ApiTestBase
     private function assertReceiveSmsResponse(SmsInboundMessageResult $smsInboundMessageResult): void
     {
         $givenMessageId = "817790313235066447";
-        $givenFrom = "385916242493";
-        $givenTo = "385921004026";
+        $givenFrom = "44xxxxxxxx41";
+        $givenTo = "44xxxxxxxx43";
         $givenText = "QUIZ Correct answer is Paris";
         $givenCleanText = "Correct answer is Paris";
         $givenKeyword = "QUIZ";

@@ -18,10 +18,10 @@ class ClickToCallApiTest extends ApiTestBase
           "bulkId": "BULK-ID-123-xyz",
           "messages": [
             {
-              "from": "41793026700",
-              "fromB": "41793026701",
-              "destinationA": "41793026727",
-              "destinationB": "41793026731",
+              "from": "41xxxxxxx22",
+              "fromB": "41xxxxxxx23",
+              "destinationA": "41xxxxxxx25",
+              "destinationB": "41xxxxxxx26",
               "messageId": "MESSAGE-ID-123-xyz",
               "text": "Test Voice message.",
               "language": "en",
@@ -69,7 +69,7 @@ class ClickToCallApiTest extends ApiTestBase
           "bulkId": "4fda521a-c680-470d-b134-83d468f7ac80",
           "messages": [
             {
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",

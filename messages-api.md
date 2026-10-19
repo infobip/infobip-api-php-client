@@ -37,7 +37,7 @@ To send a message, define the message content and recipient information.
             new MessagesApiMessage(
                 channel: MessagesApiOutboundMessageChannel::SMS(),
                 sender: "InfoSMS",
-                destinations: [new MessagesApiToDestination("385995379169")],
+                destinations: [new MessagesApiToDestination("44xxxxxxxx75")],
                 content: new MessagesApiMessageContent(
                     body: new MessagesApiMessageTextBody("Sent using Infobip's PHP client library!")
                 )

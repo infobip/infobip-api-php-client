@@ -72,8 +72,8 @@ class VoiceApiTest extends ApiTestBase
             "name": "Joanna",
             "gender": "female"
           },
-          "from": "442032864231",
-          "to": "41793026727"
+          "from": "44xxxxxxxx58",
+          "to": "41xxxxxxx25"
         }
         JSON;
 
@@ -82,7 +82,7 @@ class VoiceApiTest extends ApiTestBase
           "bulkId": "4fda521a-c680-470d-b134-83d468f7ac80",
           "messages": [
             {
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -134,10 +134,10 @@ class VoiceApiTest extends ApiTestBase
           "messages": [
             {
               "audioFileUrl": "https://www.example.com/media.mp3",
-              "from": "41793026700",
+              "from": "41xxxxxxx22",
               "to": [
-                "41793026727",
-                "41793026731"
+                "41xxxxxxx25",
+                "41xxxxxxx26"
               ]
             },
             {
@@ -147,9 +147,9 @@ class VoiceApiTest extends ApiTestBase
                 "name": "Joanna",
                 "gender": "female"
               },
-              "from": "41793026800",
+              "from": "41xxxxxxx29",
               "to": [
-                "41793026785"
+                "41xxxxxxx28"
               ]
             }
           ]
@@ -161,7 +161,7 @@ class VoiceApiTest extends ApiTestBase
           "bulkId": "4fda521a-c680-470d-b134-83d468f7ac80",
           "messages": [
             {
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -212,14 +212,14 @@ class VoiceApiTest extends ApiTestBase
           "bulkId": "BULK-ID-123-xyz",
           "messages": [
             {
-              "from": "41793026700",
+              "from": "41xxxxxxx22",
               "destinations": [
                 {
-                  "to": "41793026727",
+                  "to": "41xxxxxxx25",
                   "messageId": "MESSAGE-ID-123-xyz"
                 },
                 {
-                  "to": "41793026731"
+                  "to": "41xxxxxxx26"
                 }
               ],
               "text": "Test Voice message.",
@@ -241,12 +241,12 @@ class VoiceApiTest extends ApiTestBase
               "callTransfers": [
                 {
                   "equals": "2",
-                  "transferTo": "41793026700",
+                  "transferTo": "41xxxxxxx22",
                   "callTransferMaxDuration": 45,
                   "if": "DTMF"
                 },
                 {
-                  "transferTo": "41793026701",
+                  "transferTo": "41xxxxxxx23",
                   "callTransferMaxDuration": 45,
                   "if": "anyDtmf"
                 }
@@ -292,7 +292,7 @@ class VoiceApiTest extends ApiTestBase
           "bulkId": "5028e2d42f19-42f1-4656-351e-a42c191e5fd2",
           "messages": [
             {
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -303,7 +303,7 @@ class VoiceApiTest extends ApiTestBase
               "messageId": "4242f196ba50-a356-2f91-831c4aa55f351ed2"
             },
             {
-              "to": "41793026731",
+              "to": "41xxxxxxx26",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -615,8 +615,8 @@ class VoiceApiTest extends ApiTestBase
     public function testSearchVoiceIvrRecordedFiles(): void
     {
         $givenMessageId1 = "453e161a-fe4f-4f3c-80c0-ab520de9a969";
-        $givenFrom1 = "442032864231";
-        $givenTo1 = "38712345678";
+        $givenFrom1 = "44xxxxxxxx58";
+        $givenTo1 = "387xxxxxx12";
         $givenScenarioId1 = "C9CE33CF130511D8E333C1260BABA309";
         $givenGroupId1 = "#/script/1";
         $givenUrl1 = "/voice/ivr/1/files/3C67336FA555A606C85FA9637906A6AB98436B7AFC65D857A416F6521D39F8F0E1D3D2469FF580D8968D3DD89A2DB561";
@@ -624,8 +624,8 @@ class VoiceApiTest extends ApiTestBase
         $givenRecordedAt1DateTime = new DateTime("2019-11-09T17:00:00.000+01:00");
 
         $givenMessageId2 = "05b2859d-85c6-4068-9347-2e563b5c9cf4";
-        $givenFrom2 = "442032864231";
-        $givenTo2 = "38712345678";
+        $givenFrom2 = "44xxxxxxxx58";
+        $givenTo2 = "387xxxxxx12";
         $givenScenarioId2 = "4A6177C9B92039306F1F091708851A2E";
         $givenGroupId2 = "#/script/1";
         $givenUrl2 = "/voice/ivr/1/files/305DE72BA11D81D1BAED75BFC46706761580BDEC2218C22628447FD3814E7913D3058E4ECBFD6F55C80E976235EEB111";
@@ -1342,13 +1342,13 @@ class VoiceApiTest extends ApiTestBase
           "messages": [
             {
               "scenarioId": "6298AA7707903A4ED680B436929681AD",
-              "from": "41793026700",
+              "from": "41xxxxxxx22",
               "destinations": [
                 {
-                  "to": "41793026727"
+                  "to": "41xxxxxxx25"
                 },
                 {
-                  "to": "41793026731"
+                  "to": "41xxxxxxx26"
                 }
               ],
               "notifyUrl": "https://www.example.com/voice/advanced",
@@ -1386,7 +1386,7 @@ class VoiceApiTest extends ApiTestBase
           "bulkId": "5028e2d42f19-42f1-4656-351e-a42c191e5fd2",
           "messages": [
             {
-              "to": "41793026727",
+              "to": "41xxxxxxx25",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -1397,7 +1397,7 @@ class VoiceApiTest extends ApiTestBase
               "messageId": "4242f196ba50-a356-2f91-831c4aa55f351ed2"
             },
             {
-              "to": "41793026731",
+              "to": "41xxxxxxx26",
               "status": {
                 "groupId": 1,
                 "groupName": "PENDING",
@@ -1422,10 +1422,10 @@ class VoiceApiTest extends ApiTestBase
                 new CallsIvrMessage(
                     scenarioId: "6298AA7707903A4ED680B436929681AD",
                     destinations: [
-                        new CallsDestination(to: "41793026727"),
-                        new CallsDestination(to: "41793026731")
+                        new CallsDestination(to: "41xxxxxxx25"),
+                        new CallsDestination(to: "41xxxxxxx26")
                     ],
-                    from: "41793026700",
+                    from: "41xxxxxxx22",
                     notifyUrl: "https://www.example.com/voice/advanced",
                     notifyContentType: "application/json",
                     callbackData: "DLR callback data",
@@ -1459,7 +1459,7 @@ class VoiceApiTest extends ApiTestBase
             bulkId: "5028e2d42f19-42f1-4656-351e-a42c191e5fd2",
             messages: [
                 new CallsVoiceResponseDetails(
-                    to: "41793026727",
+                    to: "41xxxxxxx25",
                     status: new CallsSingleMessageStatus(
                         groupId: 1,
                         groupName: "PENDING",
@@ -1470,7 +1470,7 @@ class VoiceApiTest extends ApiTestBase
                     messageId: "4242f196ba50-a356-2f91-831c4aa55f351ed2"
                 ),
                 new CallsVoiceResponseDetails(
-                    to: "41793026731",
+                    to: "41xxxxxxx26",
                     status: new CallsSingleMessageStatus(
                         groupId: 1,
                         groupName: "PENDING",

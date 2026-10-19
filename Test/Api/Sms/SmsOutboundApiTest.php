@@ -54,11 +54,11 @@ class SmsOutboundApiTest extends ApiTestBase
               "sender": "InfoSMS",
               "destinations": [
                 {
-                  "to": "41793026727",
+                  "to": "41xxxxxxx25",
                   "messageId": "MESSAGE-ID-123-xyz"
                 },
                 {
-                  "to": "41793026834"
+                  "to": "41xxxxxxx30"
                 }
               ],
               "content": {
@@ -87,10 +87,10 @@ class SmsOutboundApiTest extends ApiTestBase
               }
             },
             {
-              "sender": "41793026700",
+              "sender": "41xxxxxxx22",
               "destinations": [
                 {
-                  "to": "41793026700"
+                  "to": "41xxxxxxx22"
                 }
               ],
               "content": {
@@ -153,7 +153,7 @@ class SmsOutboundApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "41793026727",
+              "destination": "41xxxxxxx25",
               "details": {
                 "messageCount": 1
               }
@@ -167,7 +167,7 @@ class SmsOutboundApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "41435675123",
+              "destination": "41xxxxxxx13",
               "details": {
                 "messageCount": 1
               }
@@ -187,11 +187,11 @@ class SmsOutboundApiTest extends ApiTestBase
                 new SmsMessage(
                     destinations: [
                         new SmsDestination(
-                            to: "41793026727",
+                            to: "41xxxxxxx25",
                             messageId: "MESSAGE-ID-123-xyz"
                         ),
                         new SmsDestination(
-                            to: "41793026834"
+                            to: "41xxxxxxx30"
                         )
                     ],
                     content: new SmsTextContent(
@@ -221,13 +221,13 @@ class SmsOutboundApiTest extends ApiTestBase
                 new SmsMessage(
                     destinations: [
                         new SmsDestination(
-                            to: "41793026700"
+                            to: "41xxxxxxx22"
                         )
                     ],
                     content: new SmsTextContent(
                         text: "A long time ago, in a galaxy far, far away... It is a period of civil war. Rebel spaceships, striking from a hidden base, have won their first victory against the evil Galactic Empire."
                     ),
-                    sender: "41793026700",
+                    sender: "41xxxxxxx22",
                     options: new SmsMessageOptions(
                         deliveryTimeWindow: new DeliveryTimeWindow(
                             days: [
@@ -303,7 +303,7 @@ class SmsOutboundApiTest extends ApiTestBase
                     name: "PENDING_ACCEPTED",
                     description: "Message sent to next instance"
                 ),
-                destination: "41793026727",
+                destination: "41xxxxxxx25",
                 details: new SmsMessageResponseDetails(
                     messageCount: 1
                 )
@@ -318,7 +318,7 @@ class SmsOutboundApiTest extends ApiTestBase
                     name: "PENDING_ACCEPTED",
                     description: "Message sent to next instance"
                 ),
-                destination: "41435675123",
+                destination: "41xxxxxxx13",
                 details: new SmsMessageResponseDetails(
                     messageCount: 1
                 )
@@ -338,7 +338,7 @@ class SmsOutboundApiTest extends ApiTestBase
               "sender": "InfoSMS",
               "destinations": [
                 {
-                  "to": "41793026727",
+                  "to": "41xxxxxxx25",
                   "messageId": "MESSAGE-ID-123-xyz"
                 }
               ],
@@ -364,7 +364,7 @@ class SmsOutboundApiTest extends ApiTestBase
                 "name": "PENDING_ACCEPTED",
                 "description": "Message sent to next instance"
               },
-              "destination": "41793026727"
+              "destination": "41xxxxxxx25"
             }
           ]
         }
@@ -381,7 +381,7 @@ class SmsOutboundApiTest extends ApiTestBase
                 new SmsMessage(
                     destinations: [
                         new SmsDestination(
-                            to: "41793026727",
+                            to: "41xxxxxxx25",
                             messageId: "MESSAGE-ID-123-xyz"
                         )
                     ],
@@ -426,7 +426,7 @@ class SmsOutboundApiTest extends ApiTestBase
                     name: "PENDING_ACCEPTED",
                     description: "Message sent to next instance"
                 ),
-                destination: "41793026727"
+                destination: "41xxxxxxx25"
             );
 
             $this->assertEquals($expected, $responseModel->getMessages()[0]);

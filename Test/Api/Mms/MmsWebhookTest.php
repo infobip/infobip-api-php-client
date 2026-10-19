@@ -17,8 +17,8 @@ class MmsWebhookTest extends ApiTestBase
             "results":
             [
                 {
-                    "from": "385916242493",
-                    "to": "385921004026",
+                    "from": "44xxxxxxxx41",
+                    "to": "44xxxxxxxx43",
                     "receivedAt": "2016-10-06T09:28:39.220+00:00",
                     "messageId": "817790313235066447",
                     "pairedMessageId": "some-mesage-id",

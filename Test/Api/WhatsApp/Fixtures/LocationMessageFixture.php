@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 $requestVars = [
-    'from' => '447860099299',
-    'to' => '385958000000',
+    'from' => '44xxxxxxxx65',
+    'to' => '44xxxxxxxx44',
     'content' => [
         'latitude' => 44.9526862,
         'longitude' => 13.8545217

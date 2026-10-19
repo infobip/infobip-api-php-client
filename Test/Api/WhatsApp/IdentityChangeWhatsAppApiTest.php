@@ -41,8 +41,8 @@ class IdentityChangeWhatsAppApiTest extends ApiTestBase
 
         $api = new IdentityChangeWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '447796344125';
-        $userNumber = '441134960001';
+        $sender = '44xxxxxxxx61';
+        $userNumber = '44xxxxxxxx47';
 
         $expectedPath = str_replace(
             ['{sender}', '{userNumber}'],
@@ -88,8 +88,8 @@ class IdentityChangeWhatsAppApiTest extends ApiTestBase
 
         $api = new IdentityChangeWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '447796344125';
-        $userNumber = '441134960001';
+        $sender = '44xxxxxxxx61';
+        $userNumber = '44xxxxxxxx47';
 
         $expectedPath = str_replace(
             ['{sender}', '{userNumber}'],

@@ -110,7 +110,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
             structure: $structure
         );
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
 
         $closures = [
             fn () => $api->createWhatsAppTemplate($sender, $templateRequest),
@@ -146,7 +146,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
         $api = new ManageWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
 
         $expectedPath = str_replace('{sender}', $sender, self::DELETE_MEDIA_ENDPOINT);
 
@@ -186,7 +186,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
         $api = new ManageWhatsAppApi(config: $this->getConfiguration(), client: $client);
 
-        $sender = '385958000000';
+        $sender = '44xxxxxxxx44';
 
         $expectedPath = str_replace('{sender}', $sender, self::GET_TEMPLATES_ENDPOINT);
 
@@ -213,7 +213,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappTemplate(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenId = "5653923468715475";
 
         $givenResponse = <<<JSON
@@ -275,7 +275,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testEditWhatsappTemplate(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenId = "5653923468715475";
 
         $givenRequest = <<<JSON
@@ -391,7 +391,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testDeleteWhatsappTemplate(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenName = "media_template_with_header";
 
         $requestHistoryContainer = [];
@@ -429,7 +429,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappUpiPayuPaymentStatus(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenPaymentId = "5653923468715475";
 
         $givenResponse = <<<JSON
@@ -486,7 +486,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappBrazilPaymentStatus(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenPaymentId = "5653923468715475";
 
         $givenResponse = <<<JSON
@@ -543,7 +543,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappAUpiPaymentStatus(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
         $givenPaymentId = "5653923468715475";
 
         $givenResponse = <<<JSON
@@ -600,20 +600,20 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappSendersQuality(): void
     {
-        $givenSenders = ["447796344125", "447796344126"];
+        $givenSenders = ["44xxxxxxxx61", "44xxxxxxxx62"];
 
         $givenResponse = <<<JSON
         {
           "results": [
             {
-              "sender": "441134960000",
+              "sender": "44xxxxxxxx46",
               "qualityRating": "MEDIUM",
               "status": "CONNECTED",
               "currentLimit": "LIMIT_100K",
               "lastUpdated": "2022-02-18T08:12:26.422+00:00"
             },
             {
-              "sender": "441134960001",
+              "sender": "44xxxxxxxx47",
               "qualityRating": "LOW",
               "status": "BANNED",
               "currentLimit": "LIMIT_50",
@@ -655,7 +655,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testGetWhatsappSenderBusinessInfo(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
 
         $givenResponse = <<<JSON
         {
@@ -721,7 +721,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testUpdateWhatsappSenderBusinessInfo(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
 
         $givenRequest = <<<JSON
         {
@@ -789,7 +789,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
         $givenRequest = <<<JSON
         {
           "countryCode": "44",
-          "phoneNumber": "7796344125",
+          "phoneNumber": "xxxxxxxx73",
           "displayName": "Infobip",
           "type": "EXTERNAL_SMS",
           "locale": "en_US"
@@ -820,7 +820,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
         $request = new WhatsAppPhoneNumberRequest(
             countryCode: "44",
-            phoneNumber: "7796344125",
+            phoneNumber: "xxxxxxxx73",
             displayName: "Infobip",
             type: "EXTERNAL_SMS",
             locale: "en_US"
@@ -847,7 +847,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testVerifyWhatsappSender(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
 
         $givenRequest = <<<JSON
         {
@@ -896,7 +896,7 @@ class ManageWhatsAppApiTest extends ApiTestBase
 
     public function testRetryWhatsappSenderVerification(): void
     {
-        $givenSender = "447796344125";
+        $givenSender = "44xxxxxxxx61";
 
         $givenRequest = <<<JSON
         {
